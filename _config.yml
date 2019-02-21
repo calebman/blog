@@ -13,7 +13,7 @@ timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoursite.com
+url: http://chenjianhui.name
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -100,4 +100,8 @@ deploy:
   repo: https://github.com/calebman/calebman.github.io
   branch: master
   
-  
+search:
+  path: search.xml
+  field: post
+  format: html
+  limit: 10000

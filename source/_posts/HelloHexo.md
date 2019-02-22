@@ -5,7 +5,7 @@ description: 这是一篇markdown的写作示例
 categories: 
 - 随笔
 tags: 
-- 个人
+- markdown
 - hexo
 top: 1
 ---

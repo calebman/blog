@@ -1,0 +1,833 @@
+---
+title: 纯正后端的vue轮子笔记
+date: 2018-05-18 14:10:22
+description: 由于公司需要，我作为一个纯正的后端工程师，已经自学了半年多的vue了，愣是被逼成了一个小全栈，当然，小全栈这是往好听了说，事实上就是个前后端深度都不足的小菜鸡，在深知自己众多不足以及明白好记性不如烂笔头的道理下，多造轮子多做笔记总是不会错的：）
+categories: 
+- 前端
+tags: 
+- vuejs
+- vue-router
+- vuex
+copyright: ture
+top: 10
+---
+
+![](http://pnb4x7vrc.bkt.clouddn.com/vue.png)
+
+<!--more-->
+
+## 说明
+
+由于公司需要，**我**作为一个**纯正的**后端工程师，已经自学了半年多的vue了，愣是被逼成了一个小全栈，当然，小全栈这是往好听了说，事实上就是个前后端深度都不足的小菜鸡，在深知自己众多不足以及明白好记性不如**烂**笔头的道理下，多造轮子多做笔记总是不会错的：）
+
+所以最近得空我把我刚学vuejs的时候写的[烂工程](https://github.com/calebman/vue-DBM)重构了一下，重构的时候针对性的分模块做了一些笔记如下
+
+- 路由
+- 状态管理
+- 权限管理
+- 控件封装与使用
+- 混入
+- 数据模拟
+- 打包优化与用户体验
+
+如果不想拉这么长可以去 [全球最大的同性交友网站](https://github.com/calebman/vue-DBM#%E5%BC%80%E5%8F%91%E5%89%8D%E5%87%86%E5%A4%87) 查看
+
+## 进入烂笔头模式
+> ### 路由
+### 1. 路由加载
+```javascript
+// 直接加载页面
+import page from '@/views/page';
+// 懒加载页面
+() => import('@/views/page');
+// 指定打包名称的懒加载，可将多个页面打包成一个js进行加载
+() => import(/* webpackChunkName: "group-page" */'@/views/page1');
+() => import(/* webpackChunkName: "group-page" */'@/views/page2');
+() => import(/* webpackChunkName: "group-page" */'@/views/page3');
+```
+
+### 2. 404路由
+```javascript
+// 加载一个404页面
+import page404 from '@/views/page404';
+// 将以下路由配置放置在路由表的最末端，当路径无法匹配前面的所有路由时将会跳转至page404组件页面
+{ path: '*', component: page404}
+```
+
+### 3. 路由拦截
+```javascript
+// 路由跳转前的拦截器
+router.beforeEach((to, from, next) => {
+  
+});
+// 路由跳转后的拦截器
+router.afterEach(to => {
+
+});
+// 路由跳转时出现错误时的拦截器
+router.onError((err) => {
+
+});
+```
+
+### 4. 动态路由
+
+> 动态路由一般配合页面级的权限控制使用
+
+```javascript
+// 通过router.addRoutes方法动态添加可访问路由
+router.addRoutes(addRouters)
+// hack方法 确保addRoutes已完成
+next({ ...to, replace: true }) // set the replace: true so the navigation will not leave a history record 
+```
+### 5. 路由加载时动画
+
+> 路由加载时的loading动画一般配合路由懒加载使用
+
+```javascript
+// 在状态管理中定义一个路由loading标志
+const app = {
+  state: {
+    routerLoading: false, //路由的loading过渡
+  },
+  mutations: {
+    //修改路由loading状态
+    UPDATE_ROUTER_LOADING(state, status) {
+      state.routerLoading = status
+    }
+  }
+}
+
+// 在路由拦截器中修改loading状态
+router.beforeEach((to, from, next) => {
+  store.commit('UPDATE_ROUTER_LOADING', true); // 展示路由加载时动画
+});
+router.afterEach(to => {
+  store.commit('UPDATE_ROUTER_LOADING', false);
+});
+router.onError(err => {
+  console.error(err); // for bug
+  store.commit('UPDATE_ROUTER_LOADING', false);
+});
+
+// 在router-view定义loading动画
+// element-ui提供了v-loading指令可以直接使用
+<router-view v-loading="$store.getters.routerLoading"></router-view>
+```
+> ### 状态管理
+### 1. 小知识
+
+* state中的数据修改需要通过mutation或action触发
+* mutation中的方法必须是同步函数
+* action可包含任意异步操作，可返回一个Promise
+* mutation以及action可以重复，调用时将会依次调用，getter必须唯一
+
+### 2. 多模块
+
+> 业务比较复杂时可使用状态管理中的多模块，有以下注意事项
+
+* 除state会根据组合时模块的别名来添加层级，其他的都是合并在根级下，所以在回调函数获取的getters、commit、dispatch都是全局作用的
+* mutation的回调参数只有state，state为当前模块的状态树，下同
+* action的回调参数为state、rootState、getters、commit、dispatch，如果需要在action中调用其他的action可使用dispatch直接调用
+* getter的回调参数为state、rootState、getters
+* 模块间可以通过回调的rootState进行交互
+* 出现重名的mutation、action将依次触发
+```javascript
+// 多模块的实现 app以及user为各个子模块
+export default new Vuex.Store({
+    modules: {
+        app,
+        user
+    },
+    getters
+})
+```
+
+### 3. 辅助函数
+
+> Vuex除了提供了Store对象以外还对外提供了一些辅助函数
+
+* mapState、mapGetters将store中的state、getters属性映射到vue组件局部的计算属性中
+
+```javascript
+import { mapState } from 'vuex'
+computed: mapState([ 
+    // 映射 this.name 到 this.$store.state.name 
+    'name'
+])
+
+import { mapGetters } from 'vuex'
+computed: {
+    // 映射 this.name 到 this.$store.getters.name 
+    ...mapGetters([ 'name' ])
+}
+```
+
+
+
+* mapActions、mapMutations将store中的dispatch、commit方法映射到vue组件局部的方法中
+
+```javascript
+import { mapActions } from 'vuex'
+
+methods: { 
+    // 映射 this.LoginByUsername() 到 this.$store.dispatch('LoginByUsername')
+    ...mapActions([ 'LoginByUsername' ]), 
+    // 映射 this.login() to this.$store.dispatch('LoginByUsername')
+    ...mapActions({ login: 'LoginByUsername'}) 
+}
+
+import { mapMutations } from 'vuex'
+
+methods: { 
+    // 映射 this.SET_NAME() 到 this.$store.commit('SET_NAME') ])
+    ...mapMutations([ 'SET_NAME' ]) , 
+    // 映射 this.setName() 到 this.$store.commit('SET_NAME') })
+    ...mapMutations({ setName: 'SET_NAME' ])
+}
+```
+
+
+
+### 4. 数据持久化插件
+
+> 刷新页面时希望状态不被丢失时可用此插件
+
+```javascript
+// 摘抄于 https://github.com/robinvdvleuten/vuex-persistedstate
+import createPersistedState from 'vuex-persistedstate'
+import * as Cookies from 'js-cookie'
+
+const store = new Store({
+  // ...
+  plugins: [
+    createPersistedState({
+      storage: {
+        getItem: key =* Cookies.get(key),
+        // Please see https://github.com/js-cookie/js-cookie#json, on how to handle JSON.
+        setItem: (key, value) =* Cookies.set(key, value, { expires: 3, secure: true }),
+        removeItem: key =* Cookies.remove(key)
+      }
+    })
+  ]
+})
+```
+###  5. 日志插件
+
+> 开发环境中希望能够跟踪状态变化并输出时可用此插件
+
+```javascript
+// createLogger是vuex中的内置插件
+import createLogger from 'vuex/dist/logger'
+
+let vuexPlugins = [];
+if(process.env.NODE_ENV !== 'production'){ // 开发环境加载该插件
+    vuexPlugins.push(createLogger); 
+}
+
+const store = new Store({
+  // ...
+  plugins: vuexPlugins
+})
+
+```
+
+> ### 权限管理
+### 1. 需要实现的功能
+
+* 根据用户登录后的权限表生成路由
+* 页面级的权限控制
+* dom元素级的权限控制
+* 登录状态失效的处理
+
+### 2. 路由设计
+
+> 首先我们需要设计路由对象需要有哪些必要参数信息
+>
+> 为了实现权限管理我们必须要有roles参数代表该路由必须拥有哪些权限才能访问
+>
+> 为了更好的展示路由在这里设计了title、icon两个参数用于侧边栏的菜单展示
+>
+> 而有些路由不需要在侧边栏展示，这里使用hidden参数来告诉程序哪些路由是不需要展示的
+
+```javascript
+// 首先设计路由对象参数
+/**
+* hidden: true                   如果hidden为true则在左侧菜单栏展示，默认为false
+* name:'router-name'             路由名称，路由唯一标识
+* meta : {
+    roles: ['admin','editor']    权限列表，用于页面级的权限控制，默认不设置代表任何权限均可访问
+    title: 'title'               对应路由在左侧菜单栏的标题名称
+    icon: 'icon-class'           对应路由在左侧菜单栏的图标样式
+ }
+**/
+```
+> 接下来我们需要实现路由的动态加载
+>
+> 系统初始化时加载必要路由，之后根据登录用户的权限加载符合条件的路由
+
+```javascript
+// 定义系统初始化时加载的必要路由信息
+export const constantRouterMap = [
+  { path: '/login', name: 'login', meta: { title: "系统登录", hidden: true }, component: login },
+  { path: "/404", name: "page404", meta: { title: "页面走丢了", hidden: true }, component: page404 },
+  { path: "/401", name: "page401", meta: { title: "权限不足", hidden: true }, component: page401 }
+]
+// 定义布局页面
+const layout = () => import(/* webpackChunkName: "group-index" */ '@/views/layout');
+// 定义异步加载的路由信息
+export const asyncRouterMap = [
+  {
+    path: '/',
+    name: 'main',
+    redirect: '/dashboard',
+    hidden: true,
+    component: layout,
+    children: [
+      { path: 'dashboard', name: 'dashboard', meta: { title: "仪表盘" }, component: () => import(/* webpackChunkName: "group-index" */'@/views/dashboard') }
+    ]
+  },
+  {
+    path: '/permission',
+    name: 'permission',
+    meta: { title: "权限页", icon: "dbm d-icon-quanxian" },
+    redirect: '/permission/adminpermission',
+    component: layout,
+    children: [
+      { path: "adminpermission", name: "adminPermission", meta: { title: "管理员权限页", roles: ["admin"] }, component: () => import('@/views/permission/admin') },
+      { path: "watcherpermission", name: "watcherPermission", meta: { title: "游客权限页", roles: ["admin", "watcher"] }, component: () => import('@/views/permission/watcher') },
+      { path: "elementpermission", name: "elementPermission", meta: { title: "元素级别权限" }, component: () => import('@/views/permission/element') }
+    ]
+  },
+  { path: '*', redirect: '/404', hidden: true }
+]
+```
+
+### 3. 页面级的权限控制
+
+> 使用路由拦截来实现页面级的权限控制
+>
+> 拦截路由跳转判断用户是否登录
+>
+> 从拉取的用户信息中提取权限表通过addRoutes方法动态加载异步路由表
+>
+> 每次路由跳转时判断用户是否拥有该路由的访问权限实现动态权限匹配
+
+```javascript
+// 定义免登白名单
+const whiteList = ['/login', '/404', '/401'];
+// 拦截路由跳转
+router.beforeEach((to, from, next) => {
+  store.commit('UPDATE_ROUTER_LOADING', true); // 展示路由加载时动画
+  if (getToken()) {  // 存在token
+    if (to.path === '/login') {
+      next({ path: '/' })
+    } else {
+      if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完用户信息
+        store.dispatch('GetUserInfo').then(data => { // 拉取用户信息
+          const roles = data.roles // 权限表必须为数组,例如: ['admin','editer']
+          store.dispatch('GenerateRoutes', { roles }).then(() => { // 根据roles权限生成可访问的路由表
+            router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
+            next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
+          })
+        }).catch(err => { // 拉取用户信息失败，提示登录状态失效
+          store.dispatch('FedLogOut').then(() => {
+            Message.error('登录状态失效, 请重新登录');
+            next({ path: '/login' });
+          })
+        })
+      } else {
+        if (hasPermission(store.getters.roles, to.meta.roles)) { // 动态权限匹配
+          next();
+        } else {
+          next({ path: '/401', replace: true, query: { noGoBack: true } });
+        }
+      }
+    }
+  } else { // 没有token
+    if (whiteList.indexOf(to.path) !== -1) { // 在免登录白名单，直接进入
+      next();
+    } else {
+      next('/login'); // 否则全部重定向到登录页
+    }
+  }
+});
+```
+
+### 4. 元素级的权限控制
+
+> 使用自定义指令来实现元素级的权限控制
+>
+> 在被绑定元素插入父节点时验证用户是否包含该元素的所需权限
+>
+> 根据鉴权结果来决定是否移除该元素
+
+```javascript
+import store from '@/store'
+
+export default {
+  inserted(el, binding, vnode) {
+    const { value } = binding; // 获取自定义指令传入的鉴权信息
+    const roles = store.getters && store.getters.roles; // 从状态管理中获取当前用户的路由信息
+
+    if (value && value instanceof Array && value.length > 0) {
+      const permissionRoles = value;
+
+      const hasPermission = roles.some(role => { // 判断用户是否包含该元素所需权限
+        return permissionRoles.includes(role);
+      })
+
+      if (!hasPermission) { // 权限不足
+        el.parentNode && el.parentNode.removeChild(el); // 移除该dom元素
+      }
+    } else {
+      throw new Error(`必须要有权限写入，例如['admin']`)
+    }
+  }
+}
+
+// 在vue组件上使用它
+// 引入并注册permission指令
+import permission from "@/directive/permission/index.js";
+export default {
+  directives: {
+    permission
+  }
+}
+// 使用permission指令
+<el-button v-permission="['admin']">admin 可见</el-button>
+<el-button v-permission="['admin','watcher']">watcher 可见</el-button>
+```
+
+> ### render函数
+### 1. 如何封装一个支持render渲染的组件
+
+* 首先创建一个函数式组件
+
+```javascript
+// 表格拓展函数式组件的实现
+// see https://github.com/calebman/vue-DBM/blob/master/src/components/table/expand.js
+export default {
+  name: 'TableExpand',
+  functional: true, // 标记组件为 functional，这意味它是无状态 (没有响应式数据)，无实例 (没有 this 上下文)。
+  props: {
+    row: Object, // 当前行对象
+    field: String, // 列名称
+    index: Number, // 行号
+    render: Function // 渲染函数
+  },
+  render: (h, ctx) => { // 提供ctx作为上下文
+    const params = {
+      row: ctx.props.row,
+      field: ctx.props.field,
+      index: ctx.props.index
+    };
+    return ctx.props.render(h, params);
+  }
+};
+```
+
+* 在父组件中引入
+
+```javascript
+// see https://github.com/calebman/vue-DBM/blob/master/src/components/table/table.vue
+import expand from "./expand.js";
+
+<span v-if="typeof col.render ==='function'">
+   <expand :field="col.field" :row="item" :render="col.render" :index="rowIndex"></expand>
+</span>
+```
+
+* 使用render函数渲染
+
+```javascript
+// see https://github.com/calebman/vue-DBM/blob/master/src/views/demo/datatable/data-table.vue
+// 引入自定义组件
+import IndexColumn from "@/components/business/index-column.vue";
+// 注册
+components: {
+  // ...
+  IndexColumn
+}
+// 使用
+// 获取当前组件的上下文
+let self = this;
+// 定义渲染函数
+render: (h, params) =>
+  h("div", [
+    h(IndexColumn, {
+      props: {
+        field: params.field,
+        index: params.index,
+        pagingIndex:
+          (self.pagination.pageCurrent - 1) * self.pagination.pageSize
+      },
+      on: { "on-value-delete": self.deleteRow }
+    })
+  ])
+```
+
+> ### 混入
+### 1. 小知识
+
+* 混入对象将享有被混入组件的生命周期
+* 数据对象混入冲突时将以组件数据优先
+* 对象选项（如methods、components、directives）混入冲突时取组件对象的键值对
+* 同名钩子混合为数组，混入对象的钩子将在组件自身钩子之前调用
+
+### 2. 应用场景
+
+* 希望部分路由页面在离开时销毁但是不希望每个路由页面都定义局部路由时
+
+```javascript
+// 定义混入对象
+export default {
+  beforeRouteLeave(to, from, next) {
+    if (to.meta && to.meta.destroy) {
+      this.$destroy();
+    }
+    next();
+  }
+}
+
+// 混入需要此功能的组件页面
+import routeLeaveDestoryMixin from "routeleave-destory-mixin";
+export default {
+  // ...
+  mixins: [routeLeaveDestoryMixin]
+}
+```
+
+* 数据表格自定义了文本、数字、时间以及文件单元格组件，每个组件都有同样的数据修改、焦点选中等方法时，可提取为混入对象，提高组件复用性
+
+```javascript
+// see https://github.com/calebman/vue-DBM/blob/master/src/components/business/render-column-mixin.js
+
+// 定义混入对象
+export default {
+  // ...
+  computed: {
+    // 是否选中此单元格
+    inSelect() {
+      if (this.cellClickData.index == this.index &&
+        this.cellClickData.field == this.field) {
+        this.focus();
+        return true;
+      }
+    }
+  },
+  methods: {
+    // 获取焦点
+    focus() {
+      let self = this;
+      setTimeout(function () {
+        if (self.$refs["rendercolumn"]) {
+          self.$refs["rendercolumn"].focus();
+        }
+      }, 100);
+    },
+    // 失去焦点
+    blur() {
+      if (this.v != this.value) {
+        this.$emit("on-value-change", this.field, this.index, this.v);
+      }
+      this.$emit("on-value-cancel", this.field, this.index);
+    },
+    // 数据修改
+    changeValue(val) {
+      this.$emit("on-value-change", this.field, this.index, val);
+      this.$emit("on-value-cancel", this.field, this.index);
+    }
+  },
+  watch: {
+    // 监听父组件数据变化
+    value(val) {
+      this.v = val;
+    }
+  }
+}
+
+// 文本列
+// see https://github.com/calebman/vue-DBM/blob/master/src/components/business/text-column.vue
+<template>
+  <div>
+    <input v-show="inSelect" ref="rendercolumn" @blur="blur" @keyup="enter($event)" v-model="v" />
+    <span v-show="!inSelect" class="cell-text">{{v}}</span>
+  </div>
+</template>
+// 时间列
+// see https://github.com/calebman/vue-DBM/blob/master/src/components/business/datetime-column.vue
+<template>
+  <div>
+    <el-date-picker v-show="inSelect" ref="rendercolumn" v-model="v" type="datetime" @change="changeValue" @blur="blur"></el-date-picker>
+    <span v-show="!inSelect">{{coverValue}}</span>
+  </div>
+</template>
+```
+
+* 希望降低组件的复杂度的时候可使用多个混入组件来分割核心组件的功能
+
+```bash
+# see https://github.com/calebman/vue-DBM/tree/master/src/components/table
+├─table
+│      cell-edit-mixin.js                      # 单元格编辑
+│      classes-mixin.js                        # 表格样式                     
+│      scroll-bar-control-mixin.js             # 表格滚动
+│      table-empty-mixin.js                    # 无数据时的处理
+│      table-resize-mixin.js                   # 表格的自适应
+│      table-row-mouse-events-mixin.js         # 鼠标移动时的样式改变
+```
+
+> ### 数据模拟
+### 1. 需要实现的功能
+
+* 拦截Ajax请求并延时响应
+* 返回的统一的数据格式
+* 响应不同的模拟数据
+
+### 2. 配置Mockjs拦截Ajax请求
+
+```javascript
+// see https://github.com/calebman/vue-DBM/blob/master/src/mock/index.js
+// 引入Mockjs
+import Mock from 'mockjs';
+// 配置延时
+Mock.setup({
+  timeout: '300-1000'
+});
+// 配置拦截
+Mock.mock(/\/user\/login/, 'post', loginAPI.loginByUsername);
+Mock.mock(/\/user\/logout/, 'post', loginAPI.logout);
+Mock.mock(/\/user\/info\.*/, 'get', loginAPI.getUserInfo);
+```
+
+### 3. 响应的统一数据格式
+
+```javascript
+// see https://github.com/calebman/vue-DBM/blob/master/src/mock/response.js
+/**
+ * 统一响应工具类
+ * 响应统一格式的数据
+ * response : {
+ *    errCode: 00             响应结果码
+ *    errMsg: 0000000（成功）  响应详细结果码
+ *    data: null              具体数据
+ * }
+ */
+ 
+export default {
+  // 成功
+  success: data => {
+    return {
+      errCode: '00',
+      errMsg: '0000000（成功）',
+      data: data ? data : null
+    }
+  },
+  // 失败
+  fail: (errCode, errMsg) => {
+    return {
+      errCode: errCode ? errCode : '04',
+      errMsg: errMsg ? errMsg : '0401001（未知错误）',
+      data: null
+    }
+  },
+  // 权限不足
+  unauthorized: () => {
+    return {
+      errCode: '43',
+      errMsg: '4300001（无权访问）',
+      data: null
+    }
+  }
+}
+```
+
+### 4. 配置响应逻辑
+
+```javascript
+// see https://github.com/calebman/vue-DBM/blob/master/src/mock/login.js
+
+import { param2Obj } from '@/utils';
+import Response from './response';
+
+const userMap = {
+  admin: {
+    password: 'admin',
+    roles: ['admin'],
+    token: 'admin',
+    introduction: '我是超级管理员',
+    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+    name: 'Super Admin'
+  },
+  watcher: {
+    password: 'watcher',
+    roles: ['watcher'],
+    token: 'watcher',
+    introduction: '我是游客',
+    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+    name: 'Normal Watcher'
+  }
+}
+
+export default {
+  // 使用用户名登录
+  loginByUsername: config => {
+    const { username, password } = JSON.parse(config.body);
+    if (userMap[username] && userMap[username].password === password) {
+      return Response.success(userMap[username]);
+    } else {
+      return Response.fail("01", "0101001（用户名或密码错误）")
+    }
+  },
+  // 拉取用户信息
+  getUserInfo: config => {
+    const { token } = param2Obj(config.url);
+    if (userMap[token]) {
+      return Response.success(userMap[token]);
+    } else {
+      return Response.fail();
+    }
+  },
+  // 注销
+  logout: () => Response.success()
+}
+```
+
+### 5. 模拟随机数据
+
+```javascript
+// see https://github.com/nuysoft/Mock/wiki
+
+import Mock from 'mockjs';
+
+// 随机字符串
+function mockStr() {
+    let result = Mock.mock({ 'str': '@name' });
+    return result.str;
+}
+
+// 随机数字
+function mockNumber(min, max) {
+    let key = 'num|' + min + '-' + max;
+    let param = {}
+    param[key] = 100;
+    return Mock.mock(param).num;
+}
+
+// 随机小数，最高小数点后三位
+function mockDecimal() {
+    return Mock.Random.float(1, 100, 1, 3)
+}
+
+// 随机数组一项
+const arr = ["image2.jpeg", "image3.jpeg", "image4.jpeg", "image5.jpeg", "image6.jpeg"];
+function mockOneFileAddress() {
+    return Mock.mock({ 'oneFile|1': arr }).oneFile;
+}
+
+// 随机日期
+function mockDate() {
+    let mockDateStr = Mock.Random.datetime('yyyy-MM-dd HH:mm:ss');
+    // 在这里使用了momentjs将其解析为Date类型
+    let mockDate = moment(mockDateStr, 'YYYY-MM-DD HH:mm:ss').toDate();
+    return mockDate;
+}
+```
+
+> ### 打包优化
+### 1. 做哪部分的优化
+
+* cdn优化
+* 路由懒加载
+* 其他优化
+* 用户体验
+
+### 2. cdn优化
+
+> 类似于vue、vue-router、moment、element-ui等提供了cdn的架或者工具类可在index.html中直接引入，然后配置webpack的externals使其不加入打包配置，从而减小app.js、vendor.js的体积
+
+* 在index.html使用cdn引入依赖库
+
+```html
+<!-- 网络请求工具类 -->
+<script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
+<!-- vue -->
+<script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+<!-- vue-router -->
+<script src="https://cdn.bootcss.com/vue-router/3.0.1/vue-router.min.js"></script>
+<!-- vuex -->
+<script src="https://cdn.bootcss.com/vuex/3.0.1/vuex.min.js"></script>
+<!-- momentjs的中文包 -->
+<script src="https://cdn.bootcss.com/moment.js/2.22.1/moment-with-locales.min.js"></script>
+<!-- momentjs -->
+<script src="https://cdn.bootcss.com/moment.js/2.22.1/locale/zh-cn.js"></script>
+<!-- element-ui样式 -->
+<script src="https://cdn.bootcss.com/element-ui/2.3.6/theme-default/index.css"></script>
+<!-- element-ui -->
+<script src="https://cdn.bootcss.com/element-ui/2.3.6/index.js"></script>
+```
+
+* 配置build文件夹下webpack.base.conf.js文件
+
+```javascript
+module.exports = {
+  // ...
+  externals: {
+    'axios': 'axios',
+    'vue': 'Vue',
+    'vue-router': 'VueRouter',
+    'vuex': 'Vuex',
+    'moment': 'moment',
+    'element-ui': 'ELEMENT'
+  }
+}
+```
+
+### 3. 路由懒加载
+
+> 路由懒加载能够将代码根据路由配置进行分割，加快首屏渲染的速度，在大型的单页应用中是必不可少的
+>
+> 参见[路由管理](https://github.com/calebman/vue-DBM/blob/master/docs/router.md)的实现
+
+### 5. 其他优化
+
+* 尽量少的注册全局组件，使用UI框架可以参考文档做按需加载
+* 可以和服务端配合采用gzip压缩，减少传输耗时
+* 在更新不是很频繁的应用可考虑提高缓存时间
+* 例如moment、lodash这种庞大的工具库在使用的功能不多的情况下可考虑寻找替代品
+
+### 6. 用户体验
+
+> 一个单页应用到了一定规模不管怎么优化首屏渲染还是一个比较慢的过程，此时可以考虑在首屏渲染时使用一个加载动画告诉用户系统正在初始化
+
+* 首先在index.html中定义一个渲染动画
+
+```html
+<body>
+  <div id="app"></div>
+  <!-- 首屏渲染时的加载动画 -->
+  <div id="system-loading" class="showbox">
+    <div class="loader">
+      <svg class="circular" viewBox="25 25 50 50">
+        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+      </svg>
+    </div>
+    <div class="text">
+      <span>系统初始化中...</span>
+    </div>
+  </div>
+  <!-- built files will be auto injected -->
+</body>
+```
+
+* 然后在App.vue组件的mounted钩子中移除这个loading
+
+```javascript
+export default {
+  // ...
+  mounted() {
+    document.body.removeChild(document.getElementById("system-loading"));
+  }
+};
+```

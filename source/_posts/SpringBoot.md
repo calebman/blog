@@ -3,10 +3,10 @@ title: SpringBoot集成环境搭建
 date: 2019-02-21 15:40:24
 description: 一个高可复用的SpringBoot基础框架
 categories: 
-- 后端系列
+- 后端
 tags: 
 - SpringBoot
-- Sping
+- Spring
 copyright: ture
 ---
 

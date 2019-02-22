@@ -1,7 +1,7 @@
 ---
-title: vue将echarts封装为组件一键使用
+title: vue封装echarts组件
 date: 2017-09-30 11:11:52
-description: 做项目的时候为了让数据展示的更加直观，总会用到图表相关的控件，而说到图表控件第一时间当然想到ECharts这个开源项目，而它不像iview、element-ui这些组件使用起来那么便捷，需要绕一个小弯，为了图方便于是对ECharts进行了一层封装
+description: 将Echarts做一层小小的封装以满足使用需求
 categories: 
 - 前端
 tags: 

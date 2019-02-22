@@ -3,7 +3,7 @@ title: 使用Netty构建Http容器
 date: 2018-05-23 15:35:58
 description: 使用Netty构建一个SpringBoot风格的Web框架
 categories: 
-- 后端系列
+- 后端
 tags: 
 - Spring
 - Netty

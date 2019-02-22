@@ -5,6 +5,31 @@
 # Put your favicon.ico into `hexo-site/source/` directory.
 favicon: /images/favicon-32x32.png
 
+gitalk:
+  # 是否开启Gitalk
+  enable: true
+  ClientID: bd0cbb30da9c24da8c7c
+  ClientSecret: bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff
+  # 你要存放的项目名
+  repo: blog
+  # 这个项目名的拥有者（GitHub账号或组织）
+  owner: calebman
+  # 管理员用户
+  adminUser: calebman
+  # 页面ID，不知道就默认的就好了
+  ID: location.pathname
+  # GitHub issues的标签
+  labels: 
+  - gittalk
+  # 每页多少个评论
+  perPage: 15
+  # 排序方式是从旧到新（first）还是从新到旧（last）
+  pagerDirection: last
+  # 如果当前页面没有相应的 isssue ，且登录的用户属于 admin，则会自动创建 issue。如果设置为 true，则显示一个初始化页面，创建 issue 需要点击 init 按钮。
+  createIssueManually: true
+  # 是否启用快捷键(cmd|ctrl + enter) 提交评论.
+  distractionFreeMode: false
+
 # Set default keywords (Use a comma to separate)
 keywords: "Hexo, NexT"
 

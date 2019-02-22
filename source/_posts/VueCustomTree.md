@@ -1,7 +1,7 @@
 ---
 title: 基于Element构建自定义树
 date: 2017-09-19 15:18:56
-description: 做项目的时候要使用到一个自定义的树形控件来构建表格树，在github上搜了一下没有搜索到合适的可以直接用的，查看Element的组件说明时发现它的Tree控件可以使用render来自定义节点样式，于是基于它封装了一个可以增、删、改的树形组件
+description: 基于Element的render函数封装一个可以增、删、改的树形组件
 categories: 
 - 前端
 tags: 

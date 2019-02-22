@@ -1,6 +1,7 @@
 ---
-title: 使用Netty构建一个带注解的Http服务器框架
+title: 使用Netty构建Http容器
 date: 2019-02-21 15:35:58
+description: 使用Netty构建一个SpringBoot风格的Web框架
 categories: 
 - 后端系列
 tags: 
@@ -9,7 +10,8 @@ tags:
 copyright: ture
 ---
 
-
+![](http://pnb4x7vrc.bkt.clouddn.com/programe-management.jpg)
+<!-- more -->
 
 ### 要实现怎样的效果
 

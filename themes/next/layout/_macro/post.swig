@@ -64,7 +64,7 @@
           <span class="post-time">
             {% if theme.post_meta.created_at %}
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="fa fa-calendar"></i>
               </span>
               {% if theme.post_meta.item_text %}
                 <span class="post-meta-item-text">{{ __('post.posted') }}</span>
@@ -75,7 +75,7 @@
             {% endif %}
 
             {% if theme.post_meta.created_at and theme.post_meta.updated_at %}
-              <span class="post-meta-divider">|</span>
+              <span class="post-meta-divider">•</span>
             {% endif %}
 
             {% if theme.post_meta.updated_at %}
@@ -94,10 +94,10 @@
           {% if post.categories and post.categories.length and theme.post_meta.categories %}
             <span class="post-category" >
             {% if theme.post_meta.created_at or theme.post_meta.updated_at %}
-              <span class="post-meta-divider">|</span>
+              <span class="post-meta-divider">•</span>
             {% endif %}
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="fa fa-th"></i>
               </span>
               {% if theme.post_meta.item_text %}
                 <span class="post-meta-item-text">{{ __('post.in') }}</span>
@@ -120,7 +120,7 @@
           {% if post.comments %}
             {% if (theme.duoshuo and theme.duoshuo.shortname) or theme.duoshuo_shortname %}
               <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
+                <span class="post-meta-divider">•</span>
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
@@ -130,7 +130,7 @@
               </span>
             {% elseif theme.facebook_comments_plugin.enable %}
               <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
+                <span class="post-meta-divider">•</span>
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
@@ -140,7 +140,7 @@
               </span>
             {% elseif theme.disqus.enable and theme.disqus.count %}
               <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
+                <span class="post-meta-divider">•</span>
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
@@ -152,7 +152,7 @@
             {% elseif theme.hypercomments_id %}
             <!--noindex-->
               <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
+                <span class="post-meta-divider">•</span>
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
@@ -163,7 +163,7 @@
               <!--/noindex-->
             {% elseif theme.changyan.enable and theme.changyan.appid and theme.changyan.appkey %}
               <span class="post-comments-count">
-              <span class="post-meta-divider">|</span>
+              <span class="post-meta-divider">•</span>
               <span class="post-meta-item-icon">
                 <i class="fa fa-comment-o"></i>
               </span>
@@ -182,7 +182,7 @@
           {# LeanCould PageView #}
           {% if theme.leancloud_visitors.enable %}
              <span id="{{ url_for(post.path) }}" class="leancloud_visitors" data-flag-title="{{ post.title }}">
-               <span class="post-meta-divider">|</span>
+               <span class="post-meta-divider">•</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
                </span>
@@ -194,7 +194,7 @@
           {% endif %}
 
           {% if not is_index and theme.busuanzi_count.enable and theme.busuanzi_count.page_pv %}
-            <span class="post-meta-divider">|</span>
+            <span class="post-meta-divider">•</span>
             <span class="page-pv">{{ theme.busuanzi_count.page_pv_header }}
             <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>{{ theme.busuanzi_count.page_pv_footer }}
             </span>
@@ -204,10 +204,10 @@
             <div class="post-wordcount">
               {% if theme.post_wordcount.wordcount %}
                 {% if not theme.post_wordcount.separated_meta %}
-                  <span class="post-meta-divider">|</span>
+                  <span class="post-meta-divider">•</span>
                 {% endif %}
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
+                  <i class="fa fa-pencil-square"></i>
                 </span>
                 {% if theme.post_wordcount.item_text %}
                   <span class="post-meta-item-text">{{ __('post.wordcount') }}</span>
@@ -218,7 +218,7 @@
               {% endif %}
 
               {% if theme.post_wordcount.wordcount and theme.post_wordcount.min2read %}
-                <span class="post-meta-divider">|</span>
+                <span class="post-meta-divider">•</span>
               {% endif %}
 
               {% if theme.post_wordcount.min2read %}
@@ -237,7 +237,7 @@
 
           {% if post.description and (not theme.excerpt_description or not is_index) %}
               <div class="post-description">
-                  {{ post.description }}
+                  <center>{{ post.description }}</center>
               </div>
           {% endif %}
 

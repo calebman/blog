@@ -1,10 +1,18 @@
 {% if page.copyright %}
-<div class="my_post_copyright">
-  <p><span>本文标题:</span><a href="{{ url_for(page.path) }}">{{ page.title }}</a></p>
-  <p><span>文字作者:</span><a href="/" title="访问 {{ theme.author }} 的个人博客">{{ theme.author }}</a></p>
-  <p><span>发布时间:</span>{{ page.date.format("YYYY年MM月DD日 - HH:MM") }}</p>
-  <p><span>最后更新:</span>{{ page.updated.format("YYYY年MM月DD日 - HH:MM") }}</p>
-  <p><span>原始链接:</span><a href="{{ url_for(page.path) }}" title="{{ page.title }}">{{ page.permalink }}</a></p>
-  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用</a> 转载请保留原文链接及作者</p>  
+<div>
+	<ul class="post-copyright">
+	  <li class="post-copyright-author">
+		<strong>本文作者： </strong>
+		<a href="/" title="访问 {{ theme.author }} 的个人博客">{{ theme.author }}</a>
+	  </li>
+	  <li class="post-copyright-link">
+		<strong>本文链接：</strong>
+		<a href="{{ url_for(page.path) }}" title="{{ page.title }}">{{ page.permalink }}</a>
+	  </li>
+	  <li class="post-copyright-license">
+		<strong>版权声明： </strong>
+		<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+	  </li>
+	</ul>
 </div>
 {% endif %}

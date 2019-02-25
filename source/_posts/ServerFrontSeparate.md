@@ -29,9 +29,7 @@ top: 12
   * Nodejs
   * Nginx
 * 前端
-  * vuejs
-  * vuex
-  * vue-router
+  * vue-cli
 * 后端
   * SpringBoot
 
@@ -48,18 +46,347 @@ top: 12
 
 ## 目录规划
 
-```
+&emsp;&emsp;整体目录主要分为三块，如下所示
 
-```
+![整体目录结构](http://pnb4x7vrc.bkt.clouddn.com/ServerFrontSeparate-root-folder.png)
+
+&emsp;&emsp;打包后的目录主要分为三块，如下所示
+![项目打包目录](http://pnb4x7vrc.bkt.clouddn.com/ServerFrontSeparate-dist-folder.png)
 
 ## 后端工程
 
-&emsp;&emsp;后端工程主要基于SpringBoot脚手架搭建，SpringBoot基础的集成环境搭建可以参考我的另一篇博客[SpringBoot集成环境搭建](http://chenjianhui.name/2019/02/21/SpringBoot/)，不过这次使用的后端工程会和教程的有所出入，主要是修改了maven打包的配置，以符合最终的目录生成结构
+&emsp;&emsp;后端工程主要基于SpringBoot脚手架搭建，SpringBoot基础的集成环境搭建可以参考我的另一篇博客[SpringBoot集成环境搭建](http://chenjianhui.name/2019/02/21/SpringBoot/)，
+
+&emsp;&emsp;首先创建一个只有Web功能的SpringBoot项目，修改其maven打包的配置实现以下两个功能
+
+* 将打包的jar文件移动至dist目录下
+* 将多环境配置文件从jar内部移动至外部的dist/config目录下
+
+&emsp;&emsp;此项修改主要依赖于以下两个maven插件
+* [maven-resources-plugin](http://maven.apache.org/plugins/maven-resources-plugin)
+* [maven-antrun-plugin](http://maven.apache.org/plugins/maven-antrun-plugin)
+
+&emsp;&emsp;详细的插件配置如下，在server/pom.xml的plugins标签下添加如下代码
+```xml
+<!--复制配置文件-->
+<plugin>
+    <artifactId>maven-resources-plugin</artifactId>
+    <executions>
+        <execution>
+            <id>copy-resources</id>
+            <phase>validate</phase>
+            <goals>
+                <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+                <outputDirectory>${project.basedir}/../dist/config</outputDirectory>
+                <overwrite>true</overwrite>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <includes>
+                            <include>**/*</include>
+                        </includes>
+                    </resource>
+                </resources>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+<!--移动并重命名jar包-->
+<plugin>
+    <artifactId>maven-antrun-plugin</artifactId>
+    <executions>
+        <execution>
+            <phase>package</phase>
+            <goals>
+                <goal>run</goal>
+            </goals>
+            <configuration>
+                <target>
+                    <move file="${project.basedir}/target/${project.artifactId}-${project.version}.${project.packaging}" tofile="${project.basedir}/../dist/${project.artifactId}-${project.version}.${project.packaging}" />
+                </target>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+```
+&emsp;&emsp;进入到server/pom.xml同级目录，执行mvn clean package指令，打包成功会在dist目录下生成编译后的jar文件，dist/config目录下生成项目的配置文件
 
 ## 前端工程
 
-# 部署架构
+&emsp;&emsp;前端工程主要基于vue-cli脚手架创建，vue项目的环境搭建可以参照[vue-用Vue-cli从零开始搭建一个Vue项目](http://www.cnblogs.com/superlizhao/p/8664326.html)
+&emsp;&emsp;现在创建一个基础的vue项目，修改config/index.js配置以实现打包的静态资源生成至dist/html目录
 
-## 单点部署
+![前端打包配置修改](http://pnb4x7vrc.bkt.clouddn.com/ServerFrontSeparate-front-build-config.png)
 
-## 集群部署
+&emsp;&emsp;进入到front/package.json同级目录，执行npm run build指令，打包成功会在dist/html目录生成静态文件
+
+## 集成测试
+
+### 来个接口
+
+&emsp;&emsp;编写一个获取用户信息的接口
+```java
+@SpringBootApplication
+@Controller
+public class ServerApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ServerApplication.class, args);
+    }
+
+    /**
+     * 获取当前登录用户的个人信息
+     *
+     * @return 当前登录用户的个人信息
+     */
+    @RequestMapping("/user/me")
+    @ResponseBody
+    public Map<String, Object> me() {
+        Map<String, Object> result = new HashMap<>();
+        result.put("username", "admin");
+        result.put("roles", Arrays.asList("admin", "normal", "none"));
+        result.put("depts", Arrays.asList("办公室", "组织部"));
+        result.put("menus", Arrays.asList("工作台", "系统管理"));
+        return result;
+    }
+}
+```
+
+### 配置代理
+
+&emsp;&emsp;配置以下前端工程的代理转发，用于解决开发环境接口调试的跨域问题
+![](http://pnb4x7vrc.bkt.clouddn.com/ServerFrontSeparate-front-proxy-config.png)
+
+### 写个页面
+
+&emsp;&emsp;写个前端页面测试后端接口，进入front/package.json同级目录执行npm i axios -s，修改HelloWord.vue组件为如下代码
+
+```javascript
+<template>
+  <div class="hello">
+    <h1 v-if="loading">{{ '正在加载用户信息' }}</h1>
+    <h1 v-else-if="errMsg">{{ errMsg }}</h1>
+    <div v-else>
+      <p>username: {{userInfo.username}}</p>
+      <p>roles: {{userInfo.roles}}</p>
+      <p>depts: {{userInfo.depts}}</p>
+      <p>menus: {{userInfo.menus}}</p>
+    </div>
+  </div>
+</template>
+
+<script>
+import axios from 'axios'
+export default {
+  name: 'HelloWorld',
+  data () {
+    return {
+      loading: false,
+      userInfo: {
+        username: '',
+        roles: [],
+        depts: [],
+        menus: []
+      },
+      errMsg: null
+    }
+  },
+  created () {
+    this.loading = true
+    axios.get('/api/user/me').then(response => {
+      this.userInfo = response.data
+    }).catch(err => {
+      console.error(err)
+      this.errMsg = err
+    }).finally(() => { this.loading = false })
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+h1,
+h2 {
+  font-weight: normal;
+}
+</style>
+```
+
+进入测试链接[http://localost:8081](http://localost:8081)
+
+# 单点部署
+
+## nginx配置
+
+&emsp;&emsp;分离部署主要依赖于nginx来完成，利用nginx来分发前后端的内容，nginx的配置如下
+```nginx
+
+#user root;# linux下必须有此配置 不然会导致403权限不足
+worker_processes  1;
+
+#error_log  logs/error.log;
+#error_log  logs/error.log  notice;
+#error_log  logs/error.log  info;
+
+#pid        logs/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log  logs/access.log  main;
+    error_log logs/error.log error;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+
+    #gzip  on;
+	
+	server {
+		listen       80;
+		server_name  localhost;
+		set $application_path C:/workspace/java/server-front-separate;# 这里的父级路径需要根据项目路径设置
+		
+		location /api {
+		    proxy_pass http://localhost:8080/;
+		    proxy_set_header Host $host;
+		    proxy_set_header X-Real-IP $remote_addr;
+		    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		}
+		
+		location / {
+		    alias $application_path/dist/html/;
+		    try_files $uri $uri/ /index.html last;# 解决页面刷新404问题
+		    index  index.html index.htm;
+		}
+	}
+}
+
+```
+## 打包前后端应用
+
+* 前端应用: 进入front/package.json同级目录，执行npm run build指令
+* 后端应用: 进入server/pom.xml同级目录，执行mvn clean package指令
+
+## 编写快速启动脚本
+
+* linux下启动脚本start.sh（支持多环境）
+
+```bash
+#!/bin/sh
+# 常量定义
+export BIN_PATH=$(cd `dirname $0`;pwd)
+echo BIN_PATH:[$BIN_PATH]
+cd $BIN_PATH
+cd ..
+export CONTEXT_PATH=`pwd`
+echo CONTEXT_PATH:[$CONTEXT_PATH]
+export LOG_PATH=/data/logs/sso
+echo LOG_PATH:[$LOG_PATH]
+# 需要指定启动的模式是test，还是prod，默认是test，如果不指定的话
+ACTION_MODE=$1
+if [ "$ACTION_MODE" = "" ]
+then
+	ACTION_MODE=test
+fi
+echo STARTING APPLICATION ACTION_MODE:[$ACTION_MODE]
+# 判断log文件夹是否存在 不存在则创建
+if [ ! -d $LOG_PATH ]; then
+  mkdir $LOG_PATH
+fi
+# 删除历史的server.log文件
+rm -f $LOG_PATH/server.log
+# 后台启动应用 并输出控制台日志
+nohup java -jar server-0.0.1-SNAPSHOT.jar --spring.profiles.active=$ACTION_MODE >> $LOG_PATH/server.log 2>&1 &
+# 显示输出前二十行的日志
+head -n 20 $LOG_PATH/server.log
+```
+
+* windows下启动脚本start.bat
+
+```powershell
+@echo off
+:: 常量定义
+set BIN_PATH=%~dp0
+echo BIN_PATH:[%BIN_PATH%]
+cd %BIN_PATH%
+cd ..
+set CONTEXT_PATH=%cd%
+echo CONTEXT_PATH:[%CONTEXT_PATH%]
+:: 需要指定启动的模式是test，还是prod，默认是test，如果不指定的话
+if not "%1" equ "" (set ACTION_MODE=%1) else (set ACTION_MODE=test)
+echo STARTING APPLICATION ACTION_MODE:%ACTION_MODE%
+:: 设置jar名称
+set JAR_NAME=server-0.0.1-SNAPSHOT
+set PROCESS_NAME=JAVA_APP_%JAR_NAME%_%ACTION_MODE%
+title %PROCESS_NAME%
+echo PROCESS_NAME:[%PROCESS_NAME%]
+:: 后台启动应用 并输出控制台日志
+java -jar %JAR_NAME%.jar --spring.profiles.active=%ACTION_MODE%
+```
+
+* linux下关闭脚本stop.sh
+
+```bash
+#!/bin/sh
+# 需要指定停止的模式是test，还是prod，默认是test，如果不指定的话默认取test
+ACTION_MODE=$1
+if [ "$ACTION_MODE" = "" ]
+then
+	ACTION_MODE=test
+fi
+echo STOPPING APPLICATION ACTION_MODE:[$ACTION_MODE]
+pid=`ps -ef | grep server-0.0.1-SNAPSHOT.jar | grep $ACTION_MODE | grep -v grep | awk '{print $2}'`
+# 判断进程是否再运行 在运行则终止
+if [ -n "$pid" ]
+then
+   kill -9 $pid
+   echo application stop success
+else
+   echo application already stop
+fi
+
+```
+
+* windows下关闭脚本stop.bat
+
+```powershell
+@echo off
+:: 需要指定终止的模式是test，还是prod，默认是test，如果不指定的话
+if not "%1" equ "" (set ACTION_MODE=%1) else (set ACTION_MODE=test)
+echo STARTING APPLICATION ACTION_MODE:%ACTION_MODE%
+:: 设置jar名称
+set JAR_NAME=server-0.0.1-SNAPSHOT
+set PROCESS_NAME=JAVA_APP_%JAR_NAME%_%ACTION_MODE%
+echo PROCESS_NAME:[%PROCESS_NAME%]
+:: 杀死对应进程    
+taskkill /fi "WINDOWTITLE eq %PROCESS_NAME%" >nul  
+```
+
+## 启动nginx以及后端服务
+
+* windwos
+  * 运行nginx.exe
+  * 运行dist/bin/start.bat prod
+* linux
+  * nginx -s start
+  * dist/bin/start.sh prod
+
+# 源码获取
+
+[https://github.com/calebman/server-front-separate](https://github.com/calebman/server-front-separate)

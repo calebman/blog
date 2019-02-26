@@ -283,9 +283,9 @@ http {
 * 前端应用: 进入front/package.json同级目录，执行npm run build指令
 * 后端应用: 进入server/pom.xml同级目录，执行mvn clean package指令
 
-## 编写快速启动脚本
+## 编写快速启动脚本（支持多环境）
 
-* linux下启动脚本start.sh（支持多环境）
+* linux下启动脚本start.sh
 
 ```bash
 #!/bin/sh
@@ -319,8 +319,10 @@ head -n 20 $LOG_PATH/server.log
 
 * windows下启动脚本start.bat
 
-```powershell
+```bash
 @echo off
+:: 设置jar名称
+set JAR_NAME=server-0.0.1-SNAPSHOT
 :: 常量定义
 set BIN_PATH=%~dp0
 echo BIN_PATH:[%BIN_PATH%]
@@ -328,11 +330,11 @@ cd %BIN_PATH%
 cd ..
 set CONTEXT_PATH=%cd%
 echo CONTEXT_PATH:[%CONTEXT_PATH%]
+echo JAR_NAME:[%JAR_NAME%]
 :: 需要指定启动的模式是test，还是prod，默认是test，如果不指定的话
-if not "%1" equ "" (set ACTION_MODE=%1) else (set ACTION_MODE=test)
+set /p ACTION_MODE_INPUT=请输入启动环境，不输入采用默认环境[test]:
+if not "%ACTION_MODE_INPUT%" equ "" (set ACTION_MODE=%ACTION_MODE_INPUT%) else (set ACTION_MODE=test)
 echo STARTING APPLICATION ACTION_MODE:%ACTION_MODE%
-:: 设置jar名称
-set JAR_NAME=server-0.0.1-SNAPSHOT
 set PROCESS_NAME=JAVA_APP_%JAR_NAME%_%ACTION_MODE%
 title %PROCESS_NAME%
 echo PROCESS_NAME:[%PROCESS_NAME%]
@@ -365,17 +367,22 @@ fi
 
 * windows下关闭脚本stop.bat
 
-```powershell
+```bash
 @echo off
-:: 需要指定终止的模式是test，还是prod，默认是test，如果不指定的话
-if not "%1" equ "" (set ACTION_MODE=%1) else (set ACTION_MODE=test)
-echo STARTING APPLICATION ACTION_MODE:%ACTION_MODE%
 :: 设置jar名称
 set JAR_NAME=server-0.0.1-SNAPSHOT
+:: 需要指定终止的模式是test，还是prod，默认是test，如果不指定的话
+set /p ACTION_MODE_INPUT=请输入关闭应用的运行环境，不输入采用默认环境[test]:
+if not "%ACTION_MODE_INPUT%" equ "" (set ACTION_MODE=%ACTION_MODE_INPUT%) else (set ACTION_MODE=test)
+echo STARTING APPLICATION ACTION_MODE:%ACTION_MODE%
+echo JAR_NAME:[%JAR_NAME%]
 set PROCESS_NAME=JAVA_APP_%JAR_NAME%_%ACTION_MODE%
 echo PROCESS_NAME:[%PROCESS_NAME%]
 :: 杀死对应进程    
-taskkill /fi "WINDOWTITLE eq %PROCESS_NAME%" >nul  
+tasklist /nh /fi "WINDOWTITLE eq %PROCESS_NAME%"|find /i "cmd.exe" >nul
+if ERRORLEVEL 1 (echo Application already stop) else (taskkill /fi "WINDOWTITLE eq %PROCESS_NAME%" >nul & echo Application stop success)
+echo This window will close in 10 seconds
+ping 127.1 -n 11 >nul
 ```
 
 ## 启动nginx以及后端服务

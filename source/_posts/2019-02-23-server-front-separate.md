@@ -9,10 +9,9 @@ tags:
 - vuejs
 - Nginx
 copyright: true
-top: 12
 ---
 
-![](http://pnb4x7vrc.bkt.clouddn.com/old-architecture.png)
+![](http://pnb4x7vrc.bkt.clouddn.com/2019-02-23-home-pic.png)
 <!-- more -->
 
 # 前言
@@ -389,7 +388,7 @@ ping 127.1 -n 11 >nul
 
 * windwos
   * 运行nginx.exe
-  * 运行dist/bin/start.bat prod
+  * 运行dist/bin/start.bat
 * linux
   * nginx -s start
   * dist/bin/start.sh prod

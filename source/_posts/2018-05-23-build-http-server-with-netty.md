@@ -10,14 +10,14 @@ tags:
 copyright: ture
 ---
 
-![](http://pnb4x7vrc.bkt.clouddn.com/programe-management.jpg)
+![](http://pnb4x7vrc.bkt.clouddn.com/2018-05-23-home-pic.jpg)
 <!-- more -->
 
 ### 要实现怎样的效果
 
 > 一个SpringBoot框架搭建起来的项目发布接口服务是这样的
 >
-> SpringBoot搭建教程[点击这里](https://www.jianshu.com/p/95946d6b0c7d)
+> SpringBoot搭建教程**[点击这里](/2018-02-21-build-springboot-env/)**
 
 ```java
 @Controller
@@ -41,7 +41,7 @@ public class DocController {
 
 ### 该怎么做
 
-![系统流程](https://user-gold-cdn.xitu.io/2018/8/8/1651894d2a53e70b?w=1601&h=1843&f=png&s=195662)
+![系统流程](http://pnb4x7vrc.bkt.clouddn.com/2018-05-23-xmind-brain map)
 
 * 使用Netty自带的编解码、聚合器构建一个带有Http编解码功能的服务器这一点其实非常简单，Netty提供了对应的Http协议的编解码以及聚合器，我们只需要在管道初始化的时候加载它们。
 

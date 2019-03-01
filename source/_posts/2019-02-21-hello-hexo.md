@@ -7,12 +7,21 @@ categories:
 tags: 
 - markdown
 - hexo
-top: 1
 ---
 
-![](http://pnb4x7vrc.bkt.clouddn.com/blogs.jpg)
+![](http://pnb4x7vrc.bkt.clouddn.com/2019-02-21-home-pic.jpg)
 
 <!--more-->
+
+从掘金切换到Hexo，多读多看多积累，崭新的开始
+
+随手记一下Markdown的相关语法
+
+希望以后能够养成随手记的习惯
+
+毕竟
+
+好记性 不如 烂笔头
 
 # 标题
 

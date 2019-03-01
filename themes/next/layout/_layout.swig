@@ -82,5 +82,7 @@
   {% include '_third-party/exturl.swig' %}
 </body>
 <!-- 页面点击小红心 -->
-<script type="text/javascript" src="/js/src/love.js"></script>
+<!-- <script type="text/javascript" src="/js/src/love.js"></script> -->
+<!-- 富强 -->
+<script type="text/javascript" src="/js/src/china.js"></script>
 </html>

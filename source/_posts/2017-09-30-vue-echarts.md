@@ -9,7 +9,7 @@ tags:
 - echarts
 ---
 
-![](http://pnb4x7vrc.bkt.clouddn.com/charts.png)
+![](http://pnb4x7vrc.bkt.clouddn.com/2017-09-30-home-pic.png)
 
 <!--more-->
 
@@ -18,7 +18,7 @@ tags:
 做项目的时候为了让数据展示的更加直观，总会用到图表相关的控件，而说到图表控件第一时间当然想到[ECharts](http://echarts.baidu.com/examples.html)这个开源项目，而它不像iview、element-ui这些组件使用起来那么便捷，需要绕一个小弯，为了图方便于是对ECharts进行了一层封装
 
 ## 控件演示
-![](https://user-gold-cdn.xitu.io/2017/9/30/78cf6dd6c52b9c38104092c28c2c78a3)
+![](http://pnb4x7vrc.bkt.clouddn.com/2017-09-30-effect.gif)
 
 ## 控件使用
 ---

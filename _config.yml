@@ -3,11 +3,11 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: 以诚
-subtitle: 道理的道理
-description: 饱满灵魂 独立人格
+title: Sincerity
+subtitle: Story in work and life
+description: Full of soul, independent personality
 keywords: 关键字 赖曼婷
-author: 睡神
+author: Jianhui Chen
 language: zh-Hans
 timezone:
 
@@ -15,7 +15,7 @@ timezone:
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: http://chenjianhui.name
 root: /
-permalink: :year/:month/:day/:title/
+permalink: :title/
 permalink_defaults:
 
 # Directory

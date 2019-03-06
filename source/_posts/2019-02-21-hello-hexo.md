@@ -1,7 +1,7 @@
 ---
-title: Hello Blogs
+title: Hello Hexo
 date: 2019-02-21 15:28:56
-description: 这是一篇markdown的写作示例
+description: 从掘金到Hexo，从未停止
 categories: 
 - 随笔
 tags: 

@@ -54,7 +54,7 @@ copyright: true
 
 ## 后端工程
 
-&emsp;&emsp;后端工程主要基于SpringBoot脚手架搭建，SpringBoot基础的集成环境搭建可以参考我的另一篇博客[SpringBoot集成环境搭建](http://chenjianhui.name/2019/02/21/SpringBoot/)，
+&emsp;&emsp;后端工程主要基于SpringBoot脚手架搭建，SpringBoot基础的集成环境搭建可以参考我的另一篇博客[SpringBoot集成环境搭建](/2018-02-21-build-springboot-env/)
 
 &emsp;&emsp;首先创建一个只有Web功能的SpringBoot项目，修改其maven打包的配置实现以下两个功能
 

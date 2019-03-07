@@ -47,7 +47,7 @@ npm i
 hexo clean
 hexo g
 # 将打包文件移动到服务器的指定目录 nginx配置目录
-rsync -av --exclude=.git .deploy_git/* /home/app/application/blogs/
+cp -rf public/* /home/app/application/blogs/
 # 部署到 github.io
 hexo d
 ```

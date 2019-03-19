@@ -264,7 +264,7 @@ rm -rf /root/.jenkins
 
 1. JDK配置
 
-> tips：如果找不到git的安装目录可以使用 which java 查看
+> tips：如果找不到java的安装目录可以使用 which java 查看
 
 ![](http://pnb4x7vrc.bkt.clouddn.com/2019-03-01-jenkins-global-tools-setting-jdk.png)
 

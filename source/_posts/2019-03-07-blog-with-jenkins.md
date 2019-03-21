@@ -8,7 +8,7 @@ tags:
 - jenkins
 ---
 
-![](http://pnb4x7vrc.bkt.clouddn.com/2019-03-07-home-pic.jpg)
+![](http://resources.chenjianhui.site/2019-03-07-home-pic.jpg)
 <!-- more -->
 
 我的自动化运维平台已经成功上线啦~

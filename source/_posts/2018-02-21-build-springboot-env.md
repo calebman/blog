@@ -10,7 +10,7 @@ tags:
 copyright: ture
 ---
 
-![](http://pnb4x7vrc.bkt.clouddn.com/2018-02-21-home-pic.jpg)
+![](http://resources.chenjianhui.site/2018-02-21-home-pic.jpg)
 <!-- more -->
 
 
@@ -42,12 +42,12 @@ copyright: ture
 ### 导入快速启动项目
 
 &emsp;&emsp; 不管是由IDEA导入还是现实下载模板工程都需要初始化快速启动工程的配置，如果使用IDEA，在新建项目时选择Spring Initializr，主要配置如下图
-![IDEA新建SpringBoot项目-填写项目/包名](http://pnb4x7vrc.bkt.clouddn.com/2018-02-21-idea-new-module.jpg)
+![IDEA新建SpringBoot项目-填写项目/包名](http://resources.chenjianhui.site/2018-02-21-idea-new-module.jpg)
 ![IDEA新建SpringBoot项目-选择依赖包](http://upload-images.jianshu.io/upload_images/10936059-4fc8bad8fe8d75be.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 &emsp;&emsp; 点击next之后finish之后IDEA显示正在下载模板工程，下载完成后会根据pom.xml下载包依赖，依赖下载完毕后模板项目就算创建成功了，如果是直接从官方网站配置下载快速启动项目可参考下图配置
-![直接下载SpringBoot快速启动项目-项目配置](http://pnb4x7vrc.bkt.clouddn.com/2018-02-21-idea-selected-dependencies.jpg)
+![直接下载SpringBoot快速启动项目-项目配置](http://resources.chenjianhui.site/2018-02-21-idea-selected-dependencies.jpg)
 &emsp;&emsp; 从Search for dependencies 框中输入并选择Web、Mysql、Mybatis加入依赖，点击Generate Project下载快速启动项目，然后在IDE中选择导入Maven项目，项目导入完成后可见其目录结构如下图
-![快速启动项目-项目结构](http://pnb4x7vrc.bkt.clouddn.com/2018-02-21-spring-boot-module-structure.jpg)
+![快速启动项目-项目结构](http://resources.chenjianhui.site/2018-02-21-spring-boot-module-structure.jpg)
 &emsp;&emsp; 需要关注红色方框圈起来的部分，由上往下第一个java类是用来启动项目的入口函数，第二个properties后缀的文件是项目的配置文件，第三个是项目的依赖包以及执行插件的配置
 
 ### 集成前准备
@@ -436,8 +436,8 @@ spring:
       active: dev
 ```
 &emsp;&emsp; 配置到这里我们的项目目录结构如下图所示
-![src/main/java目录结构](http://pnb4x7vrc.bkt.clouddn.com/2018-02-21-spring-boot-module-src-config.jpg)
-![src/main/resources目录结构](http://pnb4x7vrc.bkt.clouddn.com/2018-02-21-spring-boot-module-resources-config.jpg)
+![src/main/java目录结构](http://resources.chenjianhui.site/2018-02-21-spring-boot-module-src-config.jpg)
+![src/main/resources目录结构](http://resources.chenjianhui.site/2018-02-21-spring-boot-module-resources-config.jpg)
 
 &emsp;&emsp; 至此我们分别完成了Mybatis、Swagger2以及多环境的集成，接下来我们配置多环境下的logger。对于logger我们总是希望在项目研发过程中越多越好，能够给予足够的信息定位bug，项目处于演示或者上线状态时为了不让日志打印影响程序性能我们只需要警告或者错误的日志，并且需要写入文件，那么接下来就基于logback实现多环境下的日志配置
 

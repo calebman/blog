@@ -9,7 +9,7 @@ tags:
 - element-ui
 ---
 
-![](http://resources.chenjianhui.site/2017-09-19-home-pic.jpg)
+![](https://resources.chenjianhui.site/2017-09-19-home-pic.jpg)
 
 <!--more-->
 
@@ -18,7 +18,7 @@ tags:
 做项目的时候要使用到一个自定义的树形控件来构建表格树，在github上搜了一下没有搜索到合适的（好看的）可以直接用的，查看Element的组件说明时发现它的[Tree控件](http://element.eleme.io/#/zh-CN/component/tree)可以使用render来自定义节点样式，于是基于它封装了一个可以增、删、改的树形组件，现在分享一下它的使用与实现。
 
 ## 控件演示
-![](http://resources.chenjianhui.site/2017-09-19-effect.gif)
+![](https://resources.chenjianhui.site/2017-09-19-effect.gif)
 
 ## 控件使用
 ---

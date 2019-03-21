@@ -9,7 +9,7 @@ tags:
 - hexo
 ---
 
-![](http://resources.chenjianhui.site/2019-02-21-home-pic.jpg)
+![](https://resources.chenjianhui.site/2019-02-21-home-pic.jpg)
 
 <!--more-->
 

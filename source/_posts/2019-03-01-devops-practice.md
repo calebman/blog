@@ -12,7 +12,7 @@ tags:
 copyright: true
 ---
 
-![](http://resources.chenjianhui.site/2019-03-01-home-pic.jpg)
+![](https://resources.chenjianhui.site/2019-03-01-home-pic.jpg)
 <!-- more -->
 
 # 背景概述
@@ -83,7 +83,7 @@ yum install -y git
 
 1. jdk1.8下载：[点此下载](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 
-![](http://resources.chenjianhui.site/2019-03-01-jdk-downloads.png)
+![](https://resources.chenjianhui.site/2019-03-01-jdk-downloads.png)
 
 2. 解压配置
 
@@ -113,7 +113,7 @@ java -version
 
 1. tomcat8下载：[点此下载](https://tomcat.apache.org/download-80.cgi)
 
-![](http://resources.chenjianhui.site/2019-03-01-tomcat-downloads.png)
+![](https://resources.chenjianhui.site/2019-03-01-tomcat-downloads.png)
 
 2. 解压配置
 
@@ -206,29 +206,29 @@ rm -rf /root/.jenkins
 
 > 第一次进入jenkins时会要求使用初始密码解锁，按照提示操作就行了
 
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-init-password.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-init-password.png)
 
 > 之后会提示你安装插件，在这里我们采用默认安装必要的插件即可，其他的插件我们可以在系统内部再去安装
 
-![](http://resources.chenjianhui.site/2019-03-01-customize-jenkins.png)
+![](https://resources.chenjianhui.site/2019-03-01-customize-jenkins.png)
 
 > 耐心等待插件安装完毕
 
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-default-install.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-default-install.png)
 
 > 初始化完成，配置管理员用户
 
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-init-admin-user.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-init-admin-user.png)
 
 > 配置jenkins实例地址，举个例子解释实例配置的地址用处
 >
 > 假设你做了项目打包成功或者失败的通知，jenkins构建的默认通知信息里会带有一个进入系统的链接地址，方便用户直接从**邮件/钉钉**等地方进入系统查看构建详情，这个地址即是此处配置的实例地址
 
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-url-config.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-url-config.png)
 
 > 所有配置完成后，成功进入系统
 
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-config-success.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-config-success.png)
 
 ### Jenkins的环境配置
 
@@ -254,39 +254,39 @@ rm -rf /root/.jenkins
   * 选择available（可选插件）标签
   * 搜索出以上选择的插件，勾选之后点击直接安装
 
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-plugin-manager-install.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-plugin-manager-install.png)
 
 #### 配置全局工具
 
 &emsp;&emsp;对应**jenkins/系统管理/全局工具配置**目录，主要是配置打包所需的环境，如Java/Git/Maven等等，如果系统自带环境可以填写系统环境，如果没有可以采用jenkins自动安装的方式。
 
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-global-tools-setting.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-global-tools-setting.png)
 
 1. JDK配置
 
 > tips：如果找不到java的安装目录可以使用 which java 查看
 
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-global-tools-setting-jdk.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-global-tools-setting-jdk.png)
 
 2. Git配置
 
 > tips：如果找不到git的安装目录可以使用 which git 查看
 
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-global-tools-setting-git.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-global-tools-setting-git.png)
 
 3. Maven配置
 
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-global-tools-setting-maven.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-global-tools-setting-maven.png)
 
 4. NodeJS配置
 
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-global-tools-setting-nodejs.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-global-tools-setting-nodejs.png)
 
 #### 配置文件管理
 
 &emsp;&emsp;对应**jenkins/系统管理/Managed files**目录，主要是管理自定义的配置文件，如Maven的settings.xml，Npm的npmrc.config文件等等，我们在这主要配置一下Maven和Npm的仓库镜像，使其切换到国内的阿里云的Maven镜像和淘宝的Npm镜像。
 
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-managed-files.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-managed-files.png)
 
 1. Maven settings.xml
 
@@ -300,7 +300,7 @@ rm -rf /root/.jenkins
 </mirror>
 ```
 
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-managed-files-maven.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-managed-files-maven.png)
 
 
 2. Npm config file
@@ -309,14 +309,14 @@ rm -rf /root/.jenkins
 ```properties
 registry=https://registry.npm.taobao.org
 ```
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-managed-files-npm.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-managed-files-npm.png)
 
 
 #### 配置全局凭据
 
 &emsp;&emsp;对应**jenkins/凭据/系统/全局凭据**目录，主要是用于添加如gitlab/ssh等受限访问应用的信任凭据。
 
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-unrestricted-add.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-unrestricted-add.png)
 
 #### 其他配置
 
@@ -324,7 +324,7 @@ registry=https://registry.npm.taobao.org
 
 &emsp;&emsp;该插件的配置在**jenkins/系统管理/系统设置**目录，主要的配置如下：
 
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-publish-over-ssh-config.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-publish-over-ssh-config.png)
 
 &emsp;&emsp;高级配置下还可以配置SSH端口，重置默认设置等等，这里不做过多讲解
 
@@ -335,11 +335,11 @@ registry=https://registry.npm.taobao.org
 （1）获取钉钉通知自定义机器人webhook的access_token，[点此进入](https://open-doc.dingtalk.com/docs/doc.htm?treeId=257&articleId=105735&docType=1)钉钉开放平台获取配置帮助
 
 （2）在任务中配置通知
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-dingding-setting.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-dingding-setting.png)
 
 &emsp;&emsp;通知效果如图，点击即可进入jenkins管理平台查看详情
 
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-dingding-notice.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-dingding-notice.png)
 
 ### Jenkins的任务配置
 
@@ -348,10 +348,10 @@ registry=https://registry.npm.taobao.org
 #### 新建任务
 
 &emsp;&emsp;进入jenkins根目录点击新建任务
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-new-task.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-new-task.png)
 
 &emsp;&emsp;任务新建成功
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-task-list.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-task-list.png)
 
 #### 任务基础配置
 
@@ -364,22 +364,22 @@ registry=https://registry.npm.taobao.org
 
 1. 源码管理
 
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-task-git.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-task-git.png)
 
 2. 构建环境
 
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-task-build-env-node.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-task-build-env-node.png)
 
 3. 后端构建步骤
 
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-task-build-maven.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-task-build-maven.png)
 
 4. 前端构建步骤
 
 > linux环境下采用Shell脚本构建，换行分割指令
 > 
 
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-task-build-node-linux.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-task-build-node-linux.png)
 
 ```bash
 cd front/
@@ -392,7 +392,7 @@ npm run build
 > Windows环境下采用批处理脚本构建，使用&与&&来连接指令，&代表下一条指令必定执行，&&代表当上一条指令出现错误下一条指令不执行
 > 
 
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-task-build-node-windows.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-task-build-node-windows.png)
 
 ```bash
 cd front/ & node -v & npm -v & npm i && npm run build
@@ -402,11 +402,11 @@ cd front/ & node -v & npm -v & npm i && npm run build
 
 &emsp;&emsp;基础配置完成后，我们进入项目主页进行一次构建测试
 
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-task-building.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-task-building.png)
 
 &emsp;&emsp;构建成功后进入任务的工作空间，可以查看到项目已经打包成功，项目的目录结构描述详见我的另一篇博客[前后端分离开发模式的实践总结](/2019-02-23-server-front-separate/)
 
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-task-build-success.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-task-build-success.png)
 
 ### Jenkins任务自动化
 
@@ -421,15 +421,15 @@ cd front/ & node -v & npm -v & npm i && npm run build
 
 &emsp;&emsp;jenkins默认对github的webhook有支持使得这个流程的配置非常简单，jenkins的webhook触发地址为**${JENKINS_URL}/github-webhook/**，其中JENKINS_URL为jenkins服务在公网的根目录地址，可以在**jenkins/系统管理/系统设置**处修改此默认地址
 
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-github-webhook-setting.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-github-webhook-setting.png)
 
 &emsp;&emsp;得到Webhook地址后我们只需要在github的项目Settings选项卡上添加此地址即可，github默认触发Webhook的逻辑是push代码时即触发
 
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-github-add-webhook.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-github-add-webhook.png)
 
 &emsp;&emsp;当然，别忘记了在jenkins的任务中勾选Github hook触发构建
 
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-task-github-hook-setting.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-task-github-hook-setting.png)
 
 #### 自动部署
 
@@ -440,7 +440,7 @@ cd front/ & node -v & npm -v & npm i && npm run build
 
 &emsp;&emsp;上文我们讲到**Publish Over SSH**这个插件能够远程推送代码并运行脚本，自动部署的功能即依赖此插件，配置如下：
 
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-task-publish-over-ssh-setting.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-task-publish-over-ssh-setting.png)
 
 ```bash
 # 定义脚本执行地址
@@ -467,7 +467,7 @@ sh $COMMAND_PATH/start.sh test
 
 &emsp;&emsp;在**jenkins/系统管理/系统设置**中添加全局属性：
 
-![](http://resources.chenjianhui.site/2019-03-01-jenkins-global-env-config.png)
+![](https://resources.chenjianhui.site/2019-03-01-jenkins-global-env-config.png)
 
 
 # 参考资料

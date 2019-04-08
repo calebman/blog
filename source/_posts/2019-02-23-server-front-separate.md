@@ -47,10 +47,10 @@ copyright: true
 
 &emsp;&emsp;整体目录主要分为三块，如下所示
 
-![整体目录结构](https://resources.chenjianhui.site/ServerFrontSeparate-root-folder.png)
+![整体目录结构](https://resources.chenjianhui.site/2019-02-23-root-folder.png)
 
 &emsp;&emsp;打包后的目录主要分为三块，如下所示
-![项目打包目录](https://resources.chenjianhui.site/ServerFrontSeparate-dist-folder.png)
+![项目打包目录](https://resources.chenjianhui.site/2019-02-23-dist-folder.png)
 
 ## 后端工程
 
@@ -117,7 +117,7 @@ copyright: true
 &emsp;&emsp;前端工程主要基于vue-cli脚手架创建，vue项目的环境搭建可以参照[vue-用Vue-cli从零开始搭建一个Vue项目](http://www.cnblogs.com/superlizhao/p/8664326.html)
 &emsp;&emsp;现在创建一个基础的vue项目，修改config/index.js配置以实现打包的静态资源生成至dist/html目录
 
-![前端打包配置修改](https://resources.chenjianhui.site/ServerFrontSeparate-front-build-config.png)
+![前端打包配置修改](https://resources.chenjianhui.site/2019-02-23-front-build-config.png)
 
 &emsp;&emsp;进入到front/package.json同级目录，执行npm run build指令，打包成功会在dist/html目录生成静态文件
 
@@ -156,7 +156,7 @@ public class ServerApplication {
 ### 配置代理
 
 &emsp;&emsp;配置以下前端工程的代理转发，用于解决开发环境接口调试的跨域问题
-![](https://resources.chenjianhui.site/ServerFrontSeparate-front-proxy-config.png)
+![](https://resources.chenjianhui.site/2019-02-23-front-proxy-config.png)
 
 ### 写个页面
 

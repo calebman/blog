@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('build pages') {
       steps {
-        nodejs('Jenkins_Nodejs') {
+        nodejs('node11.14.0') {
           sh '''echo $PATH
 node -v
 npm -v

@@ -5,14 +5,13 @@ pipeline {
       steps {
         nodejs('node11.14.0') {
           sh '''echo $PATH
-node -v
-npm -v
-npm i
-hexo -v
-hexo clean
-hexo g'''
+                node -v
+                npm -v
+                npm i
+                hexo -v
+                hexo clean
+                hexo g'''
         }
-
       }
     }
     stage('deploy pages') {

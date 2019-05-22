@@ -7,7 +7,7 @@ pipeline {
           sh '''echo $PATH
                 node -v
                 npm -v
-                yum install -y lib-png libpng-devel pngquant libpng12 libpng12-devel
+                apt-get install libpng-dev -y --no-install-recommends
                 npm i
                 hexo -v
                 hexo clean

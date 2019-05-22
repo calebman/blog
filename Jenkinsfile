@@ -5,7 +5,6 @@ pipeline {
       steps {
         nodejs('node11.14.0') {
           sh '''echo $PATH
-                sudo apt-get install libpng12-dev
                 node -v
                 npm -v
                 npm i

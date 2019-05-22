@@ -1,7 +1,7 @@
 ---
 title: vue封装echarts组件
 date: 2017-09-30 11:11:52
-description: 将Echarts做一层小小的封装以满足使用需求
+thumbnail: https://resources.chenjianhui.site/2017-09-30-home-pic.png
 categories: 
 - 前端
 tags: 
@@ -9,7 +9,7 @@ tags:
 - echarts
 ---
 
-![](https://resources.chenjianhui.site/2017-09-30-home-pic.png)
+将Echarts做一层小小的封装以满足使用需求
 
 <!--more-->
 

@@ -1,8 +1,9 @@
 ---
 title: 使用Docker搭建隔离开发环境
 date: 2019-04-19 13:34:30
-description: 使用Docker搭建隔离开发环境
+thumbnail: https://resources.chenjianhui.site/2019-04-19-home-pic.png
 categories: 
+
 - Docker
 tags: 
 - Docker
@@ -10,26 +11,53 @@ tags:
 - redis
 ---
 
-![](https://resources.chenjianhui.site/2019-04-19-home-pic.png)
+使用Docker搭建隔离开发环境
+
 <!-- more -->
 
 # 前言
 
 &emsp;&emsp; 最近接触到了Docker相关的知识，了解了它的相关特性，并基于它搭建了一些如mysql/redis/mq作为一个后端开发所必须的的环境，为什么使用Docker来搭建，听我娓娓道来。
-![](https://resources.chenjianhui.site/2019-04-19-wtf-gaoshou.JPG?imageView2/2/w/300/h/300/q/75|imageslim)
+
+<center>
+<img src="https://resources.chenjianhui.site/2019-04-19-wtf-gaoshou.JPG?imageView2/2/w/300/h/300/q/75|imageslim"/>
+</center>
+
 &emsp;&emsp; 梦回到刚学后端的时候，你需要搭建个mysql环境，然后你去搜了下[windows mysql 环境搭建](https://www.baidu.com/s?wd=windows%20mysql%20%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA)，得到了一种叫绿色版安装，一种叫傻瓜式（安装包）式安装，一顿操作之后我们的电脑终于多了一个mysql的服务，然后使用Navicat成功连接上了，开始沾沾自喜。
+
 &emsp;&emsp;一个月后，由于某种原因（可能你删了mysql包的哪个文件）你需要把mysql重装一下，于是乎你又去搜了下[windows mysql 卸载](https://www.baidu.com/s?wd=windows%20mysql%20卸载)，你惊喜的得到了这么一个结果
+
 ![](https://resources.chenjianhui.site/2019-04-19-search-uninstall-mysql.png)
+
 &emsp;&emsp;WTF？彻底卸载可还行，于是你花了比安装更多的力气去卸载了一个mysql。
-![](https://resources.chenjianhui.site/2019-04-19-wtf-question.JPG?imageView2/2/w/300/h/300/q/75|imageslim)
+
+<center>
+<img src="https://resources.chenjianhui.site/2019-04-19-wtf-question.JPG?imageView2/2/w/300/h/300/q/75|imageslim"/>
+</center>
+
 &emsp;&emsp;工作一年之后，你回想起你的这波操作，不禁笑了起来，你看着现在的vmware+centOS虚拟机中挂着的mysql+redis环境不禁沾沾自喜，虚拟机中的开发环境与本机完全隔离，哪天我不要环境了直接把虚拟机卸了就行，真是一个很完美的配置呢~
-![](https://resources.chenjianhui.site/2019-04-19-wtf-kuaile.JPG)
+
+<center>
+<img src="https://resources.chenjianhui.site/2019-04-19-wtf-kuaile.JPG"/>
+</center>
+
 &emsp;&emsp;但是，你似乎忘记了，你花费了多大的力气踩了多少的坑才折腾好你这套环境，想到这你不禁为自己留下心疼的眼泪。
-![](https://resources.chenjianhui.site/2019-04-19-wtf-liulei.JPG)
+
+<center>
+<img src="https://resources.chenjianhui.site/2019-04-19-wtf-liulei.JPG"/>
+</center>
+
 &emsp;&emsp;这套环境支撑你跑了很久，在此之间你还学会了很多linux的常规指令，成为了一个运维小能手，有一天你在逛社区的时候看到一篇文章叫做[使用 Docker 快速搭建开发环境](https://www.jianshu.com/p/c1b79afc6d63)，能有多**“快”**，我得去瞅瞅，跟着它敲了一遍代码，mysql，它，起来了。
-![](https://resources.chenjianhui.site/2019-04-19-wtf-wtf.GIF)
+
+<center>
+<img src="https://resources.chenjianhui.site/2019-04-19-wtf-wtf.GIF"/>
+</center>
+
 &emsp;&emsp;我告诉自己，我得去看看这东西，它是个什么妖魔鬼怪。
-![](https://resources.chenjianhui.site/2019-04-19-wtf-good.JPG?imageView2/2/w/300/h/300/q/75|imageslim)
+
+<center>
+<img src="https://resources.chenjianhui.site/2019-04-19-wtf-good.JPG?imageView2/2/w/300/h/300/q/75|imageslim"/>
+</center>
 
 
 # Docker介绍
@@ -187,8 +215,8 @@ docker ps
 
 # 参考资料
 
-[Windows 10 安装Docker for Windows - 晓晨Master - 博客园](https://www.cnblogs.com/stulzq/p/7743667.html)
-[使用 Docker 快速搭建开发环境](https://www.jianshu.com/p/c1b79afc6d63)
-[dockerToolbox和docker for windows的区别- Null的博客- CSDN博客](https://blog.csdn.net/JENREY/article/details/84493812)
-[Docker 和 vmware 共存工作 - rodert - CSDN博客](https://blog.csdn.net/qq_40374604/article/details/83095410)
-[Docker各种可视化界面的比较](https://blog.csdn.net/qq273681448/article/details/75007828)
+* [Windows 10 安装Docker for Windows - 晓晨Master - 博客园](https://www.cnblogs.com/stulzq/p/7743667.html)
+* [使用 Docker 快速搭建开发环境](https://www.jianshu.com/p/c1b79afc6d63)
+* [dockerToolbox和docker for windows的区别- Null的博客- CSDN博客](https://blog.csdn.net/JENREY/article/details/84493812)
+* [Docker 和 vmware 共存工作 - rodert - CSDN博客](https://blog.csdn.net/qq_40374604/article/details/83095410)
+* [Docker各种可视化界面的比较](https://blog.csdn.net/qq273681448/article/details/75007828)

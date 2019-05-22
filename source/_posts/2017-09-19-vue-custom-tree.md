@@ -1,7 +1,7 @@
 ---
 title: 基于Element构建自定义树
 date: 2017-09-19 15:18:56
-description: 基于Element的render函数封装一个可以增、删、改的树形组件
+thumbnail: https://resources.chenjianhui.site/2017-09-19-home-pic.jpg
 categories: 
 - 前端
 tags: 
@@ -9,7 +9,7 @@ tags:
 - element-ui
 ---
 
-![](https://resources.chenjianhui.site/2017-09-19-home-pic.jpg)
+基于Element的render函数封装一个可以增、删、改的树形组件
 
 <!--more-->
 

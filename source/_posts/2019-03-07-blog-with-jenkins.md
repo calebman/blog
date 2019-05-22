@@ -1,14 +1,15 @@
 ---
 title: 我的博客可以自己部署啦
 date: 2019-03-07 11:52:18
-description: 博客你已经长大了，该学会自己部署了
+thumbnail: https://resources.chenjianhui.site/2019-03-07-home-pic.jpg
 categories: 
 - 测试
 tags: 
 - jenkins
 ---
 
-![](https://resources.chenjianhui.site/2019-03-07-home-pic.jpg)
+博客你已经长大了，该学会自己部署了
+
 <!-- more -->
 
 我的自动化运维平台已经成功上线啦~

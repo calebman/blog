@@ -1,7 +1,7 @@
 ---
 title: 使用Netty构建Http容器
 date: 2018-05-23 15:35:58
-description: 使用Netty构建一个SpringBoot风格的Web框架
+thumbnail: https://resources.chenjianhui.site/2018-05-23-home-pic.jpg
 categories: 
 - 后端
 tags: 
@@ -10,7 +10,8 @@ tags:
 copyright: ture
 ---
 
-![](https://resources.chenjianhui.site/2018-05-23-home-pic.jpg)
+使用Netty构建一个SpringBoot风格的Web框架
+
 <!-- more -->
 
 ### 要实现怎样的效果

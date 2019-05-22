@@ -1,7 +1,7 @@
 ---
 title: Hello Hexo
 date: 2019-02-21 15:28:56
-description: 从掘金到Hexo，从未停止
+thumbnail: https://resources.chenjianhui.site/2019-02-21-home-pic.jpg
 categories: 
 - 随笔
 tags: 
@@ -9,7 +9,7 @@ tags:
 - hexo
 ---
 
-![](https://resources.chenjianhui.site/2019-02-21-home-pic.jpg)
+从掘金到Hexo，从未停止
 
 <!--more-->
 

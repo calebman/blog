@@ -6,9 +6,9 @@
 title: Sincerity
 subtitle: Story in work and life
 description: Full of soul, independent personality
-keywords: 关键字 赖曼婷
-author: Jianhui Chen
-language: zh-Hans
+keywords: java vuejs 运维
+author: JianhuiChen
+language: zh-CN
 timezone:
 
 # URL
@@ -90,7 +90,7 @@ type: atom
 path: atom.xml
 limit: 20
 ## Themes: https://hexo.io/themes/
-theme: next
+theme: icarus
 
 
 # Deployment

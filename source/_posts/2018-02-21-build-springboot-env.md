@@ -1,7 +1,7 @@
 ---
 title: SpringBoot集成环境搭建
 date: 2018-02-21 15:40:24
-description: 一个高可复用的SpringBoot基础框架
+thumbnail: https://resources.chenjianhui.site/2018-02-21-home-pic.jpg
 categories: 
 - 后端
 tags: 
@@ -10,7 +10,8 @@ tags:
 copyright: ture
 ---
 
-![](https://resources.chenjianhui.site/2018-02-21-home-pic.jpg)
+一个高可复用的SpringBoot基础框架
+
 <!-- more -->
 
 

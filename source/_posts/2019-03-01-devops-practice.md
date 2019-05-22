@@ -1,7 +1,7 @@
 ---
 title: 前后端分离模式下的DevOps
 date: 2019-03-01 11:03:25
-description: Jenkins+Git+Maven+Nodejs实现前后端分离项目的自动化运维
+thumbnail: https://resources.chenjianhui.site/2019-03-01-home-pic.jpg
 categories: 
 - 运维
 tags: 
@@ -12,7 +12,8 @@ tags:
 copyright: true
 ---
 
-![](https://resources.chenjianhui.site/2019-03-01-home-pic.jpg)
+Jenkins+Git+Maven+Nodejs实现前后端分离项目的自动化运维
+
 <!-- more -->
 
 # 背景概述
@@ -472,7 +473,7 @@ sh $COMMAND_PATH/start.sh test
 
 # 参考资料
 
-[Jenkins——应用篇——插件使用——Publish over SSH](https://blog.csdn.net/houyefeng/article/details/51027885)
-[jenkins 集成钉钉机器人](https://blog.csdn.net/workdsz/article/details/77947183)
-[Jenkins之解决乱码问题](https://blog.csdn.net/ZZY1078689276/article/details/77839045)
-[Jenkins与Github集成 webhook配置](https://blog.csdn.net/qq_21768483/article/details/80177920)
+* [Jenkins——应用篇——插件使用——Publish over SSH](https://blog.csdn.net/houyefeng/article/details/51027885)
+* [Jenkins 集成钉钉机器人](https://blog.csdn.net/workdsz/article/details/77947183)
+* [Jenkins之解决乱码问题](https://blog.csdn.net/ZZY1078689276/article/details/77839045)
+* [Jenkins与Github集成 webhook配置](https://blog.csdn.net/qq_21768483/article/details/80177920)

@@ -1,7 +1,7 @@
 ---
 title: 前后端分离开发模式的实践总结
 date: 2019-02-23 11:03:25
-description: SpringBoot+Vuejs+Nginx从开发至部署构建一个成熟的前后端分离应用
+thumbnail: https://resources.chenjianhui.site/2019-02-23-home-pic.png
 categories: 
 - 前后端分离
 tags: 
@@ -11,7 +11,8 @@ tags:
 copyright: true
 ---
 
-![](https://resources.chenjianhui.site/2019-02-23-home-pic.png)
+SpringBoot+Vuejs+Nginx从开发至部署构建一个成熟的前后端分离应用
+
 <!-- more -->
 
 # 前言

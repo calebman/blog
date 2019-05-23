@@ -33,6 +33,8 @@ git push origin master
 > Jenkins看看来的任务，blogs，ok，i know
 >
 > jenkins：包在我身上
+> 
+
 ```bash
 # 拉取代码
 git clone https://github.com/calebman/blog.git

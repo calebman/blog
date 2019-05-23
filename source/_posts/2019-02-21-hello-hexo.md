@@ -136,11 +136,11 @@ tags:
 # 图片
 
 ```
-![图片介绍](http://chenjianhui.name/images/avatar.png)
+![图片介绍](https://chenjianhui.site/images/avatar.png)
 ```
 **效果如下**
 
-![图片介绍](http://chenjianhui.name/images/avatar.png)
+![图片介绍](https://chenjianhui.site/images/avatar.png)
 
 # 表格
 

@@ -179,11 +179,11 @@ public class MousePoisonQuestion {
         mouseList.add(new Mouse(3, Arrays.asList(2, 3, 6, 7, 10, 11, 14, 15)));
         mouseList.add(new Mouse(4, Arrays.asList(1, 3, 5, 7, 9, 11, 13, 15)));
         findPoisonWater(waterLen, mouseList, mouses -> {
-            int num = 0;
+            int num = -1;
             for (Mouse m : mouses) {
                 num += Math.pow(2, m.isDie() ? (m.getId() - 1) : 0);
             }
-            return num;
+            return num < 0 ? (waterLen - 1) : num;
         });
     }
 ```

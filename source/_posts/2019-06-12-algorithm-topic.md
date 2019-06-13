@@ -32,12 +32,12 @@ public class MousePoisonQuestion {
      * 普通解法 16瓶水用16只老鼠来找 哪只死了代表哪瓶水有毒
      */
     private static void normalSolution() {
-        final int bottleLen = 16;
+        final int bottleCount = 16;
         List<Mouse> mouseList = new ArrayList<>();
-        for (int i = 0; i < bottleLen; i++) {
+        for (int i = 0; i < bottleCount; i++) {
             mouseList.add(new Mouse(i, Collections.singleton(i)));
         }
-        findPoisonWater(bottleLen, mouseList, mouses -> mouses.stream()
+        findPoisonWater(bottleCount, mouseList, mouses -> mouses.stream()
                 .filter(Mouse::isDie)
                 .findFirst()
                 .get()
@@ -47,12 +47,12 @@ public class MousePoisonQuestion {
     /**
      * 寻找有毒的水
      *
-     * @param bottleLen 水的瓶数
+     * @param bottleCount 水的瓶数
      * @param mouses   老鼠列表
      * @param judge    根据老鼠喝完水的状态判断出毒药的编号
      */
-    private static void findPoisonWater(int bottleLen, List<Mouse> mouses, Function<List<Mouse>, Integer> judge) {
-        List<Water> waters = initWaters(bottleLen);
+    private static void findPoisonWater(int bottleCount, List<Mouse> mouses, Function<List<Mouse>, Integer> judge) {
+        List<Water> waters = initWaters(bottleCount);
         mouses.forEach(mouse -> mouse.setDie(waters));
         // 一小时后
         int resultPoisonId = judge.apply(mouses);
@@ -172,18 +172,18 @@ public class MousePoisonQuestion {
      * 使用二进制的思路解法
      */
     private static void binarySolution() {
-        final int bottleLen = 16;
+        final int bottleCount = 16;
         List<Mouse> mouseList = new ArrayList<>();
         mouseList.add(new Mouse(1, Arrays.asList(8, 9, 10, 11, 12, 13, 14, 15)));
         mouseList.add(new Mouse(2, Arrays.asList(4, 5, 6, 7, 12, 13, 14, 15)));
         mouseList.add(new Mouse(3, Arrays.asList(2, 3, 6, 7, 10, 11, 14, 15)));
         mouseList.add(new Mouse(4, Arrays.asList(1, 3, 5, 7, 9, 11, 13, 15)));
-        findPoisonWater(bottleLen, mouseList, mouses -> {
+        findPoisonWater(bottleCount, mouseList, mouses -> {
             int num = -1;
             for (Mouse m : mouses) {
                 num += Math.pow(2, m.isDie() ? (m.getId() - 1) : 0);
             }
-            return num < 0 ? (bottleLen - 1) : num;
+            return num < 0 ? (bottleCount - 1) : num;
         });
     }
 ```

@@ -342,9 +342,9 @@ tags:
 
 ```java
     int getMaxValues(int n, int c, int[] w, int[] v) {
-        int[] pre = new int[c + 1]; //前一行
-        int[] current = new int[c + 1]; //当前行
-        for (int i = 1; i <= c; i++) { //先填充第一行
+        int[] pre = new int[c + 1]; // 前一行
+        int[] current = new int[c + 1]; // 当前行
+        for (int i = 1; i <= c; i++) { // 先填充第一行
             if (i < w[0]) {
                 pre[i] = 0;
             } else {
@@ -352,15 +352,15 @@ tags:
             }
         }
 
-        for (int i = 1; i < n; i++) { //填充第二行到最后
-            for (int j = 1; j <= c; j++) {
-                if (j < w[i]) { //容量不够
+        for (int i = 1; i < n; i++) {
+            for (int j = 1; j <= c; j++) { // 填充第二行到最后
+                if (j < w[i]) { // 容量不够
                     current[j] = pre[j];
                 } else {
                     current[j] = Math.max(pre[j - w[i]] + v[i], pre[j]);
                 }
             }
-            //此处不可直接= 会出现引用混乱的情况
+            // 此处不可直接使用等号 会出现引用混乱的情况
             pre = Arrays.copyOf(current, current.length);
         }
         return current[c];

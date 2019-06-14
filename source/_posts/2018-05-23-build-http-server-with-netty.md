@@ -42,7 +42,7 @@ public class DocController {
 
 ### 该怎么做
 
-![系统流程](https://resources.chenjianhui.site/2018-05-23-xmind-brain map)
+![系统流程](https://resources.chenjianhui.site/2018-05-23-xmind-brain-map.png)
 
 * 使用Netty自带的编解码、聚合器构建一个带有Http编解码功能的服务器这一点其实非常简单，Netty提供了对应的Http协议的编解码以及聚合器，我们只需要在管道初始化的时候加载它们。
 

@@ -104,7 +104,7 @@ SpringBoot+Vuejs+Nginx从开发至部署构建一个成熟的前后端分离应�
             </goals>
             <configuration>
                 <target>
-                    <move file="${project.basedir}/target/${project.artifactId}-${project.version}.${project.packaging}" tofile="${project.basedir}/../dist/${project.artifactId}-${project.version}.${project.packaging}" />
+                    <move file="${project.basedir}/target/${project.artifactId}-${project.version}.${project.packaging}" tofile="${project.basedir}/../dist/${project.artifactId}-${project.version}.${project.packaging}"/>
                 </target>
             </configuration>
         </execution>
@@ -163,7 +163,7 @@ public class ServerApplication {
 
 &emsp;&emsp;写个前端页面测试后端接口，进入front/package.json同级目录执行npm i axios -s，修改HelloWord.vue组件为如下代码
 
-```javascript
+```html
 <template>
   <div class="hello">
     <h1 v-if="loading">{{ '正在加载用户信息' }}</h1>

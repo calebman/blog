@@ -1,5 +1,5 @@
 const cheerio = require('cheerio');
-
+const attributesStr = ['autocomplete="off"','autocorrect="off"','autocapitalize="off"','spellcheck="false"','contenteditable="true"'].join(' ')
 module.exports = function (hexo) {
     function patchCodeHighlight(content) {
         const $ = cheerio.load(content, { decodeEntities: false });
@@ -11,6 +11,11 @@ module.exports = function (hexo) {
                 $(this).removeClass(classes[0]);
             }
         });
+        $('figure.highlight').each(function () {
+            const figureClasses = $(this).attr('class') ? $(this).attr('class').split(' ') : [];
+            const lanuage = figureClasses.length > 1 ? figureClasses[1] : 'NONE';
+            $(this).wrap(`<div class="highlight-wrap" ${attributesStr} data-rel="${lanuage.toUpperCase()}"></div>`);
+        })
         return $.html();
     }
     

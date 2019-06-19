@@ -109,6 +109,6 @@ search:
 githubEmojis:
   enable: true
   className: github-emoji
-  unicode: false
+  inject: true
   styles:
-  localEmojis:
+  customEmojis:

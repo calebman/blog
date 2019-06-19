@@ -41,7 +41,7 @@ tags:
 
 * 调用示例
 
-```javascript
+```html
  <chart
   :_id="'testCharts'"
   :_titleText="'访问量统计'"
@@ -49,12 +49,11 @@ tags:
   :_yText="'总访问量'"
   :_chartData="chartData"
   :_type="'Pie'"></chart>
- //测试数据样例 [["类别1",10],["类别2",20]]
 ```
 ## 实现方式
 ---
 * 创建一个待渲染的dom
-```javascript
+```html
 <template>
     <div :id="_id" class="chart"></div>
 </template>

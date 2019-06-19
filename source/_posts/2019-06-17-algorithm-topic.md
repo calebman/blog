@@ -21,7 +21,7 @@ tags:
 
 # DFS解法
 
-&emsp;&emsp;DFS是**Depth-First search 深度优先搜索**的简称，与其对应的还有BFS(**Breadth-First-Search 广度优先搜索**)，在这里我们使用递归的方式深度优先遍历搜索树找到所有可能性，代码如下：
+&emsp;&emsp;DFS是**Depth-First search 深度优先搜索**的简称，与其对应的还有BFS(**Breadth-First-Search 广度优先搜索**)，在这里我们使用递归的方式深度优先遍历搜索树找到所有可能性，然后根据得出的算术表达式（如1+2+3*4）计算并判断筛选出计算结果为24的组合，代码如下：
 
 ```java
 import java.util.*;
@@ -36,15 +36,15 @@ import java.util.stream.Collectors;
 public class Count24 {
 
     public static void main(String[] args) {
-        List&lt;String&gt; results = permutation(Arrays.asList(1, 2, 3, 4),
+        List<String> results = permutation(Arrays.asList(1, 2, 3, 4),
                 Arrays.asList(Operator.PLUS, Operator.MINUS, Operator.MULTIPLY, Operator.DIVIDE));
         results.stream()
-                .filter(express -&gt; expectCalc(express, 24))
+                .filter(express -> expectCalc(express, 24))
                 .forEach(System.out::println);
     }
 
 
-    private static List&lt;String&gt; permutation(List&lt;Integer&gt; numbers, List&lt;Operator&gt; operators) {
+    private static List<String> permutation(List<Integer> numbers, List<Operator> operators) {
         return permutation(numbers, operators, null);
     }
 
@@ -56,11 +56,11 @@ public class Count24 {
      * @param expressRecord 算术表达式记录值
      * @return 可能性组合
      */
-    private static List&lt;String&gt; permutation(List&lt;Integer&gt; numbers, List&lt;Operator&gt; operators, String expressRecord) {
+    private static List<String> permutation(List<Integer> numbers, List<Operator> operators, String expressRecord) {
         if (expressRecord == null) {
-            expressRecord = &quot;&quot;;
+            expressRecord = "";
         }
-        List&lt;String&gt; resultList = new ArrayList&lt;&gt;();
+        List<String> resultList = new ArrayList<>();
         for (int num : numbers) {
             if (numbers.size() == 1) {
                 // 只剩一个数字未选时退出循环
@@ -69,8 +69,8 @@ public class Count24 {
             }
             for (Operator oper : operators) {
                 // 过滤掉已选项
-                List&lt;Integer&gt; optional = numbers.stream()
-                        .filter(n -&gt; n != num)
+                List<Integer> optional = numbers.stream()
+                        .filter(n -> n != num)
                         .collect(Collectors.toList());
                 resultList.addAll(permutation(optional, operators, expressRecord + num + oper));
             }
@@ -98,21 +98,21 @@ public class Count24 {
      */
     private static int calculation(String aritExpression) {
         // 将表达式根据运算符切割
-        StringTokenizer tokenizer = new StringTokenizer(aritExpression, &quot;+-*/&quot;, true);
-        Stack&lt;Double&gt; numStack = new Stack&lt;&gt;();   // 存放数字
-        Stack&lt;Operator&gt; operStack = new Stack&lt;&gt;();  // 存放操作符
+        StringTokenizer tokenizer = new StringTokenizer(aritExpression, "+-*/", true);
+        Stack<Double> numStack = new Stack<>();   // 存放数字
+        Stack<Operator> operStack = new Stack<>();  // 存放操作符
         String currentEle;  // 当前元素
         while (tokenizer.hasMoreTokens()) {
             currentEle = tokenizer.nextToken().trim();  // 去掉前后的空格
-            if (!&quot;&quot;.equals(currentEle)) {   // 只处理非空字符
-                if (Pattern.matches(&quot;^\\d+(\\.\\d+)?$&quot;, currentEle)) { // 为数字时则加入到数字栈中
+            if (!"".equals(currentEle)) {   // 只处理非空字符
+                if (Pattern.matches("^\\d+(\\.\\d+)?$", currentEle)) { // 为数字时则加入到数字栈中
                     numStack.push(Double.valueOf(currentEle));
                 } else {
                     Operator currentOper = Operator.getOperatorBySymbol(currentEle);//获取当前运算操作符
                     if (currentOper == null) {
-                        throw new RuntimeException(&quot;存在无效的操作符&quot; + currentEle);
+                        throw new RuntimeException("存在无效的操作符" + currentEle);
                     }
-                    while (!operStack.empty() &amp;&amp; operStack.peek().priority() &gt;= currentOper.priority()) {
+                    while (!operStack.empty() && operStack.peek().priority() >= currentOper.priority()) {
                         compute(numStack, operStack);
                     }
                     // 计算完后把当前操作符加入到操作栈中
@@ -135,7 +135,7 @@ public class Count24 {
      * @param numStack  数字栈
      * @param operStack 操作栈
      */
-    private static void compute(Stack&lt;Double&gt; numStack, Stack&lt;Operator&gt; operStack) {
+    private static void compute(Stack<Double> numStack, Stack<Operator> operStack) {
         Double num2 = numStack.pop(); // 弹出数字栈最顶上的数字作为运算的第二个数字
         Double num1 = numStack.pop(); // 弹出数字栈最顶上的数字作为运算的第一个数字
         Double computeResult = operStack.pop().compute(num1, num2); // 弹出操作栈最顶上的运算符进行计算
@@ -147,7 +147,7 @@ public class Count24 {
      * 支持的运算符
      */
     private enum Operator {
-        PLUS(&quot;+&quot;) {
+        PLUS("+") {
             @Override
             public int priority() {
                 return 1;
@@ -158,7 +158,7 @@ public class Count24 {
                 return a + b;
             }
         },
-        MINUS(&quot;-&quot;) {
+        MINUS("-") {
             @Override
             public int priority() {
                 return 1;
@@ -169,7 +169,7 @@ public class Count24 {
                 return a - b;
             }
         },
-        MULTIPLY(&quot;*&quot;) {
+        MULTIPLY("*") {
             @Override
             public int priority() {
                 return 2;
@@ -180,7 +180,7 @@ public class Count24 {
                 return a * b;
             }
         },
-        DIVIDE(&quot;/&quot;) {
+        DIVIDE("/") {
             @Override
             public int priority() {
                 return 2;
@@ -236,3 +236,32 @@ public class Count24 {
     }
 }
 ```
+
+&emsp;&emsp;输入`2、4、6、8`能得到以下部分结果
+```
+2*6+4+8
+2*6+8+4
+2*6*8/4
+2*6/4*8
+2*8*6/4
+2*8/4*6
+2/4*6*8
+2/4*8*6
+2/8+4*6
+2/8+6*4
+4+2*6+8
+4+6*2+8
+4+8+2*6
+4+8+6*2
+4*6+2/8
+4*8-2-6
+...
+```
+
+# 优化思路
+
+&emsp;&emsp;上述算法做了很多的重复计算，众所周知，加法和乘法是满足交换律的，所以如`1*2*3*4`这类组合任意排列所得的计算结果都是相同的，针对这部分我们可以如[爬楼梯问题的备忘录算法](/2019-06-13-algorithm-topic/)缓存计算结果，防止重复计算。
+
+# 题目拓展，添加优先级
+
+&emsp;&emsp;我们简单的将上述的24点游戏扩展一下，除了数字和运算符我们再加上括号的选择，这个时候有多少种情况？代码该如何变更？其实简单想想加上括号即让任意组合如ABCD又演变出了五种加括号的方式`((AB)C)D、(A(BC))D、(AB)(CD)、A(((BC)D)、A(B(CD))`，然后根据括号运算搜索出正确答案即可，有兴趣的同学可以修改上述代码完成该题。

@@ -1,5 +1,5 @@
 const cheerio = require('cheerio');
-const attributesStr = ['autocomplete="off"','autocorrect="off"','autocapitalize="off"','spellcheck="false"','contenteditable="true"'].join(' ')
+const attributesStr = ['autocomplete="off"','autocorrect="off"','autocapitalize="off"','spellcheck="false"','contenteditable="false"'].join(' ')
 module.exports = function (hexo) {
     function patchCodeHighlight(content) {
         const $ = cheerio.load(content, { decodeEntities: false });

@@ -15,7 +15,7 @@ tags:
 
 # 游戏设计
 
-&emsp;&emsp;首先我们需要设计出整个游戏，并预留出猫的移动逻辑交给用户去实现，这里我基于canvas设计了[cat-mouse-game-gen.js](https://resources.chenjianhui.site/cat-mouse-game-gen-0.0.1.js)来作为游戏构建程序，借助这个脚本使用如下代码即可构建一个猫鼠游戏棋盘：
+&emsp;&emsp;首先我们需要设计出整个游戏，并预留出猫的移动逻辑交给用户去实现，这里我基于canvas设计了[cat-mouse-game-gen.js](https://resources.chenjianhui.site/cat-mouse-game-gen-0.1.9.js)来作为游戏构建程序，借助这个脚本使用如下代码即可构建一个猫鼠游戏棋盘：
 
 ```html
 <!DOCTYPE html>

@@ -1,7 +1,7 @@
 ---
 title: 海岛寻宝问题
 date: 2019-07-24 19:31:22
-thumbnail: https://resources.chenjianhui.site/algorithm-home-pic.jpeg
+thumbnail: https://resources.chenjianhui.site/thinking-home-pic.jpg
 categories: 
 - Algorithm
 tags: 
@@ -13,10 +13,6 @@ tags:
 <!-- more -->
 
 # 题意解读
-
-<center>
-<img src="https://resources.chenjianhui.site/2019-07-14-b1.JPG?imageView2/2/w/300/h/300/q/75|imageslim"/>
-</center>
 
 &emsp;&emsp;我们先来理解一下题目意思，如题说的五个海盗按照**抽签顺序依次**提出方案，所以这是有顺序的，然后**半数以上的人认可**才能被通过，否则人就没了，比如剩下两个海盗了，那么前面那个海盗就肯定挂了，因为最后那位海盗肯定会投票给自己，只要前面那人挂了他就可以独吞金币。为了解题我们可以先假设一个顺序出来，然后再分析分析怎么*make more money*
 

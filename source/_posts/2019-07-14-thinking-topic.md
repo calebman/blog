@@ -17,7 +17,7 @@ tags:
 &emsp;&emsp;我们先来理解一下题目意思，如题说的五个海盗按照**抽签顺序依次**提出方案，所以这是有顺序的，然后**半数以上的人认可**才能被通过，否则人就没了，比如剩下两个海盗了，那么前面那个海盗就肯定挂了，因为最后那位海盗肯定会投票给自己，只要前面那人挂了他就可以独吞金币。为了解题我们可以先假设一个顺序出来，然后再分析分析怎么*make more money*
 
 <center>
-<img src="https://resources.chenjianhui.site/2019-07-14-b2.JPG?imageView2/2/w/300/h/300/q/75|imageslim"/>
+<img src="https://resources.chenjianhui.site/2019-07-14-b5.JPG?imageView2/2/w/180/h/180/q/75|imageslim"/>
 </center>
 
 # 解题思考
@@ -25,7 +25,7 @@ tags:
 &emsp;&emsp;我们先给五个海盗按照顺序编个号分别是A、B、C、D、E，在这个游戏中咱们的每个海盗都要考虑两点*make more money*与**活着**（注意，这个词我划重点了），刚才我们说到，当只剩俩人时，即只剩D、E时，D肯定就挂了，所以机智的D肯定不能让自己陷入只剩俩人的尴尬处境中。
 
 <center>
-<img src="https://resources.chenjianhui.site/2019-07-14-b3.JPG?imageView2/2/w/300/h/300/q/75|imageslim"/>
+<img src="https://resources.chenjianhui.site/2019-07-14-b3.JPG?imageView2/2/w/180/h/180/q/75|imageslim"/>
 </center>
 
 &emsp;&emsp;考虑到这一点是不是有点思路了，我们应该逆向来推这个问题，从两个人的情况开始模拟；
@@ -46,10 +46,10 @@ tags:
   * A需要三票且A知道自己死后C收不到一个金币，所以可以花1个金币收买了C，还差一票可以在D、E中选一个花2个金币收买让其给自己投票，再加上自己的票共3票超过了半数，于是可以做出**97、0、1、2、0**或者**97、0、1、0、2**的分配
   * B收获金币0
   * C收获金币1
-  * D/E收获金币1
+  * D/E收获金币2
 
 &emsp;&emsp;所以题目的答案是，在第一个位置的人最有利，最多能够分到最多97个金币:ok_man:
 
 <center>
-<img src="https://resources.chenjianhui.site/2019-07-14-b4.JPG?imageView2/2/w/300/h/300/q/75|imageslim"/>
+<img src="https://resources.chenjianhui.site/2019-07-14-b4.JPG?imageView2/2/w/240/h/240/q/75|imageslim"/>
 </center>

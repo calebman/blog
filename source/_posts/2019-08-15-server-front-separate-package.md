@@ -112,6 +112,11 @@ public class RewriteFilter implements Filter {
 * 首先运行前端项目的打包指令将打包的静态资源拷贝到`SpringBoot`的`public/static/resources`目录下
 * 配置前端路由的转发拦截器
 ```java
+    /**
+     * 匹配路由转发
+     * 所有 /front/** 请求映射至 /index.html
+     * exp /front/home -> /index.html
+     */
     @Bean
     public FilterRegistrationBean frontFilter() {
         FilterRegistrationBean<RewriteFilter> registration = new FilterRegistrationBean<>();
@@ -125,8 +130,8 @@ public class RewriteFilter implements Filter {
 * 配置后端路由的转发拦截器
 ```java
     /**
-     * 匹配前端请求前缀
-     * 所有 /api/* 请求映射至 /*
+     * 匹配动态请求
+     * 所有 /api/** 请求映射至 /**
      * exp /api/resources/users/me -> /resources/users/me
      */
     @Bean
@@ -147,7 +152,7 @@ public class RewriteFilter implements Filter {
 
 # 其他
 
-### AntPathMatcher相关记录
+## AntPathMatcher相关记录
 
 &emsp;&emsp;`AntPathMatcher`是`Spring`用于路径匹配的工具类，我们经常写的`@RequestMapping`的匹配逻辑就与它有关，它主要的匹配模式有以下三种
 

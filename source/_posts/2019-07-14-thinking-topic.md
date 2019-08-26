@@ -1,7 +1,7 @@
 ---
 title: 海岛寻宝问题
 date: 2019-07-24 19:31:22
-thumbnail: https://resources.chenjianhui.site/thinking-home-pic.jpg
+thumbnail: https://resources.chenjianhui.site/2019-07-14-home-pic.jpg
 categories: 
 - Algorithm
 tags: 

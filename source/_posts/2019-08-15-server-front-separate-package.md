@@ -1,7 +1,7 @@
 ---
 title: Vue+SpringBoot单jar部署
 date: 2019-08-15 20:11:21
-thumbnail: https://resources.chenjianhui.site/thinking-home-pic.jpg
+thumbnail: https://resources.chenjianhui.site/2019-08-15-home-pic.jpg
 categories: 
 - 前后端分离
 tags: 
@@ -58,7 +58,7 @@ location /api/ {
 /**
  * @author JianhuiChen
  * @description 基于转发逻辑的过滤器
- * @date 2019-08-22
+ * @date 2019-08-15
  */
 public class RewriteFilter implements Filter {
     

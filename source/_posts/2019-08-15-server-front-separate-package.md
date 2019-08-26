@@ -38,7 +38,7 @@ location /api/ {
 }
 ```
 
-&emsp;&emsp;在知道中间件完成的核心功能后，我们需要基于`SpringBoot`项目也去完成这么一套功能，既能实现集成部署了，我们现在一项一项功能分析一下
+&emsp;&emsp;在知道中间件完成的核心功能后，我们需要基于`SpringBoot`项目也去完成这么一套功能，即可实现集成部署了，我们现在一项一项功能分析一下
 
 * 静态资源的分发：可通过配置静态文件映射来实现
 * 前端路由的转发：可通过拦截器来实现
@@ -147,9 +147,9 @@ public class RewriteFilter implements Filter {
 
 # 其他
 
-## AntPathMatcher相关记录
+### AntPathMatcher相关记录
 
-&emsp;&emsp;`AntPathMatcher`是`Spring`用于路径匹配的工具类，我们经常写的`@RequestMapping`就是的匹配逻辑就与它有关，它主要的匹配模式有以下三种
+&emsp;&emsp;`AntPathMatcher`是`Spring`用于路径匹配的工具类，我们经常写的`@RequestMapping`的匹配逻辑就与它有关，它主要的匹配模式有以下三种
 
 * `?` 匹配任何单字符
 * `*` 匹配0或者任意数量的字符

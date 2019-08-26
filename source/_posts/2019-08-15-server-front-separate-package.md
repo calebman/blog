@@ -1,7 +1,7 @@
 ---
 title: Vue+SpringBoot单jar部署
 date: 2019-08-15 20:11:21
-thumbnail: https://resources.chenjianhui.site/2019-08-15-home-pic.jpg
+thumbnail: https://resources.chenjianhui.site/2019-08-15-home-pic.jpeg
 categories: 
 - 前后端分离
 tags: 

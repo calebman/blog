@@ -1,5 +1,5 @@
 ---
-title: 算法，猫鼠游戏
+title: 算法——猫鼠游戏
 date: 2019-06-20 19:23:16
 thumbnail: https://resources.chenjianhui.site/algorithm-home-pic.jpeg
 categories: 

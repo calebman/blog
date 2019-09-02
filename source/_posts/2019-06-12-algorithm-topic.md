@@ -1,5 +1,5 @@
 ---
-title: 算法，老鼠毒药问题
+title: 算法——老鼠毒药问题
 date: 2019-06-12 08:30:52
 thumbnail: https://resources.chenjianhui.site/algorithm-home-pic.jpeg
 categories: 

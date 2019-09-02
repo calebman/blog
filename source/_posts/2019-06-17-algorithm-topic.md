@@ -1,5 +1,5 @@
 ---
-title: 算法，24点游戏
+title: 算法——24点游戏
 date: 2019-06-17 21:47:06
 thumbnail: https://resources.chenjianhui.site/algorithm-home-pic.jpeg
 categories: 

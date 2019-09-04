@@ -1,7 +1,7 @@
 ---
 title: 随笔——Java SPI、Dubbo与SpringBoot
 date: 2019-09-01 09:22:41
-thumbnail: https://resources.chenjianhui.site/essay.jpg
+thumbnail: https://resources.chenjianhui.site/2019-09-01-home-pic.jpg
 categories: 
 - 随笔
 tags: 

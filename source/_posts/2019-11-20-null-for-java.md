@@ -1,10 +1,9 @@
 ---
-title: Java随笔——如何防止空指针
+title: 随笔——如何防止空指针
 date: 2019-11-20 17:16:32
 thumbnail: https://resources.chenjianhui.site/2019-09-20-home-pic.png
 categories: 
 - 随笔
-- 后端
 tags: 
 - Java
 ---
@@ -29,7 +28,7 @@ public class NullPointTest {
     public static void main(String[] args) {
         List<String> strList = null;
         // NullPointException
-        System.out.println(strList.size();
+        System.out.println(strList.size());
     }
 }
 ```

@@ -167,24 +167,24 @@ public class MousePoisonQuestion {
 # 编码实现
 
 ```java
-    /**
-     * 使用二进制的思路解法
-     */
-    private static void binarySolution() {
-        final int bottleCount = 16;
-        List<Mouse> mouseList = new ArrayList<>();
-        mouseList.add(new Mouse(1, Arrays.asList(8, 9, 10, 11, 12, 13, 14, 15)));
-        mouseList.add(new Mouse(2, Arrays.asList(4, 5, 6, 7, 12, 13, 14, 15)));
-        mouseList.add(new Mouse(3, Arrays.asList(2, 3, 6, 7, 10, 11, 14, 15)));
-        mouseList.add(new Mouse(4, Arrays.asList(1, 3, 5, 7, 9, 11, 13, 15)));
-        findPoisonWater(bottleCount, mouseList, mouses -> {
-            int num = -1;
-            for (Mouse m : mouses) {
-                num += Math.pow(2, m.isDie() ? (m.getId() - 1) : 0);
-            }
-            return num < 0 ? (bottleCount - 1) : num;
-        });
-    }
+/**
+    * 使用二进制的思路解法
+    */
+private static void binarySolution() {
+    final int bottleCount = 16;
+    List<Mouse> mouseList = new ArrayList<>();
+    mouseList.add(new Mouse(1, Arrays.asList(8, 9, 10, 11, 12, 13, 14, 15)));
+    mouseList.add(new Mouse(2, Arrays.asList(4, 5, 6, 7, 12, 13, 14, 15)));
+    mouseList.add(new Mouse(3, Arrays.asList(2, 3, 6, 7, 10, 11, 14, 15)));
+    mouseList.add(new Mouse(4, Arrays.asList(1, 3, 5, 7, 9, 11, 13, 15)));
+    findPoisonWater(bottleCount, mouseList, mouses -> {
+        int num = -1;
+        for (Mouse m : mouses) {
+            num += Math.pow(2, m.isDie() ? (m.getId() - 1) : 0);
+        }
+        return num < 0 ? (bottleCount - 1) : num;
+    });
+}
 ```
 &emsp;&emsp;运行后程序将打印**“恭喜你找出了包含毒药的水,共使用了4只老鼠”**，代码运行成功了没错，但是通用性不足，只能够适用于16只老鼠的解法，能否编写一个根据瓶子数量作为参数的通用解法函数？只要理解解题思路，这个代码并不难，在此就不做演示了。
 

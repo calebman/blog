@@ -234,7 +234,7 @@ Cache-Control: no-cache
 
 凭着阿辉快速的学习与理解能力，很快就搭建起了一套基于非对称密钥加密的通信方式
 
-![](https://resources.chenjianhui.site/2019-12-14-pki-eq-flow.png)
+![](https://resources.chenjianhui.site/2019-12-14-pki-eq-flow.jpg)
 
 这套体系下黑客就算反编译了APP也无法去破解请求报文，但阿辉发觉**所有的接口响应时间都变慢了不少**，仔细分析阿辉找到问题所在，非对称密钥的加解密效率较低，造成了较差的用户体验。
 

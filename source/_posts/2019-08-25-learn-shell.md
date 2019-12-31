@@ -23,6 +23,7 @@ tags:
 str="My name is JianhuiChen."
 echo ${str}
 str="Reset my name"
+echo ${str}
 unset str
 echo ${str}
 ```

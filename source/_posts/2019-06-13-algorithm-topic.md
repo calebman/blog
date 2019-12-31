@@ -220,67 +220,67 @@ tags:
 ### 简单递归
 
 ```java
-    /**
-     * 获取最大价值
-     *
-     * @param n 物品数量
-     * @param c 背包剩余承重量
-     * @param w 物品重量
-     * @param v 物品价值
-     * @return 背包装配物品的最大价值
-     */
-    int getMaxValues(int n, int c, int[] w, int[] v) {
-        if (n == 1) { // 边界
-            if (c >= w[0]) {
-                return v[0];
-            } else {
-                return 0;
-            }
-        }
-        if (c >= w[n - 1]) { // 状态转移公式
-            return Math.max(getMaxValues(n - 1, c - w[n - 1], w, v) + v[n - 1],
-                    getMaxValues(n - 1, c, w, v));
+/**
+    * 获取最大价值
+    *
+    * @param n 物品数量
+    * @param c 背包剩余承重量
+    * @param w 物品重量
+    * @param v 物品价值
+    * @return 背包装配物品的最大价值
+    */
+int getMaxValues(int n, int c, int[] w, int[] v) {
+    if (n == 1) { // 边界
+        if (c >= w[0]) {
+            return v[0];
         } else {
-            return getMaxValues(n - 1, c, w, v);
+            return 0;
         }
     }
+    if (c >= w[n - 1]) { // 状态转移公式
+        return Math.max(getMaxValues(n - 1, c - w[n - 1], w, v) + v[n - 1],
+                getMaxValues(n - 1, c, w, v));
+    } else {
+        return getMaxValues(n - 1, c, w, v);
+    }
+}
 ```
 
 ### 备忘录算法
 
 ```java
-    int getMaxValues(int n, int c, int[] w, int[] v) {
-        return getMaxValues(n, c, w, v, null);
-    }
+int getMaxValues(int n, int c, int[] w, int[] v) {
+    return getMaxValues(n, c, w, v, null);
+}
 
-    int getMaxValues(int n, int c, int[] w, int[] v, Map<String, Integer> cache) {
-        if (n == 1) { // 边界
-            if (c >= w[0]) {
-                return v[0];
-            } else {
-                return 0;
-            }
-        }
-        if (cache == null) {
-            cache = new HashMap<>((int) Math.ceil(Math.log(n) / Math.log(2)));
-        }
-        if (cache.containsKey(generatorCacheKey(n, c))) {
-            return cache.get(generatorCacheKey(n, c));
-        }
-        int value;
-        if (c >= w[n - 1]) { // 状态转移公式
-            value = Math.max(getMaxValues(n - 1, c - w[n - 1], w, v, cache) + v[n - 1],
-                    getMaxValues(n - 1, c, w, v, cache));
+int getMaxValues(int n, int c, int[] w, int[] v, Map<String, Integer> cache) {
+    if (n == 1) { // 边界
+        if (c >= w[0]) {
+            return v[0];
         } else {
-            value = getMaxValues(n - 1, c, w, v, cache);
+            return 0;
         }
-        cache.put(generatorCacheKey(n, c), value);
-        return value;
     }
-    
-    String generatorCacheKey(int n, int c) {
-        return String.format("%s_%s", n, c);
+    if (cache == null) {
+        cache = new HashMap<>((int) Math.ceil(Math.log(n) / Math.log(2)));
     }
+    if (cache.containsKey(generatorCacheKey(n, c))) {
+        return cache.get(generatorCacheKey(n, c));
+    }
+    int value;
+    if (c >= w[n - 1]) { // 状态转移公式
+        value = Math.max(getMaxValues(n - 1, c - w[n - 1], w, v, cache) + v[n - 1],
+                getMaxValues(n - 1, c, w, v, cache));
+    } else {
+        value = getMaxValues(n - 1, c, w, v, cache);
+    }
+    cache.put(generatorCacheKey(n, c), value);
+    return value;
+}
+
+String generatorCacheKey(int n, int c) {
+    return String.format("%s_%s", n, c);
+}
 ```
 
 ### 动态规划算法
@@ -340,30 +340,30 @@ tags:
 &emsp;&emsp;规律已经很明显了，**每个格子的数据都只依赖于它的前一行数据**，和爬楼梯中我们最后只存储了前两步数据的思路一样，在这里我们只需要**存储前一行的数据**即可推导出下一行的数据，编码的思路和我们填充表格的思路一致，代码如下：
 
 ```java
-    int getMaxValues(int n, int c, int[] w, int[] v) {
-        int[] pre = new int[c + 1]; // 前一行
-        int[] current = new int[c + 1]; // 当前行
-        for (int i = 1; i <= c; i++) { // 先填充第一行
-            if (i < w[0]) {
-                pre[i] = 0;
-            } else {
-                pre[i] = v[0];
-            }
+int getMaxValues(int n, int c, int[] w, int[] v) {
+    int[] pre = new int[c + 1]; // 前一行
+    int[] current = new int[c + 1]; // 当前行
+    for (int i = 1; i <= c; i++) { // 先填充第一行
+        if (i < w[0]) {
+            pre[i] = 0;
+        } else {
+            pre[i] = v[0];
         }
-
-        for (int i = 1; i < n; i++) {
-            for (int j = 1; j <= c; j++) { // 填充第二行到最后
-                if (j < w[i]) { // 容量不够
-                    current[j] = pre[j];
-                } else {
-                    current[j] = Math.max(pre[j - w[i]] + v[i], pre[j]);
-                }
-            }
-            // 此处不可直接使用等号 会出现引用混乱的情况
-            pre = Arrays.copyOf(current, current.length);
-        }
-        return current[c];
     }
+
+    for (int i = 1; i < n; i++) {
+        for (int j = 1; j <= c; j++) { // 填充第二行到最后
+            if (j < w[i]) { // 容量不够
+                current[j] = pre[j];
+            } else {
+                current[j] = Math.max(pre[j - w[i]] + v[i], pre[j]);
+            }
+        }
+        // 此处不可直接使用等号 会出现引用混乱的情况
+        pre = Arrays.copyOf(current, current.length);
+    }
+    return current[c];
+}
 ```
 
 # 题目扩展，采金矿

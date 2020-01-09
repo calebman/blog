@@ -144,7 +144,7 @@ public class BusinessService implements IBusinessService {
 
 * 讲`@Transactional`用法一类（如何使用、声明式、命令式）
 * 讲事务概念性一类（事务的属性和行为等等）
-* 讲Spring实现事务的原理与核心类
+* 讲Spring实现事务的原理与核心一类
 
 结合搜索到的内容我准备按照自己的思路进源码看一看，毕竟源码面前无秘密。接下来我将叙述一下我如何从源码中找到我想要的东西。
 

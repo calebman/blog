@@ -72,7 +72,7 @@ public class NullPointTest {
 这里定义了一个`ValueWarp`类用于包装函数的响应结果，`randomNullContentWarp`函数负责随机返回带有空内容的值包装而不直接返回空对象，`main`函数中循环调用此函数打印内容，这里我将重点讲一下ValueWarp中以下三个函数的设计
 
 - **get**：获取包装内容，内容不存在时抛出`NoSuchElementException`异常
-- **orElse**：获取包装内容，当包装内容不存在时采用用户传入的备选内容
+- **orElse**：获取包装内容，当包装内容不存在时采用用户传入的备选内容
 - **ifPresent**：当包装内容不为空时调用用户传入的**内容消费行为**，这里用到了一个java8函数式编程库中的`Consumer`接口，相关说明在**[如何优雅的遍历树结构](/2019-08-29-essay)**这篇博客中有讲到
 
 其实`get`方法并不能很好的防止由于空指针带来的异常问题，而`orElse`与`ifPresent`则可以防止此问题出现，最佳的实践方式应该是当你有**备选值**时使用`orElse`函数，当你只是想非空时执行则使用`ifPresent`函数，如上述例子中的`warp.ifPresent(o -> System.out.println(o));`代表非空时打印包装内容

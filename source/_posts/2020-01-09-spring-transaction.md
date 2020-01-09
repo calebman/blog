@@ -136,7 +136,7 @@ public class BusinessService implements IBusinessService {
 }
 ```
 
-这个服务按照预期的运行结果`BussinessEntity`这个业务实体不应该被持久化到数据库中，但这篇文章的出现代表这代码的执行结果正好与预期相反，那么接下来就要排查一下为什么事务没有生效呢？
+这个服务按照预期的运行结果BussinessEntity业务实体不应该被持久化到数据库中，但这篇文章的出现代表代码的执行结果正好与预期相反，所以接下来就要排查一下为什么事务没有生效呢？
 
 # 分析
 

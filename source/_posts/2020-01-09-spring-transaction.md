@@ -67,7 +67,6 @@ public class SystemDSConfiguration {
     public PlatformTransactionManager systemTransactionManager(DataSource dataSource) {
         return new JpaTransactionManager(systemSessionFactory(dataSource));
     }
-
 }
 
 @Configuration
@@ -76,35 +75,19 @@ public class BusinessDSConfiguration {
     @Resource
     private Environment environment;
 
-    /**
-     * 业务数据源
-     */
     private DataSource businessDataSource() {
-        DruidDataSource druidDataSource = new DruidDataSource();
-        druidDataSource.setUrl(environment.getProperty("spring.datasource.business.jdbc-url"));
-        druidDataSource.setUsername(environment.getProperty("spring.datasource.business.username"));
-        druidDataSource.setPassword(environment.getProperty("spring.datasource.business.password"));
-        druidDataSource.setDriverClassName(environment.getProperty("spring.datasource.business.driver-class-name"));
-        return druidDataSource;
+        // ...
     }
 
     @Bean
     public SessionFactory businessSessionFactory() {
-        LocalSessionFactoryBuilder sessionFactoryBuilder = new LocalSessionFactoryBuilder(this.businessDataSource());
-        sessionFactoryBuilder.scanPackages("com.zjcds.tj.server.business");
-        sessionFactoryBuilder.setProperty(AvailableSettings.SHOW_SQL, "true");
-        return sessionFactoryBuilder.buildSessionFactory();
+        // ...
     }
 
-    /**
-     * 配置hibernate事务管理器
-     * @return 返回事务管理器
-     */
     @Bean
     public PlatformTransactionManager businessTransactionManager() {
-        return new JpaTransactionManager(businessSessionFactory());
+        // ...
     }
-
 }
 ```
 
@@ -140,7 +123,7 @@ public class BusinessService implements IBusinessService {
 
 # 分析
 
-分析问题的产生原因之前我们先要搞懂`@Transactional`是怎么起作用的，我尝试把**@Transactional 工作原理**作为关键字在`google`中搜索，看了一部分文章后总结了有以下几类
+分析问题的产生原因之前我们先要搞懂`@Transactional`是怎么起作用的，我尝试把`@Transactional 工作原理`作为关键字在`google`中搜索，看了一部分文章后总结了有以下几类
 
 * 讲`@Transactional`用法一类（如何使用、声明式、命令式）
 * 讲事务概念性一类（事务的属性和行为等等）
@@ -162,8 +145,8 @@ public class BusinessService implements IBusinessService {
 现在你也有这些知识点了，马上我们将进入`Transactional`的源码解析部分。要看源码首先我们要找到入口，我们先看第一个知识点，由于我的项目中没有使用@EnableTransactionManagemen注解，所以事务是通过TransactionAutoConfiguration自动完成装载配置。
 
 > SpringBoot自动装配有两种实现方式
-> * 第一种是**类SPI机制**，通过扫描META-INF/spring.factories文件中的定义的类进行装配
-> * 第二种是**@Import机制**，通过扫描@Import注解中定义的类进行装配
+> * 第一种是`类SPI机制`，通过扫描META-INF/spring.factories文件中的定义的类进行装配
+> * 第二种是`@Import机制`，通过扫描@Import注解中定义的类进行装配
 
 ### （二）TransactionAutoConfiguration的探究
 
@@ -493,7 +476,7 @@ protected PlatformTransactionManager determineTransactionManager(@Nullable Trans
 
 ### （五）问题浮出水面
 
-**经过debug分析我找到了事务失效的原因，由于我的Bussiness模块获取了System模块的事务管理器导致其事务失效。**这里有人可能会感到疑惑，获取了错误的事务管理器不会报错么？
+**经过debug分析我找到了事务失效的原因，由于我的Bussiness模块获取了System模块的事务管理器导致其事务失效。** 这里有人可能会感到疑惑，获取了错误的事务管理器不会报错么？
 
 这块我们可以这么分析，想想在`mysql`中我们是怎么开启事务的。
 

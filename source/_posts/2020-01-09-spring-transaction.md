@@ -131,7 +131,7 @@ public class BusinessService implements IBusinessService {
 
 结合搜索到的内容我准备按照自己的思路进源码看一看，毕竟源码面前无秘密。接下来我将叙述一下我如何从源码中找到我想要的东西。
 
-### （一）整合搜索结果
+### 整合搜索结果
 
 刚才我说到结合搜索到的内容，但没说是什么内容，这里我给一下搜索内容中我认为比较重要的一些知识点：
 
@@ -148,7 +148,7 @@ public class BusinessService implements IBusinessService {
 > * 第一种是`类SPI机制`，通过扫描META-INF/spring.factories文件中的定义的类进行装配
 > * 第二种是`@Import机制`，通过扫描@Import注解中定义的类进行装配
 
-### （二）TransactionAutoConfiguration的探究
+### TransactionAutoConfiguration的探究
 
 TransactionAutoConfiguration的代码如下，代码量并不多并且我大部分都给出了注释，接下来我们该如何去看这个代码呢？
 
@@ -232,7 +232,7 @@ public class TransactionAutoConfiguration {
 
 观察这个类你很快就能发现一个关键点，你要找到切面配置就在最下方`EnableTransactionManagementConfiguration`这个类中，而这个类又使用了`@EnableTransactionManagement`这个注解，而它也是我们前面提到手动开启事务的注解，所以无论如何我们都得关注一下它。
 
-### （三）@EnableTransactionManagement的探究
+### @EnableTransactionManagement的探究
 
 首先我们看看@EnableTransactionManagement的代码
 
@@ -347,7 +347,7 @@ public class ProxyTransactionManagementConfiguration extends AbstractTransaction
 
 **至此我们已经找到了事务方法拦截器`TransactionInterceptor`的定义之处，接下来就看看我们的方法被事务拦截后干了什么？**
 
-### （四）TransactionInterceptor探究
+### TransactionInterceptor探究
 
 阅读TransactionInterceptor这个类不难发现`invoke`即是事务拦截的主要实现，而它仅有两句代码而已，主要是调用了父类的`invokeWithinTransaction`方法。
 
@@ -474,7 +474,7 @@ protected PlatformTransactionManager determineTransactionManager(@Nullable Trans
 }
 ```
 
-### （五）问题浮出水面
+### 问题浮出水面
 
 **经过debug分析我找到了事务失效的原因，由于我的Bussiness模块获取了System模块的事务管理器导致其事务失效。** 这里有人可能会感到疑惑，获取了错误的事务管理器不会报错么？
 

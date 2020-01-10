@@ -587,3 +587,7 @@ public class MyProxyTransactionManagementConfiguration extends ProxyTransactionM
     }
 }
 ```
+
+# 关于公众号
+
+![](https://resources.chenjianhui.site/wechat-qrcode.png)

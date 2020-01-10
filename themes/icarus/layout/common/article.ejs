@@ -55,7 +55,7 @@
             </div>
         </div>
         <% } %>
-        <div class="content">
+        <div id="article-content" class="content">
             <%- index && post.excerpt ? post.excerpt : post.content %>
         </div>
         <% if (!index && post.layout === 'post' && post.copyright !== false) { %>
@@ -161,3 +161,9 @@
     </div>
 </div>
 <% } %>
+<link rel="stylesheet" href="/css/article-nice.css">
+<!-- Highlight.js -->
+<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>

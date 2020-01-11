@@ -3,16 +3,21 @@
    background-image: linear-gradient(90deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%), linear-gradient(360deg,rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%);
    background-size: 20px 20px;
    background-position: center center;
-   font-size: 16px;
-   color: black;
    padding: 10px;
-   line-height: 1.6;
    word-spacing: 0px;
-   letter-spacing: 0px;
    word-break: break-word;
    word-wrap: break-word;
    text-align: left;
    font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+   letter-spacing: 0px;
+   font-size: 17px;
+   line-height: 1.6;
+   color: black;
+   font-family: "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", sans-serif, "Merriweather", serif;
+   letter-spacing: 0.01rem;
+   font-size: 1.7rem;
+   line-height: 1.85em;
+   color: #3A4145;
 }
 
 /*初始化格式*/
@@ -21,7 +26,7 @@
   line-height: 1.6;
   letter-spacing: .034em;
   color: rgb(63, 63, 63);
-  font-size: 16px;
+  font-size: 17px;
   word-break:all;
 }
 
@@ -58,7 +63,7 @@
 #article-content h2 {
   display:block;
   text-align:center;
-  background-image: url(https://my-wechat.mdnice.com/mdnice/mountain_2_20191028221337.png); 
+  background-image: url(/images/mountain_2_20191028221337.png); 
   background-position: center center;
   background-repeat: no-repeat;
   background-attachment: initial;
@@ -94,7 +99,7 @@
 /* 三级标题 */
 #article-content h3:before {
   content: "";
-  background-image:url(https://my-wechat.mdnice.com/mdnice/mountain_1_20191028221337.png);
+  background-image:url(/images/mountain_1_20191028221337.png);
   background-size:15px 15px;
   display: inline-block;
   width: 15px;
@@ -108,7 +113,7 @@
 
 /* 三级标题内容 */
 #article-content h3 span {
-  font-size:16px;
+  font-size:17px;
   font-weight:bold;
   display:inline-block;
   margin-left:8px;
@@ -218,7 +223,7 @@
 
 
 /* 表格内的单元格
- * 字体大小 font-size: 16px;
+ * 字体大小 font-size: 17px;
  * 边框 border: 1px solid #ccc;
  * 内边距 padding: 5px 10px;
  */
@@ -302,7 +307,7 @@ XCode style (c) Angel Garcia <angelgarcia.mail@gmail.com>
 .hljs {
   display: block;
   overflow-x: auto;
-  padding: 16px;
+  padding: 17px;
   background: #fff;
   color: black;
   font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;

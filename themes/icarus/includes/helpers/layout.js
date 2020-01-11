@@ -26,7 +26,8 @@ module.exports = function (hexo) {
             return widgets.filter(widget => widget.hasOwnProperty('position') && widget.position === position);
         }
         if (position === 'left') {
-            return widgets.filter(widget => widget.hasOwnProperty('position') && (widget.type === 'profile' || widget.type === 'tag'));
+            return [];
+            // return widgets.filter(widget => widget.hasOwnProperty('position') && (widget.type === 'profile' || widget.type === 'tag'));
         } else {
             return widgets.filter(widget => widget.hasOwnProperty('position') && (widget.type === 'toc'));
         }

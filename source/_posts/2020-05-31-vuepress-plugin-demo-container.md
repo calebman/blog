@@ -14,7 +14,7 @@ tags:
 
 <!-- more -->
 
-> 关于最佳实践方案我提供了一个插件 [vuepress-plugin-demo-container](https://github.com/calebman/vuepress-plugin-demo-container) 来统一解决，插件的具体介绍、示例与使用文档 [点此访问](https://calebman.github.io/vuepress-plugin-demo-container/zh/)。
+> 关于最佳实践方案我提供了一个插件 [vuepress-plugin-demo-container](https://github.com/calebman/vuepress-plugin-demo-container) 来统一解决，插件的具体介绍、示例与使用文档 [点此访问](https://docs.chenjianhui.site/vuepress-plugin-demo-container/zh/)。
 
 # 前言
 

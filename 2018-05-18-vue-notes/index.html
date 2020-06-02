@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+<title>纯正后端的vue轮子笔记 - Sincerity</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="好记性不如烂笔头，多造轮子多做笔记">
+<meta name="keywords" content="vuejs,vue-router,vuex">
+<meta property="og:type" content="article">
+<meta property="og:title" content="纯正后端的vue轮子笔记">
+<meta property="og:url" content="https://chenjianhui.site/2018-05-18-vue-notes/index.html">
+<meta property="og:site_name" content="Sincerity">
+<meta property="og:description" content="好记性不如烂笔头，多造轮子多做笔记">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://resources.chenjianhui.site/2018-05-18-home-pic.png">
+<meta property="og:updated_time" content="2020-06-02T09:08:30.082Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="纯正后端的vue轮子笔记">
+<meta name="twitter:description" content="好记性不如烂笔头，多造轮子多做笔记">
+<meta name="twitter:image" content="https://resources.chenjianhui.site/2018-05-18-home-pic.png">
+
+
+
+
+
+<link rel="alternative" href="/atom.xml" title="纯正后端的vue轮子笔记" type="application/atom+xml">
+
+
+
+<link rel="icon" href="/images/favicon-32x32.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+    
+    
+<script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:19960428,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.svg" alt="纯正后端的vue轮子笔记" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">Home</a>
+                
+                <a class="navbar-item" href="/archives">Archives</a>
+                
+                <a class="navbar-item" href="/categories">Categories</a>
+                
+                <a class="navbar-item" href="/tags">Tags</a>
+                
+                <a class="navbar-item" href="/about">About</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    
+                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://github.com/calebman">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-image">
+        <span class="image is-7by1">
+            <img class="thumbnail" src="https://resources.chenjianhui.site/2018-05-18-home-pic.png" alt="纯正后端的vue轮子笔记">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <i class="fas fa-angle-double-right"></i>纯正后端的vue轮子笔记
+            
+        </h1>
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2018-05-18T14:10:22.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2018-05-18</time>
+                
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-06-02T09:08:30.082Z"><i class="far fa-calendar-check">&nbsp;</i>2020-06-02</time>
+                
+                
+                <div class="level-item">
+                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
+                <a class="has-link-grey -link" href="/categories/前端/">前端</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    <i class="far fa-clock"></i>&nbsp;
+                    
+                    
+                    28 分钟 读完 (大约 4201 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <div id="article-content" class="content">
+            <p>好记性不如烂笔头，多造轮子多做笔记</p>
+<a id="more"></a>
+
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a><span>说明</span></h2><p>由于公司需要，<strong>我</strong>作为一个<strong>纯正的</strong>后端工程师，已经自学了半年多的vue了，愣是被逼成了一个小全栈，当然，小全栈这是往好听了说，事实上就是个前后端深度都不足的小菜鸡，在深知自己众多不足以及明白好记性不如<strong>烂</strong>笔头的道理下，多造轮子多做笔记总是不会错的：）</p>
+<p>所以最近得空我把我刚学vuejs的时候写的<a href="https://github.com/calebman/vue-DBM" target="_blank" rel="noopener">烂工程</a>重构了一下，重构的时候针对性的分模块做了一些笔记如下</p>
+<ul>
+<li>路由</li>
+<li>状态管理</li>
+<li>权限管理</li>
+<li>控件封装与使用</li>
+<li>混入</li>
+<li>数据模拟</li>
+<li>打包优化与用户体验</li>
+</ul>
+<p>如果不想拉这么长可以去 <a href="https://github.com/calebman/vue-DBM#%E5%BC%80%E5%8F%91%E5%89%8D%E5%87%86%E5%A4%87" target="_blank" rel="noopener">全球最大的同性交友网站</a> 查看</p>
+<h2 id="进入烂笔头模式"><a href="#进入烂笔头模式" class="headerlink" title="进入烂笔头模式"></a><span>进入烂笔头模式</span></h2><blockquote>
+<h3 id="路由"><a href="#路由" class="headerlink" title="路由"></a><span>路由</span></h3></blockquote>
+<h3 id="1-路由加载"><a href="#1-路由加载" class="headerlink" title="1. 路由加载"></a><span>1-路由加载</span></h3><pre><code class="javascript">// 直接加载页面
+import page from &#39;@/views/page&#39;;
+// 懒加载页面
+() =&gt; import(&#39;@/views/page&#39;);
+// 指定打包名称的懒加载，可将多个页面打包成一个js进行加载
+() =&gt; import(/* webpackChunkName: &quot;group-page&quot; */&#39;@/views/page1&#39;);
+() =&gt; import(/* webpackChunkName: &quot;group-page&quot; */&#39;@/views/page2&#39;);
+() =&gt; import(/* webpackChunkName: &quot;group-page&quot; */&#39;@/views/page3&#39;);</code></pre>
+<h3 id="2-404路由"><a href="#2-404路由" class="headerlink" title="2. 404路由"></a><span>2-404路由</span></h3><pre><code class="javascript">// 加载一个404页面
+import page404 from &#39;@/views/page404&#39;;
+// 将以下路由配置放置在路由表的最末端，当路径无法匹配前面的所有路由时将会跳转至page404组件页面
+{ path: &#39;*&#39;, component: page404}</code></pre>
+<h3 id="3-路由拦截"><a href="#3-路由拦截" class="headerlink" title="3. 路由拦截"></a><span>3-路由拦截</span></h3><pre><code class="javascript">// 路由跳转前的拦截器
+router.beforeEach((to, from, next) =&gt; {
+
+});
+// 路由跳转后的拦截器
+router.afterEach(to =&gt; {
+
+});
+// 路由跳转时出现错误时的拦截器
+router.onError((err) =&gt; {
+
+});</code></pre>
+<h3 id="4-动态路由"><a href="#4-动态路由" class="headerlink" title="4. 动态路由"></a><span>4-动态路由</span></h3><blockquote>
+<p>动态路由一般配合页面级的权限控制使用</p>
+</blockquote>
+<pre><code class="javascript">// 通过router.addRoutes方法动态添加可访问路由
+router.addRoutes(addRouters)
+// hack方法 确保addRoutes已完成
+next({ ...to, replace: true }) // set the replace: true so the navigation will not leave a history record </code></pre>
+<h3 id="5-路由加载时动画"><a href="#5-路由加载时动画" class="headerlink" title="5. 路由加载时动画"></a><span>5-路由加载时动画</span></h3><blockquote>
+<p>路由加载时的loading动画一般配合路由懒加载使用</p>
+</blockquote>
+<pre><code class="javascript">// 在状态管理中定义一个路由loading标志
+const app = {
+  state: {
+    routerLoading: false, //路由的loading过渡
+  },
+  mutations: {
+    //修改路由loading状态
+    UPDATE_ROUTER_LOADING(state, status) {
+      state.routerLoading = status
+    }
+  }
+}
+
+// 在路由拦截器中修改loading状态
+router.beforeEach((to, from, next) =&gt; {
+  store.commit(&#39;UPDATE_ROUTER_LOADING&#39;, true); // 展示路由加载时动画
+});
+router.afterEach(to =&gt; {
+  store.commit(&#39;UPDATE_ROUTER_LOADING&#39;, false);
+});
+router.onError(err =&gt; {
+  console.error(err); // for bug
+  store.commit(&#39;UPDATE_ROUTER_LOADING&#39;, false);
+});
+
+// 在router-view定义loading动画
+// element-ui提供了v-loading指令可以直接使用
+&lt;router-view v-loading=&quot;$store.getters.routerLoading&quot;&gt;&lt;/router-view&gt;</code></pre>
+<blockquote>
+<h3 id="状态管理"><a href="#状态管理" class="headerlink" title="状态管理"></a><span>状态管理</span></h3></blockquote>
+<h3 id="1-小知识"><a href="#1-小知识" class="headerlink" title="1. 小知识"></a><span>1-小知识</span></h3><ul>
+<li>state中的数据修改需要通过mutation或action触发</li>
+<li>mutation中的方法必须是同步函数</li>
+<li>action可包含任意异步操作，可返回一个Promise</li>
+<li>mutation以及action可以重复，调用时将会依次调用，getter必须唯一</li>
+</ul>
+<h3 id="2-多模块"><a href="#2-多模块" class="headerlink" title="2. 多模块"></a><span>2-多模块</span></h3><blockquote>
+<p>业务比较复杂时可使用状态管理中的多模块，有以下注意事项</p>
+</blockquote>
+<ul>
+<li>除state会根据组合时模块的别名来添加层级，其他的都是合并在根级下，所以在回调函数获取的getters、commit、dispatch都是全局作用的</li>
+<li>mutation的回调参数只有state，state为当前模块的状态树，下同</li>
+<li>action的回调参数为state、rootState、getters、commit、dispatch，如果需要在action中调用其他的action可使用dispatch直接调用</li>
+<li>getter的回调参数为state、rootState、getters</li>
+<li>模块间可以通过回调的rootState进行交互</li>
+<li>出现重名的mutation、action将依次触发<pre><code class="javascript">// 多模块的实现 app以及user为各个子模块
+export default new Vuex.Store({
+  modules: {
+      app,
+      user
+  },
+  getters
+})</code></pre>
+</li>
+</ul>
+<h3 id="3-辅助函数"><a href="#3-辅助函数" class="headerlink" title="3. 辅助函数"></a><span>3-辅助函数</span></h3><blockquote>
+<p>Vuex除了提供了Store对象以外还对外提供了一些辅助函数</p>
+</blockquote>
+<ul>
+<li>mapState、mapGetters将store中的state、getters属性映射到vue组件局部的计算属性中</li>
+</ul>
+<pre><code class="javascript">import { mapState } from &#39;vuex&#39;
+computed: mapState([ 
+    // 映射 this.name 到 this.$store.state.name 
+    &#39;name&#39;
+])
+
+import { mapGetters } from &#39;vuex&#39;
+computed: {
+    // 映射 this.name 到 this.$store.getters.name 
+    ...mapGetters([ &#39;name&#39; ])
+}</code></pre>
+<ul>
+<li>mapActions、mapMutations将store中的dispatch、commit方法映射到vue组件局部的方法中</li>
+</ul>
+<pre><code class="javascript">import { mapActions } from &#39;vuex&#39;
+
+methods: { 
+    // 映射 this.LoginByUsername() 到 this.$store.dispatch(&#39;LoginByUsername&#39;)
+    ...mapActions([ &#39;LoginByUsername&#39; ]), 
+    // 映射 this.login() to this.$store.dispatch(&#39;LoginByUsername&#39;)
+    ...mapActions({ login: &#39;LoginByUsername&#39;}) 
+}
+
+import { mapMutations } from &#39;vuex&#39;
+
+methods: { 
+    // 映射 this.SET_NAME() 到 this.$store.commit(&#39;SET_NAME&#39;) ])
+    ...mapMutations([ &#39;SET_NAME&#39; ]) , 
+    // 映射 this.setName() 到 this.$store.commit(&#39;SET_NAME&#39;) })
+    ...mapMutations({ setName: &#39;SET_NAME&#39; ])
+}</code></pre>
+<h3 id="4-数据持久化插件"><a href="#4-数据持久化插件" class="headerlink" title="4. 数据持久化插件"></a><span>4-数据持久化插件</span></h3><blockquote>
+<p>刷新页面时希望状态不被丢失时可用此插件</p>
+</blockquote>
+<pre><code class="javascript">// 摘抄于 https://github.com/robinvdvleuten/vuex-persistedstate
+import createPersistedState from &#39;vuex-persistedstate&#39;
+import * as Cookies from &#39;js-cookie&#39;
+
+const store = new Store({
+  // ...
+  plugins: [
+    createPersistedState({
+      storage: {
+        getItem: key =* Cookies.get(key),
+        // Please see https://github.com/js-cookie/js-cookie#json, on how to handle JSON.
+        setItem: (key, value) =* Cookies.set(key, value, { expires: 3, secure: true }),
+        removeItem: key =* Cookies.remove(key)
+      }
+    })
+  ]
+})</code></pre>
+<h3 id="5-日志插件"><a href="#5-日志插件" class="headerlink" title="5. 日志插件"></a><span>5-日志插件</span></h3><blockquote>
+<p>开发环境中希望能够跟踪状态变化并输出时可用此插件</p>
+</blockquote>
+<pre><code class="javascript">// createLogger是vuex中的内置插件
+import createLogger from &#39;vuex/dist/logger&#39;
+
+let vuexPlugins = [];
+if(process.env.NODE_ENV !== &#39;production&#39;){ // 开发环境加载该插件
+    vuexPlugins.push(createLogger); 
+}
+
+const store = new Store({
+  // ...
+  plugins: vuexPlugins
+})
+</code></pre>
+<blockquote>
+<h3 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a><span>权限管理</span></h3></blockquote>
+<h3 id="1-需要实现的功能"><a href="#1-需要实现的功能" class="headerlink" title="1. 需要实现的功能"></a><span>1-需要实现的功能</span></h3><ul>
+<li>根据用户登录后的权限表生成路由</li>
+<li>页面级的权限控制</li>
+<li>dom元素级的权限控制</li>
+<li>登录状态失效的处理</li>
+</ul>
+<h3 id="2-路由设计"><a href="#2-路由设计" class="headerlink" title="2. 路由设计"></a><span>2-路由设计</span></h3><blockquote>
+<p>首先我们需要设计路由对象需要有哪些必要参数信息</p>
+<p>为了实现权限管理我们必须要有roles参数代表该路由必须拥有哪些权限才能访问</p>
+<p>为了更好的展示路由在这里设计了title、icon两个参数用于侧边栏的菜单展示</p>
+<p>而有些路由不需要在侧边栏展示，这里使用hidden参数来告诉程序哪些路由是不需要展示的</p>
+</blockquote>
+<pre><code class="javascript">// 首先设计路由对象参数
+/**
+* hidden: true                   如果hidden为true则在左侧菜单栏展示，默认为false
+* name:&#39;router-name&#39;             路由名称，路由唯一标识
+* meta : {
+    roles: [&#39;admin&#39;,&#39;editor&#39;]    权限列表，用于页面级的权限控制，默认不设置代表任何权限均可访问
+    title: &#39;title&#39;               对应路由在左侧菜单栏的标题名称
+    icon: &#39;icon-class&#39;           对应路由在左侧菜单栏的图标样式
+ }
+**/</code></pre>
+<blockquote>
+<p>接下来我们需要实现路由的动态加载</p>
+<p>系统初始化时加载必要路由，之后根据登录用户的权限加载符合条件的路由</p>
+</blockquote>
+<pre><code class="javascript">// 定义系统初始化时加载的必要路由信息
+export const constantRouterMap = [
+  { path: &#39;/login&#39;, name: &#39;login&#39;, meta: { title: &quot;系统登录&quot;, hidden: true }, component: login },
+  { path: &quot;/404&quot;, name: &quot;page404&quot;, meta: { title: &quot;页面走丢了&quot;, hidden: true }, component: page404 },
+  { path: &quot;/401&quot;, name: &quot;page401&quot;, meta: { title: &quot;权限不足&quot;, hidden: true }, component: page401 }
+]
+// 定义布局页面
+const layout = () =&gt; import(/* webpackChunkName: &quot;group-index&quot; */ &#39;@/views/layout&#39;);
+// 定义异步加载的路由信息
+export const asyncRouterMap = [
+  {
+    path: &#39;/&#39;,
+    name: &#39;main&#39;,
+    redirect: &#39;/dashboard&#39;,
+    hidden: true,
+    component: layout,
+    children: [
+      { path: &#39;dashboard&#39;, name: &#39;dashboard&#39;, meta: { title: &quot;仪表盘&quot; }, component: () =&gt; import(/* webpackChunkName: &quot;group-index&quot; */&#39;@/views/dashboard&#39;) }
+    ]
+  },
+  {
+    path: &#39;/permission&#39;,
+    name: &#39;permission&#39;,
+    meta: { title: &quot;权限页&quot;, icon: &quot;dbm d-icon-quanxian&quot; },
+    redirect: &#39;/permission/adminpermission&#39;,
+    component: layout,
+    children: [
+      { path: &quot;adminpermission&quot;, name: &quot;adminPermission&quot;, meta: { title: &quot;管理员权限页&quot;, roles: [&quot;admin&quot;] }, component: () =&gt; import(&#39;@/views/permission/admin&#39;) },
+      { path: &quot;watcherpermission&quot;, name: &quot;watcherPermission&quot;, meta: { title: &quot;游客权限页&quot;, roles: [&quot;admin&quot;, &quot;watcher&quot;] }, component: () =&gt; import(&#39;@/views/permission/watcher&#39;) },
+      { path: &quot;elementpermission&quot;, name: &quot;elementPermission&quot;, meta: { title: &quot;元素级别权限&quot; }, component: () =&gt; import(&#39;@/views/permission/element&#39;) }
+    ]
+  },
+  { path: &#39;*&#39;, redirect: &#39;/404&#39;, hidden: true }
+]</code></pre>
+<h3 id="3-页面级的权限控制"><a href="#3-页面级的权限控制" class="headerlink" title="3. 页面级的权限控制"></a><span>3-页面级的权限控制</span></h3><blockquote>
+<p>使用路由拦截来实现页面级的权限控制</p>
+<p>拦截路由跳转判断用户是否登录</p>
+<p>从拉取的用户信息中提取权限表通过addRoutes方法动态加载异步路由表</p>
+<p>每次路由跳转时判断用户是否拥有该路由的访问权限实现动态权限匹配</p>
+</blockquote>
+<pre><code class="javascript">// 定义免登白名单
+const whiteList = [&#39;/login&#39;, &#39;/404&#39;, &#39;/401&#39;];
+// 拦截路由跳转
+router.beforeEach((to, from, next) =&gt; {
+  store.commit(&#39;UPDATE_ROUTER_LOADING&#39;, true); // 展示路由加载时动画
+  if (getToken()) {  // 存在token
+    if (to.path === &#39;/login&#39;) {
+      next({ path: &#39;/&#39; })
+    } else {
+      if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完用户信息
+        store.dispatch(&#39;GetUserInfo&#39;).then(data =&gt; { // 拉取用户信息
+          const roles = data.roles // 权限表必须为数组,例如: [&#39;admin&#39;,&#39;editer&#39;]
+          store.dispatch(&#39;GenerateRoutes&#39;, { roles }).then(() =&gt; { // 根据roles权限生成可访问的路由表
+            router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
+            next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
+          })
+        }).catch(err =&gt; { // 拉取用户信息失败，提示登录状态失效
+          store.dispatch(&#39;FedLogOut&#39;).then(() =&gt; {
+            Message.error(&#39;登录状态失效, 请重新登录&#39;);
+            next({ path: &#39;/login&#39; });
+          })
+        })
+      } else {
+        if (hasPermission(store.getters.roles, to.meta.roles)) { // 动态权限匹配
+          next();
+        } else {
+          next({ path: &#39;/401&#39;, replace: true, query: { noGoBack: true } });
+        }
+      }
+    }
+  } else { // 没有token
+    if (whiteList.indexOf(to.path) !== -1) { // 在免登录白名单，直接进入
+      next();
+    } else {
+      next(&#39;/login&#39;); // 否则全部重定向到登录页
+    }
+  }
+});</code></pre>
+<h3 id="4-元素级的权限控制"><a href="#4-元素级的权限控制" class="headerlink" title="4. 元素级的权限控制"></a><span>4-元素级的权限控制</span></h3><blockquote>
+<p>使用自定义指令来实现元素级的权限控制</p>
+<p>在被绑定元素插入父节点时验证用户是否包含该元素的所需权限</p>
+<p>根据鉴权结果来决定是否移除该元素</p>
+</blockquote>
+<pre><code class="javascript">import store from &#39;@/store&#39;
+
+export default {
+  inserted(el, binding, vnode) {
+    const { value } = binding; // 获取自定义指令传入的鉴权信息
+    const roles = store.getters &amp;&amp; store.getters.roles; // 从状态管理中获取当前用户的路由信息
+
+    if (value &amp;&amp; value instanceof Array &amp;&amp; value.length &gt; 0) {
+      const permissionRoles = value;
+
+      const hasPermission = roles.some(role =&gt; { // 判断用户是否包含该元素所需权限
+        return permissionRoles.includes(role);
+      })
+
+      if (!hasPermission) { // 权限不足
+        el.parentNode &amp;&amp; el.parentNode.removeChild(el); // 移除该dom元素
+      }
+    } else {
+      throw new Error(`必须要有权限写入，例如[&#39;admin&#39;]`)
+    }
+  }
+}
+
+// 在vue组件上使用它
+// 引入并注册permission指令
+import permission from &quot;@/directive/permission/index.js&quot;;
+export default {
+  directives: {
+    permission
+  }
+}
+// 使用permission指令
+&lt;el-button v-permission=&quot;[&#39;admin&#39;]&quot;&gt;admin 可见&lt;/el-button&gt;
+&lt;el-button v-permission=&quot;[&#39;admin&#39;,&#39;watcher&#39;]&quot;&gt;watcher 可见&lt;/el-button&gt;</code></pre>
+<blockquote>
+<h3 id="render函数"><a href="#render函数" class="headerlink" title="render函数"></a><span>render函数</span></h3></blockquote>
+<h3 id="1-如何封装一个支持render渲染的组件"><a href="#1-如何封装一个支持render渲染的组件" class="headerlink" title="1. 如何封装一个支持render渲染的组件"></a><span>1-如何封装一个支持render渲染的组件</span></h3><ul>
+<li>首先创建一个函数式组件</li>
+</ul>
+<pre><code class="javascript">// 表格拓展函数式组件的实现
+// see https://github.com/calebman/vue-DBM/blob/master/src/components/table/expand.js
+export default {
+  name: &#39;TableExpand&#39;,
+  functional: true, // 标记组件为 functional，这意味它是无状态 (没有响应式数据)，无实例 (没有 this 上下文)。
+  props: {
+    row: Object, // 当前行对象
+    field: String, // 列名称
+    index: Number, // 行号
+    render: Function // 渲染函数
+  },
+  render: (h, ctx) =&gt; { // 提供ctx作为上下文
+    const params = {
+      row: ctx.props.row,
+      field: ctx.props.field,
+      index: ctx.props.index
+    };
+    return ctx.props.render(h, params);
+  }
+};</code></pre>
+<ul>
+<li>在父组件中引入</li>
+</ul>
+<pre><code class="javascript">// see https://github.com/calebman/vue-DBM/blob/master/src/components/table/table.vue
+import expand from &quot;./expand.js&quot;;
+
+&lt;span v-if=&quot;typeof col.render ===&#39;function&#39;&quot;&gt;
+   &lt;expand :field=&quot;col.field&quot; :row=&quot;item&quot; :render=&quot;col.render&quot; :index=&quot;rowIndex&quot;&gt;&lt;/expand&gt;
+&lt;/span&gt;</code></pre>
+<ul>
+<li>使用render函数渲染</li>
+</ul>
+<pre><code class="javascript">// see https://github.com/calebman/vue-DBM/blob/master/src/views/demo/datatable/data-table.vue
+// 引入自定义组件
+import IndexColumn from &quot;@/components/business/index-column.vue&quot;;
+// 注册
+components: {
+  // ...
+  IndexColumn
+}
+// 使用
+// 获取当前组件的上下文
+let self = this;
+// 定义渲染函数
+render: (h, params) =&gt;
+  h(&quot;div&quot;, [
+    h(IndexColumn, {
+      props: {
+        field: params.field,
+        index: params.index,
+        pagingIndex:
+          (self.pagination.pageCurrent - 1) * self.pagination.pageSize
+      },
+      on: { &quot;on-value-delete&quot;: self.deleteRow }
+    })
+  ])</code></pre>
+<blockquote>
+<h3 id="混入"><a href="#混入" class="headerlink" title="混入"></a><span>混入</span></h3></blockquote>
+<h3 id="1-小知识-1"><a href="#1-小知识-1" class="headerlink" title="1. 小知识"></a><span>1-小知识-1</span></h3><ul>
+<li>混入对象将享有被混入组件的生命周期</li>
+<li>数据对象混入冲突时将以组件数据优先</li>
+<li>对象选项（如methods、components、directives）混入冲突时取组件对象的键值对</li>
+<li>同名钩子混合为数组，混入对象的钩子将在组件自身钩子之前调用</li>
+</ul>
+<h3 id="2-应用场景"><a href="#2-应用场景" class="headerlink" title="2. 应用场景"></a><span>2-应用场景</span></h3><ul>
+<li>希望部分路由页面在离开时销毁但是不希望每个路由页面都定义局部路由时</li>
+</ul>
+<pre><code class="javascript">// 定义混入对象
+export default {
+  beforeRouteLeave(to, from, next) {
+    if (to.meta &amp;&amp; to.meta.destroy) {
+      this.$destroy();
+    }
+    next();
+  }
+}
+
+// 混入需要此功能的组件页面
+import routeLeaveDestoryMixin from &quot;routeleave-destory-mixin&quot;;
+export default {
+  // ...
+  mixins: [routeLeaveDestoryMixin]
+}</code></pre>
+<ul>
+<li>数据表格自定义了文本、数字、时间以及文件单元格组件，每个组件都有同样的数据修改、焦点选中等方法时，可提取为混入对象，提高组件复用性</li>
+</ul>
+<pre><code class="html">// see https://github.com/calebman/vue-DBM/blob/master/src/components/business/render-column-mixin.js
+
+// 定义混入对象
+export default {
+  // ...
+  computed: {
+    // 是否选中此单元格
+    inSelect() {
+      if (this.cellClickData.index == this.index &amp;&amp;
+        this.cellClickData.field == this.field) {
+        this.focus();
+        return true;
+      }
+    }
+  },
+  methods: {
+    // 获取焦点
+    focus() {
+      let self = this;
+      setTimeout(function () {
+        if (self.$refs[&quot;rendercolumn&quot;]) {
+          self.$refs[&quot;rendercolumn&quot;].focus();
+        }
+      }, 100);
+    },
+    // 失去焦点
+    blur() {
+      if (this.v != this.value) {
+        this.$emit(&quot;on-value-change&quot;, this.field, this.index, this.v);
+      }
+      this.$emit(&quot;on-value-cancel&quot;, this.field, this.index);
+    },
+    // 数据修改
+    changeValue(val) {
+      this.$emit(&quot;on-value-change&quot;, this.field, this.index, val);
+      this.$emit(&quot;on-value-cancel&quot;, this.field, this.index);
+    }
+  },
+  watch: {
+    // 监听父组件数据变化
+    value(val) {
+      this.v = val;
+    }
+  }
+}
+
+// 文本列
+// see https://github.com/calebman/vue-DBM/blob/master/src/components/business/text-column.vue
+&lt;template&gt;
+  &lt;div&gt;
+    &lt;input v-show=&quot;inSelect&quot; ref=&quot;rendercolumn&quot; @blur=&quot;blur&quot; @keyup=&quot;enter($event)&quot; v-model=&quot;v&quot; /&gt;
+    &lt;span v-show=&quot;!inSelect&quot; class=&quot;cell-text&quot;&gt;{{v}}&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+// 时间列
+// see https://github.com/calebman/vue-DBM/blob/master/src/components/business/datetime-column.vue
+&lt;template&gt;
+  &lt;div&gt;
+    &lt;el-date-picker v-show=&quot;inSelect&quot; ref=&quot;rendercolumn&quot; v-model=&quot;v&quot; type=&quot;datetime&quot; @change=&quot;changeValue&quot; @blur=&quot;blur&quot;&gt;&lt;/el-date-picker&gt;
+    &lt;span v-show=&quot;!inSelect&quot;&gt;{{coverValue}}&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/template&gt;</code></pre>
+<ul>
+<li>希望降低组件的复杂度的时候可使用多个混入组件来分割核心组件的功能</li>
+</ul>
+<pre><code class="bash"># see https://github.com/calebman/vue-DBM/tree/master/src/components/table
+├─table
+│      cell-edit-mixin.js                      # 单元格编辑
+│      classes-mixin.js                        # 表格样式                     
+│      scroll-bar-control-mixin.js             # 表格滚动
+│      table-empty-mixin.js                    # 无数据时的处理
+│      table-resize-mixin.js                   # 表格的自适应
+│      table-row-mouse-events-mixin.js         # 鼠标移动时的样式改变</code></pre>
+<blockquote>
+<h3 id="数据模拟"><a href="#数据模拟" class="headerlink" title="数据模拟"></a><span>数据模拟</span></h3></blockquote>
+<h3 id="1-需要实现的功能-1"><a href="#1-需要实现的功能-1" class="headerlink" title="1. 需要实现的功能"></a><span>1-需要实现的功能-1</span></h3><ul>
+<li>拦截Ajax请求并延时响应</li>
+<li>返回的统一的数据格式</li>
+<li>响应不同的模拟数据</li>
+</ul>
+<h3 id="2-配置Mockjs拦截Ajax请求"><a href="#2-配置Mockjs拦截Ajax请求" class="headerlink" title="2. 配置Mockjs拦截Ajax请求"></a><span>2-配置Mockjs拦截Ajax请求</span></h3><pre><code class="javascript">// see https://github.com/calebman/vue-DBM/blob/master/src/mock/index.js
+// 引入Mockjs
+import Mock from &#39;mockjs&#39;;
+// 配置延时
+Mock.setup({
+  timeout: &#39;300-1000&#39;
+});
+// 配置拦截
+Mock.mock(/\/user\/login/, &#39;post&#39;, loginAPI.loginByUsername);
+Mock.mock(/\/user\/logout/, &#39;post&#39;, loginAPI.logout);
+Mock.mock(/\/user\/info\.*/, &#39;get&#39;, loginAPI.getUserInfo);</code></pre>
+<h3 id="3-响应的统一数据格式"><a href="#3-响应的统一数据格式" class="headerlink" title="3. 响应的统一数据格式"></a><span>3-响应的统一数据格式</span></h3><pre><code class="javascript">// see https://github.com/calebman/vue-DBM/blob/master/src/mock/response.js
+/**
+ * 统一响应工具类
+ * 响应统一格式的数据
+ * response : {
+ *    errCode: 00             响应结果码
+ *    errMsg: 0000000（成功）  响应详细结果码
+ *    data: null              具体数据
+ * }
+ */
+
+export default {
+  // 成功
+  success: data =&gt; {
+    return {
+      errCode: &#39;00&#39;,
+      errMsg: &#39;0000000（成功）&#39;,
+      data: data ? data : null
+    }
+  },
+  // 失败
+  fail: (errCode, errMsg) =&gt; {
+    return {
+      errCode: errCode ? errCode : &#39;04&#39;,
+      errMsg: errMsg ? errMsg : &#39;0401001（未知错误）&#39;,
+      data: null
+    }
+  },
+  // 权限不足
+  unauthorized: () =&gt; {
+    return {
+      errCode: &#39;43&#39;,
+      errMsg: &#39;4300001（无权访问）&#39;,
+      data: null
+    }
+  }
+}</code></pre>
+<h3 id="4-配置响应逻辑"><a href="#4-配置响应逻辑" class="headerlink" title="4. 配置响应逻辑"></a><span>4-配置响应逻辑</span></h3><pre><code class="javascript">// see https://github.com/calebman/vue-DBM/blob/master/src/mock/login.js
+
+import { param2Obj } from &#39;@/utils&#39;;
+import Response from &#39;./response&#39;;
+
+const userMap = {
+  admin: {
+    password: &#39;admin&#39;,
+    roles: [&#39;admin&#39;],
+    token: &#39;admin&#39;,
+    introduction: &#39;我是超级管理员&#39;,
+    avatar: &#39;https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif&#39;,
+    name: &#39;Super Admin&#39;
+  },
+  watcher: {
+    password: &#39;watcher&#39;,
+    roles: [&#39;watcher&#39;],
+    token: &#39;watcher&#39;,
+    introduction: &#39;我是游客&#39;,
+    avatar: &#39;https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif&#39;,
+    name: &#39;Normal Watcher&#39;
+  }
+}
+
+export default {
+  // 使用用户名登录
+  loginByUsername: config =&gt; {
+    const { username, password } = JSON.parse(config.body);
+    if (userMap[username] &amp;&amp; userMap[username].password === password) {
+      return Response.success(userMap[username]);
+    } else {
+      return Response.fail(&quot;01&quot;, &quot;0101001（用户名或密码错误）&quot;)
+    }
+  },
+  // 拉取用户信息
+  getUserInfo: config =&gt; {
+    const { token } = param2Obj(config.url);
+    if (userMap[token]) {
+      return Response.success(userMap[token]);
+    } else {
+      return Response.fail();
+    }
+  },
+  // 注销
+  logout: () =&gt; Response.success()
+}</code></pre>
+<h3 id="5-模拟随机数据"><a href="#5-模拟随机数据" class="headerlink" title="5. 模拟随机数据"></a><span>5-模拟随机数据</span></h3><pre><code class="javascript">// see https://github.com/nuysoft/Mock/wiki
+
+import Mock from &#39;mockjs&#39;;
+
+// 随机字符串
+function mockStr() {
+    let result = Mock.mock({ &#39;str&#39;: &#39;@name&#39; });
+    return result.str;
+}
+
+// 随机数字
+function mockNumber(min, max) {
+    let key = &#39;num|&#39; + min + &#39;-&#39; + max;
+    let param = {}
+    param[key] = 100;
+    return Mock.mock(param).num;
+}
+
+// 随机小数，最高小数点后三位
+function mockDecimal() {
+    return Mock.Random.float(1, 100, 1, 3)
+}
+
+// 随机数组一项
+const arr = [&quot;image2.jpeg&quot;, &quot;image3.jpeg&quot;, &quot;image4.jpeg&quot;, &quot;image5.jpeg&quot;, &quot;image6.jpeg&quot;];
+function mockOneFileAddress() {
+    return Mock.mock({ &#39;oneFile|1&#39;: arr }).oneFile;
+}
+
+// 随机日期
+function mockDate() {
+    let mockDateStr = Mock.Random.datetime(&#39;yyyy-MM-dd HH:mm:ss&#39;);
+    // 在这里使用了momentjs将其解析为Date类型
+    let mockDate = moment(mockDateStr, &#39;YYYY-MM-DD HH:mm:ss&#39;).toDate();
+    return mockDate;
+}</code></pre>
+<blockquote>
+<h3 id="打包优化"><a href="#打包优化" class="headerlink" title="打包优化"></a><span>打包优化</span></h3></blockquote>
+<h3 id="1-做哪部分的优化"><a href="#1-做哪部分的优化" class="headerlink" title="1. 做哪部分的优化"></a><span>1-做哪部分的优化</span></h3><ul>
+<li>cdn优化</li>
+<li>路由懒加载</li>
+<li>其他优化</li>
+<li>用户体验</li>
+</ul>
+<h3 id="2-cdn优化"><a href="#2-cdn优化" class="headerlink" title="2. cdn优化"></a><span>2-cdn优化</span></h3><blockquote>
+<p>类似于vue、vue-router、moment、element-ui等提供了cdn的架或者工具类可在index.html中直接引入，然后配置webpack的externals使其不加入打包配置，从而减小app.js、vendor.js的体积</p>
+</blockquote>
+<ul>
+<li>在index.html使用cdn引入依赖库</li>
+</ul>
+<pre><code class="html">&lt;!-- 网络请求工具类 --&gt;
+&lt;script src=&quot;https://cdn.bootcss.com/axios/0.18.0/axios.min.js&quot;&gt;&lt;/script&gt;
+&lt;!-- vue --&gt;
+&lt;script src=&quot;https://cdn.bootcss.com/vue/2.5.16/vue.min.js&quot;&gt;&lt;/script&gt;
+&lt;!-- vue-router --&gt;
+&lt;script src=&quot;https://cdn.bootcss.com/vue-router/3.0.1/vue-router.min.js&quot;&gt;&lt;/script&gt;
+&lt;!-- vuex --&gt;
+&lt;script src=&quot;https://cdn.bootcss.com/vuex/3.0.1/vuex.min.js&quot;&gt;&lt;/script&gt;
+&lt;!-- momentjs的中文包 --&gt;
+&lt;script src=&quot;https://cdn.bootcss.com/moment.js/2.22.1/moment-with-locales.min.js&quot;&gt;&lt;/script&gt;
+&lt;!-- momentjs --&gt;
+&lt;script src=&quot;https://cdn.bootcss.com/moment.js/2.22.1/locale/zh-cn.js&quot;&gt;&lt;/script&gt;
+&lt;!-- element-ui样式 --&gt;
+&lt;script src=&quot;https://cdn.bootcss.com/element-ui/2.3.6/theme-default/index.css&quot;&gt;&lt;/script&gt;
+&lt;!-- element-ui --&gt;
+&lt;script src=&quot;https://cdn.bootcss.com/element-ui/2.3.6/index.js&quot;&gt;&lt;/script&gt;</code></pre>
+<ul>
+<li>配置build文件夹下webpack.base.conf.js文件</li>
+</ul>
+<pre><code class="javascript">module.exports = {
+  // ...
+  externals: {
+    &#39;axios&#39;: &#39;axios&#39;,
+    &#39;vue&#39;: &#39;Vue&#39;,
+    &#39;vue-router&#39;: &#39;VueRouter&#39;,
+    &#39;vuex&#39;: &#39;Vuex&#39;,
+    &#39;moment&#39;: &#39;moment&#39;,
+    &#39;element-ui&#39;: &#39;ELEMENT&#39;
+  }
+}</code></pre>
+<h3 id="3-路由懒加载"><a href="#3-路由懒加载" class="headerlink" title="3. 路由懒加载"></a><span>3-路由懒加载</span></h3><blockquote>
+<p>路由懒加载能够将代码根据路由配置进行分割，加快首屏渲染的速度，在大型的单页应用中是必不可少的</p>
+<p>参见<a href="https://github.com/calebman/vue-DBM/blob/master/docs/router.md" target="_blank" rel="noopener">路由管理</a>的实现</p>
+</blockquote>
+<h3 id="5-其他优化"><a href="#5-其他优化" class="headerlink" title="5. 其他优化"></a><span>5-其他优化</span></h3><ul>
+<li>尽量少的注册全局组件，使用UI框架可以参考文档做按需加载</li>
+<li>可以和服务端配合采用gzip压缩，减少传输耗时</li>
+<li>在更新不是很频繁的应用可考虑提高缓存时间</li>
+<li>例如moment、lodash这种庞大的工具库在使用的功能不多的情况下可考虑寻找替代品</li>
+</ul>
+<h3 id="6-用户体验"><a href="#6-用户体验" class="headerlink" title="6. 用户体验"></a><span>6-用户体验</span></h3><blockquote>
+<p>一个单页应用到了一定规模不管怎么优化首屏渲染还是一个比较慢的过程，此时可以考虑在首屏渲染时使用一个加载动画告诉用户系统正在初始化</p>
+</blockquote>
+<ul>
+<li>首先在index.html中定义一个渲染动画</li>
+</ul>
+<pre><code class="html">&lt;body&gt;
+  &lt;div id=&quot;app&quot;&gt;&lt;/div&gt;
+  &lt;!-- 首屏渲染时的加载动画 --&gt;
+  &lt;div id=&quot;system-loading&quot; class=&quot;showbox&quot;&gt;
+    &lt;div class=&quot;loader&quot;&gt;
+      &lt;svg class=&quot;circular&quot; viewBox=&quot;25 25 50 50&quot;&gt;
+        &lt;circle class=&quot;path&quot; cx=&quot;50&quot; cy=&quot;50&quot; r=&quot;20&quot; fill=&quot;none&quot; stroke-width=&quot;2&quot; stroke-miterlimit=&quot;10&quot; /&gt;
+      &lt;/svg&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;text&quot;&gt;
+      &lt;span&gt;系统初始化中...&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;!-- built files will be auto injected --&gt;
+&lt;/body&gt;</code></pre>
+<ul>
+<li>然后在App.vue组件的mounted钩子中移除这个loading</li>
+</ul>
+<pre><code class="javascript">export default {
+  // ...
+  mounted() {
+    document.body.removeChild(document.getElementById(&quot;system-loading&quot;));
+  }
+};</code></pre>
+
+        </div>
+        
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2018-05-18-vue-notes/">纯正后端的vue轮子笔记</a></li>
+            <li><strong>本文作者：</strong><a href="https://chenjianhui.site">JianhuiChen</a></li>
+            <li><strong>本文链接：</strong><a href="https://chenjianhui.site/2018-05-18-vue-notes/">https://chenjianhui.site/2018-05-18-vue-notes/</a></li>
+            <li><strong>发布时间：</strong>2018-05-18</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <hr style="height:1px;margin:1rem 0">
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
+                    <a class="has-link-grey -link" href="/tags/vue-router/">vue-router</a>,&nbsp;<a class="has-link-grey -link" href="/tags/vuejs/">vuejs</a>,&nbsp;<a class="has-link-grey -link" href="/tags/vuex/">vuex</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2018-05-23-build-http-server-with-netty/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">使用Netty构建Http容器</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2018-02-21-build-springboot-env/">
+                <span class="level-item">SpringBoot集成环境搭建</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'bd0cbb30da9c24da8c7c',
+        clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
+        id: 'ad82e68f5235366c6c647dcc3fb7244f',
+        repo: 'blog',
+        owner: 'calebman',
+        admin: "calebman"
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+
+<link rel="stylesheet" href="/css/article-nice.css">
+<!-- Highlight.js -->
+<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script></div>
+                
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right is-sticky">
+    
+        
+<div class="card widget column-left is-sticky" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                目录
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#说明">
+        <span class="has-mr-6">1</span>
+        <span>说明</span>
+        </a></li><li>
+        <a class="is-flex" href="#进入烂笔头模式">
+        <span class="has-mr-6">2</span>
+        <span>进入烂笔头模式</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#路由">
+        <span class="has-mr-6">2.1</span>
+        <span>路由</span>
+        </a></li><li>
+        <a class="is-flex" href="#1-路由加载">
+        <span class="has-mr-6">2.2</span>
+        <span>1-路由加载</span>
+        </a></li><li>
+        <a class="is-flex" href="#2-404路由">
+        <span class="has-mr-6">2.3</span>
+        <span>2-404路由</span>
+        </a></li><li>
+        <a class="is-flex" href="#3-路由拦截">
+        <span class="has-mr-6">2.4</span>
+        <span>3-路由拦截</span>
+        </a></li><li>
+        <a class="is-flex" href="#4-动态路由">
+        <span class="has-mr-6">2.5</span>
+        <span>4-动态路由</span>
+        </a></li><li>
+        <a class="is-flex" href="#5-路由加载时动画">
+        <span class="has-mr-6">2.6</span>
+        <span>5-路由加载时动画</span>
+        </a></li><li>
+        <a class="is-flex" href="#状态管理">
+        <span class="has-mr-6">2.7</span>
+        <span>状态管理</span>
+        </a></li><li>
+        <a class="is-flex" href="#1-小知识">
+        <span class="has-mr-6">2.8</span>
+        <span>1-小知识</span>
+        </a></li><li>
+        <a class="is-flex" href="#2-多模块">
+        <span class="has-mr-6">2.9</span>
+        <span>2-多模块</span>
+        </a></li><li>
+        <a class="is-flex" href="#3-辅助函数">
+        <span class="has-mr-6">2.10</span>
+        <span>3-辅助函数</span>
+        </a></li><li>
+        <a class="is-flex" href="#4-数据持久化插件">
+        <span class="has-mr-6">2.11</span>
+        <span>4-数据持久化插件</span>
+        </a></li><li>
+        <a class="is-flex" href="#5-日志插件">
+        <span class="has-mr-6">2.12</span>
+        <span>5-日志插件</span>
+        </a></li><li>
+        <a class="is-flex" href="#权限管理">
+        <span class="has-mr-6">2.13</span>
+        <span>权限管理</span>
+        </a></li><li>
+        <a class="is-flex" href="#1-需要实现的功能">
+        <span class="has-mr-6">2.14</span>
+        <span>1-需要实现的功能</span>
+        </a></li><li>
+        <a class="is-flex" href="#2-路由设计">
+        <span class="has-mr-6">2.15</span>
+        <span>2-路由设计</span>
+        </a></li><li>
+        <a class="is-flex" href="#3-页面级的权限控制">
+        <span class="has-mr-6">2.16</span>
+        <span>3-页面级的权限控制</span>
+        </a></li><li>
+        <a class="is-flex" href="#4-元素级的权限控制">
+        <span class="has-mr-6">2.17</span>
+        <span>4-元素级的权限控制</span>
+        </a></li><li>
+        <a class="is-flex" href="#render函数">
+        <span class="has-mr-6">2.18</span>
+        <span>render函数</span>
+        </a></li><li>
+        <a class="is-flex" href="#1-如何封装一个支持render渲染的组件">
+        <span class="has-mr-6">2.19</span>
+        <span>1-如何封装一个支持render渲染的组件</span>
+        </a></li><li>
+        <a class="is-flex" href="#混入">
+        <span class="has-mr-6">2.20</span>
+        <span>混入</span>
+        </a></li><li>
+        <a class="is-flex" href="#1-小知识-1">
+        <span class="has-mr-6">2.21</span>
+        <span>1-小知识-1</span>
+        </a></li><li>
+        <a class="is-flex" href="#2-应用场景">
+        <span class="has-mr-6">2.22</span>
+        <span>2-应用场景</span>
+        </a></li><li>
+        <a class="is-flex" href="#数据模拟">
+        <span class="has-mr-6">2.23</span>
+        <span>数据模拟</span>
+        </a></li><li>
+        <a class="is-flex" href="#1-需要实现的功能-1">
+        <span class="has-mr-6">2.24</span>
+        <span>1-需要实现的功能-1</span>
+        </a></li><li>
+        <a class="is-flex" href="#2-配置Mockjs拦截Ajax请求">
+        <span class="has-mr-6">2.25</span>
+        <span>2-配置Mockjs拦截Ajax请求</span>
+        </a></li><li>
+        <a class="is-flex" href="#3-响应的统一数据格式">
+        <span class="has-mr-6">2.26</span>
+        <span>3-响应的统一数据格式</span>
+        </a></li><li>
+        <a class="is-flex" href="#4-配置响应逻辑">
+        <span class="has-mr-6">2.27</span>
+        <span>4-配置响应逻辑</span>
+        </a></li><li>
+        <a class="is-flex" href="#5-模拟随机数据">
+        <span class="has-mr-6">2.28</span>
+        <span>5-模拟随机数据</span>
+        </a></li><li>
+        <a class="is-flex" href="#打包优化">
+        <span class="has-mr-6">2.29</span>
+        <span>打包优化</span>
+        </a></li><li>
+        <a class="is-flex" href="#1-做哪部分的优化">
+        <span class="has-mr-6">2.30</span>
+        <span>1-做哪部分的优化</span>
+        </a></li><li>
+        <a class="is-flex" href="#2-cdn优化">
+        <span class="has-mr-6">2.31</span>
+        <span>2-cdn优化</span>
+        </a></li><li>
+        <a class="is-flex" href="#3-路由懒加载">
+        <span class="has-mr-6">2.32</span>
+        <span>3-路由懒加载</span>
+        </a></li><li>
+        <a class="is-flex" href="#5-其他优化">
+        <span class="has-mr-6">2.33</span>
+        <span>5-其他优化</span>
+        </a></li><li>
+        <a class="is-flex" href="#6-用户体验">
+        <span class="has-mr-6">2.34</span>
+        <span>6-用户体验</span>
+        </a></li></ul></li></ul>
+        </div>
+    </div>
+</div>
+
+
+    
+    
+</div>
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <p class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo.svg" alt="纯正后端的vue轮子笔记" height="28">
+                
+                <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
+                </p>
+                <p class="is-size-7">
+                &copy; 2020 JianhuiChen&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                        
+                        <i class="fab fa-creative-commons"></i>&nbsp;<i class="fab fa-creative-commons-by"></i>&nbsp;<i class="fab fa-creative-commons-nc"></i>&nbsp;<i class="fab fa-creative-commons-sa"></i>&nbsp;
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>

@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+<title>Vue+SpringBoot单jar部署 - Sincerity</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="&amp;emsp;&amp;emsp;在前后端分离的开发模式中，到项目的打包发布阶段我们一般都是会采用一个支持HTTP动静分离的中间件来部署前后端应用，最常见的就是Nginx，它不仅可以帮我们做动静分离，还可以做后端请求的负载均衡，这一部分的实现教程很多在此就不做过多解释，本文想讲的是如何不依赖中间件，将前端打包的内容嵌入后端，以一个jar发布。">
+<meta name="keywords" content="SpringBoot,Vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue+SpringBoot单jar部署">
+<meta property="og:url" content="https://chenjianhui.site/2019-08-15-server-front-separate-package/index.html">
+<meta property="og:site_name" content="Sincerity">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;在前后端分离的开发模式中，到项目的打包发布阶段我们一般都是会采用一个支持HTTP动静分离的中间件来部署前后端应用，最常见的就是Nginx，它不仅可以帮我们做动静分离，还可以做后端请求的负载均衡，这一部分的实现教程很多在此就不做过多解释，本文想讲的是如何不依赖中间件，将前端打包的内容嵌入后端，以一个jar发布。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://resources.chenjianhui.site/2019-08-15-home-pic.png">
+<meta property="og:updated_time" content="2020-06-02T09:08:30.086Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue+SpringBoot单jar部署">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;在前后端分离的开发模式中，到项目的打包发布阶段我们一般都是会采用一个支持HTTP动静分离的中间件来部署前后端应用，最常见的就是Nginx，它不仅可以帮我们做动静分离，还可以做后端请求的负载均衡，这一部分的实现教程很多在此就不做过多解释，本文想讲的是如何不依赖中间件，将前端打包的内容嵌入后端，以一个jar发布。">
+<meta name="twitter:image" content="https://resources.chenjianhui.site/2019-08-15-home-pic.png">
+
+
+
+
+
+<link rel="alternative" href="/atom.xml" title="Vue+SpringBoot单jar部署" type="application/atom+xml">
+
+
+
+<link rel="icon" href="/images/favicon-32x32.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+    
+    
+<script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:19960428,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.svg" alt="Vue+SpringBoot单jar部署" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">Home</a>
+                
+                <a class="navbar-item" href="/archives">Archives</a>
+                
+                <a class="navbar-item" href="/categories">Categories</a>
+                
+                <a class="navbar-item" href="/tags">Tags</a>
+                
+                <a class="navbar-item" href="/about">About</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    
+                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://github.com/calebman">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-image">
+        <span class="image is-7by1">
+            <img class="thumbnail" src="https://resources.chenjianhui.site/2019-08-15-home-pic.png" alt="Vue+SpringBoot单jar部署">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <i class="fas fa-angle-double-right"></i>Vue+SpringBoot单jar部署
+            
+        </h1>
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-08-15T20:11:21.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-08-15</time>
+                
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-06-02T09:08:30.086Z"><i class="far fa-calendar-check">&nbsp;</i>2020-06-02</time>
+                
+                
+                <div class="level-item">
+                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
+                <a class="has-link-grey -link" href="/categories/前后端分离/">前后端分离</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    <i class="far fa-clock"></i>&nbsp;
+                    
+                    
+                    8 分钟 读完 (大约 1170 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <div id="article-content" class="content">
+            <p>&emsp;&emsp;在前后端分离的开发模式中，到项目的打包发布阶段我们一般都是会采用一个支持<code>HTTP</code>动静分离的中间件来部署前后端应用，最常见的就是<code>Nginx</code>，它不仅可以帮我们做动静分离，还可以做后端请求的负载均衡，这一部分的实现教程很多在此就不做过多解释，本文想讲的是如何不依赖中间件，将前端打包的内容嵌入后端，以一个<code>jar</code>发布。</p>
+<a id="more"></a>
+
+<h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a><span>思考</span></h1><p>&emsp;&emsp;本人是基于<code>SpringBoot</code>+<code>Vuejs</code>来做前后端分离开发的，所以本次也基于这两个技术展来思考如何实现，在想如何不依赖中间件实现部署时我们得先思考<strong>中间件为我们的前后端分离部署带来了什么？</strong></p>
+<p>&emsp;&emsp;以<code>Nginx</code>举例，如下是前后端分离部署模式下的一个配置示例主要干了三件事情</p>
+<ul>
+<li>使用<code>alias</code>实现静态资源的分发</li>
+<li>使用<code>try_files</code>实现前端路由的转发，如<strong><a href="http://localhost/home" target="_blank" rel="noopener">http://localhost/home</a></strong>这个地址是对应不到静态资源的，这个时候就会触发404响应，<code>try_files</code>指令在对应不到静态资源时将内容转发到<strong>/index.html</strong>也就是前端首页，以此来实现<code>history</code>模式的前端路由</li>
+<li>使用<code>proxy_pass</code>实现后端请求的分发</li>
+</ul>
+<pre><code class="nginx">location /front {
+    alias $application_path/traffic-sso/html;
+    try_files $uri $uri/ /index.html last;
+    index index.html index.htm;
+}
+
+location /api/ {
+    proxy_pass http://localhost:8080/;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+}</code></pre>
+<p>&emsp;&emsp;在知道中间件完成的核心功能后，我们需要基于<code>SpringBoot</code>项目也去完成这么一套功能，即可实现集成部署了，我们现在一项一项功能分析一下</p>
+<ul>
+<li>静态资源的分发：可通过配置静态文件映射来实现</li>
+<li>前端路由的转发：可通过拦截器来实现</li>
+<li>后端请求的分发：可通过拦截器来实现</li>
+</ul>
+<p>&emsp;&emsp;总体来说实现上不是什么问题，静态文件映射配置很容易在此不做过多描述，问题主要在拦截器的实现，需要有两个拦截器分别实现以下两个分发</p>
+<ul>
+<li><code>http://localhost:8080/front/**</code>  =&gt; <code>index.html</code></li>
+<li><code>http://localhost:8080/api/**</code> =&gt; <code>http://localhost:8080/**</code></li>
+</ul>
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a><span>代码实现</span></h1><p>&emsp;&emsp;观察上面拦截器其实主要就是实现一个路径匹配与处理器转发的功能，基于此需求我们定义<code>RewriteFilter.java</code>如下，这里使用<code>Spring Web MVC</code>的<code>AntPathMatcher</code>来做路径匹配器，使用了<code>Java8</code>的<code>Function</code>来做转发逻辑定义，代码比较简单就不做过多描述了</p>
+<pre><code class="java">/**
+ * @author JianhuiChen
+ * @description 基于转发逻辑的过滤器
+ * @date 2019-08-15
+ */
+public class RewriteFilter implements Filter {
+
+    private Logger log = LoggerFactory.getLogger(RewriteFilter.class);
+
+    /**
+     * 配置url通配符
+     */
+    private final String urlPattern;
+
+    /**
+     * 转发逻辑
+     */
+    private final Function&lt;HttpServletRequest, String&gt; rewriteHandler;
+
+    /**
+     * 路径匹配器
+     */
+    private AntPathMatcher pathMatcher = new AntPathMatcher();
+
+    public RewriteFilter(String urlPattern, Function&lt;HttpServletRequest, String&gt; rewriteHandler) {
+        this.urlPattern = urlPattern;
+        this.rewriteHandler = rewriteHandler;
+    }
+
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
+        HttpServletRequest request = (HttpServletRequest) req;
+        String servletPath = request.getServletPath();
+        String context = request.getContextPath();
+        // 匹配的路径重写
+        if (pathMatcher.match(urlPattern, servletPath)) {
+            String rewritePath = rewriteHandler.apply(request);
+            log.debug(&quot;Rewrite {} to {}&quot;, servletPath, rewritePath);
+            String fullPath;
+            if (rewritePath.startsWith(&quot;/&quot;)) {
+                fullPath = context + rewritePath;
+            } else {
+                fullPath = context + &quot;/&quot; + rewritePath;
+            }
+            req.getRequestDispatcher(fullPath).forward(req, resp);
+        } else {
+            chain.doFilter(req, resp);
+        }
+    }
+}</code></pre>
+<p>&emsp;&emsp;现在我们将静态资源与拦截器配置使用</p>
+<ul>
+<li>首先运行前端项目的打包指令将打包的静态资源拷贝到<code>SpringBoot</code>的<code>public/static/resources</code>目录下</li>
+<li>配置前端路由的转发拦截器<pre><code class="java">  /**
+   * 匹配路由转发
+   * 所有 /front/** 请求映射至 /index.html
+   * exp /front/home -&gt; /index.html
+   */
+  @Bean
+  public FilterRegistrationBean frontFilter() {
+      FilterRegistrationBean&lt;RewriteFilter&gt; registration = new FilterRegistrationBean&lt;&gt;();
+      registration.setFilter(new RewriteFilter(&quot;/front/**&quot;, http -&gt; &quot;index.html&quot;));
+      registration.addUrlPatterns(&quot;/front/*&quot;);
+      registration.setName(&quot;frontFilter&quot;);
+      registration.setOrder(1);
+      return registration;
+  }</code></pre>
+</li>
+<li>配置后端路由的转发拦截器<pre><code class="java">  /**
+   * 匹配动态请求
+   * 所有 /api/** 请求映射至 /**
+   * exp /api/resources/users/me -&gt; /resources/users/me
+   */
+  @Bean
+  public FilterRegistrationBean apiFilter() {
+      FilterRegistrationBean&lt;RewriteFilter&gt; registration = new FilterRegistrationBean&lt;&gt;();
+      registration.setFilter(new RewriteFilter(&quot;/api/**&quot;,
+              http -&gt; http.getServletPath().replaceFirst(&quot;/api&quot;, &quot;&quot;)));
+      registration.addUrlPatterns(&quot;/api/*&quot;);
+      registration.setName(&quot;apiFilter&quot;);
+      registration.setOrder(1);
+      return registration;
+  }</code></pre>
+</li>
+</ul>
+<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a><span>测试</span></h1><p>&emsp;&emsp;打开浏览器输入链接<a href="http://localhost:8080/front" target="_blank" rel="noopener">http://localhost:8080/front</a>完成测试</p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a><span>其他</span></h1><h2 id="AntPathMatcher相关记录"><a href="#AntPathMatcher相关记录" class="headerlink" title="AntPathMatcher相关记录"></a><span>AntPathMatcher相关记录</span></h2><p>&emsp;&emsp;<code>AntPathMatcher</code>是<code>Spring</code>用于路径匹配的工具类，我们经常写的<code>@RequestMapping</code>的匹配逻辑就与它有关，它主要的匹配模式有以下三种</p>
+<ul>
+<li><code>?</code> 匹配任何单字符</li>
+<li><code>*</code> 匹配0或者任意数量的字符</li>
+<li><code>**</code> 匹配0或者更多的目录</li>
+</ul>
+<p>&emsp;&emsp;<code>AntPathMatcher</code>采用最长匹配原则，如<code>/api/**</code>与<code>/api/resources/**</code>来匹配<code>/api/resources/users/me</code>，后者会被成功匹配</p>
+
+        </div>
+        
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2019-08-15-server-front-separate-package/">Vue+SpringBoot单jar部署</a></li>
+            <li><strong>本文作者：</strong><a href="https://chenjianhui.site">JianhuiChen</a></li>
+            <li><strong>本文链接：</strong><a href="https://chenjianhui.site/2019-08-15-server-front-separate-package/">https://chenjianhui.site/2019-08-15-server-front-separate-package/</a></li>
+            <li><strong>发布时间：</strong>2019-08-15</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <hr style="height:1px;margin:1rem 0">
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
+                    <a class="has-link-grey -link" href="/tags/SpringBoot/">SpringBoot</a>,&nbsp;<a class="has-link-grey -link" href="/tags/Vue/">Vue</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2019-08-25-learn-shell/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">Shell学习与归纳</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019-07-14-thinking-topic/">
+                <span class="level-item">海岛寻宝问题</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'bd0cbb30da9c24da8c7c',
+        clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
+        id: 'aee4c40a72945af5b2b15cc6d824f0f7',
+        repo: 'blog',
+        owner: 'calebman',
+        admin: "calebman"
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+
+<link rel="stylesheet" href="/css/article-nice.css">
+<!-- Highlight.js -->
+<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script></div>
+                
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right is-sticky">
+    
+        
+<div class="card widget column-left is-sticky" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                目录
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#思考">
+        <span class="has-mr-6">1</span>
+        <span>思考</span>
+        </a></li><li>
+        <a class="is-flex" href="#代码实现">
+        <span class="has-mr-6">2</span>
+        <span>代码实现</span>
+        </a></li><li>
+        <a class="is-flex" href="#测试">
+        <span class="has-mr-6">3</span>
+        <span>测试</span>
+        </a></li><li>
+        <a class="is-flex" href="#其他">
+        <span class="has-mr-6">4</span>
+        <span>其他</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#AntPathMatcher相关记录">
+        <span class="has-mr-6">4.1</span>
+        <span>AntPathMatcher相关记录</span>
+        </a></li></ul></li></ul>
+        </div>
+    </div>
+</div>
+
+
+    
+    
+</div>
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <p class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo.svg" alt="Vue+SpringBoot单jar部署" height="28">
+                
+                <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
+                </p>
+                <p class="is-size-7">
+                &copy; 2020 JianhuiChen&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                        
+                        <i class="fab fa-creative-commons"></i>&nbsp;<i class="fab fa-creative-commons-by"></i>&nbsp;<i class="fab fa-creative-commons-nc"></i>&nbsp;<i class="fab fa-creative-commons-sa"></i>&nbsp;
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>

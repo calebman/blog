@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+<title>前后端分离开发模式的实践总结 - Sincerity</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="SpringBoot+Vuejs+Nginx从开发至部署构建一个成熟的前后端分离应用">
+<meta name="keywords" content="vuejs,SpringBoot,Nginx">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前后端分离开发模式的实践总结">
+<meta property="og:url" content="https://chenjianhui.site/2019-02-23-server-front-separate/index.html">
+<meta property="og:site_name" content="Sincerity">
+<meta property="og:description" content="SpringBoot+Vuejs+Nginx从开发至部署构建一个成熟的前后端分离应用">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://resources.chenjianhui.site/2019-02-23-home-pic.png">
+<meta property="og:updated_time" content="2020-06-02T09:08:30.082Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前后端分离开发模式的实践总结">
+<meta name="twitter:description" content="SpringBoot+Vuejs+Nginx从开发至部署构建一个成熟的前后端分离应用">
+<meta name="twitter:image" content="https://resources.chenjianhui.site/2019-02-23-home-pic.png">
+
+
+
+
+
+<link rel="alternative" href="/atom.xml" title="前后端分离开发模式的实践总结" type="application/atom+xml">
+
+
+
+<link rel="icon" href="/images/favicon-32x32.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+    
+    
+<script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:19960428,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.svg" alt="前后端分离开发模式的实践总结" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">Home</a>
+                
+                <a class="navbar-item" href="/archives">Archives</a>
+                
+                <a class="navbar-item" href="/categories">Categories</a>
+                
+                <a class="navbar-item" href="/tags">Tags</a>
+                
+                <a class="navbar-item" href="/about">About</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    
+                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://github.com/calebman">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-image">
+        <span class="image is-7by1">
+            <img class="thumbnail" src="https://resources.chenjianhui.site/2019-02-23-home-pic.png" alt="前后端分离开发模式的实践总结">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <i class="fas fa-angle-double-right"></i>前后端分离开发模式的实践总结
+            
+        </h1>
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-02-23T11:03:25.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-02-23</time>
+                
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-06-02T09:08:30.082Z"><i class="far fa-calendar-check">&nbsp;</i>2020-06-02</time>
+                
+                
+                <div class="level-item">
+                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
+                <a class="has-link-grey -link" href="/categories/前后端分离/">前后端分离</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    <i class="far fa-clock"></i>&nbsp;
+                    
+                    
+                    14 分钟 读完 (大约 2055 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <div id="article-content" class="content">
+            <p>SpringBoot+Vuejs+Nginx从开发至部署构建一个成熟的前后端分离应用</p>
+<a id="more"></a>
+
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a><span>前言</span></h1><p>&emsp;&emsp; 实践前后端分离的开发模式已经有两年左右的时间了，对于前后端分离开发模式的概念在这里不做过多解释，本文主要是总结开发模式并构建一个较为成熟的前后端分离应用</p>
+<h1 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a><span>技术选型</span></h1><p>&emsp;&emsp; 关于技术选型方面线下国内比较流行的主要是SpringBoot+Vuejs这个技术栈，所以本文将基于这个技术栈来讲解，涉及到的技术主要有</p>
+<ul>
+<li>环境<ul>
+<li>Java</li>
+<li>Maven</li>
+<li>Nodejs</li>
+<li>Nginx</li>
+</ul>
+</li>
+<li>前端<ul>
+<li>vue-cli</li>
+</ul>
+</li>
+<li>后端<ul>
+<li>SpringBoot</li>
+</ul>
+</li>
+</ul>
+<h1 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a><span>环境准备</span></h1><p>&emsp;&emsp; 这里简要引用Windows下的环境搭建，关于Linux(Centos7)的环境搭建会再部署架构中讲到</p>
+<ul>
+<li>Java : <a href="https://www.cnblogs.com/smyhvae/p/3788534.html" target="_blank" rel="noopener">JDK开发环境搭建及环境变量配置</a></li>
+<li>Maven :<a href="https://www.cnblogs.com/youqc/archive/2017/10/15/7673913.html" target="_blank" rel="noopener">Maven开发环境搭建</a></li>
+<li>Nodejs :<a href="https://www.cnblogs.com/mq0036/p/5243209.html" target="_blank" rel="noopener">NodeJS、NPM安装配置与测试步骤(windows版本)</a></li>
+<li>Nginx :<a href="https://www.cnblogs.com/jiangwangxiang/p/8481661.html" target="_blank" rel="noopener">windows下nginx的安装及使用</a></li>
+</ul>
+<h1 id="构建前后端分离工程"><a href="#构建前后端分离工程" class="headerlink" title="构建前后端分离工程"></a><span>构建前后端分离工程</span></h1><h2 id="目录规划"><a href="#目录规划" class="headerlink" title="目录规划"></a><span>目录规划</span></h2><p>&emsp;&emsp;整体目录主要分为三块，如下所示</p>
+<p><img src="https://resources.chenjianhui.site/2019-02-23-root-folder.png" alt="整体目录结构"></p>
+<p>&emsp;&emsp;打包后的目录主要分为三块，如下所示<br><img src="https://resources.chenjianhui.site/2019-02-23-dist-folder.png" alt="项目打包目录"></p>
+<h2 id="后端工程"><a href="#后端工程" class="headerlink" title="后端工程"></a><span>后端工程</span></h2><p>&emsp;&emsp;后端工程主要基于SpringBoot脚手架搭建，SpringBoot基础的集成环境搭建可以参考我的另一篇博客<a href="/2018-02-21-build-springboot-env/">SpringBoot集成环境搭建</a></p>
+<p>&emsp;&emsp;首先创建一个只有Web功能的SpringBoot项目，修改其maven打包的配置实现以下两个功能</p>
+<ul>
+<li>将打包的jar文件移动至dist目录下</li>
+<li>将多环境配置文件从jar内部移动至外部的dist/config目录下</li>
+</ul>
+<p>&emsp;&emsp;此项修改主要依赖于以下两个maven插件</p>
+<ul>
+<li><a href="http://maven.apache.org/plugins/maven-resources-plugin" target="_blank" rel="noopener">maven-resources-plugin</a></li>
+<li><a href="http://maven.apache.org/plugins/maven-antrun-plugin" target="_blank" rel="noopener">maven-antrun-plugin</a></li>
+</ul>
+<p>&emsp;&emsp;详细的插件配置如下，在server/pom.xml的plugins标签下添加如下代码</p>
+<pre><code class="xml">&lt;!--复制配置文件--&gt;
+&lt;plugin&gt;
+    &lt;artifactId&gt;maven-resources-plugin&lt;/artifactId&gt;
+    &lt;executions&gt;
+        &lt;execution&gt;
+            &lt;id&gt;copy-resources&lt;/id&gt;
+            &lt;phase&gt;validate&lt;/phase&gt;
+            &lt;goals&gt;
+                &lt;goal&gt;copy-resources&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;configuration&gt;
+                &lt;outputDirectory&gt;${project.basedir}/../dist/config&lt;/outputDirectory&gt;
+                &lt;overwrite&gt;true&lt;/overwrite&gt;
+                &lt;resources&gt;
+                    &lt;resource&gt;
+                        &lt;directory&gt;src/main/resources&lt;/directory&gt;
+                        &lt;includes&gt;
+                            &lt;include&gt;**/*&lt;/include&gt;
+                        &lt;/includes&gt;
+                    &lt;/resource&gt;
+                &lt;/resources&gt;
+            &lt;/configuration&gt;
+        &lt;/execution&gt;
+    &lt;/executions&gt;
+&lt;/plugin&gt;
+&lt;!--移动并重命名jar包--&gt;
+&lt;plugin&gt;
+    &lt;artifactId&gt;maven-antrun-plugin&lt;/artifactId&gt;
+    &lt;executions&gt;
+        &lt;execution&gt;
+            &lt;phase&gt;package&lt;/phase&gt;
+            &lt;goals&gt;
+                &lt;goal&gt;run&lt;/goal&gt;
+            &lt;/goals&gt;
+            &lt;configuration&gt;
+                &lt;target&gt;
+                    &lt;move file=&quot;${project.basedir}/target/${project.artifactId}-${project.version}.${project.packaging}&quot; tofile=&quot;${project.basedir}/../dist/${project.artifactId}-${project.version}.${project.packaging}&quot;/&gt;
+                &lt;/target&gt;
+            &lt;/configuration&gt;
+        &lt;/execution&gt;
+    &lt;/executions&gt;
+&lt;/plugin&gt;</code></pre>
+<p>&emsp;&emsp;进入到server/pom.xml同级目录，执行mvn clean package指令，打包成功会在dist目录下生成编译后的jar文件，dist/config目录下生成项目的配置文件</p>
+<h2 id="前端工程"><a href="#前端工程" class="headerlink" title="前端工程"></a><span>前端工程</span></h2><p>&emsp;&emsp;前端工程主要基于vue-cli脚手架创建，vue项目的环境搭建可以参照<a href="http://www.cnblogs.com/superlizhao/p/8664326.html" target="_blank" rel="noopener">vue-用Vue-cli从零开始搭建一个Vue项目</a><br>&emsp;&emsp;现在创建一个基础的vue项目，修改config/index.js配置以实现打包的静态资源生成至dist/html目录</p>
+<p><img src="https://resources.chenjianhui.site/2019-02-23-front-build-config.png" alt="前端打包配置修改"></p>
+<p>&emsp;&emsp;进入到front/package.json同级目录，执行npm run build指令，打包成功会在dist/html目录生成静态文件</p>
+<h2 id="集成测试"><a href="#集成测试" class="headerlink" title="集成测试"></a><span>集成测试</span></h2><h3 id="来个接口"><a href="#来个接口" class="headerlink" title="来个接口"></a><span>来个接口</span></h3><p>&emsp;&emsp;编写一个获取用户信息的接口</p>
+<pre><code class="java">@SpringBootApplication
+@Controller
+public class ServerApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ServerApplication.class, args);
+    }
+
+    /**
+     * 获取当前登录用户的个人信息
+     *
+     * @return 当前登录用户的个人信息
+     */
+    @RequestMapping(&quot;/user/me&quot;)
+    @ResponseBody
+    public Map&lt;String, Object&gt; me() {
+        Map&lt;String, Object&gt; result = new HashMap&lt;&gt;();
+        result.put(&quot;username&quot;, &quot;admin&quot;);
+        result.put(&quot;roles&quot;, Arrays.asList(&quot;admin&quot;, &quot;normal&quot;, &quot;none&quot;));
+        result.put(&quot;depts&quot;, Arrays.asList(&quot;办公室&quot;, &quot;组织部&quot;));
+        result.put(&quot;menus&quot;, Arrays.asList(&quot;工作台&quot;, &quot;系统管理&quot;));
+        return result;
+    }
+}</code></pre>
+<h3 id="配置代理"><a href="#配置代理" class="headerlink" title="配置代理"></a><span>配置代理</span></h3><p>&emsp;&emsp;配置以下前端工程的代理转发，用于解决开发环境接口调试的跨域问题<br><img src="https://resources.chenjianhui.site/2019-02-23-front-proxy-config.png" alt></p>
+<h3 id="写个页面"><a href="#写个页面" class="headerlink" title="写个页面"></a><span>写个页面</span></h3><p>&emsp;&emsp;写个前端页面测试后端接口，进入front/package.json同级目录执行npm i axios -s，修改HelloWord.vue组件为如下代码</p>
+<pre><code class="html">&lt;template&gt;
+  &lt;div class=&quot;hello&quot;&gt;
+    &lt;h1 v-if=&quot;loading&quot;&gt;{{ '正在加载用户信息' }}&lt;/h1&gt;
+    &lt;h1 v-else-if=&quot;errMsg&quot;&gt;{{ errMsg }}&lt;/h1&gt;
+    &lt;div v-else&gt;
+      &lt;p&gt;username: {{userInfo.username}}&lt;/p&gt;
+      &lt;p&gt;roles: {{userInfo.roles}}&lt;/p&gt;
+      &lt;p&gt;depts: {{userInfo.depts}}&lt;/p&gt;
+      &lt;p&gt;menus: {{userInfo.menus}}&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import axios from &#39;axios&#39;
+export default {
+  name: &#39;HelloWorld&#39;,
+  data () {
+    return {
+      loading: false,
+      userInfo: {
+        username: &#39;&#39;,
+        roles: [],
+        depts: [],
+        menus: []
+      },
+      errMsg: null
+    }
+  },
+  created () {
+    this.loading = true
+    axios.get(&#39;/api/user/me&#39;).then(response =&gt; {
+      this.userInfo = response.data
+    }).catch(err =&gt; {
+      console.error(err)
+      this.errMsg = err
+    }).finally(() =&gt; { this.loading = false })
+  }
+}
+&lt;/script&gt;
+
+&lt;!-- Add &quot;scoped&quot; attribute to limit CSS to this component only --&gt;
+&lt;style scoped&gt;
+h1,
+h2 {
+  font-weight: normal;
+}
+&lt;/style&gt;</code></pre>
+<p>进入测试链接<a href="http://localost:8081" target="_blank" rel="noopener">http://localost:8081</a></p>
+<h1 id="单点部署"><a href="#单点部署" class="headerlink" title="单点部署"></a><span>单点部署</span></h1><h2 id="nginx配置"><a href="#nginx配置" class="headerlink" title="nginx配置"></a><span>nginx配置</span></h2><p>&emsp;&emsp;分离部署主要依赖于nginx来完成，利用nginx来分发前后端的内容，nginx的配置如下</p>
+<pre><code class="nginx">
+#user root;# linux下必须有此配置 不然会导致403权限不足
+worker_processes  1;
+
+#error_log  logs/error.log;
+#error_log  logs/error.log  notice;
+#error_log  logs/error.log  info;
+
+#pid        logs/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  &#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#39;
+                      &#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;
+                      &#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;;
+
+    access_log  logs/access.log  main;
+    error_log logs/error.log error;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+
+    #gzip  on;
+
+    server {
+        listen       80;
+        server_name  localhost;
+        set $application_path C:/workspace/java/server-front-separate;# 这里的父级路径需要根据项目路径设置
+
+        location /api {
+            proxy_pass http://localhost:8080/;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+
+        location / {
+            alias $application_path/dist/html/;
+            try_files $uri $uri/ /index.html last;# 解决页面刷新404问题
+            index  index.html index.htm;
+        }
+    }
+}
+</code></pre>
+<h2 id="打包前后端应用"><a href="#打包前后端应用" class="headerlink" title="打包前后端应用"></a><span>打包前后端应用</span></h2><ul>
+<li>前端应用: 进入front/package.json同级目录，执行npm run build指令</li>
+<li>后端应用: 进入server/pom.xml同级目录，执行mvn clean package指令</li>
+</ul>
+<h2 id="编写快速启动脚本（支持多环境）"><a href="#编写快速启动脚本（支持多环境）" class="headerlink" title="编写快速启动脚本（支持多环境）"></a><span>编写快速启动脚本（支持多环境）</span></h2><ul>
+<li>linux下启动脚本start.sh</li>
+</ul>
+<pre><code class="bash">#!/bin/sh
+# 常量定义
+export BIN_PATH=$(cd `dirname $0`;pwd)
+echo BIN_PATH:[$BIN_PATH]
+cd $BIN_PATH
+cd ..
+export CONTEXT_PATH=`pwd`
+echo CONTEXT_PATH:[$CONTEXT_PATH]
+export LOG_PATH=/data/logs/sso
+echo LOG_PATH:[$LOG_PATH]
+# 需要指定启动的模式是test，还是prod，默认是test，如果不指定的话
+ACTION_MODE=$1
+if [ &quot;$ACTION_MODE&quot; = &quot;&quot; ]
+then
+    ACTION_MODE=test
+fi
+echo STARTING APPLICATION ACTION_MODE:[$ACTION_MODE]
+# 判断log文件夹是否存在 不存在则创建
+if [ ! -d $LOG_PATH ]; then
+  mkdir $LOG_PATH
+fi
+# 删除历史的server.log文件
+rm -f $LOG_PATH/server.log
+# 后台启动应用 并输出控制台日志
+nohup java -jar server-0.0.1-SNAPSHOT.jar --spring.profiles.active=$ACTION_MODE &gt;&gt; $LOG_PATH/server.log 2&gt;&amp;1 &amp;
+# 显示输出前二十行的日志
+head -n 20 $LOG_PATH/server.log</code></pre>
+<ul>
+<li>windows下启动脚本start.bat</li>
+</ul>
+<pre><code class="bash">@echo off
+:: 设置jar名称
+set JAR_NAME=server-0.0.1-SNAPSHOT
+:: 常量定义
+set BIN_PATH=%~dp0
+echo BIN_PATH:[%BIN_PATH%]
+cd %BIN_PATH%
+cd ..
+set CONTEXT_PATH=%cd%
+echo CONTEXT_PATH:[%CONTEXT_PATH%]
+echo JAR_NAME:[%JAR_NAME%]
+:: 需要指定启动的模式是test，还是prod，默认是test，如果不指定的话
+set /p ACTION_MODE_INPUT=请输入启动环境，不输入采用默认环境[test]:
+if not &quot;%ACTION_MODE_INPUT%&quot; equ &quot;&quot; (set ACTION_MODE=%ACTION_MODE_INPUT%) else (set ACTION_MODE=test)
+echo STARTING APPLICATION ACTION_MODE:%ACTION_MODE%
+set PROCESS_NAME=JAVA_APP_%JAR_NAME%_%ACTION_MODE%
+title %PROCESS_NAME%
+echo PROCESS_NAME:[%PROCESS_NAME%]
+:: 后台启动应用 并输出控制台日志
+java -jar %JAR_NAME%.jar --spring.profiles.active=%ACTION_MODE%</code></pre>
+<ul>
+<li>linux下关闭脚本stop.sh</li>
+</ul>
+<pre><code class="bash">#!/bin/sh
+# 需要指定停止的模式是test，还是prod，默认是test，如果不指定的话默认取test
+ACTION_MODE=$1
+if [ &quot;$ACTION_MODE&quot; = &quot;&quot; ]
+then
+    ACTION_MODE=test
+fi
+echo STOPPING APPLICATION ACTION_MODE:[$ACTION_MODE]
+pid=`ps -ef | grep server-0.0.1-SNAPSHOT.jar | grep $ACTION_MODE | grep -v grep | awk &#39;{print $2}&#39;`
+# 判断进程是否再运行 在运行则终止
+if [ -n &quot;$pid&quot; ]
+then
+   kill -9 $pid
+   echo application stop success
+else
+   echo application already stop
+fi
+</code></pre>
+<ul>
+<li>windows下关闭脚本stop.bat</li>
+</ul>
+<pre><code class="bash">@echo off
+:: 设置jar名称
+set JAR_NAME=server-0.0.1-SNAPSHOT
+:: 需要指定终止的模式是test，还是prod，默认是test，如果不指定的话
+set /p ACTION_MODE_INPUT=请输入关闭应用的运行环境，不输入采用默认环境[test]:
+if not &quot;%ACTION_MODE_INPUT%&quot; equ &quot;&quot; (set ACTION_MODE=%ACTION_MODE_INPUT%) else (set ACTION_MODE=test)
+echo STARTING APPLICATION ACTION_MODE:%ACTION_MODE%
+echo JAR_NAME:[%JAR_NAME%]
+set PROCESS_NAME=JAVA_APP_%JAR_NAME%_%ACTION_MODE%
+echo PROCESS_NAME:[%PROCESS_NAME%]
+:: 杀死对应进程    
+tasklist /nh /fi &quot;WINDOWTITLE eq %PROCESS_NAME%&quot;|find /i &quot;cmd.exe&quot; &gt;nul
+if ERRORLEVEL 1 (echo Application already stop) else (taskkill /fi &quot;WINDOWTITLE eq %PROCESS_NAME%&quot; &gt;nul &amp; echo Application stop success)
+echo This window will close in 10 seconds
+ping 127.1 -n 11 &gt;nul</code></pre>
+<h2 id="启动nginx以及后端服务"><a href="#启动nginx以及后端服务" class="headerlink" title="启动nginx以及后端服务"></a><span>启动nginx以及后端服务</span></h2><ul>
+<li>windwos<ul>
+<li>运行nginx.exe</li>
+<li>运行dist/bin/start.bat</li>
+</ul>
+</li>
+<li>linux<ul>
+<li>nginx -s start</li>
+<li>dist/bin/start.sh prod</li>
+</ul>
+</li>
+</ul>
+<h1 id="源码获取"><a href="#源码获取" class="headerlink" title="源码获取"></a><span>源码获取</span></h1><p><a href="https://github.com/calebman/server-front-separate" target="_blank" rel="noopener">https://github.com/calebman/server-front-separate</a></p>
+
+        </div>
+        
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2019-02-23-server-front-separate/">前后端分离开发模式的实践总结</a></li>
+            <li><strong>本文作者：</strong><a href="https://chenjianhui.site">JianhuiChen</a></li>
+            <li><strong>本文链接：</strong><a href="https://chenjianhui.site/2019-02-23-server-front-separate/">https://chenjianhui.site/2019-02-23-server-front-separate/</a></li>
+            <li><strong>发布时间：</strong>2019-02-23</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <hr style="height:1px;margin:1rem 0">
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
+                    <a class="has-link-grey -link" href="/tags/Nginx/">Nginx</a>,&nbsp;<a class="has-link-grey -link" href="/tags/SpringBoot/">SpringBoot</a>,&nbsp;<a class="has-link-grey -link" href="/tags/vuejs/">vuejs</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2019-03-01-devops-practice/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">前后端分离模式下的DevOps</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019-02-21-hello-hexo/">
+                <span class="level-item">Hello Hexo</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'bd0cbb30da9c24da8c7c',
+        clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
+        id: '70619d10d48b52b7a51cd42f245c31d8',
+        repo: 'blog',
+        owner: 'calebman',
+        admin: "calebman"
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+
+<link rel="stylesheet" href="/css/article-nice.css">
+<!-- Highlight.js -->
+<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script></div>
+                
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right is-sticky">
+    
+        
+<div class="card widget column-left is-sticky" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                目录
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#前言">
+        <span class="has-mr-6">1</span>
+        <span>前言</span>
+        </a></li><li>
+        <a class="is-flex" href="#技术选型">
+        <span class="has-mr-6">2</span>
+        <span>技术选型</span>
+        </a></li><li>
+        <a class="is-flex" href="#环境准备">
+        <span class="has-mr-6">3</span>
+        <span>环境准备</span>
+        </a></li><li>
+        <a class="is-flex" href="#构建前后端分离工程">
+        <span class="has-mr-6">4</span>
+        <span>构建前后端分离工程</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#目录规划">
+        <span class="has-mr-6">4.1</span>
+        <span>目录规划</span>
+        </a></li><li>
+        <a class="is-flex" href="#后端工程">
+        <span class="has-mr-6">4.2</span>
+        <span>后端工程</span>
+        </a></li><li>
+        <a class="is-flex" href="#前端工程">
+        <span class="has-mr-6">4.3</span>
+        <span>前端工程</span>
+        </a></li><li>
+        <a class="is-flex" href="#集成测试">
+        <span class="has-mr-6">4.4</span>
+        <span>集成测试</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#来个接口">
+        <span class="has-mr-6">4.4.1</span>
+        <span>来个接口</span>
+        </a></li><li>
+        <a class="is-flex" href="#配置代理">
+        <span class="has-mr-6">4.4.2</span>
+        <span>配置代理</span>
+        </a></li><li>
+        <a class="is-flex" href="#写个页面">
+        <span class="has-mr-6">4.4.3</span>
+        <span>写个页面</span>
+        </a></li></ul></li></ul></li><li>
+        <a class="is-flex" href="#单点部署">
+        <span class="has-mr-6">5</span>
+        <span>单点部署</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#nginx配置">
+        <span class="has-mr-6">5.1</span>
+        <span>nginx配置</span>
+        </a></li><li>
+        <a class="is-flex" href="#打包前后端应用">
+        <span class="has-mr-6">5.2</span>
+        <span>打包前后端应用</span>
+        </a></li><li>
+        <a class="is-flex" href="#编写快速启动脚本（支持多环境）">
+        <span class="has-mr-6">5.3</span>
+        <span>编写快速启动脚本（支持多环境）</span>
+        </a></li><li>
+        <a class="is-flex" href="#启动nginx以及后端服务">
+        <span class="has-mr-6">5.4</span>
+        <span>启动nginx以及后端服务</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#源码获取">
+        <span class="has-mr-6">6</span>
+        <span>源码获取</span>
+        </a></li></ul>
+        </div>
+    </div>
+</div>
+
+
+    
+    
+</div>
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <p class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo.svg" alt="前后端分离开发模式的实践总结" height="28">
+                
+                <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
+                </p>
+                <p class="is-size-7">
+                &copy; 2020 JianhuiChen&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                        
+                        <i class="fab fa-creative-commons"></i>&nbsp;<i class="fab fa-creative-commons-by"></i>&nbsp;<i class="fab fa-creative-commons-nc"></i>&nbsp;<i class="fab fa-creative-commons-sa"></i>&nbsp;
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>

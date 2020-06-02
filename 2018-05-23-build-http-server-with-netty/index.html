@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+<title>使用Netty构建Http容器 - Sincerity</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="使用Netty构建一个SpringBoot风格的Web框架">
+<meta name="keywords" content="Spring,Netty">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Netty构建Http容器">
+<meta property="og:url" content="https://chenjianhui.site/2018-05-23-build-http-server-with-netty/index.html">
+<meta property="og:site_name" content="Sincerity">
+<meta property="og:description" content="使用Netty构建一个SpringBoot风格的Web框架">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://resources.chenjianhui.site/2018-05-23-home-pic.jpg">
+<meta property="og:updated_time" content="2020-06-02T09:08:30.082Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Netty构建Http容器">
+<meta name="twitter:description" content="使用Netty构建一个SpringBoot风格的Web框架">
+<meta name="twitter:image" content="https://resources.chenjianhui.site/2018-05-23-home-pic.jpg">
+
+
+
+
+
+<link rel="alternative" href="/atom.xml" title="使用Netty构建Http容器" type="application/atom+xml">
+
+
+
+<link rel="icon" href="/images/favicon-32x32.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+    
+    
+<script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:19960428,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.svg" alt="使用Netty构建Http容器" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">Home</a>
+                
+                <a class="navbar-item" href="/archives">Archives</a>
+                
+                <a class="navbar-item" href="/categories">Categories</a>
+                
+                <a class="navbar-item" href="/tags">Tags</a>
+                
+                <a class="navbar-item" href="/about">About</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    
+                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://github.com/calebman">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-image">
+        <span class="image is-7by1">
+            <img class="thumbnail" src="https://resources.chenjianhui.site/2018-05-23-home-pic.jpg" alt="使用Netty构建Http容器">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <i class="fas fa-angle-double-right"></i>使用Netty构建Http容器
+            
+        </h1>
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2018-05-23T15:35:58.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2018-05-23</time>
+                
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-06-02T09:08:30.082Z"><i class="far fa-calendar-check">&nbsp;</i>2020-06-02</time>
+                
+                
+                <div class="level-item">
+                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
+                <a class="has-link-grey -link" href="/categories/后端/">后端</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    <i class="far fa-clock"></i>&nbsp;
+                    
+                    
+                    9 分钟 读完 (大约 1362 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <div id="article-content" class="content">
+            <p>使用Netty构建一个SpringBoot风格的Web框架</p>
+<a id="more"></a>
+
+<h3 id="要实现怎样的效果"><a href="#要实现怎样的效果" class="headerlink" title="要实现怎样的效果"></a><span>要实现怎样的效果</span></h3><blockquote>
+<p>一个SpringBoot框架搭建起来的项目发布接口服务是这样的</p>
+<p>SpringBoot搭建教程<strong><a href="/2018-02-21-build-springboot-env/">点击这里</a></strong></p>
+</blockquote>
+<pre><code class="java">@Controller
+@RequestMapping(&quot;/v1/product&quot;)
+public class DocController {
+
+    @RequestMapping(value = &quot;/{id}&quot;, method = RequestMethod.GET)
+    @ResponseBody
+    public WebResult search(@PathVariable(&quot;id&quot;) Integer id) {
+        logger.debug(&quot;获取指定产品接收产品id=&gt;%d&quot;, id);
+        if (id == null || &quot;&quot;.equals(id)) {
+            logger.debug(&quot;产品id不能为空&quot;);
+            return WebResult.error(ERRORDetail.RC_0101001);
+        }
+        return WebResult.success(products.get(id));
+    }
+}</code></pre>
+<blockquote>
+<p>我希望我使用Netty构建的Web服务器也能使用这样便捷的注解方式去发布我的接口服务</p>
+</blockquote>
+<h3 id="该怎么做"><a href="#该怎么做" class="headerlink" title="该怎么做"></a><span>该怎么做</span></h3><p><img src="https://resources.chenjianhui.site/2018-05-23-xmind-brain-map.png" alt="系统流程"></p>
+<ul>
+<li>使用Netty自带的编解码、聚合器构建一个带有Http编解码功能的服务器这一点其实非常简单，Netty提供了对应的Http协议的编解码以及聚合器，我们只需要在管道初始化的时候加载它们。</li>
+</ul>
+<pre><code class="java">public class HttpPipelineInitializer extends ChannelInitializer&lt;Channel&gt; {
+    //编解码处理器名称
+    public final static String CODEC = &quot;codec&quot;;
+    //HTTP消息聚合处理器名称
+    public final static String AGGEGATOR = &quot;aggegator&quot;;
+    //HTTP消息压缩处理器名称
+    public final static String COMPRESSOR = &quot;compressor&quot;;
+
+    @Override
+    protected void initChannel(Channel channel) throws Exception {
+        ChannelPipeline pipeline = channel.pipeline();
+        pipeline.addLast(CODEC, new HttpServerCodec());
+        pipeline.addLast(AGGEGATOR, new HttpObjectAggregator(512 * 1024));
+        pipeline.addLast(COMPRESSOR,new HttpContentCompressor());
+        pipeline.addLast(new AllocHandler());
+    }
+}</code></pre>
+<ul>
+<li>实现RequestMapping注解，用于标识处理器或者控制器对应匹配的接口地址。</li>
+</ul>
+<pre><code class="java">@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface RequestMapping {
+    String[] value() default {};
+}</code></pre>
+<ul>
+<li>提供启动入口，程序启动时创建Spring容器，并基于Spring初始化必要组件</li>
+</ul>
+<ol>
+<li>提供程序入口类</li>
+</ol>
+<pre><code class="java">public class CettyBootstrap {
+    private static final Logger logger = LoggerFactory.getLogger(CettyBootstrap.class);
+    private static final String DEFAULT_SPRING_XMLPATH = &quot;classpath:applicantContext.xml&quot;;
+    private static final String DEFAULT_HTTP_SERVER_BEAN_NAME = &quot;defaultHttpServer&quot;;
+
+    public static void create() {
+        create(DEFAULT_SPRING_XMLPATH);
+    }
+
+    public static void create(String springXmlpath) {
+        if (StringUtils.isEmpty(springXmlpath)) {
+            springXmlpath = DEFAULT_SPRING_XMLPATH;
+        }
+        logger.debug(&quot;spring框架配置文件地址为{}&quot;, springXmlpath);
+        try {
+            ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(springXmlpath.split(&quot;[,\\s]+&quot;));
+            context.start();
+            logger.debug(&quot;spring框架启动成功&quot;);
+            try {
+                context.getBean(DEFAULT_HTTP_SERVER_BEAN_NAME, DefaultHttpServer.class);
+            } catch (NoSuchBeanDefinitionException ex) {
+                logger.warn(&quot;未配置HttpServer，采用默认配置启动&quot;);
+                context.getAutowireCapableBeanFactory().createBean(DefaultHttpServer.class);
+            }
+        } catch (BeansException e) {
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+<ol start="2">
+<li>定义默认实现的HttpServer组件，随Spring容器启动时加载基于Netty的Web容器，并使用HandlerMapping组件初始化HttpPipelineInitializer管道，其中HandlerMapping如果未有用户定义则使用默认的DefaultHandlerMapping实现</li>
+</ol>
+<pre><code class="java">public class DefaultHttpServer extends ApplicationObjectSupport {
+    private static final Logger logger = LoggerFactory.getLogger(DefaultHttpServer.class);
+    private static final String DEFAULT_HTTP_PORT = &quot;8080&quot;;
+    private static final String HANDLER_MAPPING_BEAN_NAME = &quot;handlerMapping&quot;;
+
+
+    private String port;
+
+    private HandlerMapping handlerMapping;
+
+    public void setPort(String port) {
+        this.port = port;
+    }
+
+    @Override
+    public void initApplicationContext(ApplicationContext applicationContext) {
+        beforeInit(applicationContext);
+        initHandlerMapping(applicationContext);
+        initServer();
+    }
+
+    void initHandlerMapping(ApplicationContext context) {
+        try {
+            this.handlerMapping = context.getBean(HANDLER_MAPPING_BEAN_NAME, HandlerMapping.class);
+        } catch (NoSuchBeanDefinitionException ex) {
+            this.handlerMapping = context.getAutowireCapableBeanFactory().createBean(DefaultHandlerMapping.class);
+        }
+    }
+
+    void initServer() {
+        logger.debug(&quot;初始化服务器&quot;);
+        if (!HttpUtils.isPort(port)) {
+            logger.warn(&quot;端口号不合法，使用默认端口{}&quot;, DEFAULT_HTTP_PORT);
+            port = DEFAULT_HTTP_PORT;
+        }
+        EventLoopGroup bossGroup = new NioEventLoopGroup();
+        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        try {
+            ServerBootstrap b = new ServerBootstrap();
+            b.group(bossGroup, workerGroup)
+                    .channel(NioServerSocketChannel.class)
+                    .localAddress(new InetSocketAddress(Integer.parseInt(port)))
+                    .childHandler(new HttpPipelineInitializer(handlerMapping));
+
+            ChannelFuture f = b.bind().sync();
+            logger.info(&quot;服务启动成功，监听{}端口&quot;, port);
+            f.channel().closeFuture().sync();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                workerGroup.shutdownGracefully().sync();
+                bossGroup.shutdownGracefully().sync();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    protected void beforeInit(ApplicationContext applicationContext) {
+
+    }
+
+}</code></pre>
+<ol start="3">
+<li>提供默认的HandlerMapping实现类，负责匹配@RequestMapping注解下的处理函数</li>
+</ol>
+<pre><code class="java">public class DefaultHandlerMapping extends ApplicationObjectSupport implements HandlerMapping {
+    Logger logger = LoggerFactory.getLogger(DefaultHandlerMapping.class);
+
+    private static Map&lt;String, HttpHandler&gt; httpHandlerMap = new HashMap&lt;String, HttpHandler&gt;();
+
+    @Override
+    public void initApplicationContext(ApplicationContext context) throws BeansException {
+        logger.debug(&quot;初始化处理匹配器&quot;);
+        Map&lt;String, Object&gt; handles = context.getBeansWithAnnotation(Controller.class);
+        try {
+            for (Map.Entry&lt;String, Object&gt; entry : handles.entrySet()) {
+                logger.debug(&quot;加载控制器{}&quot;, entry.getKey());
+                loadHttpHandler(entry.getValue());
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void loadHttpHandler(Object value) throws IllegalAccessException, InstantiationException {
+        Class clazz = value.getClass();
+        Object clazzFromInstance = clazz.newInstance();
+        Method[] method = clazz.getDeclaredMethods();
+        for (Method m : method) {
+            if (m.isAnnotationPresent(RequestMapping.class)) {
+                RequestMapping requestMapping = m.getAnnotation(RequestMapping.class);
+                for (String url : requestMapping.value()) {
+                    HttpHandler httpHandler = httpHandlerMap.get(url);
+                    if (httpHandler == null) {
+                        logger.info(&quot;加载url为{}的处理器{}&quot;, url, m.getName());
+                        httpHandlerMap.put(url, new HttpHandler(clazzFromInstance, m));
+                    } else {
+                        logger.warn(&quot;url{}存在相同的处理器&quot;, url);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public HttpHandler getHadnler(FullHttpRequest request) {
+        return httpHandlerMap.get(request.uri());
+    }
+}</code></pre>
+<ul>
+<li>当请求进入时通过HandlerMapping组件匹配处理器，如果匹配失败则返回404</li>
+</ul>
+<pre><code class="java">public class AllocHandler extends SimpleChannelInboundHandler&lt;FullHttpRequest&gt; {
+
+    private HandlerMapping handlerMapping;
+
+    public AllocHandler(HandlerMapping handlerMapping) {
+        this.handlerMapping = handlerMapping;
+    }
+
+    /*
+    异常处理
+     */
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        sendError(ctx, HttpResponseStatus.INTERNAL_SERVER_ERROR);
+        super.exceptionCaught(ctx, cause);
+    }
+
+    @Override
+    protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest fullHttpRequest) throws Exception {
+        HttpHandler httpHandler = handlerMapping.getHadnler(fullHttpRequest);
+        if (httpHandler != null) {
+            Object obj = httpHandler.execute(fullHttpRequest);
+            if (obj instanceof String) {
+                sendMessage(ctx, obj.toString());
+            } else {
+                sendMessage(ctx, JSONObject.toJSONString(obj));
+            }
+        } else {
+            sendError(ctx, HttpResponseStatus.NOT_FOUND);
+        }
+    }
+
+    private void sendMessage(ChannelHandlerContext ctx, String msg) {
+        FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, Unpooled.copiedBuffer(msg, CharsetUtil.UTF_8));
+        response.headers().set(&quot;Content-Type&quot;, &quot;text/plain&quot;);
+        ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
+    }
+
+    private void sendError(ChannelHandlerContext ctx, HttpResponseStatus httpResponseStatus) {
+        FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, httpResponseStatus, Unpooled.copiedBuffer(httpResponseStatus.toString(), CharsetUtil.UTF_8));
+        response.headers().set(&quot;Content-Type&quot;, &quot;text/plain&quot;);
+        ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
+    }
+}</code></pre>
+<h3 id="测试与使用"><a href="#测试与使用" class="headerlink" title="测试与使用"></a><span>测试与使用</span></h3><ul>
+<li>建立一个TestController</li>
+</ul>
+<pre><code class="java">@Controller
+public class TestController {
+
+    @RequestMapping(&quot;/test&quot;)
+    public String testHandler(FullHttpRequest fullHttpRequest) {
+        return &quot;1234&quot;;
+    }
+
+    @RequestMapping(&quot;/zx&quot;)
+    public String zx(FullHttpRequest fullHttpRequest) {
+        return &quot;zhuxiong&quot;;
+    }
+
+    @RequestMapping(&quot;/obj&quot;)
+    public Object obj(FullHttpRequest fullHttpRequest) {
+        System.out.println(&quot;\n\n----------&quot;);
+        HttpHeaders httpHeaders = fullHttpRequest.headers();
+        Set&lt;String&gt; names = httpHeaders.names();
+        for (String name : names) {
+            System.out.println(name + &quot; : &quot; + httpHeaders.get(name));
+        }
+        System.out.println(&quot;&quot;);
+        ByteBuf byteBuf = fullHttpRequest.content();
+        byte[] byteArray = new byte[byteBuf.capacity()];
+        byteBuf.readBytes(byteArray);
+        System.out.println(new String(byteArray));
+        System.out.println(&quot;----------\n\n&quot;);
+
+        JSONObject json = new JSONObject();
+        json.put(&quot;errCode&quot;, &quot;00&quot;);
+        json.put(&quot;errMsg&quot;, &quot;0000000(成功)&quot;);
+        json.put(&quot;data&quot;, null);
+        return json;
+    }
+}</code></pre>
+<ul>
+<li>启动Spring容器</li>
+</ul>
+<pre><code class="java">public class HttpServerTest {
+    public static void main(String[] args) throws Exception {
+        CettyBootstrap.create();
+        // CettyBootstrap.create(&quot;classpath:applicationContext.xml&quot;);
+    }
+}</code></pre>
+<h3 id="未来要做的"><a href="#未来要做的" class="headerlink" title="未来要做的"></a><span>未来要做的</span></h3><ul>
+<li><input checked disabled type="checkbox"> 与Spring框架集成，将核心组件托管给Spring容器统一管理</li>
+<li><input disabled type="checkbox"> 提供静态资源映射</li>
+<li><input disabled type="checkbox"> 修改映射策略将请求映射至一个流程（一个处理器多个拦截器）</li>
+<li><input disabled type="checkbox"> 支持使用模板语法进行视图解析</li>
+</ul>
+
+        </div>
+        
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2018-05-23-build-http-server-with-netty/">使用Netty构建Http容器</a></li>
+            <li><strong>本文作者：</strong><a href="https://chenjianhui.site">JianhuiChen</a></li>
+            <li><strong>本文链接：</strong><a href="https://chenjianhui.site/2018-05-23-build-http-server-with-netty/">https://chenjianhui.site/2018-05-23-build-http-server-with-netty/</a></li>
+            <li><strong>发布时间：</strong>2018-05-23</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <hr style="height:1px;margin:1rem 0">
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
+                    <a class="has-link-grey -link" href="/tags/Netty/">Netty</a>,&nbsp;<a class="has-link-grey -link" href="/tags/Spring/">Spring</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2019-02-21-hello-hexo/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">Hello Hexo</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2018-05-18-vue-notes/">
+                <span class="level-item">纯正后端的vue轮子笔记</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'bd0cbb30da9c24da8c7c',
+        clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
+        id: '16036f50cddb18aec70cdf01a9dcd321',
+        repo: 'blog',
+        owner: 'calebman',
+        admin: "calebman"
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+
+<link rel="stylesheet" href="/css/article-nice.css">
+<!-- Highlight.js -->
+<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script></div>
+                
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right is-sticky">
+    
+        
+<div class="card widget column-left is-sticky" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                目录
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#要实现怎样的效果">
+        <span class="has-mr-6">1</span>
+        <span>要实现怎样的效果</span>
+        </a></li><li>
+        <a class="is-flex" href="#该怎么做">
+        <span class="has-mr-6">2</span>
+        <span>该怎么做</span>
+        </a></li><li>
+        <a class="is-flex" href="#测试与使用">
+        <span class="has-mr-6">3</span>
+        <span>测试与使用</span>
+        </a></li><li>
+        <a class="is-flex" href="#未来要做的">
+        <span class="has-mr-6">4</span>
+        <span>未来要做的</span>
+        </a></li></ul>
+        </div>
+    </div>
+</div>
+
+
+    
+    
+</div>
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <p class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo.svg" alt="使用Netty构建Http容器" height="28">
+                
+                <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
+                </p>
+                <p class="is-size-7">
+                &copy; 2020 JianhuiChen&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                        
+                        <i class="fab fa-creative-commons"></i>&nbsp;<i class="fab fa-creative-commons-by"></i>&nbsp;<i class="fab fa-creative-commons-nc"></i>&nbsp;<i class="fab fa-creative-commons-sa"></i>&nbsp;
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>

@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+<title>算法——爬楼梯问题 - Sincerity</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="&amp;emsp;&amp;emsp;有一座高度是1000级台阶的天梯，从下往上走，每跨一步只能向上1级或者2级台阶。要找出一共有多少种走法？">
+<meta name="keywords" content="Algorithm,Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法——爬楼梯问题">
+<meta property="og:url" content="https://chenjianhui.site/2019-06-13-algorithm-topic/index.html">
+<meta property="og:site_name" content="Sincerity">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;有一座高度是1000级台阶的天梯，从下往上走，每跨一步只能向上1级或者2级台阶。要找出一共有多少种走法？">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://resources.chenjianhui.site/algorithm-home-pic.jpeg">
+<meta property="og:updated_time" content="2020-06-02T09:08:30.086Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="算法——爬楼梯问题">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;有一座高度是1000级台阶的天梯，从下往上走，每跨一步只能向上1级或者2级台阶。要找出一共有多少种走法？">
+<meta name="twitter:image" content="https://resources.chenjianhui.site/algorithm-home-pic.jpeg">
+
+
+
+
+
+<link rel="alternative" href="/atom.xml" title="算法——爬楼梯问题" type="application/atom+xml">
+
+
+
+<link rel="icon" href="/images/favicon-32x32.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+    
+    
+<script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:19960428,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.svg" alt="算法——爬楼梯问题" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">Home</a>
+                
+                <a class="navbar-item" href="/archives">Archives</a>
+                
+                <a class="navbar-item" href="/categories">Categories</a>
+                
+                <a class="navbar-item" href="/tags">Tags</a>
+                
+                <a class="navbar-item" href="/about">About</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    
+                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://github.com/calebman">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-image">
+        <span class="image is-7by1">
+            <img class="thumbnail" src="https://resources.chenjianhui.site/algorithm-home-pic.jpeg" alt="算法——爬楼梯问题">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <i class="fas fa-angle-double-right"></i>算法——爬楼梯问题
+            
+        </h1>
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-06-13T20:10:32.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-06-13</time>
+                
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-06-02T09:08:30.086Z"><i class="far fa-calendar-check">&nbsp;</i>2020-06-02</time>
+                
+                
+                <div class="level-item">
+                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
+                <a class="has-link-grey -link" href="/categories/Algorithm/">Algorithm</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    <i class="far fa-clock"></i>&nbsp;
+                    
+                    
+                    23 分钟 读完 (大约 3460 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <div id="article-content" class="content">
+            <p>&emsp;&emsp;有一座高度是1000级台阶的天梯，从下往上走，每跨一步只能向上1级或者2级台阶。要找出一共有多少种走法？</p>
+<a id="more"></a>
+
+<h1 id="解题思考"><a href="#解题思考" class="headerlink" title="解题思考"></a><span>解题思考</span></h1><p>&emsp;&emsp;如题1000级台阶着实有点多了，我们先来思考6级阶梯的情况，共13种</p>
+<ul>
+<li><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8">&#x1f3c3;</span> 1+1+1+1+1+1</li>
+<li><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8">&#x1f3c3;</span> 1+1+1+1+2</li>
+<li><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8">&#x1f3c3;</span> 1+1+1+2+1</li>
+<li><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8">&#x1f3c3;</span> 1+1+2+1+1</li>
+<li><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8">&#x1f3c3;</span> 1+2+1+1+1</li>
+<li><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8">&#x1f3c3;</span> 2+1+1+1+1</li>
+<li><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8">&#x1f3c3;</span> 1+1+2+2</li>
+<li><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8">&#x1f3c3;</span> 1+2+1+2</li>
+<li><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8">&#x1f3c3;</span> 1+2+2+1</li>
+<li><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8">&#x1f3c3;</span> 2+1+1+2</li>
+<li><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8">&#x1f3c3;</span> 2+1+2+1</li>
+<li><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8">&#x1f3c3;</span> 2+2+1+1</li>
+<li><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8">&#x1f3c3;</span> 2+2+2</li>
+</ul>
+<p>&emsp;&emsp;在仅有6级阶梯的情况下穷举已经有一些费力了，如果是1000级那几乎不可能穷举了，我们要思考找出其中的微妙之处。<br>&emsp;&emsp;现在我们假设只差最后一步就能达到第6级阶梯了，那么会出现几种情况？无非就是从第5级花费一步或者从第4级花费两步跳到第6级阶梯，我们现在假设0-4级阶梯有X种走法，0-5级阶梯有Y种走法，那么0-6级阶梯的走法有多少种？</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8">&#x1f3c3;</span>差一步</td>
+<td>==6级==</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f3c3.png?v8">&#x1f3c3;</span>差两步</td>
+<td>==5级==</td>
+<td>?种走法<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f434.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f434.png?v8">&#x1f434;</span></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td>==4级==</td>
+<td>Y种走法<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f434.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f434.png?v8">&#x1f434;</span></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>==3级==</td>
+<td>X种走法<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f434.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f434.png?v8">&#x1f434;</span></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>==2级==</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>==1级==</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>&emsp;&emsp;我们来分析一下，要走到第6级阶梯最后一步必然从4或5级阶梯开始的，而4或5级阶梯我们知道它的走法为X与Y，那么显然0-6级阶梯的走法即为X+Y，这个时候我们可以发现，每一级阶梯的走法数目其实都是由它的前两级阶梯来决定的，即可用此函数表示</p>
+<blockquote>
+<p>fun(N) = func(N - 1) + func(N - 2)</p>
+</blockquote>
+<p>&emsp;&emsp;且我们知道第1级的阶梯有一步走法，第二级的阶梯有两步走法，所以函数完整的表示为</p>
+<blockquote>
+<p>func(1) = 1<br>func(2) = 2<br>fun(N) = func(N - 1) + func(N - 2)</p>
+</blockquote>
+<p>&emsp;&emsp;这种解题思路即是动态规划思想，将大事化小，小事化了，转换为简单的问题，其中最后一步必然从4或5级阶梯开始这个称之为<strong>最优子结构</strong>，上述的方程称之为<strong>状态转移方程</strong>，func(1|2)称之为<strong>边界</strong>。</p>
+<h1 id="编码实现"><a href="#编码实现" class="headerlink" title="编码实现"></a><span>编码实现</span></h1><h2 id="递归实现"><a href="#递归实现" class="headerlink" title="递归实现"></a><span>递归实现</span></h2><p>&emsp;&emsp;上述的方程随眼一看即知道，这是一个递归方程，现在我们使用递归编程来实现此题的解法。</p>
+<pre><code class="java">    public int getStairsWays(int n) {
+        if (n &lt;= 0) {
+            return 0;
+        }
+        if (n == 1 || n == 2) {
+            return n;
+        }
+        return getStairsWays(n - 1) + getStairsWays(n - 2);
+    }</code></pre>
+<p>&emsp;&emsp;其实稍微计算一下这套实现的时间复杂度你就会发现非常恐怖，它的计算量相当于一个二叉树，时间复杂度达到了O(2^N)，空间复杂度为O(1)。这道题目的优化空间是很大的，我们首先思考一下它的计算过程，我们可以发现很多都是重复计算的</p>
+<blockquote>
+<p>func(5) = func(4) + <strong>func(3)</strong></p>
+<p>func(4) = <strong>func(3)</strong> + func(2)</p>
+<p>func(3) = func(2) + func(1)</p>
+</blockquote>
+<p>&emsp;&emsp;<strong>func(3)</strong>被重复计算了很多次，为了降低计算次数，我们可以将已经计算过的缓存起来，不去重新计算它。</p>
+<h2 id="备忘录算法"><a href="#备忘录算法" class="headerlink" title="备忘录算法"></a><span>备忘录算法</span></h2><p>&emsp;&emsp;备忘录算法是递归实现了一种改良版，使用了一块内存区域来存储已经计算过的阶梯数，防止重复计算，在这里使用的是HashMap对象，其实更优的选择应该是一个长度为阶梯高度的int数组。</p>
+<pre><code class="java">    public int getStairsWays(int n) {
+        return getStairsWays(n, null);
+    }
+
+    public int getStairsWays(int n, Map&lt;Integer, Integer&gt; cache) {
+        if (n &lt;= 0) {
+            return 0;
+        }
+        if (n == 1 || n == 2) {
+            return n;
+        }
+        if (cache == null) { // 初始化一个缓存对象 容量为log(n)的向上取整
+            cache = new HashMap&lt;&gt;((int) Math.ceil(Math.log(n) / Math.log(2)));
+        }
+        if (cache.containsKey(n)) {
+            return cache.get(n);
+        }
+        int value = getStairsWays(n - 1, cache) + getStairsWays(n - 2, cache);
+        cache.put(n, value);
+        return value;
+    }</code></pre>
+<p>&emsp;&emsp;我们大概看一下这个算法的时间与空间复杂度，备忘录缓存了各级背包的计算结果因此它真正计算的只有n次，时间复杂度为O(N)，由于需要内存去缓存计算结果，所以它的空间复杂度也为O(N)<br>&emsp;&emsp;我们可以再分析一下，还有没有更优的解法呢？重新观察我们的计算过程</p>
+<blockquote>
+<p>func(6) = <strong>func(5)</strong> + <strong>func(4)</strong></p>
+<p>func(5) = func(4) + func(3)</p>
+<p>func(4) = func(3) + func(2)</p>
+<p>func(3) = func(2) + func(1)</p>
+</blockquote>
+<p>&emsp;&emsp;func(6)只依赖于func(5)与func(4)，所以当func(5)与func(4)的结果值出来以后，func(3)这个结果就再没必要缓存了，我们把思维逆转一下，从func(3)开始计算到func(6)。</p>
+<h2 id="动态规划算法"><a href="#动态规划算法" class="headerlink" title="动态规划算法"></a><span>动态规划算法</span></h2><p>&emsp;&emsp;这里我们考虑使用自底向上的解法，只需要用两个变量来存储它的两个依赖值，分别是差两步的走法数目(pre)以及差一步的走法数目(next)，最终的走法数目为这两个依赖值的和。</p>
+<pre><code class="java">    public int getStairsWays(int n) {
+        if (n &lt;= 0) {
+            return 0;
+        }
+        if (n == 1 || n == 2) {
+            return n;
+        }
+        int pre = 1;
+        int next = 2;
+        for (int i = 3; i &lt; n; i++) {
+            int temp = next;
+            next = pre + next;
+            pre = temp;
+        }
+        return pre + next;
+    }</code></pre>
+<p>&emsp;&emsp;分析一下这个算法的时间与空间复杂度，循环n-2次计算，所以时间复杂度是O(N)，内存上只开辟了两个临时变量没有额外的内存空间使用，所以空间复杂度为O(1)，这就是真正的动态规划算法。<br>&emsp;&emsp;有兴趣的同学可以测试一下以上三个算法在1000个阶梯的量级下运行时间，反正我使用递归运行了一下1000次阶梯，等了十分钟也没结果最终放弃了…</p>
+<h2 id="有没有更优解"><a href="#有没有更优解" class="headerlink" title="有没有更优解"></a><span>有没有更优解</span></h2><p>&emsp;&emsp;答案是有的，且时间复杂度为O(logN)，有兴趣的可以搜索数论中的<a href="https://zhuanlan.zhihu.com/p/42639682" target="_blank" rel="noopener">矩阵快速幂</a>，可根据状态转移方程快速计算出结果，与动态规划思想结合使用。<br>&emsp;&emsp;还有就是我们来观察上面讲到的<strong>状态转移方程</strong>，不难看出这表示的是一个<a href="https://baike.baidu.com/item/斐波那契数列" target="_blank" rel="noopener"><strong>斐波那契数列</strong></a>，而斐波那契数列是有通项公式的，在如这种特定问题下可以直接代入通项公式求解。</p>
+<h1 id="题目扩展，-背包问题"><a href="#题目扩展，-背包问题" class="headerlink" title="题目扩展， 背包问题"></a><span>题目扩展，-背包问题</span></h1><p>&emsp;&emsp;给定一组多个（n）物品，每种物品都有自己的重量（Wi）和价值（Vi），每种物品至多选择一个，在限定可承受总重量（C）的背包内，要想背包内物品的总价值最高，应该选择那几件物品？</p>
+<h2 id="简化题目"><a href="#简化题目" class="headerlink" title="简化题目"></a><span>简化题目</span></h2><p>&emsp;&emsp;我们先假设有5组物品，其中它的价值与重量分别为[4,2,1,3,1]、[4,3,2,1,2]，背包可承受总重量为6，求应该选那几件物品使得背包中的物品价值最大？</p>
+<h2 id="动态规划思路四步解题"><a href="#动态规划思路四步解题" class="headerlink" title="动态规划思路四步解题"></a><span>动态规划思路四步解题</span></h2><h3 id="问题是否可拆分？"><a href="#问题是否可拆分？" class="headerlink" title="问题是否可拆分？"></a><span>问题是否可拆分？</span></h3><p>&emsp;&emsp;如爬楼梯问题可以拆分成剩余一步与剩余两步的走法，此问题该如何拆分？</p>
+<ul>
+<li>我们先针对最后一个物品(价值为1，重量为2)做假设<br>(1) <strong>装载</strong>物品进入背包，问题演变成，<strong>有4组物品，背包承重量为4</strong>，应该选那几件物品使得背包中的物品价值最大？<br>(2) 物品<strong>不被装载</strong>，问题演变成，<strong>有4组物品，背包承重量为6</strong>，应该选那几件物品使得背包中的物品价值最大？<br>(3) 接下来我们还可以对子情况(1)、(2)分别做假设，因此该问题是<strong>可拆分的</strong>。</li>
+</ul>
+<h3 id="最优子结构是什么？"><a href="#最优子结构是什么？" class="headerlink" title="最优子结构是什么？"></a><span>最优子结构是什么？</span></h3><p>&emsp;&emsp;如爬楼梯的问题的最优子结构是剩余一步与剩余两步的走法相加，此问题的最优结构是什么？</p>
+<p>&emsp;&emsp;针对我们刚刚的假设(1)、(2)，要想使得背包物品<strong>价值最大</strong>，最优的结构显而易见是<strong>(1)、(2)情况中背包价值更大</strong>的那个方案。</p>
+<h3 id="状态转移方程是什么？"><a href="#状态转移方程是什么？" class="headerlink" title="状态转移方程是什么？"></a><span>状态转移方程是什么？</span></h3><ul>
+<li>问题拆分及找出最优子结构后，状态转移方程就很好推导了，存在两种情况<br>(1) 背包容量<strong>大于等于</strong>下一个物品的重量：物品存在选择与不选两种情况<br>(2) 背包容量<strong>小于</strong>下一个物品重量：物品不可被选择，情况只有一种</li>
+</ul>
+<p>&emsp;&emsp;可得背包问题的状态转移方程为</p>
+<blockquote>
+<p><strong>func(n, c) = max(func(n - 1, c - W[n - 1]) + V[n - 1], func(n - 1, c)) (n &gt; 1,  c &gt;= W[n - 1])<br>func(n, c) = func(n - 1, c) (n &gt; 1, c &lt; W[n - 1])</strong><br>其中<br><strong>n =&gt; 剩余物品数量<br>c =&gt; 背包剩余容量<br>W =&gt; 物品重量数组<br>V =&gt; 物品价值数组</strong></p>
+</blockquote>
+<h3 id="边界是什么？"><a href="#边界是什么？" class="headerlink" title="边界是什么？"></a><span>边界是什么？</span></h3><p>&emsp;&emsp;问题不断的向子问题拆分后一定会有一个头，如爬楼梯是将一阶和二阶楼梯作为边界，针对背包问题，它的边界是什么？</p>
+<ul>
+<li>不难想到，当只剩最后一个物品，此时没有多余的物品能够选择了，就只能选择此物品，而选择此问题有两种情况<br>(1) 背包容量<strong>大于等于</strong>物品重量：此时返回物品价值<br>(2) 背包容量<strong>小于</strong>物品重量：此时返回0</li>
+</ul>
+<p>&emsp;&emsp;可得背包问题的边界为</p>
+<blockquote>
+<p><strong>func(1, c) = V[0] (n = 1, c  &gt;= W[0])<br>func(1, c) = 0 (n = 1, c  &lt; W[0])</strong></p>
+</blockquote>
+<h2 id="编码实现-1"><a href="#编码实现-1" class="headerlink" title="编码实现"></a><span>编码实现-1</span></h2><h3 id="简单递归"><a href="#简单递归" class="headerlink" title="简单递归"></a><span>简单递归</span></h3><pre><code class="java">/**
+    * 获取最大价值
+    *
+    * @param n 物品数量
+    * @param c 背包剩余承重量
+    * @param w 物品重量
+    * @param v 物品价值
+    * @return 背包装配物品的最大价值
+    */
+int getMaxValues(int n, int c, int[] w, int[] v) {
+    if (n == 1) { // 边界
+        if (c &gt;= w[0]) {
+            return v[0];
+        } else {
+            return 0;
+        }
+    }
+    if (c &gt;= w[n - 1]) { // 状态转移公式
+        return Math.max(getMaxValues(n - 1, c - w[n - 1], w, v) + v[n - 1],
+                getMaxValues(n - 1, c, w, v));
+    } else {
+        return getMaxValues(n - 1, c, w, v);
+    }
+}</code></pre>
+<h3 id="备忘录算法-1"><a href="#备忘录算法-1" class="headerlink" title="备忘录算法"></a><span>备忘录算法-1</span></h3><pre><code class="java">int getMaxValues(int n, int c, int[] w, int[] v) {
+    return getMaxValues(n, c, w, v, null);
+}
+
+int getMaxValues(int n, int c, int[] w, int[] v, Map&lt;String, Integer&gt; cache) {
+    if (n == 1) { // 边界
+        if (c &gt;= w[0]) {
+            return v[0];
+        } else {
+            return 0;
+        }
+    }
+    if (cache == null) {
+        cache = new HashMap&lt;&gt;((int) Math.ceil(Math.log(n) / Math.log(2)));
+    }
+    if (cache.containsKey(generatorCacheKey(n, c))) {
+        return cache.get(generatorCacheKey(n, c));
+    }
+    int value;
+    if (c &gt;= w[n - 1]) { // 状态转移公式
+        value = Math.max(getMaxValues(n - 1, c - w[n - 1], w, v, cache) + v[n - 1],
+                getMaxValues(n - 1, c, w, v, cache));
+    } else {
+        value = getMaxValues(n - 1, c, w, v, cache);
+    }
+    cache.put(generatorCacheKey(n, c), value);
+    return value;
+}
+
+String generatorCacheKey(int n, int c) {
+    return String.format(&quot;%s_%s&quot;, n, c);
+}</code></pre>
+<h3 id="动态规划算法-1"><a href="#动态规划算法-1" class="headerlink" title="动态规划算法"></a><span>动态规划算法-1</span></h3><p>&emsp;&emsp;跟爬楼梯问题一样，我们自底向上来思考这个问题，我们不妨基于简化的问题画一个表格来分析这个情况，表格第一列表示5个物品的情况，括号内代表价值与重量，表格的第一行表示给予的背包容量，其余的空白格子代表背的最大价值数。</p>
+<p>&emsp;&emsp;简化的问题：有5组物品，其中它的价值与重量分别为[4,2,1,3,1]、[4,3,2,1,2]，背包可承受总重量为6。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>剩余1容量</th>
+<th>剩余2容量</th>
+<th>剩余3容量</th>
+<th>剩余4容量</th>
+<th>剩余5容量</th>
+<th>剩余6容量</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>物品1 (4,4)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>物品2 (2,3)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>物品3 (1,2)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>物品4 (3,1)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>物品5 (1,2)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>&emsp;&emsp;第一行非常容易填写，只有一个物品的情况下，背包最大价值要么为0要么为4，各自中箭头前面描述的是选择了那几个物品。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>剩余1容量</th>
+<th>剩余2容量</th>
+<th>剩余3容量</th>
+<th>剩余4容量</th>
+<th>剩余5容量</th>
+<th>剩余6容量</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>物品1 (4,4)</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1 =&gt; 4</td>
+<td>1 =&gt; 4</td>
+<td>1 =&gt; 4</td>
+</tr>
+<tr>
+<td>物品2 (2,3)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>物品3 (1,2)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>物品4 (3,1)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>物品5 (1,2)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>&emsp;&emsp;我们将其余的格子全部填写完成，接下来的这几段<strong>很重要</strong>，理解它就理解了动态规划算法的核心。</p>
+<table>
+<thead>
+<tr>
+<th>物品(v,w)/c</th>
+<th>剩余1容量</th>
+<th>剩余2容量</th>
+<th>剩余3容量</th>
+<th>剩余4容量</th>
+<th>剩余5容量</th>
+<th>剩余6容量</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>物品1 (4,4)</td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td>1 =&gt; <strong>4</strong></td>
+<td>1 =&gt; <strong>4</strong></td>
+<td>1 =&gt; <strong>4</strong></td>
+</tr>
+<tr>
+<td>物品2 (2,3)</td>
+<td><strong>0</strong></td>
+<td><strong>0</strong></td>
+<td>2 =&gt; <strong>2</strong></td>
+<td>1 =&gt; <strong>4</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f4a7.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f4a7.png?v8">&#x1f4a7;</span></td>
+<td>1 =&gt; <strong>4</strong></td>
+<td>1 =&gt; <strong>4</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f4a7.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f4a7.png?v8">&#x1f4a7;</span></td>
+</tr>
+<tr>
+<td>物品3 (1,2)</td>
+<td><strong>0</strong></td>
+<td>3 =&gt; <strong>1</strong></td>
+<td>2 =&gt; <strong>2</strong></td>
+<td>1 =&gt; <strong>4</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f319.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f319.png?v8">&#x1f319;</span></td>
+<td>1 =&gt; <strong>4</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f319.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f319.png?v8">&#x1f319;</span></td>
+<td>1,3 =&gt; <strong>5</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f300.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f300.png?v8">&#x1f300;</span></td>
+</tr>
+<tr>
+<td>物品4 (3,1)</td>
+<td>4 =&gt; <strong>3</strong></td>
+<td>4 =&gt; <strong>3</strong></td>
+<td>3,4 =&gt; <strong>4</strong></td>
+<td>1,3 =&gt; <strong>5</strong></td>
+<td>1,4 =&gt; <strong>7</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/2b50.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/2b50.png?v8">&#x2b50;</span></td>
+<td>1,4 =&gt; <strong>7</strong></td>
+</tr>
+<tr>
+<td>物品5 (1,2)</td>
+<td>4 =&gt; <strong>3</strong></td>
+<td>4 =&gt; <strong>3</strong></td>
+<td>3,4 =&gt; <strong>4</strong></td>
+<td>1,3 =&gt; <strong>5</strong></td>
+<td>1,4 =&gt; <strong>7</strong></td>
+<td>1,4 =&gt; <strong>7</strong></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>我们来找一下规律</p>
+<ul>
+<li><p>先回顾一下核心的状态转移方程</p>
+<blockquote>
+<p><strong>func(n, c) = max(func(n - 1, c - W[n - 1]) + V[n - 1], func(n - 1, c))</strong></p>
+</blockquote>
+</li>
+<li><p>我们先看<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f300.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f300.png?v8">&#x1f300;</span>/<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f4a7.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f4a7.png?v8">&#x1f4a7;</span>这个图标组合，做一个方程代入</p>
+<blockquote>
+<p>n = 3 , c = 6 , V[2] = 1 , W[2] = 2<br><strong>注意，这里V[2]、W[2]对应的是物品3，因为数组从0开始编号</strong><br>func(3, 6) = max(func(2, 4) + 1 , func(2, 6))</p>
+</blockquote>
+</li>
+<li><p>再看<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/2b50.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/2b50.png?v8">&#x2b50;</span>/<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f319.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f319.png?v8">&#x1f319;</span>这个图标组合，做一个方程代入</p>
+<blockquote>
+<p>n = 4 , c = 5 , V[3] = 3 , W[3] = 1<br>func(4, 5) = max(func(3, 4) + 3 , func(3, 5))</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<p>&emsp;&emsp;规律已经很明显了，<strong>每个格子的数据都只依赖于它的前一行数据</strong>，和爬楼梯中我们最后只存储了前两步数据的思路一样，在这里我们只需要<strong>存储前一行的数据</strong>即可推导出下一行的数据，编码的思路和我们填充表格的思路一致，代码如下：</p>
+<pre><code class="java">int getMaxValues(int n, int c, int[] w, int[] v) {
+    int[] pre = new int[c + 1]; // 前一行
+    int[] current = new int[c + 1]; // 当前行
+    for (int i = 1; i &lt;= c; i++) { // 先填充第一行
+        if (i &lt; w[0]) {
+            pre[i] = 0;
+        } else {
+            pre[i] = v[0];
+        }
+    }
+
+    for (int i = 1; i &lt; n; i++) {
+        for (int j = 1; j &lt;= c; j++) { // 填充第二行到最后
+            if (j &lt; w[i]) { // 容量不够
+                current[j] = pre[j];
+            } else {
+                current[j] = Math.max(pre[j - w[i]] + v[i], pre[j]);
+            }
+        }
+        // 此处不可直接使用等号 会出现引用混乱的情况
+        pre = Arrays.copyOf(current, current.length);
+    }
+    return current[c];
+}</code></pre>
+<h1 id="题目扩展，采金矿"><a href="#题目扩展，采金矿" class="headerlink" title="题目扩展，采金矿"></a><span>题目扩展，采金矿</span></h1><p>&emsp;&emsp;有一个国家发现了n座金矿，每座金矿的黄金储量（Vi）不同，需要参与挖掘的工人数（Li）也不同。参与挖矿工人的总数是C人。每座金矿要么全挖，要么不挖，不能派出一半人挖取一半金矿。要想得到尽可能多的黄金，应该选择挖取哪几座金矿？</p>
+<p>&emsp;&emsp;此题是背包问题的变种，解题思路是一样的，有兴趣的同学可以自己思考一下。</p>
+
+        </div>
+        
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2019-06-13-algorithm-topic/">算法——爬楼梯问题</a></li>
+            <li><strong>本文作者：</strong><a href="https://chenjianhui.site">JianhuiChen</a></li>
+            <li><strong>本文链接：</strong><a href="https://chenjianhui.site/2019-06-13-algorithm-topic/">https://chenjianhui.site/2019-06-13-algorithm-topic/</a></li>
+            <li><strong>发布时间：</strong>2019-06-13</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <hr style="height:1px;margin:1rem 0">
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
+                    <a class="has-link-grey -link" href="/tags/Algorithm/">Algorithm</a>,&nbsp;<a class="has-link-grey -link" href="/tags/Java/">Java</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2019-06-17-algorithm-topic/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">算法——24点游戏</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019-06-12-algorithm-topic/">
+                <span class="level-item">算法——老鼠毒药问题</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'bd0cbb30da9c24da8c7c',
+        clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
+        id: 'c4bda684647560b75c0a5d4be2b6e98f',
+        repo: 'blog',
+        owner: 'calebman',
+        admin: "calebman"
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+
+<link rel="stylesheet" href="/css/article-nice.css">
+<!-- Highlight.js -->
+<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script></div>
+                
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right is-sticky">
+    
+        
+<div class="card widget column-left is-sticky" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                目录
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#解题思考">
+        <span class="has-mr-6">1</span>
+        <span>解题思考</span>
+        </a></li><li>
+        <a class="is-flex" href="#编码实现">
+        <span class="has-mr-6">2</span>
+        <span>编码实现</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#递归实现">
+        <span class="has-mr-6">2.1</span>
+        <span>递归实现</span>
+        </a></li><li>
+        <a class="is-flex" href="#备忘录算法">
+        <span class="has-mr-6">2.2</span>
+        <span>备忘录算法</span>
+        </a></li><li>
+        <a class="is-flex" href="#动态规划算法">
+        <span class="has-mr-6">2.3</span>
+        <span>动态规划算法</span>
+        </a></li><li>
+        <a class="is-flex" href="#有没有更优解">
+        <span class="has-mr-6">2.4</span>
+        <span>有没有更优解</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#题目扩展，-背包问题">
+        <span class="has-mr-6">3</span>
+        <span>题目扩展，-背包问题</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#简化题目">
+        <span class="has-mr-6">3.1</span>
+        <span>简化题目</span>
+        </a></li><li>
+        <a class="is-flex" href="#动态规划思路四步解题">
+        <span class="has-mr-6">3.2</span>
+        <span>动态规划思路四步解题</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#问题是否可拆分？">
+        <span class="has-mr-6">3.2.1</span>
+        <span>问题是否可拆分？</span>
+        </a></li><li>
+        <a class="is-flex" href="#最优子结构是什么？">
+        <span class="has-mr-6">3.2.2</span>
+        <span>最优子结构是什么？</span>
+        </a></li><li>
+        <a class="is-flex" href="#状态转移方程是什么？">
+        <span class="has-mr-6">3.2.3</span>
+        <span>状态转移方程是什么？</span>
+        </a></li><li>
+        <a class="is-flex" href="#边界是什么？">
+        <span class="has-mr-6">3.2.4</span>
+        <span>边界是什么？</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#编码实现-1">
+        <span class="has-mr-6">3.3</span>
+        <span>编码实现-1</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#简单递归">
+        <span class="has-mr-6">3.3.1</span>
+        <span>简单递归</span>
+        </a></li><li>
+        <a class="is-flex" href="#备忘录算法-1">
+        <span class="has-mr-6">3.3.2</span>
+        <span>备忘录算法-1</span>
+        </a></li><li>
+        <a class="is-flex" href="#动态规划算法-1">
+        <span class="has-mr-6">3.3.3</span>
+        <span>动态规划算法-1</span>
+        </a></li></ul></li></ul></li><li>
+        <a class="is-flex" href="#题目扩展，采金矿">
+        <span class="has-mr-6">4</span>
+        <span>题目扩展，采金矿</span>
+        </a></li></ul>
+        </div>
+    </div>
+</div>
+
+
+    
+    
+</div>
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <p class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo.svg" alt="算法——爬楼梯问题" height="28">
+                
+                <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
+                </p>
+                <p class="is-size-7">
+                &copy; 2020 JianhuiChen&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                        
+                        <i class="fab fa-creative-commons"></i>&nbsp;<i class="fab fa-creative-commons-by"></i>&nbsp;<i class="fab fa-creative-commons-nc"></i>&nbsp;<i class="fab fa-creative-commons-sa"></i>&nbsp;
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>

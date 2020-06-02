@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+<title>算法——老鼠毒药问题 - Sincerity</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="&amp;emsp;&amp;emsp;有16瓶水，其中一瓶有毒，小白鼠喝一滴有毒的水一小时后会死，要在一小时找出来哪瓶水有毒最少需要几只小白鼠 ？">
+<meta name="keywords" content="Algorithm,Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法——老鼠毒药问题">
+<meta property="og:url" content="https://chenjianhui.site/2019-06-12-algorithm-topic/index.html">
+<meta property="og:site_name" content="Sincerity">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;有16瓶水，其中一瓶有毒，小白鼠喝一滴有毒的水一小时后会死，要在一小时找出来哪瓶水有毒最少需要几只小白鼠 ？">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://resources.chenjianhui.site/algorithm-home-pic.jpeg">
+<meta property="og:updated_time" content="2020-06-02T09:08:30.086Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="算法——老鼠毒药问题">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;有16瓶水，其中一瓶有毒，小白鼠喝一滴有毒的水一小时后会死，要在一小时找出来哪瓶水有毒最少需要几只小白鼠 ？">
+<meta name="twitter:image" content="https://resources.chenjianhui.site/algorithm-home-pic.jpeg">
+
+
+
+
+
+<link rel="alternative" href="/atom.xml" title="算法——老鼠毒药问题" type="application/atom+xml">
+
+
+
+<link rel="icon" href="/images/favicon-32x32.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+    
+    
+<script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:19960428,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.svg" alt="算法——老鼠毒药问题" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">Home</a>
+                
+                <a class="navbar-item" href="/archives">Archives</a>
+                
+                <a class="navbar-item" href="/categories">Categories</a>
+                
+                <a class="navbar-item" href="/tags">Tags</a>
+                
+                <a class="navbar-item" href="/about">About</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    
+                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://github.com/calebman">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-image">
+        <span class="image is-7by1">
+            <img class="thumbnail" src="https://resources.chenjianhui.site/algorithm-home-pic.jpeg" alt="算法——老鼠毒药问题">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <i class="fas fa-angle-double-right"></i>算法——老鼠毒药问题
+            
+        </h1>
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-06-12T08:30:52.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-06-12</time>
+                
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-06-02T09:08:30.086Z"><i class="far fa-calendar-check">&nbsp;</i>2020-06-02</time>
+                
+                
+                <div class="level-item">
+                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
+                <a class="has-link-grey -link" href="/categories/Algorithm/">Algorithm</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    <i class="far fa-clock"></i>&nbsp;
+                    
+                    
+                    8 分钟 读完 (大约 1151 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <div id="article-content" class="content">
+            <p>&emsp;&emsp;有16瓶水，其中一瓶有毒，小白鼠喝一滴有毒的水一小时后会死，要在一小时找出来哪瓶水有毒最少需要几只小白鼠 ？</p>
+<a id="more"></a>
+
+<h1 id="构造题目"><a href="#构造题目" class="headerlink" title="构造题目"></a><span>构造题目</span></h1><pre><code class="java">/**
+ * @author JianhuiChen
+ * @description 老鼠毒药问题
+ * @date 2019/6/12
+ */
+public class MousePoisonQuestion {
+
+    public static void main(String[] args) {
+        normalSolution();
+    }
+
+    /**
+     * 普通解法 16瓶水用16只老鼠来找 哪只死了代表哪瓶水有毒
+     */
+    private static void normalSolution() {
+        final int bottleCount = 16;
+        List&lt;Mouse&gt; mouseList = new ArrayList&lt;&gt;();
+        for (int i = 0; i &lt; bottleCount; i++) {
+            mouseList.add(new Mouse(i, Collections.singleton(i)));
+        }
+        findPoisonWater(bottleCount, mouseList, mouses -&gt; mouses.stream()
+                .filter(Mouse::isDie)
+                .findFirst()
+                .get()
+                .getId());
+    }
+
+    /**
+     * 寻找有毒的水
+     *
+     * @param bottleCount 水的瓶数
+     * @param mouses   老鼠列表
+     * @param judge    根据老鼠喝完水的状态判断出毒药的编号
+     */
+    private static void findPoisonWater(int bottleCount, List&lt;Mouse&gt; mouses, Function&lt;List&lt;Mouse&gt;, Integer&gt; judge) {
+        List&lt;Water&gt; waters = initWaters(bottleCount);
+        mouses.forEach(mouse -&gt; mouse.setDie(waters));
+        // 一小时后
+        int resultPoisonId = judge.apply(mouses);
+        int poisonId = waters.indexOf(waters.stream().filter(Water::isPoison).findFirst().get());
+        Water water = waters.get(poisonId);
+        assert (water.isPoison()) : &quot;判断有误,第&quot; + poisonId + &quot;瓶水不是毒药,正确答案是第&quot; + resultPoisonId + &quot;瓶&quot;;
+        System.out.println(&quot;恭喜你找出了包含毒药的水,共使用了&quot; + mouses.size() + &quot;只老鼠&quot;);
+    }
+
+    /**
+     * 初始化Len瓶水
+     *
+     * @param len 水瓶数
+     * @return 带有一瓶毒药的水列表
+     */
+    private static List&lt;Water&gt; initWaters(int len) {
+        Boolean[] poisons = new Boolean[len];
+        poisons[new Random().nextInt(len)] = true;
+        return Arrays.stream(poisons)
+                .map(poison -&gt; new Water(poison != null))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 老鼠对象
+     */
+    static class Mouse {
+        /**
+         * 老鼠喝过的水ID
+         */
+        private Integer[] drinkWaterIds;
+        /**
+         * 老鼠ID
+         */
+        private int id;
+        /**
+         * 老鼠是否死亡
+         */
+        private boolean die;
+
+        Mouse(int id, Collection&lt;Integer&gt; drinkWaterIds) {
+            this.id = id;
+            this.drinkWaterIds = drinkWaterIds.toArray(new Integer[]{});
+        }
+
+        void setDie(List&lt;Water&gt; waters) {
+            this.die = Arrays.stream(drinkWaterIds)
+                    .anyMatch(id -&gt; waters.get(id).isPoison());
+        }
+
+        boolean isDie() {
+            return die;
+        }
+
+        int getId() {
+            return id;
+        }
+    }
+
+    /**
+     * 水对象
+     */
+    static class Water {
+        /**
+         * 是否有毒
+         */
+        private boolean poison;
+
+        Water(boolean poison) {
+            this.poison = poison;
+        }
+
+        boolean isPoison() {
+            return poison;
+        }
+    }
+}</code></pre>
+<h1 id="解题思考"><a href="#解题思考" class="headerlink" title="解题思考"></a><span>解题思考</span></h1><p>&emsp;&emsp; 显然，使用了十六只老鼠来找这瓶毒药肯定不是最优解，我们来想，16瓶水中有一瓶毒药一共有16种可能性，而老鼠有生存和死亡两种状态，假设我们使用0和1表示老鼠的生存与死亡，那么四只老鼠就能排列组合出16种可能性，我们来利用二进制排列出这16种情况。</p>
+<table>
+<thead>
+<tr>
+<th><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8">&#x1f42d;</span>老鼠1</th>
+<th><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8">&#x1f42d;</span>老鼠2</th>
+<th><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8">&#x1f42d;</span>老鼠3</th>
+<th><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8">&#x1f42d;</span>老鼠4</th>
+<th><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span>水</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>瓶子1</td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>0</td>
+<td>瓶子2</td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>瓶子3</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>0</td>
+<td>0</td>
+<td>瓶子4</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>0</td>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>瓶子5</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>0</td>
+<td>瓶子6</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>瓶子7</td>
+</tr>
+<tr>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>瓶子8</td>
+</tr>
+<tr>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>0</td>
+<td>0</td>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>瓶子9</td>
+</tr>
+<tr>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>0</td>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>0</td>
+<td>瓶子10</td>
+</tr>
+<tr>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>0</td>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>瓶子11</td>
+</tr>
+<tr>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>0</td>
+<td>0</td>
+<td>瓶子12</td>
+</tr>
+<tr>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>0</td>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>瓶子13</td>
+</tr>
+<tr>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>0</td>
+<td>瓶子14</td>
+</tr>
+<tr>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>1 <span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span></td>
+<td>瓶子15</td>
+</tr>
+</tbody></table>
+<p>排列下来即是</p>
+<ul>
+<li><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8">&#x1f42d;</span>老鼠1喝<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span> 8，9，10，11，12，13，14，15</li>
+<li><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8">&#x1f42d;</span>老鼠2喝<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span> 4，5，6，7，12，13，14，15</li>
+<li><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8">&#x1f42d;</span>老鼠3喝<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span> 2，3，6，7，10，11，14，15</li>
+<li><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8">&#x1f42d;</span>老鼠4喝<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span> 1，3，5，7，9，11，13，15</li>
+</ul>
+<p>这样排列后，老鼠的生存与死亡状态都能得到一串二进制码，这串二进制码可以转换成有毒的瓶子信息，如</p>
+<ul>
+<li>0010：表示<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8">&#x1f42d;</span>老鼠3死亡，其余<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8">&#x1f42d;</span>老鼠存活，代表<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span>瓶子2是毒药</li>
+<li>0000：表示没有<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8">&#x1f42d;</span>老鼠死亡，代表<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f37a.png?v8">&#x1f37a;</span>瓶子16是毒药</li>
+</ul>
+<h1 id="编码实现"><a href="#编码实现" class="headerlink" title="编码实现"></a><span>编码实现</span></h1><pre><code class="java">/**
+    * 使用二进制的思路解法
+    */
+private static void binarySolution() {
+    final int bottleCount = 16;
+    List&lt;Mouse&gt; mouseList = new ArrayList&lt;&gt;();
+    mouseList.add(new Mouse(1, Arrays.asList(8, 9, 10, 11, 12, 13, 14, 15)));
+    mouseList.add(new Mouse(2, Arrays.asList(4, 5, 6, 7, 12, 13, 14, 15)));
+    mouseList.add(new Mouse(3, Arrays.asList(2, 3, 6, 7, 10, 11, 14, 15)));
+    mouseList.add(new Mouse(4, Arrays.asList(1, 3, 5, 7, 9, 11, 13, 15)));
+    findPoisonWater(bottleCount, mouseList, mouses -&gt; {
+        int num = -1;
+        for (Mouse m : mouses) {
+            num += Math.pow(2, m.isDie() ? (m.getId() - 1) : 0);
+        }
+        return num &lt; 0 ? (bottleCount - 1) : num;
+    });
+}</code></pre>
+<p>&emsp;&emsp;运行后程序将打印<strong>“恭喜你找出了包含毒药的水,共使用了4只老鼠”</strong>，代码运行成功了没错，但是通用性不足，只能够适用于16只老鼠的解法，能否编写一个根据瓶子数量作为参数的通用解法函数？只要理解解题思路，这个代码并不难，在此就不做演示了。</p>
+<p>&emsp;&emsp;有兴趣的朋友可以在下方留言给出通用解法<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f436.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f436.png?v8">&#x1f436;</span></p>
+<h1 id="题目拓展"><a href="#题目拓展" class="headerlink" title="题目拓展"></a><span>题目拓展</span></h1><p>&emsp;&emsp;<strong>有16瓶水，其中只有一瓶水有毒，小白鼠喝一滴之后一小时会死。请问最少用多少只小白鼠，可以在1小时内找出至少14瓶无毒的水。</strong></p>
+<p>&emsp;&emsp;找14瓶无毒的水是可以转化为和上面那道一样的解题思路，我们将16瓶水分为8组两两一瓶，我们只需要找到一组水中包含毒药即可得到14瓶无毒的水，一组水只可能有两种状态，有毒或者无毒，所以我们可以将8组水看作8瓶水，至此题目就变成了“8瓶水用最少几只老鼠找那瓶有毒的水”，答案是3只。</p>
+
+        </div>
+        
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2019-06-12-algorithm-topic/">算法——老鼠毒药问题</a></li>
+            <li><strong>本文作者：</strong><a href="https://chenjianhui.site">JianhuiChen</a></li>
+            <li><strong>本文链接：</strong><a href="https://chenjianhui.site/2019-06-12-algorithm-topic/">https://chenjianhui.site/2019-06-12-algorithm-topic/</a></li>
+            <li><strong>发布时间：</strong>2019-06-12</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <hr style="height:1px;margin:1rem 0">
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
+                    <a class="has-link-grey -link" href="/tags/Algorithm/">Algorithm</a>,&nbsp;<a class="has-link-grey -link" href="/tags/Java/">Java</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2019-06-13-algorithm-topic/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">算法——爬楼梯问题</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019-04-19-docker-env/">
+                <span class="level-item">使用Docker搭建隔离开发环境</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'bd0cbb30da9c24da8c7c',
+        clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
+        id: 'be669a727a4bda5542b4f9cfe1cba08d',
+        repo: 'blog',
+        owner: 'calebman',
+        admin: "calebman"
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+
+<link rel="stylesheet" href="/css/article-nice.css">
+<!-- Highlight.js -->
+<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script></div>
+                
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right is-sticky">
+    
+        
+<div class="card widget column-left is-sticky" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                目录
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#构造题目">
+        <span class="has-mr-6">1</span>
+        <span>构造题目</span>
+        </a></li><li>
+        <a class="is-flex" href="#解题思考">
+        <span class="has-mr-6">2</span>
+        <span>解题思考</span>
+        </a></li><li>
+        <a class="is-flex" href="#编码实现">
+        <span class="has-mr-6">3</span>
+        <span>编码实现</span>
+        </a></li><li>
+        <a class="is-flex" href="#题目拓展">
+        <span class="has-mr-6">4</span>
+        <span>题目拓展</span>
+        </a></li></ul>
+        </div>
+    </div>
+</div>
+
+
+    
+    
+</div>
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <p class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo.svg" alt="算法——老鼠毒药问题" height="28">
+                
+                <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
+                </p>
+                <p class="is-size-7">
+                &copy; 2020 JianhuiChen&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                        
+                        <i class="fab fa-creative-commons"></i>&nbsp;<i class="fab fa-creative-commons-by"></i>&nbsp;<i class="fab fa-creative-commons-nc"></i>&nbsp;<i class="fab fa-creative-commons-sa"></i>&nbsp;
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>

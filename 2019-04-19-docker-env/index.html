@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+<title>使用Docker搭建隔离开发环境 - Sincerity</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="使用Docker搭建隔离开发环境">
+<meta name="keywords" content="Docker,mysql,redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Docker搭建隔离开发环境">
+<meta property="og:url" content="https://chenjianhui.site/2019-04-19-docker-env/index.html">
+<meta property="og:site_name" content="Sincerity">
+<meta property="og:description" content="使用Docker搭建隔离开发环境">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://resources.chenjianhui.site/2019-04-19-home-pic.png">
+<meta property="og:updated_time" content="2020-06-02T09:08:30.086Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Docker搭建隔离开发环境">
+<meta name="twitter:description" content="使用Docker搭建隔离开发环境">
+<meta name="twitter:image" content="https://resources.chenjianhui.site/2019-04-19-home-pic.png">
+
+
+
+
+
+<link rel="alternative" href="/atom.xml" title="使用Docker搭建隔离开发环境" type="application/atom+xml">
+
+
+
+<link rel="icon" href="/images/favicon-32x32.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+    
+    
+<script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:19960428,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.svg" alt="使用Docker搭建隔离开发环境" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">Home</a>
+                
+                <a class="navbar-item" href="/archives">Archives</a>
+                
+                <a class="navbar-item" href="/categories">Categories</a>
+                
+                <a class="navbar-item" href="/tags">Tags</a>
+                
+                <a class="navbar-item" href="/about">About</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    
+                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://github.com/calebman">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-image">
+        <span class="image is-7by1">
+            <img class="thumbnail" src="https://resources.chenjianhui.site/2019-04-19-home-pic.png" alt="使用Docker搭建隔离开发环境">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <i class="fas fa-angle-double-right"></i>使用Docker搭建隔离开发环境
+            
+        </h1>
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-04-19T13:34:30.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-04-19</time>
+                
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-06-02T09:08:30.086Z"><i class="far fa-calendar-check">&nbsp;</i>2020-06-02</time>
+                
+                
+                <div class="level-item">
+                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
+                <a class="has-link-grey -link" href="/categories/Docker/">Docker</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    <i class="far fa-clock"></i>&nbsp;
+                    
+                    
+                    16 分钟 读完 (大约 2384 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <div id="article-content" class="content">
+            <p>使用Docker搭建隔离开发环境</p>
+<a id="more"></a>
+
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a><span>前言</span></h1><p>&emsp;&emsp; 最近接触到了Docker相关的知识，了解了它的相关特性，并基于它搭建了一些如mysql/redis/mq作为一个后端开发所必须的的环境，为什么使用Docker来搭建，听我娓娓道来。</p>
+<center>
+<img src="https://resources.chenjianhui.site/2019-04-19-wtf-gaoshou.JPG?imageView2/2/w/300/h/300/q/75|imageslim">
+</center>
+
+<p>&emsp;&emsp; 梦回到刚学后端的时候，你需要搭建个mysql环境，然后你去搜了下<a href="https://www.baidu.com/s?wd=windows%20mysql%20%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA" target="_blank" rel="noopener">windows mysql 环境搭建</a>，得到了一种叫绿色版安装，一种叫傻瓜式（安装包）式安装，一顿操作之后我们的电脑终于多了一个mysql的服务，然后使用Navicat成功连接上了，开始沾沾自喜。</p>
+<p>&emsp;&emsp;一个月后，由于某种原因（可能你删了mysql包的哪个文件）你需要把mysql重装一下，于是乎你又去搜了下<a href="https://www.baidu.com/s?wd=windows%20mysql%20卸载" target="_blank" rel="noopener">windows mysql 卸载</a>，你惊喜的得到了这么一个结果</p>
+<p><img src="https://resources.chenjianhui.site/2019-04-19-search-uninstall-mysql.png" alt></p>
+<p>&emsp;&emsp;WTF？彻底卸载可还行，于是你花了比安装更多的力气去卸载了一个mysql。</p>
+<center>
+<img src="https://resources.chenjianhui.site/2019-04-19-wtf-question.JPG?imageView2/2/w/300/h/300/q/75|imageslim">
+</center>
+
+<p>&emsp;&emsp;工作一年之后，你回想起你的这波操作，不禁笑了起来，你看着现在的vmware+centOS虚拟机中挂着的mysql+redis环境不禁沾沾自喜，虚拟机中的开发环境与本机完全隔离，哪天我不要环境了直接把虚拟机卸了就行，真是一个很完美的配置呢~</p>
+<center>
+<img src="https://resources.chenjianhui.site/2019-04-19-wtf-kuaile.JPG">
+</center>
+
+<p>&emsp;&emsp;但是，你似乎忘记了，你花费了多大的力气踩了多少的坑才折腾好你这套环境，想到这你不禁为自己留下心疼的眼泪。</p>
+<center>
+<img src="https://resources.chenjianhui.site/2019-04-19-wtf-liulei.JPG">
+</center>
+
+<p>&emsp;&emsp;这套环境支撑你跑了很久，在此之间你还学会了很多linux的常规指令，成为了一个运维小能手，有一天你在逛社区的时候看到一篇文章叫做<a href="https://www.jianshu.com/p/c1b79afc6d63" target="_blank" rel="noopener">使用 Docker 快速搭建开发环境</a>，能有多<strong>“快”</strong>，我得去瞅瞅，跟着它敲了一遍代码，mysql，它，起来了。</p>
+<center>
+<img src="https://resources.chenjianhui.site/2019-04-19-wtf-wtf.GIF">
+</center>
+
+<p>&emsp;&emsp;我告诉自己，我得去看看这东西，它是个什么妖魔鬼怪。</p>
+<center>
+<img src="https://resources.chenjianhui.site/2019-04-19-wtf-good.JPG?imageView2/2/w/300/h/300/q/75|imageslim">
+</center>
+
+
+<h1 id="Docker介绍"><a href="#Docker介绍" class="headerlink" title="Docker介绍"></a><span>Docker介绍</span></h1><p>&emsp;&emsp;Docker于2013年发布， 属于 Linux 容器的一种封装，提供简单易用的容器使用接口，可以轻易的使用/制作一个镜像（带有环境的容器）。具体详细的介绍网上有太多了，这里就不赘述了。</p>
+<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a><span>环境搭建</span></h1><h2 id="Windows-Docker环境搭建"><a href="#Windows-Docker环境搭建" class="headerlink" title="Windows Docker环境搭建"></a><span>Windows-Docker环境搭建</span></h2><p>&emsp;&emsp;环境搭建的文章也很多，我这里主要说一下可能会踩到的坑，docker针对windows的用户主要有两个安装包可以下载，我们可以在阿里云平台看到关于安装的Docker的一些建议，具体区别可以参考这篇博客<a href="https://blog.csdn.net/JENREY/article/details/84493812" target="_blank" rel="noopener">dockerToolbox和docker for windows的区别</a>，本文主要讲一下Docker for Windows的安装流程。</p>
+<ul>
+<li>Docker Toolbox：Docker工具集安装器</li>
+<li>Docker for Windows：Windows平台的Docker安装</li>
+</ul>
+<p><img src="http://resources.chenjianhui.site/2019-04-19-aliyun-windwos-docker-install.png" alt></p>
+<ol>
+<li>进入<a href="https://www.docker.com/products/docker-desktop" target="_blank" rel="noopener">https://www.docker.com/products/docker-desktop</a> 下载Docker for Windows安装包；</li>
+</ol>
+<p><img src="https://resources.chenjianhui.site/2019-04-19-download-docker.png" alt></p>
+<ol start="2">
+<li>执行Docker for Windows安装程序，一路next，Docker运行成功后会有通知且右下角有logo图标存在；</li>
+<li>没了，Docker这就算安装好了，使用PowerShell或者cmd执行命令试试<br><img src="https://resources.chenjianhui.site/2019-04-19-exec-docker-test.png" alt></li>
+<li>Docker安装完成后，由于它需要Hyper-V的支持，这会与VMware的虚拟机启动产生冲突报错如下，具体原因请参考<a href="https://blog.csdn.net/qq_40374604/article/details/83095410" target="_blank" rel="noopener">Docker 和 vmware 共存工作</a><br><img src="https://resources.chenjianhui.site/2019-04-19-vmware-error.png" alt></li>
+</ol>
+<h2 id="熟悉一下基本流程"><a href="#熟悉一下基本流程" class="headerlink" title="熟悉一下基本流程"></a><span>熟悉一下基本流程</span></h2><p>&emsp;&emsp;在这个阶段我们使用Docker拉取一个集成了SSH服务的centOS7系统镜像，将它运行起来并使用Xshell远程连接做一些基本的linux操作</p>
+<pre><code class="bash"># docker pull 拉取镜像指令
+# jdeathe/centos-ssh代表镜像名称 centos-7代表镜像标签（版本）不填取最新latest
+# 具体镜像信息查看 https://hub.docker.com/
+docker pull jdeathe/centos-ssh:centos-7
+# docker images 查看已经拉取的镜像列表
+docker images
+# docker run 将镜像构建成容器
+# -d 分离运行 不会在命令行打印容器运行日志
+# --name 指定容器名称
+# -p 2020:22 将本机的2020端口映射到容器的22端口
+# --env 设置容器支持的环境配置
+# jdeathe/centos-ssh:centos-7 镜像名称
+docker run -d --name centos-ssh -p 2020:22 --env SSH_PASSWORD_AUTHENTICATION=true --env SSH_USER=admin --env SSH_USER_PASSWORD=123456 jdeathe/centos-ssh:centos-7
+# docker inspect 查看指定容器的详细信息 centos-ssh是刚刚指定的容器名称
+docker inspect centos-ssh
+# docker ps 查看容器信息 运行成功则会显示在列表中
+docker ps
+# 使用XShell进入容器 locahost:2020 admin/123456</code></pre>
+<p>&emsp;&emsp;成功连接上容器并执行了一些基础操作</p>
+<p><img src="https://resources.chenjianhui.site/2019-04-19-docker-centos-ssh-xshell.png" alt></p>
+<p>&emsp;&emsp;除去不必要的打印信息指令，我们只需要使用两行代码即可创建一个centOS系统镜像容器</p>
+<h2 id="可视化界面"><a href="#可视化界面" class="headerlink" title="可视化界面"></a><span>可视化界面</span></h2><p>&emsp;&emsp;指令操作虽然能让你更加熟练且装逼，但它总是繁琐的，Docker官方及周边提供了很多基于Docker指令的傻瓜式UI程序，在这里我主要介绍两款</p>
+<h3 id="Kitematic-GUI程序"><a href="#Kitematic-GUI程序" class="headerlink" title="Kitematic GUI程序"></a><span>Kitematic-GUI程序</span></h3><p>&emsp;&emsp;Kitematic是由Docker官方提供的一款桌面应用，提供了Windows平台下的绿色版压缩包，使用起来非常简单。</p>
+<ol>
+<li>前往Kitematic的<a href="https://github.com/docker/kitematic/releases" target="_blank" rel="noopener">github releases仓库</a>下载Kitematic-XXX-Windows.zip；</li>
+<li>解压直接运行 Kitematic.exe，界面如下</li>
+</ol>
+<p><img src="https://resources.chenjianhui.site/2019-04-19-docker-gui.png" alt></p>
+<p>点击一个容器可进入详情页面</p>
+<p><img src="https://resources.chenjianhui.site/2019-04-19-docker-gui-containers.png" alt></p>
+<p>点击Settings进入配置页面</p>
+<p><img src="https://resources.chenjianhui.site/2019-04-19-docker-gui-container-setttings.png" alt></p>
+<h3 id="Portainer-Web程序"><a href="#Portainer-Web程序" class="headerlink" title="Portainer Web程序"></a><span>Portainer-Web程序</span></h3><p>&emsp;&emsp;Portainer是一个轻量级的管理界面，可以让您轻松地管理不同的Docker环境，功能比Kitematic强大许多。</p>
+<p>&emsp;&emsp;Portainer是基于网页来操作的，本质上是一个B/S架构的程序，它有单独的镜像发布在Docker中，所以它的使用也非常便捷，我们只需要拉取镜像运行即可。</p>
+<pre><code class="bash"># 拉取最新的portainer镜像
+docker pull portainer/portainer
+# --restart=always 代表容器总是随着Docker启动而启动
+# -v 配置持久化路径
+docker run -d -p 9000:9000 --restart=always -v /var/run/docker.sock:/var/run/docker.sock --name portainer portainer/portainer
+# 检查服务运行状态
+docker ps
+# 正常情况下服务已经运行在 http://localhost:9000</code></pre>
+<ol>
+<li>进入 <a href="http://localhost:9000/#/init/admin" target="_blank" rel="noopener">http://localhost:9000/#/init/admin</a> ， 进行管理员配置；</li>
+</ol>
+<p><img src="https://resources.chenjianhui.site/2019-04-19-portainer-init-admin.png" alt></p>
+<ol start="2">
+<li>初始化Docker端点配置<a href="http://localhost:9000/#/init/endpoint" target="_blank" rel="noopener">http://localhost:9000/#/init/endpoint</a> ， 需要配合在Docker配置开启Web Api服务；</li>
+</ol>
+<p><img src="https://resources.chenjianhui.site/2019-04-19-portainer-init-endpoint.png" alt></p>
+<p><img src="https://resources.chenjianhui.site/2019-04-19-docker-settings.png" alt></p>
+<ol start="3">
+<li>进入Portainer主页，查看相关配置</li>
+</ol>
+<p><img src="https://resources.chenjianhui.site/2019-04-19-portainer-home.png" alt></p>
+<p><img src="https://resources.chenjianhui.site/2019-04-19-portainer-dashboard.png" alt></p>
+<h2 id="开发集成环境搭建"><a href="#开发集成环境搭建" class="headerlink" title="开发集成环境搭建"></a><span>开发集成环境搭建</span></h2><p>&emsp;&emsp;在有了前面环境的铺垫之后，现在可以很轻易就搭建好我们所需要的开发环境，具体操作无非是</p>
+<ol>
+<li>找到所需的镜像及版本，拉取镜像</li>
+<li>根据镜像描述做好配置并启动</li>
+<li>测试环境是否可用</li>
+</ol>
+<h3 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a><span>mysql</span></h3><p>&emsp;&emsp;任意找一个GUI程序搜索到所需的镜像，拉取运行即可</p>
+<p><img src="https://resources.chenjianhui.site/2019-04-19-gui-mysql.png" alt></p>
+<p>&emsp;&emsp;关于mysql连接密码可在环境变量中配置重启</p>
+<p><img src="https://resources.chenjianhui.site/2019-04-19-gui-mysql-settings.png" alt></p>
+<p>&emsp;&emsp;使用Navicat测试连接是否可用，这里主要要看镜像与宿主机器的端口映射表，使用 localhost:3306 root/123456 即可连接上mysql，环境搭建成功</p>
+<p><img src="https://resources.chenjianhui.site/2019-04-19-gui-mysql-settings-ports.png" alt></p>
+<h3 id="redis"><a href="#redis" class="headerlink" title="redis"></a><span>redis</span></h3><p>&emsp;&emsp;使用Kitematic搜索redis相关镜像，点击创建，使用RedisDesktopManager进行测试，默认是没有密码验证的模式，如果需要更改可以进入容器内部修改，这部分操作我会在后续的博客整理</p>
+<p><img src="https://resources.chenjianhui.site/2019-04-19-gui-redis.png" alt></p>
+<h3 id="rabbitmq"><a href="#rabbitmq" class="headerlink" title="rabbitmq"></a><span>rabbitmq</span></h3><p>&emsp;&emsp;其他的环境操作都是类似的，当然如果没有搜索你想要的镜像（比如你想要一个mysql+redis的镜像），可以自己构建发布，在此之前你可能需要注册一个Docker账号</p>
+<p><img src="https://resources.chenjianhui.site/2019-04-19-rabbitmq.png" alt></p>
+<h2 id="其他配置"><a href="#其他配置" class="headerlink" title="其他配置"></a><span>其他配置</span></h2><h3 id="Docker镜像加速"><a href="#Docker镜像加速" class="headerlink" title="Docker镜像加速"></a><span>Docker镜像加速</span></h3><p>&emsp;&emsp;注册一个阿里云账号，进入控制台-&gt;容器镜像服务-&gt;镜像中心-&gt;镜像加速器，获取到加速器的地址，复制到Docker的Settings/Daemon中，重启Docker即可。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a><span>参考资料</span></h1><ul>
+<li><a href="https://www.cnblogs.com/stulzq/p/7743667.html" target="_blank" rel="noopener">Windows 10 安装Docker for Windows - 晓晨Master - 博客园</a></li>
+<li><a href="https://www.jianshu.com/p/c1b79afc6d63" target="_blank" rel="noopener">使用 Docker 快速搭建开发环境</a></li>
+<li><a href="https://blog.csdn.net/JENREY/article/details/84493812" target="_blank" rel="noopener">dockerToolbox和docker for windows的区别- Null的博客- CSDN博客</a></li>
+<li><a href="https://blog.csdn.net/qq_40374604/article/details/83095410" target="_blank" rel="noopener">Docker 和 vmware 共存工作 - rodert - CSDN博客</a></li>
+<li><a href="https://blog.csdn.net/qq273681448/article/details/75007828" target="_blank" rel="noopener">Docker各种可视化界面的比较</a></li>
+</ul>
+
+        </div>
+        
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2019-04-19-docker-env/">使用Docker搭建隔离开发环境</a></li>
+            <li><strong>本文作者：</strong><a href="https://chenjianhui.site">JianhuiChen</a></li>
+            <li><strong>本文链接：</strong><a href="https://chenjianhui.site/2019-04-19-docker-env/">https://chenjianhui.site/2019-04-19-docker-env/</a></li>
+            <li><strong>发布时间：</strong>2019-04-19</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <hr style="height:1px;margin:1rem 0">
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
+                    <a class="has-link-grey -link" href="/tags/Docker/">Docker</a>,&nbsp;<a class="has-link-grey -link" href="/tags/mysql/">mysql</a>,&nbsp;<a class="has-link-grey -link" href="/tags/redis/">redis</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2019-06-12-algorithm-topic/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">算法——老鼠毒药问题</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019-03-07-blog-with-jenkins/">
+                <span class="level-item">我的博客可以自己部署啦</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'bd0cbb30da9c24da8c7c',
+        clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
+        id: 'a2725d5290c74c9071f3ee88e2d40856',
+        repo: 'blog',
+        owner: 'calebman',
+        admin: "calebman"
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+
+<link rel="stylesheet" href="/css/article-nice.css">
+<!-- Highlight.js -->
+<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script></div>
+                
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right is-sticky">
+    
+        
+<div class="card widget column-left is-sticky" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                目录
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#前言">
+        <span class="has-mr-6">1</span>
+        <span>前言</span>
+        </a></li><li>
+        <a class="is-flex" href="#Docker介绍">
+        <span class="has-mr-6">2</span>
+        <span>Docker介绍</span>
+        </a></li><li>
+        <a class="is-flex" href="#环境搭建">
+        <span class="has-mr-6">3</span>
+        <span>环境搭建</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#Windows-Docker环境搭建">
+        <span class="has-mr-6">3.1</span>
+        <span>Windows-Docker环境搭建</span>
+        </a></li><li>
+        <a class="is-flex" href="#熟悉一下基本流程">
+        <span class="has-mr-6">3.2</span>
+        <span>熟悉一下基本流程</span>
+        </a></li><li>
+        <a class="is-flex" href="#可视化界面">
+        <span class="has-mr-6">3.3</span>
+        <span>可视化界面</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#Kitematic-GUI程序">
+        <span class="has-mr-6">3.3.1</span>
+        <span>Kitematic-GUI程序</span>
+        </a></li><li>
+        <a class="is-flex" href="#Portainer-Web程序">
+        <span class="has-mr-6">3.3.2</span>
+        <span>Portainer-Web程序</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#开发集成环境搭建">
+        <span class="has-mr-6">3.4</span>
+        <span>开发集成环境搭建</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#mysql">
+        <span class="has-mr-6">3.4.1</span>
+        <span>mysql</span>
+        </a></li><li>
+        <a class="is-flex" href="#redis">
+        <span class="has-mr-6">3.4.2</span>
+        <span>redis</span>
+        </a></li><li>
+        <a class="is-flex" href="#rabbitmq">
+        <span class="has-mr-6">3.4.3</span>
+        <span>rabbitmq</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#其他配置">
+        <span class="has-mr-6">3.5</span>
+        <span>其他配置</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#Docker镜像加速">
+        <span class="has-mr-6">3.5.1</span>
+        <span>Docker镜像加速</span>
+        </a></li></ul></li></ul></li><li>
+        <a class="is-flex" href="#参考资料">
+        <span class="has-mr-6">4</span>
+        <span>参考资料</span>
+        </a></li></ul>
+        </div>
+    </div>
+</div>
+
+
+    
+    
+</div>
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <p class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo.svg" alt="使用Docker搭建隔离开发环境" height="28">
+                
+                <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
+                </p>
+                <p class="is-size-7">
+                &copy; 2020 JianhuiChen&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                        
+                        <i class="fab fa-creative-commons"></i>&nbsp;<i class="fab fa-creative-commons-by"></i>&nbsp;<i class="fab fa-creative-commons-nc"></i>&nbsp;<i class="fab fa-creative-commons-sa"></i>&nbsp;
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>

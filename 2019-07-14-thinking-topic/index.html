@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+<title>海岛寻宝问题 - Sincerity</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="&amp;emsp;&amp;emsp;5个人去一个海岛寻宝，最后一共找到了100枚金币。他们约定了一个分配方案，如下：五个海盗按照抽签的顺序依次提出方案，某一个人提出方案之后，剩余存活的人投票表决：方案需要获得超过半数人的认可之后才能被通过，否则方案提出者将会被扔进大海喂鲨鱼，某一个方案被通过后游戏就结束。注：每个人的投票都是在追求自己利益的最大化：保证自己不会被喂鲨鱼的前提下，尽量使自己分到更多的金币。">
+<meta name="keywords" content="Algorithm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="海岛寻宝问题">
+<meta property="og:url" content="https://chenjianhui.site/2019-07-14-thinking-topic/index.html">
+<meta property="og:site_name" content="Sincerity">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;5个人去一个海岛寻宝，最后一共找到了100枚金币。他们约定了一个分配方案，如下：五个海盗按照抽签的顺序依次提出方案，某一个人提出方案之后，剩余存活的人投票表决：方案需要获得超过半数人的认可之后才能被通过，否则方案提出者将会被扔进大海喂鲨鱼，某一个方案被通过后游戏就结束。注：每个人的投票都是在追求自己利益的最大化：保证自己不会被喂鲨鱼的前提下，尽量使自己分到更多的金币。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://resources.chenjianhui.site/2019-07-14-home-pic.jpeg">
+<meta property="og:updated_time" content="2020-06-02T09:08:30.086Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="海岛寻宝问题">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;5个人去一个海岛寻宝，最后一共找到了100枚金币。他们约定了一个分配方案，如下：五个海盗按照抽签的顺序依次提出方案，某一个人提出方案之后，剩余存活的人投票表决：方案需要获得超过半数人的认可之后才能被通过，否则方案提出者将会被扔进大海喂鲨鱼，某一个方案被通过后游戏就结束。注：每个人的投票都是在追求自己利益的最大化：保证自己不会被喂鲨鱼的前提下，尽量使自己分到更多的金币。">
+<meta name="twitter:image" content="https://resources.chenjianhui.site/2019-07-14-home-pic.jpeg">
+
+
+
+
+
+<link rel="alternative" href="/atom.xml" title="海岛寻宝问题" type="application/atom+xml">
+
+
+
+<link rel="icon" href="/images/favicon-32x32.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+    
+    
+<script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:19960428,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.svg" alt="海岛寻宝问题" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">Home</a>
+                
+                <a class="navbar-item" href="/archives">Archives</a>
+                
+                <a class="navbar-item" href="/categories">Categories</a>
+                
+                <a class="navbar-item" href="/tags">Tags</a>
+                
+                <a class="navbar-item" href="/about">About</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    
+                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://github.com/calebman">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-image">
+        <span class="image is-7by1">
+            <img class="thumbnail" src="https://resources.chenjianhui.site/2019-07-14-home-pic.jpeg" alt="海岛寻宝问题">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <i class="fas fa-angle-double-right"></i>海岛寻宝问题
+            
+        </h1>
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-07-24T19:31:22.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-07-24</time>
+                
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-06-02T09:08:30.086Z"><i class="far fa-calendar-check">&nbsp;</i>2020-06-02</time>
+                
+                
+                <div class="level-item">
+                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
+                <a class="has-link-grey -link" href="/categories/Algorithm/">Algorithm</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    <i class="far fa-clock"></i>&nbsp;
+                    
+                    
+                    6 分钟 读完 (大约 869 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <div id="article-content" class="content">
+            <p>&emsp;&emsp;5个人去一个海岛寻宝，最后一共找到了100枚金币。他们约定了一个分配方案，如下：五个海盗按照抽签的顺序依次提出方案，某一个人提出方案之后，剩余存活的人投票表决：方案需要获得超过半数人的认可之后才能被通过，否则方案提出者将会被扔进大海喂鲨鱼，某一个方案被通过后游戏就结束。注：每个人的投票都是在追求自己利益的最大化：保证自己不会被喂鲨鱼的前提下，尽量使自己分到更多的金币。</p>
+<a id="more"></a>
+
+<h1 id="题意解读"><a href="#题意解读" class="headerlink" title="题意解读"></a><span>题意解读</span></h1><p>&emsp;&emsp;我们先来理解一下题目意思，如题说的五个海盗按照<strong>抽签顺序依次</strong>提出方案，所以这是有顺序的，然后<strong>半数以上的人认可</strong>才能被通过，否则人就没了，比如剩下两个海盗了，那么前面那个海盗就肯定挂了，因为最后那位海盗肯定会投票给自己，只要前面那人挂了他就可以独吞金币。为了解题我们可以先假设一个顺序出来，然后再分析分析怎么<em>make more money</em></p>
+<center>
+<img src="https://resources.chenjianhui.site/2019-07-14-b5.JPG?imageView2/2/w/180/h/180/q/75|imageslim">
+</center>
+
+<h1 id="解题思考"><a href="#解题思考" class="headerlink" title="解题思考"></a><span>解题思考</span></h1><p>&emsp;&emsp;我们先给五个海盗按照顺序编个号分别是A、B、C、D、E，在这个游戏中咱们的每个海盗都要考虑两点<em>make more money</em>与<strong>活着</strong>（注意，这个词我划重点了），刚才我们说到，当只剩俩人时，即只剩D、E时，D肯定就挂了，所以机智的D肯定不能让自己陷入只剩俩人的尴尬处境中。</p>
+<center>
+<img src="https://resources.chenjianhui.site/2019-07-14-b3.JPG?imageView2/2/w/180/h/180/q/75|imageslim">
+</center>
+
+<p>&emsp;&emsp;考虑到这一点是不是有点思路了，我们应该逆向来推这个问题，从两个人的情况开始模拟；</p>
+<ul>
+<li>剩余D、E<ul>
+<li>D必然被投死，收获金币0</li>
+<li>E收获金币100</li>
+</ul>
+</li>
+<li>剩余C、D、E<ul>
+<li>C需要两票且C知道D不会让自己陷入两人困境肯定会支持自己，再加上自己的票共2票超过了半数，于是大胆的做出了<strong>100、0、0</strong>的分配</li>
+<li>D收获金币0</li>
+<li>E收获金币0</li>
+</ul>
+</li>
+<li>剩余B、C、D、E<ul>
+<li>B需要三票且B知道自己死后D、E都收不到一个金币，于是它可以花1个金币把这俩人收买了让他们投自己，再加上自己的票共3票超过了半数，于是做出了<strong>98、0、1、1</strong>的分配</li>
+<li>C收获金币0</li>
+<li>D收获金币1</li>
+<li>E收获金币1</li>
+</ul>
+</li>
+<li>兄弟全在A、B、C、D、E<ul>
+<li>A需要三票且A知道自己死后C收不到一个金币，所以可以花1个金币收买了C，还差一票可以在D、E中选一个花2个金币收买让其给自己投票，再加上自己的票共3票超过了半数，于是可以做出<strong>97、0、1、2、0</strong>或者<strong>97、0、1、0、2</strong>的分配</li>
+<li>B收获金币0</li>
+<li>C收获金币1</li>
+<li>D/E收获金币2</li>
+</ul>
+</li>
+</ul>
+<p>&emsp;&emsp;所以题目的答案是，在第一个位置的人最有利，最多能够分到最多97个金币<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f646-2642.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f646-2642.png?v8">&#x1f646;&#x2642;</span></p>
+<center>
+<img src="https://resources.chenjianhui.site/2019-07-14-b4.JPG?imageView2/2/w/240/h/240/q/75|imageslim">
+</center>
+        </div>
+        
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2019-07-14-thinking-topic/">海岛寻宝问题</a></li>
+            <li><strong>本文作者：</strong><a href="https://chenjianhui.site">JianhuiChen</a></li>
+            <li><strong>本文链接：</strong><a href="https://chenjianhui.site/2019-07-14-thinking-topic/">https://chenjianhui.site/2019-07-14-thinking-topic/</a></li>
+            <li><strong>发布时间：</strong>2019-07-24</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <hr style="height:1px;margin:1rem 0">
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
+                    <a class="has-link-grey -link" href="/tags/Algorithm/">Algorithm</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2019-08-15-server-front-separate-package/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">Vue+SpringBoot单jar部署</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019-06-20-algorithm-topic/">
+                <span class="level-item">算法——猫鼠游戏</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'bd0cbb30da9c24da8c7c',
+        clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
+        id: '0924c468e7250b595d3b2f7fc2fccb3c',
+        repo: 'blog',
+        owner: 'calebman',
+        admin: "calebman"
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+
+<link rel="stylesheet" href="/css/article-nice.css">
+<!-- Highlight.js -->
+<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script></div>
+                
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right is-sticky">
+    
+        
+<div class="card widget column-left is-sticky" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                目录
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#题意解读">
+        <span class="has-mr-6">1</span>
+        <span>题意解读</span>
+        </a></li><li>
+        <a class="is-flex" href="#解题思考">
+        <span class="has-mr-6">2</span>
+        <span>解题思考</span>
+        </a></li></ul>
+        </div>
+    </div>
+</div>
+
+
+    
+    
+</div>
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <p class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo.svg" alt="海岛寻宝问题" height="28">
+                
+                <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
+                </p>
+                <p class="is-size-7">
+                &copy; 2020 JianhuiChen&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                        
+                        <i class="fab fa-creative-commons"></i>&nbsp;<i class="fab fa-creative-commons-by"></i>&nbsp;<i class="fab fa-creative-commons-nc"></i>&nbsp;<i class="fab fa-creative-commons-sa"></i>&nbsp;
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>

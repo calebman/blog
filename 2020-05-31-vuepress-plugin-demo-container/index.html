@@ -16,7 +16,7 @@
 <meta property="og:description" content="&amp;emsp;&amp;emsp;这篇文章面向使用 Vuepress 来开发 Vue 组件文档库的用户服务，去年差不多这个时候我为公司开发了一个基于 AntDesignVue 封装的高阶组件库，经过一年的版本迭代与文档更新，收获了很多坑点，其中有一个就是关于组件示例维护相关的，今年有意重构组件库的文档与代码结构，后面会陆陆续续将踩到的坑点与相应的解决方案一一描述，好的进入今天的主题：文档示例编写的最佳实践方">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://resources.chenjianhui.site/2020-05-31-home-pic.jpg">
-<meta property="og:updated_time" content="2020-06-02T09:11:47.806Z">
+<meta property="og:updated_time" content="2020-06-02T09:25:11.920Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用 Vuepress 编写组件示例文档的最佳实践">
 <meta name="twitter:description" content="&amp;emsp;&amp;emsp;这篇文章面向使用 Vuepress 来开发 Vue 组件文档库的用户服务，去年差不多这个时候我为公司开发了一个基于 AntDesignVue 封装的高阶组件库，经过一年的版本迭代与文档更新，收获了很多坑点，其中有一个就是关于组件示例维护相关的，今年有意重构组件库的文档与代码结构，后面会陆陆续续将踩到的坑点与相应的解决方案一一描述，好的进入今天的主题：文档示例编写的最佳实践方">
@@ -174,7 +174,7 @@
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2020-05-31T21:09:46.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-31</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-06-02T09:11:47.806Z"><i class="far fa-calendar-check">&nbsp;</i>2020-06-02</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-06-02T09:25:11.920Z"><i class="far fa-calendar-check">&nbsp;</i>2020-06-02</time>
                 
                 
                 <div class="level-item">
@@ -199,7 +199,7 @@
 <a id="more"></a>
 
 <blockquote>
-<p>关于最佳实践方案我提供了一个插件 <a href="https://github.com/calebman/vuepress-plugin-demo-container" target="_blank" rel="noopener">vuepress-plugin-demo-container</a> 来统一解决，插件的具体介绍、示例与使用文档 <a href="https://calebman.github.io/vuepress-plugin-demo-container/zh/" target="_blank" rel="noopener">点此访问</a>。</p>
+<p>关于最佳实践方案我提供了一个插件 <a href="https://github.com/calebman/vuepress-plugin-demo-container" target="_blank" rel="noopener">vuepress-plugin-demo-container</a> 来统一解决，插件的具体介绍、示例与使用文档 <a href="https://docs.chenjianhui.site/vuepress-plugin-demo-container/zh/" target="_blank" rel="noopener">点此访问</a>。</p>
 </blockquote>
 <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a><span>前言</span></h1><h2 id="什么是组件示例文档？"><a href="#什么是组件示例文档？" class="headerlink" title="什么是组件示例文档？"></a><span>什么是组件示例文档？</span></h2><p>当你使用 Vue、React 或者其他语言编写了一个组件库，如 <a href="https://element.eleme.cn/2.0/#/zh-CN" target="_blank" rel="noopener">Element UI</a>、<a href="https://www.antdv.com/docs/vue/introduce-cn/" target="_blank" rel="noopener">Ant Design Vue</a> 或是像我一样基于它们开发的业务封装库，都需要使用文档来支撑，而使用文档必然会<strong>包含代码与示例</strong>，这部分就是组件示例文档。</p>
 <p>举个例子，Element UI 的 <a href="https://element.eleme.cn/2.0/#/zh-CN/component/color-picker" target="_blank" rel="noopener">Color Picker</a> 组件文档，其中就包含了多份示例代码，假设我们现在完成了组件开发，需要使用 Vuepress 写一份和它一样的使用文档，该怎么做呢？</p>

@@ -115,7 +115,7 @@ tags:
 
 ## 如何实现？
 
-[vuepress-plugin-demo-container](https://github.com/calebman/vuepress-plugin-demo-container) 已经实现了上述最佳方案，在 Vuepress 中引入该插件即可获得想要的效果，关于该插件的介绍可以 [点此查看](https://calebman.github.io/vuepress-plugin-demo-container/zh/)，文档提供了**它的工作原理、渲染效果、与插件比较及使用方式**等描述，在这里我就不再赘述了，如果有建议或疑问可以通过或者评论或者 [Issus](https://github.com/calebman/vuepress-plugin-demo-container/issues) 提供给我，我将尽力解答。
+[vuepress-plugin-demo-container](https://github.com/calebman/vuepress-plugin-demo-container) 已经实现了上述最佳方案，在 Vuepress 中引入该插件即可获得想要的效果，关于该插件的介绍可以 [点此查看](https://docs.chenjianhui.site/vuepress-plugin-demo-container/zh/)，文档提供了**它的工作原理、渲染效果、与插件比较及使用方式**等描述，在这里我就不再赘述了，如果有建议或疑问可以通过或者评论或者 [Issus](https://github.com/calebman/vuepress-plugin-demo-container/issues) 提供给我，我将尽力解答。
 
 # 关于公众号
 

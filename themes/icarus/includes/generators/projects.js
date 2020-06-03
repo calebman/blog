@@ -14,9 +14,12 @@ module.exports = function (hexo) {
                 path: 'projects/',
                 layout: ['projects'],
                 data: Object.assign({}, locals, {
-                    widgets: [],
+                    widgets: [
+                        { type: 'profile', position: 'left' },
+                        { type: 'recent_posts', position: 'left' }
+                    ],
                     projects: Object.values(projectObj),
-                    sliceProjects: sliceArray(Object.values(projectObj), 3)
+                    sliceProjects: sliceArray(Object.values(projectObj), 2)
                 })
             };
         });

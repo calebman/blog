@@ -1,0 +1,70 @@
+<% page.questions.forEach(question => { %>
+<div class="card widget">
+    <div class="card-content content" style="padding-bottom: 66px;">
+        <h3 class="title" style="text-align: center;">
+            <%= question.title %>
+        </h3>
+        <div class="project-introduce">
+            <%- question._content %>
+        </div>
+    </div>
+    <a href="<%= question.url %>" target="_blank" title="<%= question.level %>">
+        <div class="superscript">
+            <div class="triangle <%= question.level %>"></div>
+            <div class="desc"><%= question.id || 'ID' %></div>
+        </div>
+    </a>
+</div>
+<% }) %>
+<% if (page.total > 1) { %>
+<%- partial('common/paginator') %>
+<% } %>
+<style>
+    .superscript {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        width: 60px;
+        height: 60px;
+        overflow: hidden;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .superscript .triangle {
+        width: 0;
+        height: 0;
+        border-top: 60px solid;
+        border-left: 60px solid transparent;
+    }
+
+    .superscript .simple {
+        border-top-color: rgb(62, 175, 124);
+    }
+
+    .superscript .normal {
+        border-top-color: #ff8d1a;
+    }
+
+    .superscript .hard {
+        border-top-color: #d43030;
+    }
+
+    .superscript .desc {
+        position: absolute;
+        top: 10px;
+        right: 5px;
+        z-index: 1;
+        transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+    }
+</style>
+<link rel="stylesheet" href="/css/article-nice.css">
+<!-- Highlight.js -->
+<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>

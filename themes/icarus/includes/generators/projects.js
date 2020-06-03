@@ -13,7 +13,7 @@ module.exports = function (hexo) {
             return {
                 path: 'projects/',
                 layout: ['projects'],
-                data: Object.assign({}, locals, {
+                data: Object.assign({}, {
                     widgets: [
                         { type: 'profile', position: 'left' },
                         { type: 'recent_posts', position: 'left' }

@@ -8,7 +8,7 @@
 
 
     <meta name="description" content="Full of soul, independent personality">
-<meta name="keywords" content="vuejs,element-ui,echarts,SpringBoot,Spring,vue-router,vuex,Netty,markdown,hexo,Nginx,jenkins,maven,nodejs,devops,Docker,mysql,redis,Algorithm,Java,Vue,Shell,Linux,Dubbo,Machine Learning,Cache,Transaction,vuepress,plugin">
+<meta name="keywords" content="java vuejs 运维">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Sincerity">
 <meta property="og:url" content="https://chenjianhui.site/leetcode/index.html">
@@ -161,7 +161,7 @@
             括号的分数
         </h3>
         <div class="project-introduce">
-            <h1 id="如题"><a href="#如题" class="headerlink" title="如题"></a>如题</h1><p>给定一个平衡括号字符串 S，按下述规则计算该字符串的分数：</p>
+            <h1 id="题干"><a href="#题干" class="headerlink" title="题干"></a>题干</h1><p>给定一个平衡括号字符串 S，按下述规则计算该字符串的分数：</p>
 <ul>
 <li>() 得 1 分。</li>
 <li>AB 得 A + B 分，其中 A 和 B 是平衡括号字符串。</li>
@@ -179,7 +179,61 @@
 
 输入： <span class="string">"(()(()))"</span>
 输出： 6</code></pre>
-<h1 id="解题"><a href="#解题" class="headerlink" title="解题"></a>解题</h1><p>….</p>
+<h1 id="解题"><a href="#解题" class="headerlink" title="解题"></a>解题</h1><h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>将字符串转换为 <code>[1, [1]]</code> 这种数组嵌套型的数据结构，然后深度遍历计算值</p>
+<pre><code class="js"><span class="comment">/**</span>
+<span class="comment"> * 将平衡括号字符串转换为 数组数据结构</span>
+<span class="comment"> * <span class="doctag">@param <span class="type">{*}</span> </span>str 字符串</span>
+<span class="comment"> * <span class="doctag">@returns <span class="type">{Array}</span> </span>数组</span>
+<span class="comment"> * <span class="doctag">@example </span>(()(())((())())) =&gt; [ 1, [ 1 ], [ [ 1 ], 1 ] ]</span>
+<span class="comment"> */</span>
+<span class="function"><span class="keyword">function</span> <span class="title">transfer</span>(<span class="params">str</span>) </span>{
+  <span class="keyword">let</span> cur = {
+    value: []
+  }
+  <span class="keyword">let</span> deep = <span class="number">0</span>
+  str.split(<span class="string">''</span>).forEach(<span class="function"><span class="params">s</span> =&gt;</span> {
+    <span class="keyword">switch</span> (s) {
+      <span class="keyword">case</span> <span class="string">'('</span>:
+        deep++
+        <span class="keyword">if</span>(deep &gt;= <span class="number">1</span>) {
+          cur = {
+            parent: cur,
+            value: []
+          }
+        }
+        <span class="keyword">break</span>
+      <span class="keyword">case</span> <span class="string">')'</span>:
+        deep--
+        <span class="keyword">if</span>(deep &gt;= <span class="number">0</span>) {
+          <span class="keyword">const</span> tmp = cur.parent
+          tmp.value.push(cur.value.length &gt; <span class="number">0</span> ? cur.value : <span class="number">1</span>)
+          cur = tmp
+        }
+        <span class="keyword">break</span>
+    }
+  })
+  <span class="keyword">return</span> cur.value
+}</code></pre>
+<p>递归遍历计算求值</p>
+<pre><code class="js"><span class="comment">/**</span>
+<span class="comment"> * 计算 平衡括号字符串 对应数组数据结构的值</span>
+<span class="comment"> * <span class="doctag">@param <span class="type">{*}</span> </span>arr 平衡字符串转换数组</span>
+<span class="comment"> * <span class="doctag">@returns <span class="type">{Number}</span> </span>计算结果</span>
+<span class="comment"> * <span class="doctag">@example </span>[ 1, [ 1 ], [ [ 1 ], 1 ] ] =&gt; 9</span>
+<span class="comment"> */</span>
+<span class="function"><span class="keyword">function</span> <span class="title">computed</span>(<span class="params">arr</span>) </span>{
+  <span class="keyword">let</span> total = <span class="number">0</span>
+  arr.forEach(<span class="function"><span class="params">o</span> =&gt;</span> {
+    <span class="keyword">if</span>(<span class="built_in">Array</span>.isArray(o)) {
+      total += <span class="number">2</span> * computed(o)
+    } <span class="keyword">else</span> {
+      total += o
+    }
+  })
+  <span class="keyword">return</span> total
+}</code></pre>
+<p>本方法通过了 Leetcode 的测试用例，但是执行性能上还可以继续想想优化的方案</p>
+<p><img src="https://resources.chenjianhui.site/20200603233725.png" alt></p>
 
         </div>
     </div>
@@ -193,6 +247,19 @@
 
 
 <style>
+    .title {
+        font-size: unset;
+    }
+
+    .number {
+        background-color: unset;
+        display: unset;
+        font-size: unset;
+        margin-right: unset;
+        min-width: unset;
+        padding: unset;
+    }
+    
     .superscript {
         position: absolute;
         top: 0px;

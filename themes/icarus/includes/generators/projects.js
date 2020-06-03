@@ -9,24 +9,6 @@ const projectPath = path.join(process.cwd(), 'source/_projects');
 module.exports = function (hexo) {
     if (fs.existsSync(projectPath)) {
         const projectObj = {}
-        const handleFileChange = (path) => {
-            const post = frontMatterParse(fs.readFileSync(path));
-            hexo.render.render({ text: post._content, engine: 'md' }).then(result => {
-                projectObj[path] = Object.assign({}, post, {
-                    _content: result
-                });
-            });
-        };
-        const handleFileRemove = path => {
-            delete projectObj[path]
-        }
-        function sliceArray(arr, size) {
-            var arr2 = [];
-            for (var i = 0; i < arr.length; i = i + size) {
-                arr2.push(arr.slice(i, i + size));
-            }
-            return arr2;
-        }
         hexo.extend.generator.register('projects', function (locals) {
             return {
                 path: 'projects/',
@@ -38,10 +20,29 @@ module.exports = function (hexo) {
                 })
             };
         });
-        chokidar.watch(projectPath, {
+
+         // watch file and render it
+        const handleFileChange = (path) => {
+            const post = frontMatterParse(fs.readFileSync(path));
+            hexo.render.render({ text: post._content, engine: 'md' }).then(result => {
+                projectObj[path] = Object.assign({}, post, {
+                    _content: result
+                });
+            });
+        };
+        
+        const watcher = chokidar.watch(projectPath, {
             depth: 1
         }).on('add', handleFileChange)
         .on('change', handleFileChange)
-        .on('unlink', handleFileRemove);
+        .on('unlink', path => delete projectObj[path]);
+        hexo.on('exit', () => watcher.close());
     }
+}
+function sliceArray(arr, size) {
+    const result = [];
+    for (let i = 0; i < arr.length; i = i + size) {
+        result.push(arr.slice(i, i + size));
+    }
+    return result;
 }

@@ -18,18 +18,12 @@ module.exports = function (hexo) {
                 perPage: perPage,
                 layout: ['leetcode', 'index'],
                 format: 'page/%d/',
-                data: Object.assign({}, locals, {
+                data: Object.assign({}, {
                     widgets: [
                         { type: 'profile', position: 'left' },
                         { type: 'recent_posts', position: 'left' }
                     ]
                 })
-            }).map((o, i) => {
-                const sliceQuestion = questions.slice(i * perPage, Math.min((i + 1) * perPage, questions.length));
-                o.data = Object.assign(o.data, {
-                    questions: sliceQuestion
-                })
-                return o;
             });
         });
 

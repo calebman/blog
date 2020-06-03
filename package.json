@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "dev": "hexo s",
+    "build-preview": "hexo clean && hexo g && anywhere -d public/",
     "build": "hexo clean && hexo g"
   },
   "hexo": {

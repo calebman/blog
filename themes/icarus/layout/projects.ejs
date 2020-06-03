@@ -1,0 +1,116 @@
+<% page.sliceProjects.forEach(group => { %>
+<div class="columns">
+    <% group.forEach(project => { %>
+    <div class="column is-8-tablet is-8-desktop is-4-widescreen column-main">
+        <div class="card widget" style="height: 100%;margin-bottom: 0;">
+            <div class="card-content" style="padding-bottom: 66px;">
+                <h3 class="title" style="text-align: center;">
+                    <%= project.title %>
+                </h3>
+                <p class="shields-content" align="center">
+                    <a href="https://github.com/<%= project.repo %>" target="_blank">
+                        <img src="https://img.shields.io/github/stars/<%= project.repo %>">
+                    </a>
+                    <a href="https://github.com/<%= project.repo %>" target="_blank">
+                        <img src="https://img.shields.io/github/forks/<%= project.repo %>">
+                    </a>
+                    <a href="https://github.com/<%= project.repo %>" target="_blank">
+                        <img src="https://img.shields.io/github/issues/<%= project.repo %>">
+                    </a>
+                </p>
+                <div class="project-introduce">
+                    <%- project._content %>
+                </div>
+            </div>
+            <ul class="card-actions">
+                <% if(project.docs || project.demo) { %>
+                <li style="width: 49%;">
+                    <a href="https://github.com/<%= project.repo %>" target="_blank">代码仓库</a>
+                </li>
+                <li class="divider divider-vertical"></li>
+                <li style="width: 49%;">
+                    <a href="<%= project.docs || project.demo %>" target="_blank">
+                        <%= project.demo ? '演示' : '文档' %>地址
+                    </a>
+                </li>
+                <% } else {%>
+                <li style="width: 100%;">
+                    <a href="https://github.com/<%= project.repo %>" target="_blank">代码仓库</a>
+                </li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+    <% }) %>
+</div>
+<% }) %>
+
+<style>
+    .project-introduce {
+        margin-top: 16px;
+        text-align: center;
+    }
+
+    .card-actions {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        background: #fafafa;
+        border-top: 1px solid #e8e8e8;
+        zoom: 1;
+        height: 50px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+    }
+
+    .card-actions>li {
+        float: left;
+        margin: 12px 0;
+        color: rgba(0, 0, 0, .45);
+        text-align: center;
+    }
+
+    .card-actions>li>a {
+        position: relative;
+        display: block;
+        min-width: 32px;
+        font-size: 14px;
+        line-height: 22px;
+        cursor: pointer;
+        color: #1890ff;
+        background-color: transparent;
+        border-color: transparent;
+        box-shadow: none;
+    }
+
+    .card-actions>li>a:hover {
+        color: #40a9ff;
+        text-decoration: none;
+    }
+
+    .divider {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        color: rgba(0, 0, 0, .65);
+        font-size: 14px;
+        font-variant: tabular-nums;
+        line-height: 1.5;
+        list-style: none;
+        font-feature-settings: "tnum";
+        background: #e8e8e8;
+    }
+
+    .divider,
+    .divider-vertical {
+        position: relative;
+        top: -.06em;
+        display: inline-block;
+        width: 1px;
+        height: 1.9em;
+        margin: 0 8px;
+        vertical-align: middle;
+    }
+</style>

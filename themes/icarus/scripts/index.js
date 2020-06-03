@@ -5,6 +5,7 @@ require('../includes/generators/categories')(hexo);
 require('../includes/generators/category')(hexo);
 require('../includes/generators/tags')(hexo);
 require('../includes/generators/insight')(hexo);
+require('../includes/generators/projects')(hexo);
 require('../includes/filters/highlight')(hexo);
 require('../includes/filters/emoji')(hexo);
 require('../includes/helpers/cdn')(hexo);

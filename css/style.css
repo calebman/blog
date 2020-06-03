@@ -549,3 +549,9 @@ figure.highlight:hover .copy {
   content: counter(section) "." counter(sub-section) "." counter(composite) " ";
   counter-increment: composite;
 }
+.shields-content a {
+  border-bottom: unset !important;
+}
+.shields-content img {
+  display: unset !important;
+}

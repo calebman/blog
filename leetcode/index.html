@@ -179,7 +179,9 @@
 
 输入： <span class="string">"(()(()))"</span>
 输出： 6</code></pre>
-<h1 id="解题"><a href="#解题" class="headerlink" title="解题"></a>解题</h1><h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>将字符串转换为 <code>[1, [1]]</code> 这种数组嵌套型的数据结构，然后深度遍历计算值</p>
+<h1 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h1><h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ol>
+<li>将字符串转换为 <code>[1, [1]]</code> 这种数组嵌套型的数据结构，然后深度遍历计算值</li>
+</ol>
 <pre><code class="js"><span class="comment">/**</span>
 <span class="comment"> * 将平衡括号字符串转换为 数组数据结构</span>
 <span class="comment"> * <span class="doctag">@param <span class="type">{*}</span> </span>str 字符串</span>
@@ -214,7 +216,9 @@
   })
   <span class="keyword">return</span> cur.value
 }</code></pre>
-<p>递归遍历计算求值</p>
+<ol start="2">
+<li>递归遍历计算求值</li>
+</ol>
 <pre><code class="js"><span class="comment">/**</span>
 <span class="comment"> * 计算 平衡括号字符串 对应数组数据结构的值</span>
 <span class="comment"> * <span class="doctag">@param <span class="type">{*}</span> </span>arr 平衡字符串转换数组</span>
@@ -240,7 +244,7 @@
     <a href="https://leetcode-cn.com/problems/score-of-parentheses/" target="_blank" title="normal">
         <div class="superscript">
             <div class="triangle normal"></div>
-            <div class="desc">856</div>
+            <div class="desc">normal</div>
         </div>
     </a>
 </div>
@@ -278,7 +282,7 @@
         border-left: 60px solid transparent;
     }
 
-    .superscript .simple {
+    .superscript .easy {
         border-top-color: rgb(62, 175, 124);
     }
 

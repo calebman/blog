@@ -1,10 +1,10 @@
 <% page.posts.forEach(question => { %>
 <div class="card widget">
-    <div class="card-content content" style="padding-bottom: 66px;">
-        <h3 class="title" style="text-align: center;">
+    <div class="card-content" style="padding-bottom: 66px;">
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal" style="text-align: center;">
             <%= question.title %>
-        </h3>
-        <div class="project-introduce">
+        </h1>
+        <div id="article-content" class="project-introduce content">
             <%- question._content %>
         </div>
     </div>
@@ -20,6 +20,10 @@
 <%- partial('common/paginator') %>
 <% } %>
 <style>
+    .hljs {
+        font-size: 14px !important;
+    }
+
     .title {
         font-size: unset;
     }

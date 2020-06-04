@@ -45,7 +45,7 @@ module.exports = function (hexo) {
             .on('change', handleFileChange)
             .on('unlink', name => delete leetcodeObj[name]);
         if(!process.argv[2].startsWith('s')) {
-            watcher.close();
+            hexo.on('exit', () => watcher.close())
         }
     }
 }

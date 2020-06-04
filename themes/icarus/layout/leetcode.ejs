@@ -11,7 +11,7 @@
     <a href="<%= question.url %>" target="_blank" title="<%= question.level %>">
         <div class="superscript">
             <div class="triangle <%= question.level %>"></div>
-            <div class="desc"><%= question.id || 'ID' %></div>
+            <div class="desc"><%= question.level %></div>
         </div>
     </a>
 </div>
@@ -51,7 +51,7 @@
         border-left: 60px solid transparent;
     }
 
-    .superscript .simple {
+    .superscript .easy {
         border-top-color: rgb(62, 175, 124);
     }
 

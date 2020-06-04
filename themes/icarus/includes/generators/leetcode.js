@@ -11,11 +11,9 @@ module.exports = function (hexo) {
     if (fs.existsSync(leetcodePath)) {
         const leetcodeObj = {}
         hexo.extend.generator.register('leetcode', function (locals) {
-            const config = this.config;
-            const perPage = config.category_generator.per_page;
             const questions = Object.values(leetcodeObj);
             return pagination('leetcode/', questions, {
-                perPage: perPage,
+                perPage: 1,
                 layout: ['leetcode', 'index'],
                 format: 'page/%d/',
                 data: Object.assign({}, {

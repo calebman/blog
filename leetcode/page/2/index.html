@@ -11,7 +11,7 @@
 <meta name="keywords" content="java vuejs 运维">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Sincerity">
-<meta property="og:url" content="https://chenjianhui.site/leetcode/index.html">
+<meta property="og:url" content="https://chenjianhui.site/leetcode/page/2/index.html">
 <meta property="og:site_name" content="Sincerity">
 <meta property="og:description" content="Full of soul, independent personality">
 <meta property="og:locale" content="zh-CN">
@@ -121,7 +121,7 @@
                 
                 <a class="navbar-item" href="/tags">Tags</a>
                 
-                <a class="navbar-item is-active" href="/leetcode">LeetCode</a>
+                <a class="navbar-item" href="/leetcode">LeetCode</a>
                 
                 <a class="navbar-item" href="/projects">Projects</a>
                 
@@ -158,90 +158,68 @@
 <div class="card widget">
     <div class="card-content" style="padding-bottom: 66px;">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal" style="text-align: center;">
-            括号的分数
+            无重复字符的最长子串
         </h1>
         <div id="article-content" class="project-introduce content">
-            <h1 id="题干"><a href="#题干" class="headerlink" title="题干"></a>题干</h1><p>给定一个平衡括号字符串 S，按下述规则计算该字符串的分数：</p>
-<ul>
-<li>() 得 1 分。</li>
-<li>AB 得 A + B 分，其中 A 和 B 是平衡括号字符串。</li>
-<li>(A) 得 2 * A 分，其中 A 是平衡括号字符串。</li>
-</ul>
+            <h1 id="题干"><a href="#题干" class="headerlink" title="题干"></a>题干</h1><p>给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度</p>
 <p>示例：</p>
-<pre><code class="sh">输入： <span class="string">"()"</span>
-输出： 1
+<pre><code class="sh">输入: <span class="string">"abcabcbb"</span>
+输出: 3 
+解释: 因为无重复字符的最长子串是 <span class="string">"abc"</span>，所以其长度为 3。
 
-输入： <span class="string">"(())"</span>
-输出： 2
+输入: <span class="string">"bbbbb"</span>
+输出: 1
+解释: 因为无重复字符的最长子串是 <span class="string">"b"</span>，所以其长度为 1。
 
-输入： <span class="string">"()()"</span>
-输出： 2
-
-输入： <span class="string">"(()(()))"</span>
-输出： 6</code></pre>
+输入: <span class="string">"pwwkew"</span>
+输出: 3
+解释: 因为无重复字符的最长子串是 <span class="string">"wke"</span>，所以其长度为 3。
+     请注意，你的答案必须是 子串 的长度，<span class="string">"pwke"</span> 是一个子序列，不是子串。</code></pre>
 <h1 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h1><h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><ol>
-<li>将字符串转换为 <code>[1, [1]]</code> 这种数组嵌套型的数据结构，然后深度遍历计算值</li>
+<li>通过一个数组维护无重复字符列表</li>
+<li>循环目标字符串，当字符存在于数组时，记录数组当前长度与历史长度的较大值，并根据匹配位切割数组 <code>&#39;dvcdf&#39;</code> 匹配到第四位时的数组变换 <code>[d, v, c]</code> =&gt; <code>[v, c, d]</code></li>
+<li>最后取数组与历史记录值的较大值</li>
 </ol>
-<pre><code class="js"><span class="comment">/**</span>
-<span class="comment"> * 将平衡括号字符串转换为 数组数据结构</span>
-<span class="comment"> * <span class="doctag">@param <span class="type">{*}</span> </span>str 字符串</span>
-<span class="comment"> * <span class="doctag">@returns <span class="type">{Array}</span> </span>数组</span>
-<span class="comment"> * <span class="doctag">@example </span>(()(())((())())) =&gt; [ 1, [ 1 ], [ [ 1 ], 1 ] ]</span>
-<span class="comment"> */</span>
-<span class="function"><span class="keyword">function</span> <span class="title">transfer</span>(<span class="params">str</span>) </span>{
-  <span class="keyword">let</span> cur = {
-    value: []
+<pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">lengthOfLongestSubstring</span>(<span class="params">s</span>) </span>{
+  <span class="keyword">let</span> arr = []
+  <span class="keyword">let</span> len = <span class="number">0</span>
+  s.split(<span class="string">''</span>).forEach(<span class="function"><span class="params">s</span> =&gt;</span> {
+    <span class="keyword">const</span> i = arr.indexOf(s)
+    <span class="keyword">if</span>(i &gt; <span class="number">-1</span>) {
+      arr = arr.slice(i + <span class="number">1</span>, arr.length)
+    }
+    arr.push(s)
+    len = <span class="built_in">Math</span>.max(arr.length, len)
+  })
+  <span class="keyword">return</span> len
+}</code></pre>
+<p>该方法通过了 Leetcode 的检测，但是执行耗时过长，排名在 75%</p>
+<p><img src="https://resources.chenjianhui.site/20200604202543.png" alt></p>
+<h2 id="优化方案"><a href="#优化方案" class="headerlink" title="优化方案"></a>优化方案</h2><ol>
+<li>原先用于存储无重复字符列表的数组空间可以节省，因为字符列表是连续的，所以可以通过一个下标标记实现</li>
+<li>匹配的时间复杂度和原来是一样的，数组切割的部分可以移除，节省这部分性能</li>
+</ol>
+<pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">lengthOfLongestSubstring</span>(<span class="params">s</span>) </span>{
+  <span class="keyword">let</span> len = <span class="number">0</span>
+  <span class="keyword">let</span> q = <span class="number">0</span>
+  <span class="keyword">const</span> arr = s.split(<span class="string">''</span>)
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; arr.length; i++) {
+    <span class="keyword">for</span> (<span class="keyword">let</span> j = q; j &lt; i; j++) {
+      <span class="keyword">if</span>(arr[j] === arr[i]) {
+        q = j + <span class="number">1</span>
+        <span class="keyword">break</span>
+      }
+    }
+    len = <span class="built_in">Math</span>.max(i - q + <span class="number">1</span>, len)
   }
-  <span class="keyword">let</span> deep = <span class="number">0</span>
-  str.split(<span class="string">''</span>).forEach(<span class="function"><span class="params">s</span> =&gt;</span> {
-    <span class="keyword">switch</span> (s) {
-      <span class="keyword">case</span> <span class="string">'('</span>:
-        deep++
-        <span class="keyword">if</span>(deep &gt;= <span class="number">1</span>) {
-          cur = {
-            parent: cur,
-            value: []
-          }
-        }
-        <span class="keyword">break</span>
-      <span class="keyword">case</span> <span class="string">')'</span>:
-        deep--
-        <span class="keyword">if</span>(deep &gt;= <span class="number">0</span>) {
-          <span class="keyword">const</span> tmp = cur.parent
-          tmp.value.push(cur.value.length &gt; <span class="number">0</span> ? cur.value : <span class="number">1</span>)
-          cur = tmp
-        }
-        <span class="keyword">break</span>
-    }
-  })
-  <span class="keyword">return</span> cur.value
+  <span class="keyword">return</span> len
 }</code></pre>
-<ol start="2">
-<li>递归遍历计算求值</li>
-</ol>
-<pre><code class="js"><span class="comment">/**</span>
-<span class="comment"> * 计算 平衡括号字符串 对应数组数据结构的值</span>
-<span class="comment"> * <span class="doctag">@param <span class="type">{*}</span> </span>arr 平衡字符串转换数组</span>
-<span class="comment"> * <span class="doctag">@returns <span class="type">{Number}</span> </span>计算结果</span>
-<span class="comment"> * <span class="doctag">@example </span>[ 1, [ 1 ], [ [ 1 ], 1 ] ] =&gt; 9</span>
-<span class="comment"> */</span>
-<span class="function"><span class="keyword">function</span> <span class="title">computed</span>(<span class="params">arr</span>) </span>{
-  <span class="keyword">let</span> total = <span class="number">0</span>
-  arr.forEach(<span class="function"><span class="params">o</span> =&gt;</span> {
-    <span class="keyword">if</span>(<span class="built_in">Array</span>.isArray(o)) {
-      total += <span class="number">2</span> * computed(o)
-    } <span class="keyword">else</span> {
-      total += o
-    }
-  })
-  <span class="keyword">return</span> total
-}</code></pre>
-<p>本方法通过了 Leetcode 的测试用例，但是执行性能上还可以继续想想优化的方案</p>
-<p><img src="https://resources.chenjianhui.site/20200603233725.png" alt></p>
+<p>该方法执行耗时和内存都有提升</p>
+<p><img src="https://resources.chenjianhui.site/20200604204730.png" alt></p>
 
         </div>
     </div>
-    <a href="https://leetcode-cn.com/problems/score-of-parentheses/" target="_blank" title="normal">
+    <a href="https://leetcode-cn.com/explore/interview/card/bytedance/242/string/1012/" target="_blank" title="normal">
         <div class="superscript">
             <div class="triangle normal"></div>
             <div class="desc">normal</div>
@@ -253,17 +231,17 @@
 
 <div class="card card-transparent">
     <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-        <div class="pagination-previous is-invisible is-hidden-mobile">
-            <a class="is-flex-grow has-text-black-ter" href="/leetcode/page/0/">上一页</a>
+        <div class="pagination-previous">
+            <a class="is-flex-grow has-text-black-ter" href="/leetcode/">上一页</a>
         </div>
-        <div class="pagination-next">
-            <a class="is-flex-grow has-text-black-ter" href="/leetcode/page/2/">下一页</a>
+        <div class="pagination-next is-invisible is-hidden-mobile">
+            <a class="is-flex-grow has-text-black-ter" href="/leetcode/page/3/">下一页</a>
         </div>
         <ul class="pagination-list is-hidden-mobile">
             
-            <li><a class="pagination-link is-current" href="/leetcode/">1</a></li>
+            <li><a class="pagination-link has-text-black-ter" href="/leetcode/">1</a></li>
             
-            <li><a class="pagination-link has-text-black-ter" href="/leetcode/page/2/">2</a></li>
+            <li><a class="pagination-link is-current" href="/leetcode/page/2/">2</a></li>
             
         </ul>
     </nav>

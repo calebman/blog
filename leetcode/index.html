@@ -11,7 +11,7 @@
 <meta name="keywords" content="java vuejs 运维">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Sincerity">
-<meta property="og:url" content="https://chenjianhui.site/projects/index.html">
+<meta property="og:url" content="https://chenjianhui.site/leetcode/index.html">
 <meta property="og:site_name" content="Sincerity">
 <meta property="og:description" content="Full of soul, independent personality">
 <meta property="og:locale" content="zh-CN">
@@ -121,9 +121,9 @@
                 
                 <a class="navbar-item" href="/tags">Tags</a>
                 
-                <a class="navbar-item" href="/leetcode">LeetCode</a>
+                <a class="navbar-item is-active" href="/leetcode">LeetCode</a>
                 
-                <a class="navbar-item is-active" href="/projects">Projects</a>
+                <a class="navbar-item" href="/projects">Projects</a>
                 
                 <a class="navbar-item" href="/about">About</a>
                 
@@ -155,272 +155,163 @@
         <div class="container">
             <div class="columns">
                 <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main">
-<div class="columns">
-    
-    <div class="column is-8-tablet is-8-desktop is-6-widescreen column-main">
-        <div class="card widget" style="height: 100%;margin-bottom: 0;">
-            <div class="card-content" style="padding-bottom: 66px;">
-                <h3 class="title" style="text-align: center;">
-                    ant-design-vue-hign
-                </h3>
-                <p class="shields-content" align="center">
-                    <a href="https://github.com/calebman/ant-design-vue-hign" target="_blank">
-                        <img src="https://img.shields.io/github/stars/calebman/ant-design-vue-hign">
-                    </a>
-                    <a href="https://github.com/calebman/ant-design-vue-hign" target="_blank">
-                        <img src="https://img.shields.io/github/forks/calebman/ant-design-vue-hign">
-                    </a>
-                    <a href="https://github.com/calebman/ant-design-vue-hign" target="_blank">
-                        <img src="https://img.shields.io/github/issues/calebman/ant-design-vue-hign">
-                    </a>
-                </p>
-                <div class="project-introduce">
-                    <p>一个基于 <a href="https://www.antdv.com/docs/vue/introduce-cn/">Ant Design Vue</a> 致力于高效开发的高阶组件库。</p>
+<div class="card widget">
+    <div class="card-content content" style="padding-bottom: 66px;">
+        <h3 class="title" style="text-align: center;">
+            括号的分数
+        </h3>
+        <div class="project-introduce">
+            <h1 id="题干"><a href="#题干" class="headerlink" title="题干"></a>题干</h1><p>给定一个平衡括号字符串 S，按下述规则计算该字符串的分数：</p>
+<ul>
+<li>() 得 1 分。</li>
+<li>AB 得 A + B 分，其中 A 和 B 是平衡括号字符串。</li>
+<li>(A) 得 2 * A 分，其中 A 是平衡括号字符串。</li>
+</ul>
+<p>示例：</p>
+<pre><code class="sh">输入： <span class="string">"()"</span>
+输出： 1
 
-                </div>
-            </div>
-            <ul class="card-actions">
-                
-                <li style="width: 49%;">
-                    <a href="https://github.com/calebman/ant-design-vue-hign" target="_blank">代码仓库</a>
-                </li>
-                <li class="divider divider-vertical"></li>
-                <li style="width: 49%;">
-                    <a href="https://docs.chenjianhui.site/ant-design-vue-hign" target="_blank">
-                        文档地址
-                    </a>
-                </li>
-                
-            </ul>
+输入： <span class="string">"(())"</span>
+输出： 2
+
+输入： <span class="string">"()()"</span>
+输出： 2
+
+输入： <span class="string">"(()(()))"</span>
+输出： 6</code></pre>
+<h1 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h1><h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ol>
+<li>将字符串转换为 <code>[1, [1]]</code> 这种数组嵌套型的数据结构，然后深度遍历计算值</li>
+</ol>
+<pre><code class="js"><span class="comment">/**</span>
+<span class="comment"> * 将平衡括号字符串转换为 数组数据结构</span>
+<span class="comment"> * <span class="doctag">@param <span class="type">{*}</span> </span>str 字符串</span>
+<span class="comment"> * <span class="doctag">@returns <span class="type">{Array}</span> </span>数组</span>
+<span class="comment"> * <span class="doctag">@example </span>(()(())((())())) =&gt; [ 1, [ 1 ], [ [ 1 ], 1 ] ]</span>
+<span class="comment"> */</span>
+<span class="function"><span class="keyword">function</span> <span class="title">transfer</span>(<span class="params">str</span>) </span>{
+  <span class="keyword">let</span> cur = {
+    value: []
+  }
+  <span class="keyword">let</span> deep = <span class="number">0</span>
+  str.split(<span class="string">''</span>).forEach(<span class="function"><span class="params">s</span> =&gt;</span> {
+    <span class="keyword">switch</span> (s) {
+      <span class="keyword">case</span> <span class="string">'('</span>:
+        deep++
+        <span class="keyword">if</span>(deep &gt;= <span class="number">1</span>) {
+          cur = {
+            parent: cur,
+            value: []
+          }
+        }
+        <span class="keyword">break</span>
+      <span class="keyword">case</span> <span class="string">')'</span>:
+        deep--
+        <span class="keyword">if</span>(deep &gt;= <span class="number">0</span>) {
+          <span class="keyword">const</span> tmp = cur.parent
+          tmp.value.push(cur.value.length &gt; <span class="number">0</span> ? cur.value : <span class="number">1</span>)
+          cur = tmp
+        }
+        <span class="keyword">break</span>
+    }
+  })
+  <span class="keyword">return</span> cur.value
+}</code></pre>
+<ol start="2">
+<li>递归遍历计算求值</li>
+</ol>
+<pre><code class="js"><span class="comment">/**</span>
+<span class="comment"> * 计算 平衡括号字符串 对应数组数据结构的值</span>
+<span class="comment"> * <span class="doctag">@param <span class="type">{*}</span> </span>arr 平衡字符串转换数组</span>
+<span class="comment"> * <span class="doctag">@returns <span class="type">{Number}</span> </span>计算结果</span>
+<span class="comment"> * <span class="doctag">@example </span>[ 1, [ 1 ], [ [ 1 ], 1 ] ] =&gt; 9</span>
+<span class="comment"> */</span>
+<span class="function"><span class="keyword">function</span> <span class="title">computed</span>(<span class="params">arr</span>) </span>{
+  <span class="keyword">let</span> total = <span class="number">0</span>
+  arr.forEach(<span class="function"><span class="params">o</span> =&gt;</span> {
+    <span class="keyword">if</span>(<span class="built_in">Array</span>.isArray(o)) {
+      total += <span class="number">2</span> * computed(o)
+    } <span class="keyword">else</span> {
+      total += o
+    }
+  })
+  <span class="keyword">return</span> total
+}</code></pre>
+<p>本方法通过了 Leetcode 的测试用例，但是执行性能上还可以继续想想优化的方案</p>
+<p><img src="https://resources.chenjianhui.site/20200603233725.png" alt></p>
+
         </div>
     </div>
-    
-    <div class="column is-8-tablet is-8-desktop is-6-widescreen column-main">
-        <div class="card widget" style="height: 100%;margin-bottom: 0;">
-            <div class="card-content" style="padding-bottom: 66px;">
-                <h3 class="title" style="text-align: center;">
-                    flappy-learning
-                </h3>
-                <p class="shields-content" align="center">
-                    <a href="https://github.com/calebman/flappy-learning" target="_blank">
-                        <img src="https://img.shields.io/github/stars/calebman/flappy-learning">
-                    </a>
-                    <a href="https://github.com/calebman/flappy-learning" target="_blank">
-                        <img src="https://img.shields.io/github/forks/calebman/flappy-learning">
-                    </a>
-                    <a href="https://github.com/calebman/flappy-learning" target="_blank">
-                        <img src="https://img.shields.io/github/issues/calebman/flappy-learning">
-                    </a>
-                </p>
-                <div class="project-introduce">
-                    <p>一个人为来教电脑玩游戏的点子实践。</p>
-
-                </div>
-            </div>
-            <ul class="card-actions">
-                
-                <li style="width: 49%;">
-                    <a href="https://github.com/calebman/flappy-learning" target="_blank">代码仓库</a>
-                </li>
-                <li class="divider divider-vertical"></li>
-                <li style="width: 49%;">
-                    <a href="https://demo.chenjianhui.site/flappy-learning" target="_blank">
-                        演示地址
-                    </a>
-                </li>
-                
-            </ul>
+    <a href="https://leetcode-cn.com/problems/score-of-parentheses/" target="_blank" title="normal">
+        <div class="superscript">
+            <div class="triangle normal"></div>
+            <div class="desc">normal</div>
         </div>
-    </div>
-    
-</div>
-
-<div class="columns">
-    
-    <div class="column is-8-tablet is-8-desktop is-6-widescreen column-main">
-        <div class="card widget" style="height: 100%;margin-bottom: 0;">
-            <div class="card-content" style="padding-bottom: 66px;">
-                <h3 class="title" style="text-align: center;">
-                    vue-DBM
-                </h3>
-                <p class="shields-content" align="center">
-                    <a href="https://github.com/calebman/vue-DBM" target="_blank">
-                        <img src="https://img.shields.io/github/stars/calebman/vue-DBM">
-                    </a>
-                    <a href="https://github.com/calebman/vue-DBM" target="_blank">
-                        <img src="https://img.shields.io/github/forks/calebman/vue-DBM">
-                    </a>
-                    <a href="https://github.com/calebman/vue-DBM" target="_blank">
-                        <img src="https://img.shields.io/github/issues/calebman/vue-DBM">
-                    </a>
-                </p>
-                <div class="project-introduce">
-                    <p>Vuejs 初学入门项目。</p>
-
-                </div>
-            </div>
-            <ul class="card-actions">
-                
-                <li style="width: 49%;">
-                    <a href="https://github.com/calebman/vue-DBM" target="_blank">代码仓库</a>
-                </li>
-                <li class="divider divider-vertical"></li>
-                <li style="width: 49%;">
-                    <a href="https://github.com/calebman/vue-DBM" target="_blank">
-                        演示地址
-                    </a>
-                </li>
-                
-            </ul>
-        </div>
-    </div>
-    
-    <div class="column is-8-tablet is-8-desktop is-6-widescreen column-main">
-        <div class="card widget" style="height: 100%;margin-bottom: 0;">
-            <div class="card-content" style="padding-bottom: 66px;">
-                <h3 class="title" style="text-align: center;">
-                    vuepress-plugin-demo-container
-                </h3>
-                <p class="shields-content" align="center">
-                    <a href="https://github.com/calebman/vuepress-plugin-demo-container" target="_blank">
-                        <img src="https://img.shields.io/github/stars/calebman/vuepress-plugin-demo-container">
-                    </a>
-                    <a href="https://github.com/calebman/vuepress-plugin-demo-container" target="_blank">
-                        <img src="https://img.shields.io/github/forks/calebman/vuepress-plugin-demo-container">
-                    </a>
-                    <a href="https://github.com/calebman/vuepress-plugin-demo-container" target="_blank">
-                        <img src="https://img.shields.io/github/issues/calebman/vuepress-plugin-demo-container">
-                    </a>
-                </p>
-                <div class="project-introduce">
-                    <p>一个可以在 <a href="https://vuepress.vuejs.org/zh/guide/">Vuepress</a> 快速构建代码示例块的插件。</p>
-
-                </div>
-            </div>
-            <ul class="card-actions">
-                
-                <li style="width: 49%;">
-                    <a href="https://github.com/calebman/vuepress-plugin-demo-container" target="_blank">代码仓库</a>
-                </li>
-                <li class="divider divider-vertical"></li>
-                <li style="width: 49%;">
-                    <a href="https://docs.chenjianhui.site/vuepress-plugin-demo-container" target="_blank">
-                        文档地址
-                    </a>
-                </li>
-                
-            </ul>
-        </div>
-    </div>
-    
-</div>
-
-<div class="columns">
-    
-    <div class="column is-8-tablet is-8-desktop is-6-widescreen column-main">
-        <div class="card widget" style="height: 100%;margin-bottom: 0;">
-            <div class="card-content" style="padding-bottom: 66px;">
-                <h3 class="title" style="text-align: center;">
-                    x-expression
-                </h3>
-                <p class="shields-content" align="center">
-                    <a href="https://github.com/calebman/x-expression" target="_blank">
-                        <img src="https://img.shields.io/github/stars/calebman/x-expression">
-                    </a>
-                    <a href="https://github.com/calebman/x-expression" target="_blank">
-                        <img src="https://img.shields.io/github/forks/calebman/x-expression">
-                    </a>
-                    <a href="https://github.com/calebman/x-expression" target="_blank">
-                        <img src="https://img.shields.io/github/issues/calebman/x-expression">
-                    </a>
-                </p>
-                <div class="project-introduce">
-                    <p>基于Java的简单脚本解析库。</p>
-
-                </div>
-            </div>
-            <ul class="card-actions">
-                
-                <li style="width: 100%;">
-                    <a href="https://github.com/calebman/x-expression" target="_blank">代码仓库</a>
-                </li>
-                
-            </ul>
-        </div>
-    </div>
-    
+    </a>
 </div>
 
 
 <style>
-    .project-introduce {
-        margin-top: 16px;
-        text-align: center;
+    .title {
+        font-size: unset;
     }
 
-    .card-actions {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-        background: #fafafa;
-        border-top: 1px solid #e8e8e8;
-        zoom: 1;
-        height: 50px;
+    .number {
+        background-color: unset;
+        display: unset;
+        font-size: unset;
+        margin-right: unset;
+        min-width: unset;
+        padding: unset;
+    }
+    
+    .superscript {
         position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-    }
-
-    .card-actions>li {
-        float: left;
-        margin: 12px 0;
-        color: rgba(0, 0, 0, .45);
-        text-align: center;
-    }
-
-    .card-actions>li>a {
-        position: relative;
-        display: block;
-        min-width: 32px;
-        font-size: 14px;
-        line-height: 22px;
+        top: 0px;
+        right: 0px;
+        width: 60px;
+        height: 60px;
+        overflow: hidden;
+        color: #fff;
         cursor: pointer;
-        color: #1890ff;
-        background-color: transparent;
-        border-color: transparent;
-        box-shadow: none;
     }
 
-    .card-actions>li>a:hover {
-        color: #40a9ff;
-        text-decoration: none;
+    .superscript .triangle {
+        width: 0;
+        height: 0;
+        border-top: 60px solid;
+        border-left: 60px solid transparent;
     }
 
-    .divider {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-        color: rgba(0, 0, 0, .65);
-        font-size: 14px;
-        font-variant: tabular-nums;
-        line-height: 1.5;
-        list-style: none;
-        font-feature-settings: "tnum";
-        background: #e8e8e8;
+    .superscript .easy {
+        border-top-color: rgb(62, 175, 124);
     }
 
-    .divider,
-    .divider-vertical {
-        position: relative;
-        top: -.06em;
-        display: inline-block;
-        width: 1px;
-        height: 1.9em;
-        margin: 0 8px;
-        vertical-align: middle;
+    .superscript .normal {
+        border-top-color: #ff8d1a;
     }
-</style></div>
+
+    .superscript .hard {
+        border-top-color: #d43030;
+    }
+
+    .superscript .desc {
+        position: absolute;
+        top: 10px;
+        right: 5px;
+        z-index: 1;
+        transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+    }
+</style>
+<link rel="stylesheet" href="/css/article-nice.css">
+<!-- Highlight.js -->
+<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script></div>
                 
 
 

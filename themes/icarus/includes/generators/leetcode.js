@@ -26,7 +26,11 @@ module.exports = function (hexo) {
         });
 
         // watch file and render it
-        const handleFileChange = (path) => {
+        const handleFileChange = (name) => {
+            if(!/\.md$/.test(name)) {
+                return
+            }
+            const path = `${leetcodePath}/${name}`
             const post = frontMatterParse(fs.readFileSync(path));
             hexo.render.render({ text: post._content, engine: 'md' }).then(result => {
                 leetcodeObj[path] = Object.assign({}, post, {
@@ -34,11 +38,14 @@ module.exports = function (hexo) {
                 });
             });
         };
-        const watcher = chokidar.watch(leetcodePath, {
-            depth: 1
+        const watcher = chokidar.watch('', {
+            depth: 1,
+            cwd: leetcodePath
         }).on('add', handleFileChange)
             .on('change', handleFileChange)
-            .on('unlink', path => delete leetcodeObj[path]);
-        hexo.on('exit', () => watcher.close());
+            .on('unlink', name => delete leetcodeObj[name]);
+        if(!process.argv[2].startsWith('s')) {
+            watcher.close();
+        }
     }
 }

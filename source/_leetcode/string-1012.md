@@ -79,3 +79,63 @@ function lengthOfLongestSubstring(s) {
 该方法执行耗时和内存都有提升
 
 ![](https://resources.chenjianhui.site/20200604204730.png)
+
+## 后续
+
+后续我又想了两种基于缓存的方案，能将时间复杂度降低到 `O(2N)`
+
+### 基于对象的缓存方案
+
+通过一个对象缓存匹配值列表的下标
+
+```js
+function lengthOfLongestSubstring(s) {
+  let len = 0
+  let q = 0
+  let matchIndex = 0
+  const cache = {}
+  const arr = s.split('')
+  for (let i = 0; i < arr.length; i++) {
+    matchIndex = cache[arr[i]]
+    if (matchIndex !== undefined) {
+      for (let j = q; j < matchIndex + 1; j++) {
+        delete cache[arr[j]]
+      }
+      q = matchIndex + 1
+    }
+    cache[arr[i]] = i
+    len = Math.max(i - q + 1, len)
+  }
+  return len
+}
+```
+
+### 基于数组的缓存方案
+
+利用字符可以通过 `charCodeAt` 方法转换为数字，然后通过数组下标的方式缓存
+
+```js
+function lengthOfLongestSubstring(s) {
+  let len = 0
+  let q = 0
+  let matchIndex = 0
+  let item = null
+  const cache = []
+  const arr = s.split('')
+  for (let i = 0; i < arr.length; i++) {
+    item = arr[i].charCodeAt()
+    matchIndex = cache[item]
+    if (matchIndex !== undefined) {
+      for (let j = q; j < matchIndex + 1; j++) {
+        cache[arr[j].charCodeAt()] = undefined
+      }
+      q = matchIndex + 1
+    }
+    cache[item] = i
+    len = Math.max(i - q + 1, len)
+  }
+  return len
+}
+```
+
+总结：这两种方案使用了空间来换时间，比较依赖缓存的实现，`js` 的数组与对象访问的时间复杂度我没过多了解，对标 `Java` 的数组与 `HashMap`，此场景不存在 Hash 冲突，其访问的时间复杂度为 O(1)

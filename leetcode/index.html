@@ -160,25 +160,27 @@
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal" style="text-align: center;">
             括号的分数
         </h1>
-        <div id="article-content" class="project-introduce content">
-            <h1 id="题干"><a href="#题干" class="headerlink" title="题干"></a>题干</h1><p>给定一个平衡括号字符串 S，按下述规则计算该字符串的分数：</p>
+        <div id="article-content" class="project-introduce content" style="background-image: unset;">
+            <h1 id="题干"><a href="#题干" class="headerlink" title="题干"></a>题干</h1><blockquote>
+<p>给定一个平衡括号字符串 S，按下述规则计算该字符串的分数：</p>
 <ul>
 <li>() 得 1 分。</li>
 <li>AB 得 A + B 分，其中 A 和 B 是平衡括号字符串。</li>
-<li>(A) 得 2 * A 分，其中 A 是平衡括号字符串。</li>
-</ul>
-<p>示例：</p>
-<pre><code class="sh">输入： <span class="string">"()"</span>
+<li>(A) 得 2 * A 分，其中 A 是平衡括号字符串。<pre><code class="sh">示例一：
+输入： <span class="string">"()"</span>
 输出： 1
-
+示例二：
 输入： <span class="string">"(())"</span>
 输出： 2
-
+示例三：
 输入： <span class="string">"()()"</span>
 输出： 2
-
+示例四：
 输入： <span class="string">"(()(()))"</span>
 输出： 6</code></pre>
+</li>
+</ul>
+</blockquote>
 <h1 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h1><h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><ol>
 <li>将字符串转换为 <code>[1, [1]]</code> 这种数组嵌套型的数据结构，然后深度遍历计算值</li>
 </ol>
@@ -264,6 +266,10 @@
             <li><a class="pagination-link is-current" href="/leetcode/">1</a></li>
             
             <li><a class="pagination-link has-text-black-ter" href="/leetcode/page/2/">2</a></li>
+            
+            <li><a class="pagination-link has-text-black-ter" href="/leetcode/page/3/">3</a></li>
+            
+            <li><a class="pagination-link has-text-black-ter" href="/leetcode/page/4/">4</a></li>
             
         </ul>
     </nav>

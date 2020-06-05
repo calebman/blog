@@ -11,7 +11,7 @@
 <meta name="keywords" content="java vuejs 运维">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Sincerity">
-<meta property="og:url" content="https://chenjianhui.site/leetcode/page/2/index.html">
+<meta property="og:url" content="https://chenjianhui.site/leetcode/page/4/index.html">
 <meta property="og:site_name" content="Sincerity">
 <meta property="og:description" content="Full of soul, independent personality">
 <meta property="og:locale" content="zh-CN">
@@ -158,114 +158,87 @@
 <div class="card widget">
     <div class="card-content" style="padding-bottom: 66px;">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal" style="text-align: center;">
-            无重复字符的最长子串
+            字符串的排列
         </h1>
         <div id="article-content" class="project-introduce content" style="background-image: unset;">
             <h1 id="题干"><a href="#题干" class="headerlink" title="题干"></a>题干</h1><blockquote>
-<p>给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度</p>
+<p>给定两个字符串 s1 和 s2，写一个函数来判断 s2 是否包含 s1 的排列。<br>换句话说，第一个字符串的排列之一是第二个字符串的子串。</p>
 <pre><code class="sh">示例一：
-输入: <span class="string">"abcabcbb"</span>
-输出: 3 
-解释: 因为无重复字符的最长子串是 <span class="string">"abc"</span>，所以其长度为 3。
+输入: s1 = <span class="string">"ab"</span> s2 = <span class="string">"eidbaooo"</span>
+输出: True
+解释: s2 包含 s1 的排列之一 (<span class="string">"ba"</span>).
 示例二：
-输入: <span class="string">"bbbbb"</span>
-输出: 1
-解释: 因为无重复字符的最长子串是 <span class="string">"b"</span>，所以其长度为 1。
-示例三：
-输入: <span class="string">"pwwkew"</span>
-输出: 3
-解释: 因为无重复字符的最长子串是 <span class="string">"wke"</span>，所以其长度为 3。
-     请注意，你的答案必须是 子串 的长度，<span class="string">"pwke"</span> 是一个子序列，不是子串。</code></pre>
+输入: s1= <span class="string">"ab"</span> s2 = <span class="string">"eidboaoo"</span>
+输出: False
+注意：
+1. 输入的字符串只包含小写字母
+2. 两个字符串的长度都在 [1, 10,000] 之间</code></pre>
 </blockquote>
 <h1 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h1><h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><ol>
-<li>通过一个数组维护无重复字符列表</li>
-<li>循环目标字符串，当字符存在于数组时，记录数组当前长度与历史长度的较大值，并根据匹配位切割数组 <code>&#39;dvcdf&#39;</code> 匹配到第四位时的数组变换 <code>[d, v, c]</code> =&gt; <code>[v, c, d]</code></li>
-<li>最后取数组与历史记录值的较大值</li>
+<li>取得字符串 s1 的 <code>Unicode</code> 累加大小，遍历字符串 s2 每次取长度为 <code>s1.length</code> 的字符串与 s1 比较</li>
+<li>如果 <code>Unicode</code> 累加值不一样则进行下一轮比较</li>
+<li>累加值一样则进行更加准确的匹配，只要匹配成功就返回结果</li>
 </ol>
-<pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">lengthOfLongestSubstring</span>(<span class="params">s</span>) </span>{
-  <span class="keyword">let</span> arr = []
-  <span class="keyword">let</span> len = <span class="number">0</span>
-  s.split(<span class="string">''</span>).forEach(<span class="function"><span class="params">s</span> =&gt;</span> {
-    <span class="keyword">const</span> i = arr.indexOf(s)
-    <span class="keyword">if</span>(i &gt; <span class="number">-1</span>) {
-      arr = arr.slice(i + <span class="number">1</span>, arr.length)
+<pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">checkInclusion</span>(<span class="params">s1, s2</span>) </span>{
+  <span class="keyword">if</span> (s1.length &gt; s2.length) {
+    <span class="keyword">return</span> <span class="literal">false</span>
+  }
+  <span class="keyword">if</span> (s1.length === <span class="number">1</span>) {
+    <span class="keyword">return</span> s2.includes(s1)
+  }
+  <span class="keyword">const</span> s1Len = s1.length
+  <span class="keyword">const</span> s1Arr = s1.split(<span class="string">''</span>)
+  <span class="keyword">const</span> s1CharCodeSum = s1.split(<span class="string">''</span>).map(<span class="function"><span class="params">c</span> =&gt;</span> c.charCodeAt()).reduce(<span class="function">(<span class="params">total, n</span>) =&gt;</span> total + n)
+  <span class="keyword">let</span> charCodeSum
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; s2.length - s1Len + <span class="number">1</span>; i++) {
+    <span class="keyword">if</span> (i === <span class="number">0</span>) {
+      charCodeSum = s2.substr(<span class="number">0</span>, s1Len).split(<span class="string">''</span>).map(<span class="function"><span class="params">c</span> =&gt;</span> c.charCodeAt()).reduce(<span class="function">(<span class="params">total, n</span>) =&gt;</span> total + n)
+    } <span class="keyword">else</span> {
+      <span class="comment">// 减首位的 Unicode 值，增尾部的 Unicode值</span>
+      charCodeSum = charCodeSum - s2.charAt(i - <span class="number">1</span>).charCodeAt() + s2.charAt(i + s1Len - <span class="number">1</span>).charCodeAt()
     }
-    arr.push(s)
-    len = <span class="built_in">Math</span>.max(arr.length, len)
-  })
-  <span class="keyword">return</span> len
-}</code></pre>
-<p>该方法通过了 Leetcode 的检测，但是执行耗时过长，排名在 75%</p>
-<p><img src="https://resources.chenjianhui.site/20200604202543.png" alt></p>
-<h2 id="优化方案"><a href="#优化方案" class="headerlink" title="优化方案"></a>优化方案</h2><ol>
-<li>原先用于存储无重复字符列表的数组空间可以节省，因为字符列表是连续的，所以可以通过一个下标标记实现</li>
-<li>匹配的时间复杂度和原来是一样的，数组切割的部分可以移除，节省这部分性能</li>
-</ol>
-<pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">lengthOfLongestSubstring</span>(<span class="params">s</span>) </span>{
-  <span class="keyword">let</span> len = <span class="number">0</span>
-  <span class="keyword">let</span> q = <span class="number">0</span>
-  <span class="keyword">const</span> arr = s.split(<span class="string">''</span>)
-  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; arr.length; i++) {
-    <span class="keyword">for</span> (<span class="keyword">let</span> j = q; j &lt; i; j++) {
-      <span class="keyword">if</span>(arr[j] === arr[i]) {
-        q = j + <span class="number">1</span>
-        <span class="keyword">break</span>
+    <span class="keyword">if</span> (charCodeSum === s1CharCodeSum) {
+      <span class="comment">// 进行更加准确的匹配</span>
+      <span class="keyword">let</span> child = s2.substr(i, s1Len)
+      <span class="keyword">if</span> (s1Arr.every(<span class="function"><span class="params">s</span> =&gt;</span> child.includes(s))) {
+        <span class="keyword">return</span> <span class="literal">true</span>
       }
     }
-    len = <span class="built_in">Math</span>.max(i - q + <span class="number">1</span>, len)
   }
-  <span class="keyword">return</span> len
+  <span class="keyword">return</span> <span class="literal">false</span>
 }</code></pre>
-<p>该方法执行耗时和内存都有提升</p>
-<p><img src="https://resources.chenjianhui.site/20200604204730.png" alt></p>
-<h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><p>后续我又想了两种基于缓存的方案，能将时间复杂度降低到 <code>O(2N)</code></p>
-<h3 id="基于对象的缓存方案"><a href="#基于对象的缓存方案" class="headerlink" title="基于对象的缓存方案"></a>基于对象的缓存方案</h3><p>通过一个对象缓存匹配值列表的下标</p>
-<pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">lengthOfLongestSubstring</span>(<span class="params">s</span>) </span>{
-  <span class="keyword">let</span> len = <span class="number">0</span>
-  <span class="keyword">let</span> q = <span class="number">0</span>
-  <span class="keyword">let</span> matchIndex = <span class="number">0</span>
-  <span class="keyword">const</span> cache = {}
-  <span class="keyword">const</span> arr = s.split(<span class="string">''</span>)
-  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; arr.length; i++) {
-    matchIndex = cache[arr[i]]
-    <span class="keyword">if</span> (matchIndex !== <span class="literal">undefined</span>) {
-      <span class="keyword">for</span> (<span class="keyword">let</span> j = q; j &lt; matchIndex + <span class="number">1</span>; j++) {
-        <span class="keyword">delete</span> cache[arr[j]]
+<p>leetcode 成绩单一般，考虑下如何优化</p>
+<p><img src="https://resources.chenjianhui.site/20200605153204.png" alt></p>
+<h2 id="优化思路"><a href="#优化思路" class="headerlink" title="优化思路"></a>优化思路</h2><p>是在没想到优化的思路，去参考了下 50ms 大神的代码，在此稍作分析</p>
+<p><img src="https://resources.chenjianhui.site/20200605174945.png" alt></p>
+<p><img src="https://resources.chenjianhui.site/20200605175504.png" alt></p>
+<pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">checkInclusion</span>(<span class="params">s1, s2</span>) </span>{
+  <span class="keyword">const</span> getCode = <span class="function"><span class="params">s</span> =&gt;</span> s.charCodeAt() - <span class="number">97</span>
+
+  <span class="keyword">const</span> count = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">26</span>).fill(<span class="number">0</span>);
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; s1.length; i++) {
+      count[getCode(s1[i])]++;
+  }
+  <span class="keyword">let</span> left = <span class="number">0</span>;
+  <span class="keyword">let</span> right = <span class="number">0</span>;
+  <span class="keyword">while</span>(right &lt; s2.length) {
+      <span class="keyword">const</span> c = s2[right++];
+
+      count[getCode(c)]--;
+
+      <span class="keyword">while</span> (left &lt; right &amp;&amp; count[getCode(c)] &lt; <span class="number">0</span>) {
+          count[getCode(s2[left++])]++;
       }
-      q = matchIndex + <span class="number">1</span>
-    }
-    cache[arr[i]] = i
-    len = <span class="built_in">Math</span>.max(i - q + <span class="number">1</span>, len)
-  }
-  <span class="keyword">return</span> len
-}</code></pre>
-<h3 id="基于数组的缓存方案"><a href="#基于数组的缓存方案" class="headerlink" title="基于数组的缓存方案"></a>基于数组的缓存方案</h3><p>利用字符可以通过 <code>charCodeAt</code> 方法转换为数字，然后通过数组下标的方式缓存</p>
-<pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">lengthOfLongestSubstring</span>(<span class="params">s</span>) </span>{
-  <span class="keyword">let</span> len = <span class="number">0</span>
-  <span class="keyword">let</span> q = <span class="number">0</span>
-  <span class="keyword">let</span> matchIndex = <span class="number">0</span>
-  <span class="keyword">let</span> item = <span class="literal">null</span>
-  <span class="keyword">const</span> cache = []
-  <span class="keyword">const</span> arr = s.split(<span class="string">''</span>)
-  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; arr.length; i++) {
-    item = arr[i].charCodeAt()
-    matchIndex = cache[item]
-    <span class="keyword">if</span> (matchIndex !== <span class="literal">undefined</span>) {
-      <span class="keyword">for</span> (<span class="keyword">let</span> j = q; j &lt; matchIndex + <span class="number">1</span>; j++) {
-        cache[arr[j].charCodeAt()] = <span class="literal">undefined</span>
+      <span class="keyword">if</span> (right - left === s1.length) {
+          <span class="keyword">return</span> <span class="literal">true</span>;
       }
-      q = matchIndex + <span class="number">1</span>
-    }
-    cache[item] = i
-    len = <span class="built_in">Math</span>.max(i - q + <span class="number">1</span>, len)
   }
-  <span class="keyword">return</span> len
-}</code></pre>
-<p>总结：这两种方案使用了空间来换时间，比较依赖缓存的实现，<code>js</code> 的数组与对象访问的时间复杂度我没过多了解，对标 <code>Java</code> 的数组与 <code>HashMap</code>，此场景不存在 Hash 冲突，其访问的时间复杂度为 O(1)</p>
+  <span class="keyword">return</span> <span class="literal">false</span>;
+};</code></pre>
 
         </div>
     </div>
-    <a href="https://leetcode-cn.com/explore/interview/card/bytedance/242/string/1012/" target="_blank" title="normal">
+    <a href="https://leetcode-cn.com/explore/interview/card/bytedance/242/string/1016/" target="_blank" title="normal">
         <div class="superscript">
             <div class="triangle normal"></div>
             <div class="desc">normal</div>
@@ -278,20 +251,20 @@
 <div class="card card-transparent">
     <nav class="pagination is-centered" role="navigation" aria-label="pagination">
         <div class="pagination-previous">
-            <a class="is-flex-grow has-text-black-ter" href="/leetcode/">上一页</a>
+            <a class="is-flex-grow has-text-black-ter" href="/leetcode/page/3/">上一页</a>
         </div>
-        <div class="pagination-next">
-            <a class="is-flex-grow has-text-black-ter" href="/leetcode/page/3/">下一页</a>
+        <div class="pagination-next is-invisible is-hidden-mobile">
+            <a class="is-flex-grow has-text-black-ter" href="/leetcode/page/5/">下一页</a>
         </div>
         <ul class="pagination-list is-hidden-mobile">
             
             <li><a class="pagination-link has-text-black-ter" href="/leetcode/">1</a></li>
             
-            <li><a class="pagination-link is-current" href="/leetcode/page/2/">2</a></li>
+            <li><a class="pagination-link has-text-black-ter" href="/leetcode/page/2/">2</a></li>
             
             <li><a class="pagination-link has-text-black-ter" href="/leetcode/page/3/">3</a></li>
             
-            <li><a class="pagination-link has-text-black-ter" href="/leetcode/page/4/">4</a></li>
+            <li><a class="pagination-link is-current" href="/leetcode/page/4/">4</a></li>
             
         </ul>
     </nav>

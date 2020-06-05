@@ -216,6 +216,50 @@
 }</code></pre>
 <p>该方法执行耗时和内存都有提升</p>
 <p><img src="https://resources.chenjianhui.site/20200604204730.png" alt></p>
+<h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><p>后续我又想了两种基于缓存的方案，能将时间复杂度降低到 <code>O(2N)</code></p>
+<h3 id="基于对象的缓存方案"><a href="#基于对象的缓存方案" class="headerlink" title="基于对象的缓存方案"></a>基于对象的缓存方案</h3><p>通过一个对象缓存匹配值列表的下标</p>
+<pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">lengthOfLongestSubstring</span>(<span class="params">s</span>) </span>{
+  <span class="keyword">let</span> len = <span class="number">0</span>
+  <span class="keyword">let</span> q = <span class="number">0</span>
+  <span class="keyword">let</span> matchIndex = <span class="number">0</span>
+  <span class="keyword">const</span> cache = {}
+  <span class="keyword">const</span> arr = s.split(<span class="string">''</span>)
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; arr.length; i++) {
+    matchIndex = cache[arr[i]]
+    <span class="keyword">if</span> (matchIndex !== <span class="literal">undefined</span>) {
+      <span class="keyword">for</span> (<span class="keyword">let</span> j = q; j &lt; matchIndex + <span class="number">1</span>; j++) {
+        <span class="keyword">delete</span> cache[arr[j]]
+      }
+      q = matchIndex + <span class="number">1</span>
+    }
+    cache[arr[i]] = i
+    len = <span class="built_in">Math</span>.max(i - q + <span class="number">1</span>, len)
+  }
+  <span class="keyword">return</span> len
+}</code></pre>
+<h3 id="基于数组的缓存方案"><a href="#基于数组的缓存方案" class="headerlink" title="基于数组的缓存方案"></a>基于数组的缓存方案</h3><p>利用字符可以通过 <code>charCodeAt</code> 方法转换为数字，然后通过数组下标的方式缓存</p>
+<pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">lengthOfLongestSubstring</span>(<span class="params">s</span>) </span>{
+  <span class="keyword">let</span> len = <span class="number">0</span>
+  <span class="keyword">let</span> q = <span class="number">0</span>
+  <span class="keyword">let</span> matchIndex = <span class="number">0</span>
+  <span class="keyword">let</span> item = <span class="literal">null</span>
+  <span class="keyword">const</span> cache = []
+  <span class="keyword">const</span> arr = s.split(<span class="string">''</span>)
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; arr.length; i++) {
+    item = arr[i].charCodeAt()
+    matchIndex = cache[item]
+    <span class="keyword">if</span> (matchIndex !== <span class="literal">undefined</span>) {
+      <span class="keyword">for</span> (<span class="keyword">let</span> j = q; j &lt; matchIndex + <span class="number">1</span>; j++) {
+        cache[arr[j].charCodeAt()] = <span class="literal">undefined</span>
+      }
+      q = matchIndex + <span class="number">1</span>
+    }
+    cache[item] = i
+    len = <span class="built_in">Math</span>.max(i - q + <span class="number">1</span>, len)
+  }
+  <span class="keyword">return</span> len
+}</code></pre>
+<p>总结：这两种方案使用了空间来换时间，比较依赖缓存的实现，<code>js</code> 的数组与对象访问的时间复杂度我没过多了解，对标 <code>Java</code> 的数组与 <code>HashMap</code>，此场景不存在 Hash 冲突，其访问的时间复杂度为 O(1)</p>
 
         </div>
     </div>

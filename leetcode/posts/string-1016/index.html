@@ -11,7 +11,7 @@
 <meta name="keywords" content="java vuejs 运维">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Sincerity">
-<meta property="og:url" content="https://chenjianhui.site/leetcode/page/4/index.html">
+<meta property="og:url" content="https://chenjianhui.site/leetcode/posts/string-1016/index.html">
 <meta property="og:site_name" content="Sincerity">
 <meta property="og:description" content="Full of soul, independent personality">
 <meta property="og:locale" content="zh-CN">
@@ -154,8 +154,7 @@
     <section class="section">
         <div class="container">
             <div class="columns">
-                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main">
-<div class="card widget">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card widget">
     <div class="card-content" style="padding-bottom: 66px;">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal" style="text-align: center;">
             字符串的排列
@@ -209,7 +208,10 @@
 }</code></pre>
 <p>leetcode 成绩单一般，考虑下如何优化</p>
 <p><img src="https://resources.chenjianhui.site/20200605153204.png" alt></p>
-<h2 id="优化思路"><a href="#优化思路" class="headerlink" title="优化思路"></a>优化思路</h2><p>是在没想到优化的思路，去参考了下 50ms 大神的代码，在此稍作分析</p>
+<h2 id="优化思路"><a href="#优化思路" class="headerlink" title="优化思路"></a>优化思路</h2><p>实在没想到优化的思路，去参考了下 50ms 大神的代码，在此稍作分析</p>
+<ol>
+<li>输入字符只可能包含小写字母，</li>
+</ol>
 <p><img src="https://resources.chenjianhui.site/20200605174945.png" alt></p>
 <p><img src="https://resources.chenjianhui.site/20200605175504.png" alt></p>
 <pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">checkInclusion</span>(<span class="params">s1, s2</span>) </span>{
@@ -246,28 +248,26 @@
     </a>
 </div>
 
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'bd0cbb30da9c24da8c7c',
+        clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
+        id: '71caab5b80e759257f4097a5efa819c6',
+        repo: 'blog',
+        owner: 'calebman',
+        admin: "calebman"
+    })
+    gitalk.render('comment-container')
+</script>
 
-
-<div class="card card-transparent">
-    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-        <div class="pagination-previous">
-            <a class="is-flex-grow has-text-black-ter" href="/leetcode/page/3/">上一页</a>
-        </div>
-        <div class="pagination-next is-invisible is-hidden-mobile">
-            <a class="is-flex-grow has-text-black-ter" href="/leetcode/page/5/">下一页</a>
-        </div>
-        <ul class="pagination-list is-hidden-mobile">
-            
-            <li><a class="pagination-link has-text-black-ter" href="/leetcode/">1</a></li>
-            
-            <li><a class="pagination-link has-text-black-ter" href="/leetcode/page/2/">2</a></li>
-            
-            <li><a class="pagination-link has-text-black-ter" href="/leetcode/page/3/">3</a></li>
-            
-            <li><a class="pagination-link is-current" href="/leetcode/page/4/">4</a></li>
-            
-        </ul>
-    </nav>
+    </div>
 </div>
 
 <style>
@@ -287,7 +287,7 @@
         min-width: unset;
         padding: unset;
     }
-    
+
     .superscript {
         position: absolute;
         top: 0px;
@@ -402,107 +402,33 @@
     
         
 <div class="card widget">
-    <div class="card-content">
-        <h3 class="menu-label">
-            最新文章
-        </h3>
-        
-        <article class="media">
-            
-            <a href="/2020-05-31-vuepress-plugin-demo-container/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="https://resources.chenjianhui.site/2020-05-31-home-pic.jpg" alt="使用 Vuepress 编写组件示例文档的最佳实践">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-31T21:09:46.000Z">2020-05-31</time></div>
-                    <a href="/2020-05-31-vuepress-plugin-demo-container/" class="has-link-black-ter is-size-6">使用 Vuepress 编写组件示例文档的最佳实践</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/前端/">前端</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2020-01-09-spring-transaction/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="https://resources.chenjianhui.site/2020-01-09-home-pic.jpeg" alt="多数据源下SpringTransaction的探究">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-09T21:18:11.000Z">2020-01-09</time></div>
-                    <a href="/2020-01-09-spring-transaction/" class="has-link-black-ter is-size-6">多数据源下SpringTransaction的探究</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/随笔/">随笔</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2020-01-07-cache-opening/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="https://resources.chenjianhui.site/2020-01-07-home-pic.jpeg" alt="随笔——缓存系列开篇">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-07T19:20:21.000Z">2020-01-07</time></div>
-                    <a href="/2020-01-07-cache-opening/" class="has-link-black-ter is-size-6">随笔——缓存系列开篇</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/随笔/">随笔</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019-12-14-safe-on-web/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="https://resources.chenjianhui.site/2019-12-14-home-pic.jpg" alt="随笔——如何打造一个安全的系统">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-12-14T10:26:14.000Z">2019-12-14</time></div>
-                    <a href="/2019-12-14-safe-on-web/" class="has-link-black-ter is-size-6">随笔——如何打造一个安全的系统</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/随笔/">随笔</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019-11-20-null-for-java/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="https://resources.chenjianhui.site/2019-09-20-home-pic.png" alt="随笔——如何防止空指针">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-11-20T17:16:32.000Z">2019-11-20</time></div>
-                    <a href="/2019-11-20-null-for-java/" class="has-link-black-ter is-size-6">随笔——如何防止空指针</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/随笔/">随笔</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
+  <div class="card-content">
+    <h3 class="menu-label is-size-6">
+      推荐阅读
+    </h3>
+    <h3 class="tag is-link is-size-6">
+      字符串
+    </h3>
+    <div class="timeline">
+      
+      <article class="media">
+        <div class="media-content">
+          <div class="content">
+            <a href="/leetcode/posts/string-1012/index.html" class="has-link-black-ter is-size-6">无重复字符的最长子串</a>
+          </div>
+        </div>
+      </article>
+      
+      <article class="media">
+        <div class="media-content">
+          <div class="content">
+            <a href="/leetcode/posts/string-1014/index.html" class="has-link-black-ter is-size-6">最长公共前缀</a>
+          </div>
+        </div>
+      </article>
+      
     </div>
+  </div>
 </div>
 
     

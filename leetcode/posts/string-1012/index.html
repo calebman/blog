@@ -11,7 +11,7 @@
 <meta name="keywords" content="java vuejs 运维">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Sincerity">
-<meta property="og:url" content="https://chenjianhui.site/leetcode/page/3/index.html">
+<meta property="og:url" content="https://chenjianhui.site/leetcode/posts/string-1012/index.html">
 <meta property="og:site_name" content="Sincerity">
 <meta property="og:description" content="Full of soul, independent personality">
 <meta property="og:locale" content="zh-CN">
@@ -154,56 +154,117 @@
     <section class="section">
         <div class="container">
             <div class="columns">
-                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main">
-<div class="card widget">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card widget">
     <div class="card-content" style="padding-bottom: 66px;">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal" style="text-align: center;">
-            最长公共前缀
+            无重复字符的最长子串
         </h1>
         <div id="article-content" class="project-introduce content" style="background-image: unset;">
             <h1 id="题干"><a href="#题干" class="headerlink" title="题干"></a>题干</h1><blockquote>
-<p>编写一个函数来查找字符串数组中的最长公共前缀。<br>如果不存在公共前缀，返回空字符串 “”。</p>
+<p>给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度</p>
 <pre><code class="sh">示例一：
-输入: [<span class="string">"flower"</span>,<span class="string">"flow"</span>,<span class="string">"flight"</span>]
-输出: <span class="string">"fl"</span>
+输入: <span class="string">"abcabcbb"</span>
+输出: 3 
+解释: 因为无重复字符的最长子串是 <span class="string">"abc"</span>，所以其长度为 3。
 示例二：
-输入: [<span class="string">"dog"</span>,<span class="string">"racecar"</span>,<span class="string">"car"</span>]
-输出: <span class="string">""</span>
-解释: 输入不存在公共前缀
-说明: 
-所有输入只包含小写字母 a-z </code></pre>
+输入: <span class="string">"bbbbb"</span>
+输出: 1
+解释: 因为无重复字符的最长子串是 <span class="string">"b"</span>，所以其长度为 1。
+示例三：
+输入: <span class="string">"pwwkew"</span>
+输出: 3
+解释: 因为无重复字符的最长子串是 <span class="string">"wke"</span>，所以其长度为 3。
+     请注意，你的答案必须是 子串 的长度，<span class="string">"pwke"</span> 是一个子序列，不是子串。</code></pre>
 </blockquote>
 <h1 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h1><h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><ol>
-<li>取出字符串列表中最短的字符长度</li>
-<li>利用双循环匹配列表中的相应位置的每一个字符</li>
+<li>通过一个数组维护无重复字符列表</li>
+<li>循环目标字符串，当字符存在于数组时，记录数组当前长度与历史长度的较大值，并根据匹配位切割数组 <code>&#39;dvcdf&#39;</code> 匹配到第四位时的数组变换 <code>[d, v, c]</code> =&gt; <code>[v, c, d]</code></li>
+<li>最后取数组与历史记录值的较大值</li>
 </ol>
-<pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">longestCommonPrefix</span>(<span class="params">strs</span>) </span>{
-  <span class="keyword">if</span> (!strs || strs.length === <span class="number">0</span>) {
-    <span class="keyword">return</span> <span class="string">''</span>
-  }
-  <span class="keyword">let</span> same = <span class="string">''</span>, match, endFlag
-  <span class="keyword">const</span> len = <span class="built_in">Math</span>.min.apply(<span class="literal">null</span>, strs.map(<span class="function"><span class="params">o</span> =&gt;</span> o.length))
-  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; len; i++) {
-    endFlag = <span class="literal">false</span>
-    match = strs[<span class="number">0</span>].charAt(i)
-    <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">1</span>; j &lt; strs.length; j++) {
-      <span class="keyword">if</span> (match !== strs[j].charAt(i)) {
-        endFlag = <span class="literal">true</span>
+<pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">lengthOfLongestSubstring</span>(<span class="params">s</span>) </span>{
+  <span class="keyword">let</span> arr = []
+  <span class="keyword">let</span> len = <span class="number">0</span>
+  s.split(<span class="string">''</span>).forEach(<span class="function"><span class="params">s</span> =&gt;</span> {
+    <span class="keyword">const</span> i = arr.indexOf(s)
+    <span class="keyword">if</span>(i &gt; <span class="number">-1</span>) {
+      arr = arr.slice(i + <span class="number">1</span>, arr.length)
+    }
+    arr.push(s)
+    len = <span class="built_in">Math</span>.max(arr.length, len)
+  })
+  <span class="keyword">return</span> len
+}</code></pre>
+<p>该方法通过了 Leetcode 的检测，但是执行耗时过长，排名在 75%</p>
+<p><img src="https://resources.chenjianhui.site/20200604202543.png" alt></p>
+<h2 id="优化方案"><a href="#优化方案" class="headerlink" title="优化方案"></a>优化方案</h2><ol>
+<li>原先用于存储无重复字符列表的数组空间可以节省，因为字符列表是连续的，所以可以通过一个下标标记实现</li>
+<li>匹配的时间复杂度和原来是一样的，数组切割的部分可以移除，节省这部分性能</li>
+</ol>
+<pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">lengthOfLongestSubstring</span>(<span class="params">s</span>) </span>{
+  <span class="keyword">let</span> len = <span class="number">0</span>
+  <span class="keyword">let</span> q = <span class="number">0</span>
+  <span class="keyword">const</span> arr = s.split(<span class="string">''</span>)
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; arr.length; i++) {
+    <span class="keyword">for</span> (<span class="keyword">let</span> j = q; j &lt; i; j++) {
+      <span class="keyword">if</span>(arr[j] === arr[i]) {
+        q = j + <span class="number">1</span>
+        <span class="keyword">break</span>
       }
     }
-    <span class="keyword">if</span> (endFlag) {
-      <span class="keyword">break</span>
-    }
-    same += match
+    len = <span class="built_in">Math</span>.max(i - q + <span class="number">1</span>, len)
   }
-  <span class="keyword">return</span> same
+  <span class="keyword">return</span> len
 }</code></pre>
-<p>代码通过了检测，排名参考值为 95%</p>
-<p><img src="https://resources.chenjianhui.site/20200605134813.png" alt></p>
+<p>该方法执行耗时和内存都有提升</p>
+<p><img src="https://resources.chenjianhui.site/20200604204730.png" alt></p>
+<h2 id="后续"><a href="#后续" class="headerlink" title="后续"></a>后续</h2><p>后续我又想了两种基于缓存的方案，能将时间复杂度降低到 <code>O(2N)</code></p>
+<h3 id="基于对象的缓存方案"><a href="#基于对象的缓存方案" class="headerlink" title="基于对象的缓存方案"></a>基于对象的缓存方案</h3><p>通过一个对象缓存匹配值列表的下标</p>
+<pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">lengthOfLongestSubstring</span>(<span class="params">s</span>) </span>{
+  <span class="keyword">let</span> len = <span class="number">0</span>
+  <span class="keyword">let</span> q = <span class="number">0</span>
+  <span class="keyword">let</span> matchIndex = <span class="number">0</span>
+  <span class="keyword">const</span> cache = {}
+  <span class="keyword">const</span> arr = s.split(<span class="string">''</span>)
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; arr.length; i++) {
+    matchIndex = cache[arr[i]]
+    <span class="keyword">if</span> (matchIndex !== <span class="literal">undefined</span>) {
+      <span class="keyword">for</span> (<span class="keyword">let</span> j = q; j &lt; matchIndex + <span class="number">1</span>; j++) {
+        <span class="keyword">delete</span> cache[arr[j]]
+      }
+      q = matchIndex + <span class="number">1</span>
+    }
+    cache[arr[i]] = i
+    len = <span class="built_in">Math</span>.max(i - q + <span class="number">1</span>, len)
+  }
+  <span class="keyword">return</span> len
+}</code></pre>
+<h3 id="基于数组的缓存方案"><a href="#基于数组的缓存方案" class="headerlink" title="基于数组的缓存方案"></a>基于数组的缓存方案</h3><p>利用字符可以通过 <code>charCodeAt</code> 方法转换为数字，然后通过数组下标的方式缓存</p>
+<pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">lengthOfLongestSubstring</span>(<span class="params">s</span>) </span>{
+  <span class="keyword">let</span> len = <span class="number">0</span>
+  <span class="keyword">let</span> q = <span class="number">0</span>
+  <span class="keyword">let</span> matchIndex = <span class="number">0</span>
+  <span class="keyword">let</span> item = <span class="literal">null</span>
+  <span class="keyword">const</span> cache = []
+  <span class="keyword">const</span> arr = s.split(<span class="string">''</span>)
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; arr.length; i++) {
+    item = arr[i].charCodeAt()
+    matchIndex = cache[item]
+    <span class="keyword">if</span> (matchIndex !== <span class="literal">undefined</span>) {
+      <span class="keyword">for</span> (<span class="keyword">let</span> j = q; j &lt; matchIndex + <span class="number">1</span>; j++) {
+        cache[arr[j].charCodeAt()] = <span class="literal">undefined</span>
+      }
+      q = matchIndex + <span class="number">1</span>
+    }
+    cache[item] = i
+    len = <span class="built_in">Math</span>.max(i - q + <span class="number">1</span>, len)
+  }
+  <span class="keyword">return</span> len
+}</code></pre>
+<p>总结：这两种方案使用了空间来换时间，比较依赖缓存的实现，<code>js</code> 的数组与对象访问的时间复杂度我没过多了解，对标 <code>Java</code> 的数组与 <code>HashMap</code>，此场景不存在 Hash 冲突，其访问的时间复杂度为 O(1)</p>
 
         </div>
     </div>
-    <a href="https://leetcode-cn.com/explore/interview/card/bytedance/242/string/1014/" target="_blank" title="normal">
+    <a href="https://leetcode-cn.com/explore/interview/card/bytedance/242/string/1012/" target="_blank" title="normal">
         <div class="superscript">
             <div class="triangle normal"></div>
             <div class="desc">normal</div>
@@ -211,28 +272,26 @@
     </a>
 </div>
 
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'bd0cbb30da9c24da8c7c',
+        clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
+        id: 'b837c61d7d6b3dca6fab76e73ed1a730',
+        repo: 'blog',
+        owner: 'calebman',
+        admin: "calebman"
+    })
+    gitalk.render('comment-container')
+</script>
 
-
-<div class="card card-transparent">
-    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-        <div class="pagination-previous">
-            <a class="is-flex-grow has-text-black-ter" href="/leetcode/page/2/">上一页</a>
-        </div>
-        <div class="pagination-next">
-            <a class="is-flex-grow has-text-black-ter" href="/leetcode/page/4/">下一页</a>
-        </div>
-        <ul class="pagination-list is-hidden-mobile">
-            
-            <li><a class="pagination-link has-text-black-ter" href="/leetcode/">1</a></li>
-            
-            <li><a class="pagination-link has-text-black-ter" href="/leetcode/page/2/">2</a></li>
-            
-            <li><a class="pagination-link is-current" href="/leetcode/page/3/">3</a></li>
-            
-            <li><a class="pagination-link has-text-black-ter" href="/leetcode/page/4/">4</a></li>
-            
-        </ul>
-    </nav>
+    </div>
 </div>
 
 <style>
@@ -252,7 +311,7 @@
         min-width: unset;
         padding: unset;
     }
-    
+
     .superscript {
         position: absolute;
         top: 0px;
@@ -367,107 +426,33 @@
     
         
 <div class="card widget">
-    <div class="card-content">
-        <h3 class="menu-label">
-            最新文章
-        </h3>
-        
-        <article class="media">
-            
-            <a href="/2020-05-31-vuepress-plugin-demo-container/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="https://resources.chenjianhui.site/2020-05-31-home-pic.jpg" alt="使用 Vuepress 编写组件示例文档的最佳实践">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-05-31T21:09:46.000Z">2020-05-31</time></div>
-                    <a href="/2020-05-31-vuepress-plugin-demo-container/" class="has-link-black-ter is-size-6">使用 Vuepress 编写组件示例文档的最佳实践</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/前端/">前端</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2020-01-09-spring-transaction/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="https://resources.chenjianhui.site/2020-01-09-home-pic.jpeg" alt="多数据源下SpringTransaction的探究">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-09T21:18:11.000Z">2020-01-09</time></div>
-                    <a href="/2020-01-09-spring-transaction/" class="has-link-black-ter is-size-6">多数据源下SpringTransaction的探究</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/随笔/">随笔</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2020-01-07-cache-opening/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="https://resources.chenjianhui.site/2020-01-07-home-pic.jpeg" alt="随笔——缓存系列开篇">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2020-01-07T19:20:21.000Z">2020-01-07</time></div>
-                    <a href="/2020-01-07-cache-opening/" class="has-link-black-ter is-size-6">随笔——缓存系列开篇</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/随笔/">随笔</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019-12-14-safe-on-web/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="https://resources.chenjianhui.site/2019-12-14-home-pic.jpg" alt="随笔——如何打造一个安全的系统">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-12-14T10:26:14.000Z">2019-12-14</time></div>
-                    <a href="/2019-12-14-safe-on-web/" class="has-link-black-ter is-size-6">随笔——如何打造一个安全的系统</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/随笔/">随笔</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019-11-20-null-for-java/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="https://resources.chenjianhui.site/2019-09-20-home-pic.png" alt="随笔——如何防止空指针">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-11-20T17:16:32.000Z">2019-11-20</time></div>
-                    <a href="/2019-11-20-null-for-java/" class="has-link-black-ter is-size-6">随笔——如何防止空指针</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/categories/随笔/">随笔</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
+  <div class="card-content">
+    <h3 class="menu-label is-size-6">
+      推荐阅读
+    </h3>
+    <h3 class="tag is-link is-size-6">
+      字符串
+    </h3>
+    <div class="timeline">
+      
+      <article class="media">
+        <div class="media-content">
+          <div class="content">
+            <a href="/leetcode/posts/string-1014/index.html" class="has-link-black-ter is-size-6">最长公共前缀</a>
+          </div>
+        </div>
+      </article>
+      
+      <article class="media">
+        <div class="media-content">
+          <div class="content">
+            <a href="/leetcode/posts/string-1016/index.html" class="has-link-black-ter is-size-6">字符串的排列</a>
+          </div>
+        </div>
+      </article>
+      
     </div>
+  </div>
 </div>
 
     

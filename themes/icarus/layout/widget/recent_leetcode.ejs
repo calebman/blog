@@ -1,11 +1,14 @@
-<% page.groups.forEach(group => { %>
+<% if (widget.recent.posts.length) { %>
 <div class="card widget">
   <div class="card-content">
+    <h3 class="menu-label is-size-6">
+      推荐阅读
+    </h3>
     <h3 class="tag is-link is-size-6">
-      <%= group.name %>
+      <%= widget.recent.name %>
     </h3>
     <div class="timeline">
-      <% group.posts.forEach(post => { %>
+      <% widget.recent.posts.forEach(post => { %>
       <article class="media">
         <div class="media-content">
           <div class="content">
@@ -17,4 +20,4 @@
     </div>
   </div>
 </div>
-<% }) %>
+<% } %>

@@ -12,7 +12,7 @@ type: "about"
 # 联系方式
 
 - WeChat: Nc_Nobbdy
-- Mail: chenjianhui@gmail.com
+- Mail: chenjianhui0428@gmail.com
 - Github: https://github.com/calebman
 - Blog: https://chenjianhui.site
 - QQ: 675557552 不咋用就是

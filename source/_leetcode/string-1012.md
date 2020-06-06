@@ -1,5 +1,6 @@
 ---
 title: 无重复字符的最长子串
+group: 字符串
 level: normal
 url: https://leetcode-cn.com/explore/interview/card/bytedance/242/string/1012/
 ---

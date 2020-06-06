@@ -1,5 +1,6 @@
 ---
 title: 字符串的排列
+group: 字符串
 level: normal
 url: https://leetcode-cn.com/explore/interview/card/bytedance/242/string/1016/
 ---
@@ -66,7 +67,9 @@ leetcode 成绩单一般，考虑下如何优化
 
 ## 优化思路
 
-是在没想到优化的思路，去参考了下 50ms 大神的代码，在此稍作分析
+实在没想到优化的思路，去参考了下 50ms 大神的代码，在此稍作分析
+
+1. 输入字符只可能包含小写字母，
 
 ![](https://resources.chenjianhui.site/20200605174945.png)
 

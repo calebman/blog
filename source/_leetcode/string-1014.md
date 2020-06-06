@@ -1,5 +1,6 @@
 ---
 title: 最长公共前缀
+group: 字符串
 level: normal
 url: https://leetcode-cn.com/explore/interview/card/bytedance/242/string/1014/
 ---

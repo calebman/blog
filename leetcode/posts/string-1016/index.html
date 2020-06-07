@@ -208,12 +208,7 @@
 }</code></pre>
 <p>leetcode 成绩单一般，考虑下如何优化</p>
 <p><img src="https://resources.chenjianhui.site/20200605153204.png" alt></p>
-<h2 id="优化思路"><a href="#优化思路" class="headerlink" title="优化思路"></a>优化思路</h2><p>实在没想到优化的思路，去参考了下 50ms 大神的代码，在此稍作分析</p>
-<ol>
-<li>输入字符只可能包含小写字母，</li>
-</ol>
-<p><img src="https://resources.chenjianhui.site/20200605174945.png" alt></p>
-<p><img src="https://resources.chenjianhui.site/20200605175504.png" alt></p>
+<h2 id="优化思路"><a href="#优化思路" class="headerlink" title="优化思路"></a>优化思路</h2><p>实在没想到优化的思路，去参考了下 50ms 大神的代码</p>
 <pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">checkInclusion</span>(<span class="params">s1, s2</span>) </span>{
   <span class="keyword">const</span> getCode = <span class="function"><span class="params">s</span> =&gt;</span> s.charCodeAt() - <span class="number">97</span>
 
@@ -237,6 +232,13 @@
   }
   <span class="keyword">return</span> <span class="literal">false</span>;
 };</code></pre>
+<p>理解这个算法首先要清楚的是，s2 是否能被 s1 排列组合得到，这个判断的依据是 s2 在一段相等长度且连续的字符集中，有着跟 s1 同数量的同种类字符，举个例子：</p>
+<blockquote>
+<p>abcacc 是否包含 acc 的排列，可以通过移位的方式移动到 ab<code>cac</code>c 的 cac 段时，其有两个 c 和一个 a 即代表它是 acc 的排列。</p>
+</blockquote>
+<p>上述算法创造了一个计数器 <code>count</code> 记录了 S1 字符包含的字符数量分布，由于题目说明只能是小写字母，于是它巧用了字符的 Unicode 创建了一个长度为26的数组来作为计数器的实现，而后通过 right 指针进行移位操作，移位时计数变更，当计数值小于0代表<strong>区间字符包含无法组合成为S1</strong>，需要通过 left 指针进行计数回滚，在 right 指针移位过程中区间字符数与 S1 的长度相等时，代表可排列。</p>
+<p>在此通过下图对其流程稍作分析：</p>
+<p><img src="https://resources.chenjianhui.site/20200607210937.png" alt></p>
 
         </div>
     </div>

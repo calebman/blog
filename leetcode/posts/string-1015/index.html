@@ -11,7 +11,7 @@
 <meta name="keywords" content="java vuejs 运维">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Sincerity">
-<meta property="og:url" content="https://chenjianhui.site/leetcode/posts/string-1014/index.html">
+<meta property="og:url" content="https://chenjianhui.site/leetcode/posts/string-1015/index.html">
 <meta property="og:site_name" content="Sincerity">
 <meta property="og:description" content="Full of soul, independent personality">
 <meta property="og:locale" content="zh-CN">
@@ -157,52 +157,134 @@
                 <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card widget">
     <div class="card-content" style="padding-bottom: 66px;">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal" style="text-align: center;">
-            最长公共前缀
+            字符串相乘
         </h1>
         <div id="article-content" class="project-introduce content" style="background-image: unset;">
             <h1 id="题干"><a href="#题干" class="headerlink" title="题干"></a>题干</h1><blockquote>
-<p>编写一个函数来查找字符串数组中的最长公共前缀。<br>如果不存在公共前缀，返回空字符串 “”。</p>
+<p>给定两个以字符串形式表示的非负整数 num1 和 num2，返回 num1 和 num2 的乘积，它们的乘积也表示为字符串形式。</p>
 <pre><code class="sh">示例一：
-输入: [<span class="string">"flower"</span>,<span class="string">"flow"</span>,<span class="string">"flight"</span>]
-输出: <span class="string">"fl"</span>
+输入: num1 = <span class="string">"2"</span>, num2 = <span class="string">"3"</span>
+输出: <span class="string">"6"</span>
 示例二：
-输入: [<span class="string">"dog"</span>,<span class="string">"racecar"</span>,<span class="string">"car"</span>]
-输出: <span class="string">""</span>
-解释: 输入不存在公共前缀
-说明: 
-所有输入只包含小写字母 a-z </code></pre>
+输入: num1 = <span class="string">"123"</span>, num2 = <span class="string">"456"</span>
+输出: <span class="string">"56088"</span>
+说明：
+1. num1 和 num2 的长度小于110。
+2. num1 和 num2 只包含数字 0-9。
+3. num1 和 num2 均不以零开头，除非是数字 0 本身。
+4. 不能使用任何标准库的大数类型（比如 BigInteger）或直接将输入转换为整数来处理。</code></pre>
 </blockquote>
-<h1 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h1><h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><ol>
-<li>取出字符串列表中最短的字符长度</li>
-<li>利用双循环匹配列表中的相应位置的每一个字符</li>
-</ol>
-<pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">longestCommonPrefix</span>(<span class="params">strs</span>) </span>{
-  <span class="keyword">if</span> (!strs || strs.length === <span class="number">0</span>) {
-    <span class="keyword">return</span> <span class="string">''</span>
-  }
-  <span class="keyword">let</span> same = <span class="string">''</span>, match, endFlag
-  <span class="keyword">const</span> len = <span class="built_in">Math</span>.min.apply(<span class="literal">null</span>, strs.map(<span class="function"><span class="params">o</span> =&gt;</span> o.length))
-  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; len; i++) {
-    endFlag = <span class="literal">false</span>
-    match = strs[<span class="number">0</span>].charAt(i)
-    <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">1</span>; j &lt; strs.length; j++) {
-      <span class="keyword">if</span> (match !== strs[j].charAt(i)) {
-        endFlag = <span class="literal">true</span>
-      }
+<h1 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h1><h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>采用竖式相乘法，和平时竖式相乘不一样的地方是，延后处理进位，举个例子：</p>
+<pre><code class="js">------------------- 传统方式立即进位 -------------------
+    <span class="number">15</span>
+x   <span class="number">55</span>
+------
+    <span class="number">75</span>
+   <span class="number">75</span>
+------
+=  <span class="number">825</span>
+
+------------------- 当前算法延后进位 -------------------
+    <span class="number">15</span> <span class="comment">// num1</span>
+x   <span class="number">55</span> <span class="comment">// num2</span>
+------
+[<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]         <span class="comment">// 初始化数组</span>
+[<span class="number">0</span>, <span class="number">1</span> * <span class="number">5</span>, <span class="number">0</span>, <span class="number">0</span>]     <span class="comment">// num1[0] * num2[0]</span>
+[<span class="number">0</span>, <span class="number">5</span>, <span class="number">1</span> * <span class="number">5</span>, <span class="number">0</span>]     <span class="comment">// num1[0] * num2[1]</span>
+[<span class="number">0</span>, <span class="number">5</span>, <span class="number">5</span> + <span class="number">5</span> * <span class="number">5</span>, <span class="number">0</span>] <span class="comment">// num1[1] * num2[0]</span>
+[<span class="number">0</span>, <span class="number">5</span>, <span class="number">30</span>, <span class="number">5</span> * <span class="number">5</span>]    <span class="comment">// num1[1] * num2[1]</span>
+[<span class="number">0</span>, <span class="number">5</span>, <span class="number">30</span>, <span class="number">25</span>]       <span class="comment">// 竖式相乘结果集合</span>
+[<span class="number">0</span>, <span class="number">5</span>, <span class="number">32</span>, <span class="number">5</span>]        <span class="comment">// 从后往前进位</span>
+[<span class="number">0</span>, <span class="number">8</span>, <span class="number">2</span>, <span class="number">5</span>]
+[<span class="number">8</span>, <span class="number">2</span>, <span class="number">5</span>]            <span class="comment">// 去除前位 0 值，得到结果 825</span></code></pre>
+<pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">multiply</span>(<span class="params">num1, num2</span>) </span>{
+  <span class="keyword">let</span> cn = num1.length + num2.length;
+  <span class="keyword">let</span> c = <span class="keyword">new</span> <span class="built_in">Array</span>(cn).fill(<span class="number">0</span>);
+  <span class="comment">// 竖式相乘但不进位</span>
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; num1.length; i++) {
+    <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; num2.length; j++) {
+      c[i + j + <span class="number">1</span>] += <span class="built_in">Number</span>(num1[i]) * <span class="built_in">Number</span>(num2[j])
     }
-    <span class="keyword">if</span> (endFlag) {
-      <span class="keyword">break</span>
-    }
-    same += match
   }
-  <span class="keyword">return</span> same
+  <span class="comment">// 从后往前处理进位   </span>
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = cn - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) {
+    <span class="keyword">let</span> carry = <span class="built_in">Math</span>.trunc(c[i] / <span class="number">10</span>);
+    <span class="keyword">if</span> (carry) {
+      c[i - <span class="number">1</span>] += carry
+    }
+    c[i] = c[i] % <span class="number">10</span>
+  }
+  <span class="comment">// 处理前面的 0</span>
+  <span class="keyword">while</span> (c[<span class="number">0</span>] === <span class="number">0</span>) {
+    c.shift()
+  }
+  <span class="keyword">return</span> c.join(<span class="string">''</span>) || <span class="string">'0'</span>
 }</code></pre>
-<p>代码通过了检测，排名参考值为 95%</p>
-<p><img src="https://resources.chenjianhui.site/20200605134813.png" alt></p>
+<h2 id="如何优化"><a href="#如何优化" class="headerlink" title="如何优化"></a>如何优化</h2><p>Karatsuba 算法能够将 O(n^2) 复杂度变成 O(n^1.5) 左右，具体实现见最下方的参考文献，在此给出个人的实现代码：</p>
+<pre><code class="js"><span class="function"><span class="keyword">function</span> <span class="title">multiply</span>(<span class="params">num1, num2</span>) </span>{
+  <span class="keyword">if</span> (num1.length === <span class="number">1</span> &amp;&amp; num2.length === <span class="number">1</span>) {
+    <span class="keyword">return</span> <span class="built_in">String</span>(<span class="built_in">Number</span>(num1) * <span class="built_in">Number</span>(num2))
+  }
+  <span class="comment">// 拆分</span>
+  <span class="keyword">const</span> m = num1.length
+  <span class="keyword">const</span> n = num2.length
+  <span class="keyword">const</span> halfN = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.max(m, n) / <span class="number">2</span>)
+  <span class="keyword">const</span> a = m &gt; halfN ? num1.substring(<span class="number">0</span>, m - halfN) : <span class="string">'0'</span>
+  <span class="keyword">const</span> b = m &gt; halfN ? num1.substring(m - halfN, m) : num1
+  <span class="keyword">const</span> c = n &gt; halfN ? num2.substring(<span class="number">0</span>, n - halfN) : <span class="string">'0'</span>
+  <span class="keyword">const</span> d = n &gt; halfN ? num2.substring(n - halfN, n) : num2
+  <span class="comment">// ab*cd = ac ad+bc bd</span>
+  <span class="keyword">const</span> ac = multiply(a, c)
+  <span class="keyword">const</span> bd = multiply(b, d)
+  <span class="comment">// ad+bc = AC+AD+BC+BD-AC-BD = (A+B)(C+D)-AC-BD</span>
+  <span class="keyword">const</span> adbc = sub(multiply(sum(a, b), sum(c, d)), ac, bd)
+  <span class="comment">// 进位</span>
+  <span class="keyword">const</span> result = sum(carry(ac, <span class="number">2</span> * halfN), carry(adbc, halfN), bd)
+  <span class="keyword">return</span> result
+}
+
+<span class="comment">/**</span>
+<span class="comment"> * 大数相加</span>
+<span class="comment"> */</span>
+<span class="function"><span class="keyword">function</span> <span class="title">sum</span>(<span class="params"></span>) </span>{
+  <span class="keyword">const</span> args = <span class="built_in">Array</span>.from(<span class="built_in">arguments</span>)
+  <span class="keyword">let</span> carry = <span class="number">0</span>
+  <span class="keyword">let</span> result = []
+  <span class="keyword">let</span> len = <span class="built_in">Math</span>.max(...args.map(<span class="function"><span class="params">o</span> =&gt;</span> o.length))
+  <span class="keyword">let</span> i = len;
+  <span class="keyword">while</span> (i--) {
+    <span class="keyword">let</span> sum = args.map(<span class="function"><span class="params">s</span> =&gt;</span> <span class="function">(<span class="params">+s[i - len + s.length] || <span class="number">0</span></span>)).<span class="params">reduce</span>(<span class="params">(a, b</span>) =&gt;</span> a + b) + carry
+    carry = <span class="built_in">parseInt</span>(sum / <span class="number">10</span>)
+    result.unshift(sum % <span class="number">10</span>)
+  }
+  <span class="keyword">if</span> (carry) result.unshift(carry)
+  <span class="keyword">return</span> result.join(<span class="string">''</span>)
+}
+<span class="comment">/**</span>
+<span class="comment"> * 大数相减</span>
+<span class="comment"> * TODO</span>
+<span class="comment"> */</span>
+<span class="function"><span class="keyword">function</span> <span class="title">sub</span>(<span class="params"></span>) </span>{
+  <span class="keyword">const</span> args = <span class="built_in">Array</span>.from(<span class="built_in">arguments</span>)
+  <span class="keyword">return</span> args.map(<span class="function"><span class="params">s</span> =&gt;</span> <span class="built_in">parseInt</span>(s)).reduce(<span class="function">(<span class="params">a, b</span>) =&gt;</span> a - b)
+}
+<span class="comment">/**</span>
+<span class="comment"> * 大数</span>
+<span class="comment"> */</span>
+<span class="function"><span class="keyword">function</span> <span class="title">carry</span>(<span class="params">numStr, digits</span>) </span>{
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; digits; i++) {
+    numStr += <span class="string">'0'</span>
+  }
+  <span class="keyword">return</span> numStr
+}</code></pre>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<li><a href="https://zhuanlan.zhihu.com/p/42350768">知乎 Karatsuba乘法</a></li>
+<li><a href="https://mp.weixin.qq.com/s/GCCEJWbNscJyf4K5nleOnA">2名数学家或发现史上最快超大乘法运算法，欲破解困扰人类近半个世纪的问题</a></li>
+</ul>
 
         </div>
     </div>
-    <a href="https://leetcode-cn.com/explore/interview/card/bytedance/242/string/1014/" target="_blank" title="normal">
+    <a href="https://leetcode-cn.com/explore/interview/card/bytedance/242/string/1016/" target="_blank" title="normal">
         <div class="superscript">
             <div class="triangle normal"></div>
             <div class="desc">normal</div>
@@ -221,7 +303,7 @@
     var gitalk = new Gitalk({
         clientID: 'bd0cbb30da9c24da8c7c',
         clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
-        id: '23fd0f7528f12c756c72059ce1abd4f9',
+        id: '7f8cb99a8fea92d94eeb106023ef0089',
         repo: 'blog',
         owner: 'calebman',
         admin: "calebman"
@@ -384,7 +466,7 @@
       <article class="media">
         <div class="media-content">
           <div class="content">
-            <a href="/leetcode/posts/string-1015/index.html" class="has-link-black-ter is-size-6">字符串相乘</a>
+            <a href="/leetcode/posts/string-1014/index.html" class="has-link-black-ter is-size-6">最长公共前缀</a>
           </div>
         </div>
       </article>

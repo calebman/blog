@@ -269,7 +269,7 @@ x   <span class="number">55</span> <span class="comment">// num2</span>
   <span class="keyword">return</span> args.map(<span class="function"><span class="params">s</span> =&gt;</span> <span class="built_in">parseInt</span>(s)).reduce(<span class="function">(<span class="params">a, b</span>) =&gt;</span> a - b)
 }
 <span class="comment">/**</span>
-<span class="comment"> * 大数</span>
+<span class="comment"> * 大数进位</span>
 <span class="comment"> */</span>
 <span class="function"><span class="keyword">function</span> <span class="title">carry</span>(<span class="params">numStr, digits</span>) </span>{
   <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; digits; i++) {

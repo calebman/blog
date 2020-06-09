@@ -71,7 +71,7 @@ function maxProfit(prices) {
 }
 ```
 
-而 `Math.max(...prices.slice(i)` 的计算可以通过存储一个临时变量 `max`，然后跟随数组遍历时比较获得，从而节省了数组的切割与比较操作，更新后的实现如下：
+而 `Math.max(...prices.slice(i))` 的计算可以通过存储一个临时变量 `max`，然后跟随数组遍历时比较获得，从而节省了数组的切割与比较操作，最终优化后的实现如下：
 
 ```js
 function maxProfit(prices) {

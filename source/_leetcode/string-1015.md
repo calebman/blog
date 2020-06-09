@@ -132,7 +132,7 @@ function sub() {
   return args.map(s => parseInt(s)).reduce((a, b) => a - b)
 }
 /**
- * 大数
+ * 大数进位
  */
 function carry(numStr, digits) {
   for (let i = 0; i < digits; i++) {

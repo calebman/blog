@@ -1,6 +1,6 @@
 ---
 title: 买卖股票的最佳时机
-group: 动态规划
+group: 动态规划/贪心
 level: normal
 url: https://leetcode-cn.com/explore/interview/card/bytedance/246/dynamic-programming-or-greedy/1042/
 ---

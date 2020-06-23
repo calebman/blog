@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+<title>CentOS 6.5 升级 OpenSSH 服务 - Sincerity</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="&amp;emsp;&amp;emsp;公司最近项目做等保测试，在漏扫部分测试出了四台生产服务器有十余个关于 OpenSSH 的漏洞，故需要做升级工作，在此记录。">
+<meta name="keywords" content="centos,openssh,linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CentOS 6.5 升级 OpenSSH 服务">
+<meta property="og:url" content="https://chenjianhui.site/2020-06-23-upgrade-openssh7.7p1-centos6/index.html">
+<meta property="og:site_name" content="Sincerity">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;公司最近项目做等保测试，在漏扫部分测试出了四台生产服务器有十余个关于 OpenSSH 的漏洞，故需要做升级工作，在此记录。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://resources.chenjianhui.site/2020-06-23-home-pic.jpg">
+<meta property="og:updated_time" content="2020-06-23T07:31:56.609Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CentOS 6.5 升级 OpenSSH 服务">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;公司最近项目做等保测试，在漏扫部分测试出了四台生产服务器有十余个关于 OpenSSH 的漏洞，故需要做升级工作，在此记录。">
+<meta name="twitter:image" content="https://resources.chenjianhui.site/2020-06-23-home-pic.jpg">
+
+
+
+
+
+<link rel="alternative" href="/atom.xml" title="CentOS 6.5 升级 OpenSSH 服务" type="application/atom+xml">
+
+
+
+<link rel="icon" href="/images/favicon-32x32.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+    
+    
+<script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:19960428,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.svg" alt="CentOS 6.5 升级 OpenSSH 服务" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">Home</a>
+                
+                <a class="navbar-item" href="/archives">Archives</a>
+                
+                <a class="navbar-item" href="/categories">Categories</a>
+                
+                <a class="navbar-item" href="/tags">Tags</a>
+                
+                <a class="navbar-item" href="/leetcode">LeetCode</a>
+                
+                <a class="navbar-item" href="/projects">Projects</a>
+                
+                <a class="navbar-item" href="/about">About</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    
+                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://github.com/calebman">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-image">
+        <span class="image is-7by1">
+            <img class="thumbnail" src="https://resources.chenjianhui.site/2020-06-23-home-pic.jpg" alt="CentOS 6.5 升级 OpenSSH 服务">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <i class="fas fa-angle-double-right"></i>CentOS 6.5 升级 OpenSSH 服务
+            
+        </h1>
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-06-23T20:15:30.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-06-23</time>
+                
+                
+                <div class="level-item">
+                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
+                <a class="has-link-grey -link" href="/categories/运维/">运维</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    <i class="far fa-clock"></i>&nbsp;
+                    
+                    
+                    11 分钟 读完 (大约 1611 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <div id="article-content" class="content">
+            <p>&emsp;&emsp;公司最近项目做等保测试，在漏扫部分测试出了四台生产服务器有十余个关于 OpenSSH 的漏洞，故需要做升级工作，在此记录。</p>
+<a id="more"></a>
+
+<h1 id="CentOS-6-5-升级-SSH-服务"><a href="#CentOS-6-5-升级-SSH-服务" class="headerlink" title="CentOS 6.5 升级 SSH 服务"></a><span>CentOS-6-5-升级-SSH-服务</span></h1><h2 id="源起"><a href="#源起" class="headerlink" title="源起"></a><span>源起</span></h2><p>CentOS 6.5 自带的 OpenSSH 版本过低，7.4以下 OpenSSH 版本存在严重漏洞：</p>
+<ol>
+<li>OpenSSH 远程权限提升漏洞(CVE-2016-10010)</li>
+<li>OpenSSH J-PAKE授权问题漏洞(CVE-2010-4478)</li>
+<li>Openssh MaxAuthTries限制绕过漏洞(CVE-2015-5600)</li>
+</ol>
+<h2 id="升级记录"><a href="#升级记录" class="headerlink" title="升级记录"></a><span>升级记录</span></h2><h3 id="yum-镜像源切换"><a href="#yum-镜像源切换" class="headerlink" title="yum 镜像源切换"></a><span>yum-镜像源切换</span></h3><blockquote>
+<p>如果 yum 镜像源无法使用可尝试下述方案，本次操作的服务器在内网环境下，内网的 DNS 无法解析 mirrors.aliyun.com，故手动配置了 hosts 与镜像地址。</p>
+</blockquote>
+<pre><code class="sh"># 写入 aliyun 镜像源的 host 解析记录
+echo 59.47.236.246 mirrors.aliyun.com &gt;&gt; /etc/hosts
+# 备份原始镜像源
+mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
+# 下载新的镜像源
+wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-6.repo
+# 生成缓存
+yum makecache</code></pre>
+<h3 id="安装基础环境"><a href="#安装基础环境" class="headerlink" title="安装基础环境"></a><span>安装基础环境</span></h3><blockquote>
+<p>此步骤安装 SSH 编译所需依赖项，如果 yum 不可用可使用 RPM 的方式手动安装。</p>
+</blockquote>
+<ol>
+<li>yum 安装方式</li>
+</ol>
+<pre><code class="sh"># OpenSSH 编译依赖
+yum -y install gcc-c++ zlib zlib-devel openssl openssl-devel pam-devel</code></pre>
+<ol start="2">
+<li>rpm 安装方式参考链接：<a href="https://github.com/Junyangz/upgrade-openssh-centos" target="_blank" rel="noopener">https://github.com/Junyangz/upgrade-openssh-centos</a></li>
+</ol>
+<h3 id="安装并开启-telnet-服务"><a href="#安装并开启-telnet-服务" class="headerlink" title="安装并开启 telnet 服务"></a><span>安装并开启-telnet-服务</span></h3><blockquote>
+<p>此步骤是防止在更新 SSH 时断开连接导致无法登录服务器，此时可采用 telnet 登录。</p>
+</blockquote>
+<pre><code class="sh"># telnet 环境，防止 ssh 服务关闭后无法连接服务器
+yum -y install telnet-server* telnet
+# 启用 telnet 服务用于远程登录
+vi /etc/xinetd.d/telnet
+# 将其中 disable 字段的 yes 改为 no 以启用 telnet 服务
+# 允许 root 用户通过 telnet 登录
+mv /etc/securetty /etc/securetty.old    
+# 启动telnet服务
+service xinetd start        
+# 使telnet服务开机启动，避免升级过程中服务器意外重启后无法远程登录系统
+chkconfig xinetd on 
+# 查看 telnet 端口
+less /etc/services | grep telnet
+# telnet          23/tcp
+# telnet          23/udp</code></pre>
+<p>使用 telnet 登录服务器的方式如下：</p>
+<pre><code class="sh">telnet 192.168.xx.xx
+# Trying 192.168.xx.xx...
+# Connected to 192.168.xx.xx.
+# Escape character is &#39;^]&#39;.
+# Password: 
+# 输入密码即可登录</code></pre>
+<h3 id="更新-OpenSSL-到-1-0-2-o"><a href="#更新-OpenSSL-到-1-0-2-o" class="headerlink" title="更新 OpenSSL 到 1.0.2.o"></a><span>更新-OpenSSL-到-1-0-2-o</span></h3><p>OpenSSL &gt;= 1.0.1 可以不用升级 OpenSSL，运行  <code>openssl version</code> 可以查看版本信息，如果出现 <code>openssl: command not found</code> 说明服务器可能在使用 <code>nss</code> 模块，可通过 <code>yum info nss</code> 查看其相关信息，如果没有安装 OpenSSL 需要进行下方的步骤。</p>
+<blockquote>
+<p>此步骤更新 OpenSSL 依赖，脚本来源于<a href="https://docs.junyangz.com/ops/upgrade-openssh-to-7.7p1-in-centos6#upgrade-openssl-to-1-0-2-o" target="_blank" rel="noopener">Upgrade OpenSSH to 7.7p1 in CentOS 6 - Junyangz’s docs</a>，根据实际情况改造 openssl 备份部分的脚本，可直接放置服务器运行升级。</p>
+</blockquote>
+<pre><code class="sh">#!/bin/sh
+# Copyright © 2018 Junyangz
+# Update by JianhuiChen
+# Create workspace
+# mkdir ssh_upgrade &amp;&amp; cd ssh_upgrade
+# Download the new version of openssl
+rm -f openssl-1.0.2o.tar.gz
+wget https://ftp.openssl.org/source/old/1.0.2/openssl-1.0.2o.tar.gz
+# Query the server&#39;s old version of openssl
+find / -name openssl
+find / -name &quot;libssl*&quot;
+timestamp=$(date +%s)
+# Backup openssl based on the results of the query above
+cp  /usr/lib64/libssl3.so  /usr/lib64/libssl3.so.10-${timestamp}
+cp  /usr/lib64/libssl.so.10  /usr/lib64/libssl.so.10-${timestamp}
+mv /usr/bin/openssl /usr/bin/openssl-${timestamp}
+mv /usr/include/openssl /usr/include/openssl-${timestamp}
+mv /etc/pki/ca-trust/extracted/openssl /etc/pki/ca-trust/extracted/openssl-${timestamp}
+# remove old OpenSSL rpm package
+rpm -qa |grep openssl|xargs -i rpm -e --nodeps {}
+# compile and install new OpenSSL
+tar zxvf openssl-1.0.2o.tar.gz &amp;&amp; cd openssl-1.0.2o
+./config --prefix=/usr/local/openssl --openssldir=/etc/ssl --shared zlib&amp;&amp; make &amp;&amp; make test &amp;&amp; make install
+ln -s /usr/local/openssl/bin/openssl /usr/bin/openssl
+ln -s /usr/local/openssl/include/openssl /usr/include/openssl
+
+echo &quot;/usr/local/openssl/lib&quot;&gt;&gt;/etc/ld.so.conf
+ldconfig
+mv  /usr/lib64/libcrypto.so.10-*  /usr/lib64/libcrypto.so.10
+mv  /usr/lib64/libssl.so.10-*  /usr/lib64/libssl.so.10
+#ldconfig -v # for check
+echo &quot;OpenSSl version upgrades as to lastest:&quot; &amp;&amp; openssl version
+# openssl version -a
+# OpenSSL 1.0.2o  27 Mar 2018
+# built on: reproducible build, date unspecified
+# platform: linux-x86_64
+# options:  bn(64,64) rc4(16x,int) des(idx,cisc,16,int) idea(int) blowfish(idx)
+# compiler: gcc -I. -I.. -I../include  -DOPENSSL_THREADS -D_REENTRANT -DDSO_DLFCN -DHAVE_DLFCN_H -Wa,--noexecstack -m64 -DL_ENDIAN -O3 -Wall -DOPENSSL_IA32_SSE2 -DOPENSSL_BN_ASM_MONT -DOPENSSL_BN_ASM_MONT5 -DOPENSSL_BN_ASM_GF2m -DRC4_ASM -DSHA1_ASM -DSHA256_ASM -DSHA512_ASM -DMD5_ASM -DAES_ASM -DVPAES_ASM -DBSAES_ASM -DWHIRLPOOL_ASM -DGHASH_ASM -DECP_NISTZ256_ASM
+# OPENSSLDIR: &quot;/usr/local/openssl/ssl&quot;</code></pre>
+<h3 id="更新-OpenSSH-到-7-7p1"><a href="#更新-OpenSSH-到-7-7p1" class="headerlink" title="更新 OpenSSH 到 7.7p1"></a><span>更新-OpenSSH-到-7-7p1</span></h3><blockquote>
+<p>此步骤更新 OpenSSH 依赖，复制下方脚本到 sh 文件，直接执行即可，脚本来源于<a href="https://docs.junyangz.com/ops/upgrade-openssh-to-7.7p1-in-centos6#upgrade-openssl-to-1-0-2-o" target="_blank" rel="noopener">Upgrade OpenSSH to 7.7p1 in CentOS 6 - Junyangz’s docs</a>。</p>
+</blockquote>
+<pre><code class="sh">#!/bin/sh
+# Create workspace
+# mkdir ssh_upgrade &amp;&amp; cd ssh_upgrade
+# Download the new version of openssh
+rm -f openssh-7.7p1.tar.gz
+wget http://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-7.7p1.tar.gz
+timestamp=$(date +%s)
+# Backup old OpenSSH
+cp -R /etc/ssh /etc/ssh-${timestamp}
+cp /etc/init.d/sshd /etc/init.d/sshd-${timestamp}
+
+rpm -qa | grep openssh
+rpm -e --nodeps `rpm -qa | grep openssh`
+
+tar zxvf openssh-7.7p1.tar.gz &amp;&amp; cd openssh-7.7p1
+./configure --prefix=/usr/local/openssh --sysconfdir=/etc/ssh \
+--with-ssl-dir=/usr/local/openssl &amp;&amp; make &amp;&amp; make install
+
+ln -s /usr/local/openssh/sbin/sshd /usr/sbin/sshd
+# Copy ssh config files
+cp ssh_config /etc/ssh/
+cp sshd_config /etc/ssh/
+cp moduli /etc/ssh/
+
+# 复制启动脚本到/etc/init.d
+# 根据安装路径情况，可能需要修改启动脚本中sshd的路径
+cp contrib/redhat/sshd.init /etc/init.d/sshd
+chmod +x /etc/init.d/sshd
+/usr/sbin/sshd -t -f /etc/ssh/sshd_config # vim /etc/init.d/sshd
+
+# 加入开机自启
+chkconfig --add sshd
+chkconfig sshd on
+chkconfig sshd --list
+
+# 开启root用户远程登录。
+sed -i &#39;s/#PermitRootLogin prohibit-password/PermitRootLogin yes/g&#39; /etc/ssh/sshd_config
+
+# 开启SSH服务
+# 千万不能restart。使用restart会造成连不上，需要登录控制台启动。
+service sshd start
+echo &quot;New version upgrades as to lastest:&quot; &amp;&amp; $(/usr/sbin/sshd -V)</code></pre>
+<h3 id="关闭-telnet-服务"><a href="#关闭-telnet-服务" class="headerlink" title="关闭 telnet 服务"></a><span>关闭-telnet-服务</span></h3><blockquote>
+<p>检测新版的 OpenSSH 是否能够远程登录，如果没问题可关闭 telnet 服务，在这里使用备份的配置覆盖当前配置即可。</p>
+</blockquote>
+<pre><code class="sh">vi /etc/xinetd.d/telnet
+# 将其中 disable 字段的 no 改为 yes 以禁用 telnet 服务
+# Disable telnet login
+mv /etc/securetty.old /etc/securetty
+# Stop telnet service
+service xinetd stop        
+chkconfig xinetd off </code></pre>
+<h2 id="F-amp-Q"><a href="#F-amp-Q" class="headerlink" title="F&amp;Q"></a><span>F-amp-Q</span></h2><ol>
+<li>运行 <code>service sshd start</code> 报错  <span style="color: #f81d22;">/etc/init.d/sshd: line 41: /usr/bin/ssh-keygen:No such file or directory</span></li>
+</ol>
+<pre><code class="sh"># 创建软链接
+ln -s /usr/local/openssh/sbin/sshd /usr/sbin/sshd</code></pre>
+<ol start="2">
+<li>运行 <code>ssh -V</code> 报错 <span style="color: #f81d22;">-sh: /usr/bin/ssh: No such file or directory</span></li>
+</ol>
+<pre><code class="sh"># 到安装目录执行脚本
+/usr/sbin/sshd -V</code></pre>
+<ol start="3">
+<li><code>libcrypto.so.10</code> 库丢失 <span style="color: #f81d22;"> error while loading shared libraries: libcrypto.so.10: cannot open shared object file: No such file or directory</span></li>
+</ol>
+<pre><code class="sh"># 64 位系统
+ln -s /usr/local/openssl/lib/libcrypto.so.1.0.0 /usr/lib64/libcrypto.so.10
+ln -s /usr/local/openssl/lib/libssl.so.1.0.0 /usr/lib64/libssl.so.10
+# 32 位系统
+ln -s /usr/local/openssl/lib/libcrypto.so.1.0.0 /usr/lib/libcrypto.so.10
+ln -s /usr/local/openssl/lib/libssl.so.1.0.0 /usr/lib/libssl.so.10</code></pre>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a><span>参考资料</span></h2><ul>
+<li><a href="https://docs.junyangz.com/ops/upgrade-openssh-to-7.7p1-in-centos6#upgrade-openssl-to-1-0-2-o" target="_blank" rel="noopener">Upgrade OpenSSH to 7.7p1 in CentOS 6 - Junyangz’s docs</a></li>
+</ul>
+
+        </div>
+        
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2020-06-23-upgrade-openssh7.7p1-centos6/">CentOS 6.5 升级 OpenSSH 服务</a></li>
+            <li><strong>本文作者：</strong><a href="https://chenjianhui.site">JianhuiChen</a></li>
+            <li><strong>本文链接：</strong><a href="https://chenjianhui.site/2020-06-23-upgrade-openssh7.7p1-centos6/">https://chenjianhui.site/2020-06-23-upgrade-openssh7.7p1-centos6/</a></li>
+            <li><strong>发布时间：</strong>2020-06-23</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <hr style="height:1px;margin:1rem 0">
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
+                    <a class="has-link-grey -link" href="/tags/centos/">centos</a>,&nbsp;<a class="has-link-grey -link" href="/tags/linux/">linux</a>,&nbsp;<a class="has-link-grey -link" href="/tags/openssh/">openssh</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020-05-31-vuepress-plugin-demo-container/">
+                <span class="level-item">使用 Vuepress 编写组件示例文档的最佳实践</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'bd0cbb30da9c24da8c7c',
+        clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
+        id: '7c9163418ba9bdba77dc8886da282c8a',
+        repo: 'blog',
+        owner: 'calebman',
+        admin: "calebman"
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+
+<link rel="stylesheet" href="/css/article-nice.css">
+<!-- Highlight.js -->
+<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script></div>
+                
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right is-sticky">
+    
+        
+<div class="card widget column-left is-sticky" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                目录
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#CentOS-6-5-升级-SSH-服务">
+        <span class="has-mr-6">1</span>
+        <span>CentOS-6-5-升级-SSH-服务</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#源起">
+        <span class="has-mr-6">1.1</span>
+        <span>源起</span>
+        </a></li><li>
+        <a class="is-flex" href="#升级记录">
+        <span class="has-mr-6">1.2</span>
+        <span>升级记录</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#yum-镜像源切换">
+        <span class="has-mr-6">1.2.1</span>
+        <span>yum-镜像源切换</span>
+        </a></li><li>
+        <a class="is-flex" href="#安装基础环境">
+        <span class="has-mr-6">1.2.2</span>
+        <span>安装基础环境</span>
+        </a></li><li>
+        <a class="is-flex" href="#安装并开启-telnet-服务">
+        <span class="has-mr-6">1.2.3</span>
+        <span>安装并开启-telnet-服务</span>
+        </a></li><li>
+        <a class="is-flex" href="#更新-OpenSSL-到-1-0-2-o">
+        <span class="has-mr-6">1.2.4</span>
+        <span>更新-OpenSSL-到-1-0-2-o</span>
+        </a></li><li>
+        <a class="is-flex" href="#更新-OpenSSH-到-7-7p1">
+        <span class="has-mr-6">1.2.5</span>
+        <span>更新-OpenSSH-到-7-7p1</span>
+        </a></li><li>
+        <a class="is-flex" href="#关闭-telnet-服务">
+        <span class="has-mr-6">1.2.6</span>
+        <span>关闭-telnet-服务</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#F-amp-Q">
+        <span class="has-mr-6">1.3</span>
+        <span>F-amp-Q</span>
+        </a></li><li>
+        <a class="is-flex" href="#参考资料">
+        <span class="has-mr-6">1.4</span>
+        <span>参考资料</span>
+        </a></li></ul></li></ul>
+        </div>
+    </div>
+</div>
+
+
+    
+    
+</div>
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <p class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo.svg" alt="CentOS 6.5 升级 OpenSSH 服务" height="28">
+                
+                <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
+                </p>
+                <p class="is-size-7">
+                &copy; 2020 JianhuiChen&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                        
+                        <i class="fab fa-creative-commons"></i>&nbsp;<i class="fab fa-creative-commons-by"></i>&nbsp;<i class="fab fa-creative-commons-nc"></i>&nbsp;<i class="fab fa-creative-commons-sa"></i>&nbsp;
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>

@@ -227,7 +227,7 @@ ln -s /usr/local/openssl/lib/libcrypto.so.1.0.0 /usr/lib/libcrypto.so.10
 ln -s /usr/local/openssl/lib/libssl.so.1.0.0 /usr/lib/libssl.so.10
 ```
 
-## 参考资料
+# 参考资料
 
 * [Upgrade OpenSSH to 7.7p1 in CentOS 6 - Junyangz's docs](https://docs.junyangz.com/ops/upgrade-openssh-to-7.7p1-in-centos6#upgrade-openssl-to-1-0-2-o)
 

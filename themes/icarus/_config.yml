@@ -129,6 +129,8 @@ widgets:
     position: left
     # Links to be shown in the links widget
     links:
+      FriendsMap.neoy.blog.url: https://neoy.site/
+      FriendsMap.huangcong.blog.url: https://huangcong.site/
       Java HashMap工作原理及实现: http://www.importnew.com/18633.html
       红黑树的原理在线示例: https://www.cs.usfca.edu/~galles/visualization/RedBlack.html
   - # Widget name

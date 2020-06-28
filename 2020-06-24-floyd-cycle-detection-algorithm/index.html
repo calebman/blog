@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+<title>Floyd、Brent 判圈算法 - Sincerity</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="&amp;emsp;&amp;emsp;本文主要介绍 Floyd 与 Brent 判圈算法及其使用场景，以图解的方式详细描述算法的运行流程，并在文末给出算法的部分应用场景与对应 Leetcode 的题型。">
+<meta name="keywords" content="Algorithm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Floyd、Brent 判圈算法">
+<meta property="og:url" content="https://chenjianhui.site/2020-06-24-floyd-cycle-detection-algorithm/index.html">
+<meta property="og:site_name" content="Sincerity">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;本文主要介绍 Floyd 与 Brent 判圈算法及其使用场景，以图解的方式详细描述算法的运行流程，并在文末给出算法的部分应用场景与对应 Leetcode 的题型。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://resources.chenjianhui.site/algorithm-home-pic.jpeg">
+<meta property="og:updated_time" content="2020-06-28T07:37:25.267Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Floyd、Brent 判圈算法">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;本文主要介绍 Floyd 与 Brent 判圈算法及其使用场景，以图解的方式详细描述算法的运行流程，并在文末给出算法的部分应用场景与对应 Leetcode 的题型。">
+<meta name="twitter:image" content="https://resources.chenjianhui.site/algorithm-home-pic.jpeg">
+
+
+
+
+
+<link rel="alternative" href="/atom.xml" title="Floyd、Brent 判圈算法" type="application/atom+xml">
+
+
+
+<link rel="icon" href="/images/favicon-32x32.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+    
+    
+<script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:19960428,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+    
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.svg" alt="Floyd、Brent 判圈算法" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">Home</a>
+                
+                <a class="navbar-item" href="/archives">Archives</a>
+                
+                <a class="navbar-item" href="/categories">Categories</a>
+                
+                <a class="navbar-item" href="/tags">Tags</a>
+                
+                <a class="navbar-item" href="/leetcode">LeetCode</a>
+                
+                <a class="navbar-item" href="/projects">Projects</a>
+                
+                <a class="navbar-item" href="/about">About</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    
+                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://github.com/calebman">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-image">
+        <span class="image is-7by1">
+            <img class="thumbnail" src="https://resources.chenjianhui.site/algorithm-home-pic.jpeg" alt="Floyd、Brent 判圈算法">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <i class="fas fa-angle-double-right"></i>Floyd、Brent 判圈算法
+            
+        </h1>
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-06-24T22:33:34.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-06-24</time>
+                
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-06-28T07:37:25.267Z"><i class="far fa-calendar-check">&nbsp;</i>2020-06-28</time>
+                
+                
+                <div class="level-item">
+                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
+                <a class="has-link-grey -link" href="/categories/Algorithm/">Algorithm</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    <i class="far fa-clock"></i>&nbsp;
+                    
+                    
+                    13 分钟 读完 (大约 1960 个字)
+                </span>
+                
+                
+            </div>
+        </div>
+        
+        <div id="article-content" class="content">
+            <p>&emsp;&emsp;本文主要介绍 Floyd 与 Brent 判圈算法及其使用场景，以图解的方式详细描述算法的运行流程，并在文末给出算法的部分应用场景与对应 Leetcode 的题型。</p>
+<a id="more"></a>
+
+<h1 id="何为判圈算法"><a href="#何为判圈算法" class="headerlink" title="何为判圈算法"></a><span>何为判圈算法</span></h1><blockquote>
+<p>根据维基百科的定义，判圈算法是可以在有限状态机、迭代函数或者链表上判断是否存在环，以及求出该环的起点与长度的算法。</p>
+</blockquote>
+<p>也就是说判圈算法能够为我们解决以下三个问题：</p>
+<ol>
+<li>判断链表是否有环</li>
+<li>求环的长度</li>
+<li>确定环的入口</li>
+</ol>
+<p><strong>那么它是如何来解决这些问题的？下面通过算法概述这一章节，讲述一下算法的实现原理。</strong></p>
+<h1 id="算法概述"><a href="#算法概述" class="headerlink" title="算法概述"></a><span>算法概述</span></h1><h2 id="Floyd-判圈算法"><a href="#Floyd-判圈算法" class="headerlink" title="Floyd 判圈算法"></a><span>Floyd-判圈算法</span></h2><blockquote>
+<p>Floyd 判圈算法的核心原理是，如果存在环，那么从同一个起点(即使这个起点不在某个环上)处，同时开始以不同速度前进的2个指针必定会在某个时刻相遇。</p>
+</blockquote>
+<p>举个简单的例子，下方示例展示了一个不规则的环形链表，。我们给下方示例的运行分为两个阶段：</p>
+<ol>
+<li>第一阶段：相遇阶段，我们设置 <code>Slow、Fast</code> 两个指针，Fast 以 Slow 的两倍速度运行，最终它们会在某个节点相遇。</li>
+<li>第二阶段：寻找环入口阶段，节点相遇后我们将 Slow 指针重置到链表原点，并且将 Slow、Fast 指针设置为一样的运行速度，它们再次相遇的点即环的入口。</li>
+</ol>
+<blockquote>
+<p>该示例展示了 Floyd 判圈算法寻找链表环形入口的过程，可通过 Next 按钮单步执行，观测算法运行流程。</p>
+</blockquote>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+<div id="demo1"></div>
+
+
+<p><strong>接下来同学可能会有疑问，为什么这两个阶段结合起来能够找到环状入口？下方我们通过一张图以数学的方式来证明一下该算法，下图来源于<a href="https://leetcode-cn.com/problems/linked-list-cycle-ii/solution/huan-xing-lian-biao-ii-by-leetcode/" target="_blank" rel="noopener">环形链表 II - 环形链表 II - 力扣（LeetCode）</a></strong></p>
+<p><img src="https://resources.chenjianhui.site/20200628141710.png" alt></p>
+<blockquote>
+<p>我们利用已知的条件：慢指针移动 1 步，快指针移动 2 步，来说明它们相遇在环的入口处。<br>$$2 * distance(slow) = distance(fast)$$<br>$$2(F + a) = F + a + b + a$$<br>$$F = b$$<br>所以在第一阶段末，只需要归位一个节点并以同样的速度运行，即可在环入口相遇。</p>
+</blockquote>
+<h2 id="Brent-判圈算法"><a href="#Brent-判圈算法" class="headerlink" title="Brent 判圈算法"></a><span>Brent-判圈算法</span></h2><p>Brent 判圈算法在判断链表是否有环的场景中可以比Floyd更快一点，他的算法原理如下：</p>
+<blockquote>
+<p>该示例展示了 Brent 算法判断链表是否有环的过程，可通过 Next 按钮单步执行，观测算法运行流程。<br>值得注意的是，Brent 算法无法找到环的入口节点。</p>
+</blockquote>
+
+<div id="demo2"></div>
+
+
+<h1 id="应用题"><a href="#应用题" class="headerlink" title="应用题"></a><span>应用题</span></h1><ul>
+<li><a href="https://leetcode-cn.com/problems/linked-list-cycle/" target="_blank" rel="noopener">141. 环形链表 - 力扣（LeetCode）</a></li>
+<li><a href="https://leetcode-cn.com/problems/linked-list-cycle-ii/" target="_blank" rel="noopener">142. 环形链表 II - 力扣（LeetCode）</a></li>
+<li><a href="https://leetcode-cn.com/problems/find-the-duplicate-number/" target="_blank" rel="noopener">287. 寻找重复数 - 力扣（LeetCode）</a></li>
+<li><a href="https://leetcode-cn.com/problems/intersection-of-two-linked-lists/" target="_blank" rel="noopener">160. 相交链表 - 力扣（LeetCode）</a></li>
+</ul>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a><span>参考资料</span></h1><ul>
+<li><a href="https://iznauy.github.io/2019/04/18/Floyd-%E5%88%A4%E5%9C%88%E7%AE%97%E6%B3%95/" target="_blank" rel="noopener">Floyd 判圈算法 | Hexo</a></li>
+<li><a href="http://zhengyhn.github.io/post/algorithm/brent.loop/" target="_blank" rel="noopener">Brent 判圈算法学习</a></li>
+<li><a href="https://leetcode-cn.com/problems/linked-list-cycle-ii/solution/huan-xing-lian-biao-ii-by-leetcode/" target="_blank" rel="noopener">环形链表 II - 环形链表 II - 力扣（LeetCode）</a></li>
+</ul>
+
+<script>
+function drawLinkedList(id, { linkedList, width, slow, fast }) {
+  // init
+  linkedList.forEach(o => o.handle = false)
+  const canvas = document.getElementById(id)
+  const maxWidth = 50 + Math.ceil(linkedList.length / 2) * 85
+  width = Math.min(maxWidth, width)
+  canvas.width = width
+  const ctx = canvas.getContext('2d')
+  ctx.fillStyle = "#fff"
+  ctx.beginPath()
+  ctx.fillRect(0, 0, width, 200)
+  ctx.closePath()
+  // draw
+  const head = linkedList[0]
+  head.x = 25
+  head.y = 25
+  let node = head
+  let col = 0
+  let leftStart = true
+  const r = 20
+  while (true) {
+    let { x, y } = node
+    // circle
+    if (slow === node && fast === node) {
+      drawCircle(ctx, x, y, r, '#8bc34a', Math.PI, true)
+      drawCircle(ctx, x, y, r, '#ff9800', Math.PI, false)
+    } else if (slow === node) {
+      drawCircle(ctx, x, y, r, '#8bc34a')
+    } else if (fast === node) {
+      drawCircle(ctx, x, y, r, '#ff9800')
+    } else {
+      drawCircle(ctx, x, y, r)
+    }
+    // text
+    ctx.beginPath()
+    ctx.fillStyle = '#000'
+    ctx.font = '20px Arial'
+    ctx.fillText(node.val, x - 6, y + 6)
+    // arrow
+    let pointStart = leftStart ? [x + r, y] : [x - r, y]
+    col++
+    let edge = false
+    if (col > linkedList.length / 2) {
+      leftStart = false
+      col = 0
+      edge = true
+    }
+    if (node.next) {
+      if (!node.next.handle) {
+        node.next.x = leftStart ? (25 + col * 80) : (width - 25 - col * 80)
+        node.next.y = leftStart ? 25 : 105
+        node.handle = true
+      }
+      let pointEnd = leftStart ? [node.next.x - r, node.next.y] : [node.next.x + r, node.next.y]
+      if (node.next.handle && node.next.circleStart === true) {
+        pointEnd = [node.next.x, node.next.y + r]
+      }
+      if (edge) {
+        pointEnd = [node.next.x, node.next.y - r]
+      }
+      drawArrow(ctx, pointStart[0], pointStart[1], pointEnd[0], pointEnd[1])
+    }
+    if (!node.next || node.next.handle) {
+      break
+    }
+    node = node.next
+  }
+}
+function drawCircle(ctx, x, y, r, fillColor, s = 2 * Math.PI, t) {
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, s, t)
+  if (fillColor) {
+    ctx.fillStyle = fillColor
+    ctx.fill()
+  } else {
+    ctx.fillStyle = '#000'
+    ctx.stroke()
+  }
+}
+function drawArrow(ctx, fromX, fromY, toX, toY, theta = 18, headlen = 18, width = 2, color = '#f36') {
+  // 计算各角度和对应的P2,P3坐标
+  var angle = Math.atan2(fromY - toY, fromX - toX) * 180 / Math.PI,
+    angle1 = (angle + theta) * Math.PI / 180,
+    angle2 = (angle - theta) * Math.PI / 180,
+    topX = headlen * Math.cos(angle1),
+    topY = headlen * Math.sin(angle1),
+    botX = headlen * Math.cos(angle2),
+    botY = headlen * Math.sin(angle2);
+  ctx.save();
+  ctx.beginPath();
+  var arrowX = fromX - topX,
+    arrowY = fromY - topY;
+  ctx.moveTo(arrowX, arrowY);
+  ctx.moveTo(fromX, fromY);
+  ctx.lineTo(toX, toY);
+  arrowX = toX + topX;
+  arrowY = toY + topY;
+  ctx.moveTo(arrowX, arrowY);
+  ctx.lineTo(toX, toY);
+  arrowX = toX + botX;
+  arrowY = toY + botY;
+  ctx.lineTo(arrowX, arrowY);
+  ctx.strokeStyle = color;
+  ctx.lineWidth = width;
+  ctx.stroke();
+  ctx.restore();
+}
+const DemoContainer = Vue.extend({
+  template: `
+  <div class="demo-container">
+    <div class="title">{{ title }}</div>
+    <div class="content">
+      <canvas :id="canvasId" height="200" width="400"></canvas>
+      <div class="desc">
+        <div>Slow Node: <div class="circle slow">S</div> => {{ slow && slow.val }}</div>
+        <div>Fast Node: <div class="circle fast">F</div> => {{ fast && fast.val }}</div>
+        <div style="display: block;margin-top: 8px;">
+          <span>Step Count: {{ stepCnt }}</span>
+          <div class="gt-container">
+            Actions: 
+            <button class="gt-btn gt-btn-preview" @click="handleAuto">
+              <span class="gt-btn-text">{{ autoBtnText }}</span>
+            </button>
+            <button class="gt-btn gt-btn-preview" @click="handleNext">
+              <span class="gt-btn-text">Next</span>
+            </button>
+            <button class="gt-btn gt-btn-preview" @click="handleRestart">
+              <span class="gt-btn-text">Restart</span>
+            </button>
+          </div>
+        </div>
+        <div style="display: block;margin-top: 8px;">
+          Log Message：{{ log }}
+        </div>
+      </div>
+    </div>
+  </div>`,
+  props: {
+    canvasId: 'canvasDemo',
+    type: String,
+    arr: Array,
+    circleStartIndex: 0,
+    title: String
+  },
+  data() {
+    return {
+      linkedList: [],
+      initStatus: true,
+      afterMeet: false,
+      step: 0,
+      stepLimit: 1,
+      end: false,
+      auto: false,
+      autoProcessId: null,
+      stepCnt: 0,
+      log: '',
+      slow: null,
+      fast: null,
+      width: 400
+    }
+  },
+  computed: {
+    autoBtnText() {
+      return this.auto ? 'Stop Auto' : 'Start Auto'
+    }
+  },
+  methods: {
+    initCycleLinkedList() {
+      this.linkedList = []
+      this.initStatus = true
+      this.afterMeet = false
+      this.end = false
+      this.stepCnt = 0
+      this.stepLimit = 1
+      this.step = 0
+      this.log = '快慢指针初始化在原点'
+      this.arr.forEach((o, i) => {
+        const node = { val: o }
+        this.linkedList.push(node)
+        if (i > 0) {
+          this.linkedList[i - 1].next = node
+        }
+      })
+      if (this.circleStartIndex > -1 && this.circleStartIndex < this.linkedList.length) {
+        this.linkedList[this.circleStartIndex].circleStart = true
+        this.linkedList[this.linkedList.length - 1].next = this.linkedList[this.circleStartIndex]
+      }
+      this.slow = this.linkedList[0]
+      this.fast = this.linkedList[0]
+      this.width = this.$el.offsetWidth - 48
+      drawLinkedList(this.canvasId, this)
+    },
+    handleAuto() {
+      if (this.auto) {
+        clearInterval(this.autoProcessId)
+      } else {
+        this.autoProcessId = window.setInterval(() => {
+          if (this.end) {
+            this.handleRestart()
+          }
+          this.handleNext()
+        }, 1500)
+      }
+      this.auto = !this.auto
+    },
+    handleNext() {
+      if (this.end === false) {
+        switch (this.type) {
+          case 'Brent':
+            this.handleNextBrent()
+            break
+          default:
+            this.handleNextFloyd()
+        }
+        drawLinkedList(this.canvasId, this)
+      }
+    },
+    handleNextFloyd() {
+      if (this.afterMeet) {
+        if (this.slow === this.fast) {
+          this.end = true
+          this.log = `[运行完毕] 快慢指针第二次相遇，相遇节点为 ${this.slow.val}，此节点为圆环入口`
+        } else {
+          this.slow = this.slow.next
+          this.fast = this.fast.next
+          this.log = `[第二阶段] 快慢指针同速度运行`
+        }
+      } else {
+        if (!this.initStatus && this.slow === this.fast) {
+          this.afterMeet = true
+          this.fast = this.linkedList[0]
+          this.stepCnt++
+          this.log = `[第二阶段] 快指针回到原点，并与慢指针同样的速度运行`
+        } else {
+          this.initStatus = false
+          this.slow = this.slow.next
+          this.stepCnt++
+          this.fast = this.fast.next ? this.fast.next.next : null
+          this.stepCnt+=2
+          if (!this.fast) {
+            this.end = true
+            this.log = `该链表无环`
+          } else {
+            this.log = `[第一阶段] 快指针是慢指针两倍速度运行`
+          }
+        }
+        if (this.slow === this.fast) {
+          this.log = `[第一阶段] 快慢指针第一次相遇，相遇节点为 ${this.slow.val}，链表有环`
+        }
+      }
+    },
+    handleNextBrent() {
+      if (this.step >= this.stepLimit) {
+        this.slow = this.fast
+        this.stepCnt++
+        this.stepLimit = this.stepLimit * 2
+        this.step = 0
+        this.log = `慢指针归位到快指针处`
+      } else {
+        this.fast = this.fast.next
+        this.stepCnt++
+        this.step++
+        this.log = `快指针移动一步，已经移动 ${this.step} 步，最多移动 ${this.stepLimit} 步`
+        if (this.fast === this.slow) {
+          this.end = true
+          this.log = '快指针追到慢指针，链表有环'
+        }
+      }
+    },
+    handleRestart() {
+      this.initCycleLinkedList()
+    }
+  },
+  mounted() {
+    this.initCycleLinkedList()
+  }
+})
+new DemoContainer({
+  propsData: {
+    type: 'Floyd',
+    canvasId: 'canvasDemo1',
+    arr: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+    circleStartIndex: 2,
+    title: 'Floyd 算法运行图解'
+  }
+}).$mount('#demo1')
+new DemoContainer({
+  propsData: {
+    type: 'Brent',
+    canvasId: 'canvasDemo2',
+    arr: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+    circleStartIndex: 2,
+    title: 'Brent 算法运行图解'
+  }
+}).$mount('#demo2')
+</script>
+<style>
+  .demo-container {
+    border: 1px solid #e8e8e8;
+    border-radius: 3px;
+    transition: .2s;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    background: #fff;
+  }
+  .demo-container .title {
+    font-size: 18px;
+    font-weight: bold;
+    border-bottom: 2px solid #009688;
+    padding: 16px;
+  }
+  .demo-container .content {
+    padding: 24px;
+  }
+  .demo-container .desc {
+    margin-top: 16px;
+  }
+  .demo-container .desc div {
+    display: inline-block;
+    margin-left: 8px;
+  }
+  .demo-container .node {
+    margin: 0 16px;
+  }
+  .demo-container .circle {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 28px;
+    border: 2px solid #4a4a4a;
+    border-radius: 50%;
+    margin-left: 0 !important;
+  }
+  .demo-container .slow {
+    background: #8bc34a;
+  }
+  .demo-container .fast {
+    background: #ff9800;
+  }
+</style>
+
+        </div>
+        
+            <ul class="post-copyright">
+            <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2020-06-24-floyd-cycle-detection-algorithm/">Floyd、Brent 判圈算法</a></li>
+            <li><strong>本文作者：</strong><a href="https://chenjianhui.site">JianhuiChen</a></li>
+            <li><strong>本文链接：</strong><a href="https://chenjianhui.site/2020-06-24-floyd-cycle-detection-algorithm/">https://chenjianhui.site/2020-06-24-floyd-cycle-detection-algorithm/</a></li>
+            <li><strong>发布时间：</strong>2020-06-24</li>
+            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+            </li>
+            </ul>
+        
+        
+        <hr style="height:1px;margin:1rem 0">
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
+                    <a class="has-link-grey -link" href="/tags/Algorithm/">Algorithm</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020-06-23-upgrade-openssh7.7p1-centos6/">
+                <span class="level-item">CentOS 6.5 升级 OpenSSH 服务</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">评论</h3>
+        
+<div id="comment-container"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: 'bd0cbb30da9c24da8c7c',
+        clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
+        id: '4579c7c093ed079eeb14470a7661d8aa',
+        repo: 'blog',
+        owner: 'calebman',
+        admin: "calebman"
+    })
+    gitalk.render('comment-container')
+</script>
+
+    </div>
+</div>
+
+<link rel="stylesheet" href="/css/article-nice.css">
+<!-- Highlight.js -->
+<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script></div>
+                
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right is-sticky">
+    
+        
+<div class="card widget column-left is-sticky" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                目录
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#何为判圈算法">
+        <span class="has-mr-6">1</span>
+        <span>何为判圈算法</span>
+        </a></li><li>
+        <a class="is-flex" href="#算法概述">
+        <span class="has-mr-6">2</span>
+        <span>算法概述</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#Floyd-判圈算法">
+        <span class="has-mr-6">2.1</span>
+        <span>Floyd-判圈算法</span>
+        </a></li><li>
+        <a class="is-flex" href="#Brent-判圈算法">
+        <span class="has-mr-6">2.2</span>
+        <span>Brent-判圈算法</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#应用题">
+        <span class="has-mr-6">3</span>
+        <span>应用题</span>
+        </a></li><li>
+        <a class="is-flex" href="#参考资料">
+        <span class="has-mr-6">4</span>
+        <span>参考资料</span>
+        </a></li></ul>
+        </div>
+    </div>
+</div>
+
+
+    
+    
+</div>
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <p class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo.svg" alt="Floyd、Brent 判圈算法" height="28">
+                
+                <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
+                </p>
+                <p class="is-size-7">
+                &copy; 2020 JianhuiChen&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                        
+                        <i class="fab fa-creative-commons"></i>&nbsp;<i class="fab fa-creative-commons-by"></i>&nbsp;<i class="fab fa-creative-commons-nc"></i>&nbsp;<i class="fab fa-creative-commons-sa"></i>&nbsp;
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>

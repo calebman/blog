@@ -17,8 +17,7 @@ module.exports = function (hexo) {
                 layout: ['leetcode_post'],
                 data: Object.assign({}, {
                     widgets: [
-                        { type: 'profile', position: 'left' },
-                        { type: 'recent_leetcode', position: 'left', recent: loadRecentPosts(questions, o) }
+                        { type: 'recent_leetcode', position: 'right', recent: loadRecentPosts(questions, o) }
                     ],
                     post: o
                 })

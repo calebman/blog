@@ -1,222 +1,87 @@
+
+
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
+
 <head><meta name="generator" content="Hexo 3.9.0">
-    <meta charset="utf-8">
-<title>前后端分离模式下的DevOps - Sincerity</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-
-
-    <meta name="description" content="Jenkins+Git+Maven+Nodejs实现前后端分离项目的自动化运维">
-<meta name="keywords" content="jenkins,maven,nodejs,devops">
-<meta property="og:type" content="article">
-<meta property="og:title" content="前后端分离模式下的DevOps">
-<meta property="og:url" content="https://chenjianhui.site/2019-03-01-devops-practice/index.html">
-<meta property="og:site_name" content="Sincerity">
-<meta property="og:description" content="Jenkins+Git+Maven+Nodejs实现前后端分离项目的自动化运维">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://resources.chenjianhui.site/2019-03-01-home-pic.jpg">
-<meta property="og:updated_time" content="2020-07-08T02:46:41.179Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="前后端分离模式下的DevOps">
-<meta name="twitter:description" content="Jenkins+Git+Maven+Nodejs实现前后端分离项目的自动化运维">
-<meta name="twitter:image" content="https://resources.chenjianhui.site/2019-03-01-home-pic.jpg">
-
-
-
-
-
-<link rel="alternative" href="/atom.xml" title="前后端分离模式下的DevOps" type="application/atom+xml">
-
-
-
-<link rel="icon" href="/images/favicon-32x32.png">
-
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
-
-
-    
-    
-    
-    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
-    
-
-    
-    
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
-    
-
-    
-    
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
-
-
-    
-    
-    
-    
-
-<link rel="stylesheet" href="/css/back-to-top.css">
-
-
-    
-    
-
-    
-    
-    
-    
-<script>
-    (function(h,o,t,j,a,r){
-        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-        h._hjSettings={hjid:19960428,hjsv:6};
-        a=o.getElementsByTagName('head')[0];
-        r=o.createElement('script');r.async=1;
-        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-        a.appendChild(r);
-    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-</script>
-
-
-    
-    
-<link rel="stylesheet" href="/css/progressbar.css">
-<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
-
-    
-    
-    
-
-    
-    
-    
-
-
-<link rel="stylesheet" href="/css/style.css">
+  <meta charset="UTF-8">
+  <title>前后端分离模式下的DevOps [ Sincerity ]</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="icon" href="/images/favicon-32x32.png">
+  
+  <!-- stylesheets list from _config.yml -->
+  
+  <link rel="stylesheet" href="/css/simple.css">
+  
+  <link rel="stylesheet" href="/css/font.css">
+  
+  
 </head>
-<body class="is-3-column">
-    <nav class="navbar navbar-main">
-    <div class="container">
-        <div class="navbar-brand is-flex-center">
-            <a class="navbar-item navbar-logo" href="/">
-            
-                <img src="/images/logo.svg" alt="前后端分离模式下的DevOps" height="28">
-            
-            </a>
-        </div>
-        <div class="navbar-menu">
-            
-            <div class="navbar-start">
-                
-                <a class="navbar-item" href="/">Home</a>
-                
-                <a class="navbar-item" href="/archives">Archives</a>
-                
-                <a class="navbar-item" href="/categories">Categories</a>
-                
-                <a class="navbar-item" href="/tags">Tags</a>
-                
-                <a class="navbar-item" href="/leetcode">LeetCode</a>
-                
-                <a class="navbar-item" href="/projects">Projects</a>
-                
-                <a class="navbar-item" href="/about">About</a>
-                
-            </div>
-            
-            <div class="navbar-end">
-                
-                    
-                    
-                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://github.com/calebman">
-                        
-                        <i class="fab fa-github"></i>
-                        
-                    </a>
-                    
-                
-                
-                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
-                    <i class="fas fa-list-ul"></i>
-                </a>
-                
-                
-                <a class="navbar-item search" title="搜索" href="javascript:;">
-                    <i class="fas fa-search"></i>
-                </a>
-                
-            </div>
-        </div>
-    </div>
-</nav>
-    
-    <section class="section">
-        <div class="container">
-            <div class="columns">
-                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
-    
-    <div class="card-image">
-        <span class="image is-7by1">
-            <img class="thumbnail" src="https://resources.chenjianhui.site/2019-03-01-home-pic.jpg" alt="前后端分离模式下的DevOps">
-        </span>
-    </div>
-    
-    <div class="card-content article ">
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <i class="fas fa-angle-double-right"></i>前后端分离模式下的DevOps
-            
-        </h1>
+
+<body>
+
+  <header class="header">
+    <nav class="nav">
+      <a href="/" class="nav-logo"><img src="/images/avatar.png" width="50" height="50" alt="Logo"></a>
+      <ul class="nav-links">
         
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-03-01T11:03:25.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-03-01</time>
-                
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-07-08T02:46:41.179Z"><i class="far fa-calendar-check">&nbsp;</i>2020-07-08</time>
-                
-                
-                <div class="level-item">
-                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
-                <a class="has-link-grey -link" href="/categories/运维/">运维</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    <i class="far fa-clock"></i>&nbsp;
-                    
-                    
-                    28 分钟 读完 (大约 4206 个字)
-                </span>
-                
-                
-            </div>
-        </div>
+        <li><a href="/">文章列表</a></li>
         
-        <div id="article-content" class="content">
-            <p>Jenkins+Git+Maven+Nodejs实现前后端分离项目的自动化运维</p>
+        <li><a href="/archives">归档</a></li>
+        
+        <li><a href="/leetcode">力扣</a></li>
+        
+        <li><a href="/about">关于我</a></li>
+        
+        <li><a href="https://github.com/calebman">Github</a></li>
+        
+      </ul>
+    </nav>
+  </header>
+
+  <main class="content">
+    <article class="article">
+  <h1 class="article-title">前后端分离模式下的DevOps</h1>
+  <span class="article-date">2019-03-01</span>
+  
+  
+  <a class="article-tag" href="/tags/jenkins">
+    jenkins
+  </a>
+  
+  <a class="article-tag" href="/tags/maven">
+    maven
+  </a>
+  
+  <a class="article-tag" href="/tags/nodejs">
+    nodejs
+  </a>
+  
+  <a class="article-tag" href="/tags/devops">
+    devops
+  </a>
+  
+  
+
+  <div class="article-content">
+    <p>Jenkins+Git+Maven+Nodejs实现前后端分离项目的自动化运维</p>
 <a id="more"></a>
 
-<h1 id="背景概述"><a href="#背景概述" class="headerlink" title="背景概述"></a><span>背景概述</span></h1><h2 id="理解Devops"><a href="#理解Devops" class="headerlink" title="理解Devops"></a><span>理解Devops</span></h2><p>&emsp;&emsp; <a href="https://zh.wikipedia.org/wiki/DevOps" target="_blank" rel="noopener">维基百科</a>对Devops的定义是：一种重视“软件开发人员（Dev）”和“IT运维技术人员（Ops）”之间沟通合作的文化、运动或惯例。透过自动化“软件交付”和“架构变更”的流程，来使得构建、测试、发布软件能够更加地快捷、频繁和可靠。</p>
+<h1 id="背景概述"><a href="#背景概述" class="headerlink" title="背景概述"></a>背景概述</h1><h2 id="理解Devops"><a href="#理解Devops" class="headerlink" title="理解Devops"></a>理解Devops</h2><p>&emsp;&emsp; <a href="https://zh.wikipedia.org/wiki/DevOps" target="_blank" rel="noopener">维基百科</a>对Devops的定义是：一种重视“软件开发人员（Dev）”和“IT运维技术人员（Ops）”之间沟通合作的文化、运动或惯例。透过自动化“软件交付”和“架构变更”的流程，来使得构建、测试、发布软件能够更加地快捷、频繁和可靠。</p>
 <p>&emsp;&emsp;自动化运维以及持续集成部署是Devops的核心思想，当你发现自己每天花费了大量的时间在等待程序<strong>打包/上传至服务器等</strong>过程中时，你就应该思考，是否需要将这些重复性的行为交给机器去做，来解放自己花费在这部分的时间。</p>
-<h2 id="我为何要引入Devops"><a href="#我为何要引入Devops" class="headerlink" title="我为何要引入Devops"></a><span>我为何要引入Devops</span></h2><h3 id="背景简介"><a href="#背景简介" class="headerlink" title="背景简介"></a><span>背景简介</span></h3><p>&emsp;&emsp;楼主是一个常年在二三线城市小公司漂泊的苦逼程序员，小公司的特性就是一人当三人使，一个人兼做开发测试加运维，公司采用敏捷开发模式，现有平台<strong>4套</strong>，大部分都是前后端分离的系统，由于功能调整的比较快导致部署演示的频次非常高，最多会出现一天部署<strong>10次</strong>左右，再加上ssh文件上传与webpack的打包程序的运行时间较长，最快的<strong>本地打包</strong>+<strong>ssh上传</strong>+<strong>启动远程运行脚本</strong>的流程走下来也得5min左右，所以光部署这一块花费的人力成本已经不可忽略了。</p>
-<h3 id="应用架构简介"><a href="#应用架构简介" class="headerlink" title="应用架构简介"></a><span>应用架构简介</span></h3><p>&emsp;&emsp;楼主公司的web应用主要采用SpringBoot+Vuejs前后端分离开发模式，打包后的应用由Nginx来动静内容分发，应用架构的详情可见我的另一篇博客<a href="/2019-02-23-server-front-separate/">前后端分离开发模式的实践总结</a>，源代码获取<a href="https://github.com/calebman/server-front-separate" target="_blank" rel="noopener">点击这里</a>，本文也将围绕着这个结构的工程来做自动化部署。</p>
-<h3 id="冲突与问题"><a href="#冲突与问题" class="headerlink" title="冲突与问题"></a><span>冲突与问题</span></h3><ul>
+<h2 id="我为何要引入Devops"><a href="#我为何要引入Devops" class="headerlink" title="我为何要引入Devops"></a>我为何要引入Devops</h2><h3 id="背景简介"><a href="#背景简介" class="headerlink" title="背景简介"></a>背景简介</h3><p>&emsp;&emsp;楼主是一个常年在二三线城市小公司漂泊的苦逼程序员，小公司的特性就是一人当三人使，一个人兼做开发测试加运维，公司采用敏捷开发模式，现有平台<strong>4套</strong>，大部分都是前后端分离的系统，由于功能调整的比较快导致部署演示的频次非常高，最多会出现一天部署<strong>10次</strong>左右，再加上ssh文件上传与webpack的打包程序的运行时间较长，最快的<strong>本地打包</strong>+<strong>ssh上传</strong>+<strong>启动远程运行脚本</strong>的流程走下来也得5min左右，所以光部署这一块花费的人力成本已经不可忽略了。</p>
+<h3 id="应用架构简介"><a href="#应用架构简介" class="headerlink" title="应用架构简介"></a>应用架构简介</h3><p>&emsp;&emsp;楼主公司的web应用主要采用SpringBoot+Vuejs前后端分离开发模式，打包后的应用由Nginx来动静内容分发，应用架构的详情可见我的另一篇博客<a href="/2019-02-23-server-front-separate/">前后端分离开发模式的实践总结</a>，源代码获取<a href="https://github.com/calebman/server-front-separate" target="_blank" rel="noopener">点击这里</a>，本文也将围绕着这个结构的工程来做自动化部署。</p>
+<h3 id="冲突与问题"><a href="#冲突与问题" class="headerlink" title="冲突与问题"></a>冲突与问题</h3><ul>
 <li>等待程序打包时间过长（特别是webpack的打包），大部分时间在等待，这件事在进行中也不好做别的事情</li>
 <li>重复性劳动过多，每次打包都是运行打包脚本，上传打包后的文件夹，运行远程启动脚本</li>
 <li>容易出错，假设现有的环境是两套（演示与生产），那么远端运行脚本需要根据环境的不同来传递不同的环境变量，人为错误极易发生</li>
 </ul>
-<h3 id="理想环境"><a href="#理想环境" class="headerlink" title="理想环境"></a><span>理想环境</span></h3><ul>
+<h3 id="理想环境"><a href="#理想环境" class="headerlink" title="理想环境"></a>理想环境</h3><ul>
 <li><strong>程序员</strong>提交代码至dev分支，此时触发演示环境的打包部署程序</li>
 <li><strong>技术老大</strong>提交代码至master分支，此时触发生产环境的打包部署程序</li>
 <li>打包成功/失败/中断通知到钉钉工作群</li>
 </ul>
-<h1 id="Devops实践"><a href="#Devops实践" class="headerlink" title="Devops实践"></a><span>Devops实践</span></h1><h2 id="Windows10环境搭建"><a href="#Windows10环境搭建" class="headerlink" title="Windows10环境搭建"></a><span>Windows10环境搭建</span></h2><ul>
+<h1 id="Devops实践"><a href="#Devops实践" class="headerlink" title="Devops实践"></a>Devops实践</h1><h2 id="Windows10环境搭建"><a href="#Windows10环境搭建" class="headerlink" title="Windows10环境搭建"></a>Windows10环境搭建</h2><ul>
 <li>java：<a href="https://www.cnblogs.com/smyhvae/p/3788534.html" target="_blank" rel="noopener">JDK开发环境搭建及环境变量配置</a></li>
 <li>tomcat：<a href="https://blog.csdn.net/haishu_zheng/article/details/50768272" target="_blank" rel="noopener">Windows安装和配置Tomcat</a></li>
 <li>git：<a href="https://www.jianshu.com/p/414ccd423efc" target="_blank" rel="noopener">Git安装教程</a></li>
@@ -233,12 +98,12 @@
   &lt;!-- 设置jenkins的工作目录 --&gt;
   &lt;Environment name=&quot;JENKINS_HOME&quot; value=&quot;C:/jenkins/&quot; type=&quot;java.lang.String&quot;/&gt;
 &lt;/Context&gt;</code></pre>
-<h2 id="CentOS7-3环境搭建"><a href="#CentOS7-3环境搭建" class="headerlink" title="CentOS7.3环境搭建"></a><span>CentOS7-3环境搭建</span></h2><p>&emsp;&emsp;在CentOS7下搭建jenkins和Windows环境差不多，jenkins是一个依赖于web容易的war包，所以只要有java与tomcat环境即可</p>
-<h3 id="git环境"><a href="#git环境" class="headerlink" title="git环境"></a><span>git环境</span></h3><pre><code class="bash"># 判断git是否已存在 打印内容则代表存在
+<h2 id="CentOS7-3环境搭建"><a href="#CentOS7-3环境搭建" class="headerlink" title="CentOS7.3环境搭建"></a>CentOS7.3环境搭建</h2><p>&emsp;&emsp;在CentOS7下搭建jenkins和Windows环境差不多，jenkins是一个依赖于web容易的war包，所以只要有java与tomcat环境即可</p>
+<h3 id="git环境"><a href="#git环境" class="headerlink" title="git环境"></a>git环境</h3><pre><code class="bash"># 判断git是否已存在 打印内容则代表存在
 git --version
 # 不存在则安装 出现complete说明安装成功
 yum install -y git</code></pre>
-<h3 id="jdk环境"><a href="#jdk环境" class="headerlink" title="jdk环境"></a><span>jdk环境</span></h3><ol>
+<h3 id="jdk环境"><a href="#jdk环境" class="headerlink" title="jdk环境"></a>jdk环境</h3><ol>
 <li>jdk1.8下载：<a href="https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" target="_blank" rel="noopener">点此下载</a></li>
 </ol>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jdk-downloads.png" alt></p>
@@ -264,7 +129,7 @@ export JAVA_HOME JRE_HOME PATH CLASSPATH
 source /etc/profile
 # 测试配置
 java -version</code></pre>
-<h3 id="tomcat环境"><a href="#tomcat环境" class="headerlink" title="tomcat环境"></a><span>tomcat环境</span></h3><ol>
+<h3 id="tomcat环境"><a href="#tomcat环境" class="headerlink" title="tomcat环境"></a>tomcat环境</h3><ol>
 <li>tomcat8下载：<a href="https://tomcat.apache.org/download-80.cgi" target="_blank" rel="noopener">点此下载</a></li>
 </ol>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-tomcat-downloads.png" alt></p>
@@ -320,7 +185,7 @@ service tomcat start
 netstat -nlp|grep 8080
 # 查看所有注册自启的服务
 chkconfig</code></pre>
-<h3 id="jenkins环境"><a href="#jenkins环境" class="headerlink" title="jenkins环境"></a><span>jenkins环境</span></h3><ol>
+<h3 id="jenkins环境"><a href="#jenkins环境" class="headerlink" title="jenkins环境"></a>jenkins环境</h3><ol>
 <li><p>jenkins下载：<a href="http://mirrors.jenkins-ci.org/war/latest/jenkins.war" target="_blank" rel="noopener">点此下载</a></p>
 </li>
 <li><p>配置</p>
@@ -348,7 +213,7 @@ sh bin/startup.sh
 cd /home/app/jenkins
 # 清空原先的工作空间 jenkins默认工作空间为 /root/.jenkins
 rm -rf /root/.jenkins</code></pre>
-<h2 id="配置Jenkins"><a href="#配置Jenkins" class="headerlink" title="配置Jenkins"></a><span>配置Jenkins</span></h2><h3 id="Jenkins的初始化"><a href="#Jenkins的初始化" class="headerlink" title="Jenkins的初始化"></a><span>Jenkins的初始化</span></h3><blockquote>
+<h2 id="配置Jenkins"><a href="#配置Jenkins" class="headerlink" title="配置Jenkins"></a>配置Jenkins</h2><h3 id="Jenkins的初始化"><a href="#Jenkins的初始化" class="headerlink" title="Jenkins的初始化"></a>Jenkins的初始化</h3><blockquote>
 <p>第一次进入jenkins时会要求使用初始密码解锁，按照提示操作就行了</p>
 </blockquote>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-init-password.png" alt></p>
@@ -373,14 +238,14 @@ rm -rf /root/.jenkins</code></pre>
 <p>所有配置完成后，成功进入系统</p>
 </blockquote>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-config-success.png" alt></p>
-<h3 id="Jenkins的环境配置"><a href="#Jenkins的环境配置" class="headerlink" title="Jenkins的环境配置"></a><span>Jenkins的环境配置</span></h3><h4 id="环境需求分析"><a href="#环境需求分析" class="headerlink" title="环境需求分析"></a><span>环境需求分析</span></h4><ol>
+<h3 id="Jenkins的环境配置"><a href="#Jenkins的环境配置" class="headerlink" title="Jenkins的环境配置"></a>Jenkins的环境配置</h3><h4 id="环境需求分析"><a href="#环境需求分析" class="headerlink" title="环境需求分析"></a>环境需求分析</h4><ol>
 <li>拉取远端master分支代码：<strong>Git插件</strong></li>
 <li>运行前端打包脚本：<strong>Nodejs环境</strong></li>
 <li>运行后端打包脚本：<strong>Java环境+Maven插件</strong></li>
 <li>推送装有构建代码的文件夹：<strong>SSH文件传输插件</strong> </li>
 <li>运行远程启动脚本：<strong>SSH脚本运行插件</strong></li>
 </ol>
-<h4 id="配置插件"><a href="#配置插件" class="headerlink" title="配置插件"></a><span>配置插件</span></h4><p>&emsp;&emsp;对应<strong>jenkins/系统管理/插件管理</strong>目录，根据上述的打包流程得出插件需求，在<a href="https://www.baidu.com" target="_blank" rel="noopener">baidu</a>/<a href="https://www.google.com" target="_blank" rel="noopener">google</a>搜索得到jenkins上对应的插件名称，选择并安装它们。</p>
+<h4 id="配置插件"><a href="#配置插件" class="headerlink" title="配置插件"></a>配置插件</h4><p>&emsp;&emsp;对应<strong>jenkins/系统管理/插件管理</strong>目录，根据上述的打包流程得出插件需求，在<a href="https://www.baidu.com" target="_blank" rel="noopener">baidu</a>/<a href="https://www.google.com" target="_blank" rel="noopener">google</a>搜索得到jenkins上对应的插件名称，选择并安装它们。</p>
 <ul>
 <li>插件的选择<ul>
 <li><strong>Publish Over SSH</strong>：基于SSH协议的文件上传插件</li>
@@ -397,7 +262,7 @@ rm -rf /root/.jenkins</code></pre>
 </li>
 </ul>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-plugin-manager-install.png" alt></p>
-<h4 id="配置全局工具"><a href="#配置全局工具" class="headerlink" title="配置全局工具"></a><span>配置全局工具</span></h4><p>&emsp;&emsp;对应<strong>jenkins/系统管理/全局工具配置</strong>目录，主要是配置打包所需的环境，如Java/Git/Maven等等，如果系统自带环境可以填写系统环境，如果没有可以采用jenkins自动安装的方式。</p>
+<h4 id="配置全局工具"><a href="#配置全局工具" class="headerlink" title="配置全局工具"></a>配置全局工具</h4><p>&emsp;&emsp;对应<strong>jenkins/系统管理/全局工具配置</strong>目录，主要是配置打包所需的环境，如Java/Git/Maven等等，如果系统自带环境可以填写系统环境，如果没有可以采用jenkins自动安装的方式。</p>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-global-tools-setting.png" alt></p>
 <ol>
 <li>JDK配置</li>
@@ -421,7 +286,7 @@ rm -rf /root/.jenkins</code></pre>
 <li>NodeJS配置</li>
 </ol>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-global-tools-setting-nodejs.png" alt></p>
-<h4 id="配置文件管理"><a href="#配置文件管理" class="headerlink" title="配置文件管理"></a><span>配置文件管理</span></h4><p>&emsp;&emsp;对应<strong>jenkins/系统管理/Managed files</strong>目录，主要是管理自定义的配置文件，如Maven的settings.xml，Npm的npmrc.config文件等等，我们在这主要配置一下Maven和Npm的仓库镜像，使其切换到国内的阿里云的Maven镜像和淘宝的Npm镜像。</p>
+<h4 id="配置文件管理"><a href="#配置文件管理" class="headerlink" title="配置文件管理"></a>配置文件管理</h4><p>&emsp;&emsp;对应<strong>jenkins/系统管理/Managed files</strong>目录，主要是管理自定义的配置文件，如Maven的settings.xml，Npm的npmrc.config文件等等，我们在这主要配置一下Maven和Npm的仓库镜像，使其切换到国内的阿里云的Maven镜像和淘宝的Npm镜像。</p>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-managed-files.png" alt></p>
 <ol>
 <li>Maven settings.xml</li>
@@ -440,9 +305,9 @@ rm -rf /root/.jenkins</code></pre>
 <p>&emsp;&emsp;新增Npm config file配置文件，修改registry的配置</p>
 <pre><code class="properties">registry=https://registry.npm.taobao.org</code></pre>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-managed-files-npm.png" alt></p>
-<h4 id="配置全局凭据"><a href="#配置全局凭据" class="headerlink" title="配置全局凭据"></a><span>配置全局凭据</span></h4><p>&emsp;&emsp;对应<strong>jenkins/凭据/系统/全局凭据</strong>目录，主要是用于添加如gitlab/ssh等受限访问应用的信任凭据。</p>
+<h4 id="配置全局凭据"><a href="#配置全局凭据" class="headerlink" title="配置全局凭据"></a>配置全局凭据</h4><p>&emsp;&emsp;对应<strong>jenkins/凭据/系统/全局凭据</strong>目录，主要是用于添加如gitlab/ssh等受限访问应用的信任凭据。</p>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-unrestricted-add.png" alt></p>
-<h4 id="其他配置"><a href="#其他配置" class="headerlink" title="其他配置"></a><span>其他配置</span></h4><ol>
+<h4 id="其他配置"><a href="#其他配置" class="headerlink" title="其他配置"></a>其他配置</h4><ol>
 <li><strong>Publish over SSH</strong>插件</li>
 </ol>
 <p>&emsp;&emsp;该插件的配置在<strong>jenkins/系统管理/系统设置</strong>目录，主要的配置如下：</p>
@@ -456,10 +321,10 @@ rm -rf /root/.jenkins</code></pre>
 <p>（2）在任务中配置通知<br><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-dingding-setting.png" alt></p>
 <p>&emsp;&emsp;通知效果如图，点击即可进入jenkins管理平台查看详情</p>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-dingding-notice.png" alt></p>
-<h3 id="Jenkins的任务配置"><a href="#Jenkins的任务配置" class="headerlink" title="Jenkins的任务配置"></a><span>Jenkins的任务配置</span></h3><p>&emsp;&emsp;至此基于一个前后端分离项目的自动打包配置已经基本完成，现在我们使用jenkins构建一个任务来测试配置是否成功，本次构建任务是基于我的一个开源模板项目<a href="https://github.com/calebman/server-front-separate.git" target="_blank" rel="noopener">server-front-separate</a>来进行。</p>
-<h4 id="新建任务"><a href="#新建任务" class="headerlink" title="新建任务"></a><span>新建任务</span></h4><p>&emsp;&emsp;进入jenkins根目录点击新建任务<br><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-new-task.png" alt></p>
+<h3 id="Jenkins的任务配置"><a href="#Jenkins的任务配置" class="headerlink" title="Jenkins的任务配置"></a>Jenkins的任务配置</h3><p>&emsp;&emsp;至此基于一个前后端分离项目的自动打包配置已经基本完成，现在我们使用jenkins构建一个任务来测试配置是否成功，本次构建任务是基于我的一个开源模板项目<a href="https://github.com/calebman/server-front-separate.git" target="_blank" rel="noopener">server-front-separate</a>来进行。</p>
+<h4 id="新建任务"><a href="#新建任务" class="headerlink" title="新建任务"></a>新建任务</h4><p>&emsp;&emsp;进入jenkins根目录点击新建任务<br><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-new-task.png" alt></p>
 <p>&emsp;&emsp;任务新建成功<br><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-task-list.png" alt></p>
-<h4 id="任务基础配置"><a href="#任务基础配置" class="headerlink" title="任务基础配置"></a><span>任务基础配置</span></h4><p>&emsp;&emsp;本次的基础配置我们需要达到任务能够自动化打包的效果，为达到此效果我们至少需要配置以下几项内容：</p>
+<h4 id="任务基础配置"><a href="#任务基础配置" class="headerlink" title="任务基础配置"></a>任务基础配置</h4><p>&emsp;&emsp;本次的基础配置我们需要达到任务能够自动化打包的效果，为达到此效果我们至少需要配置以下几项内容：</p>
 <ul>
 <li>源码管理</li>
 <li>构建环境</li>
@@ -495,12 +360,12 @@ npm run build</code></pre>
 </blockquote>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-task-build-node-windows.png" alt></p>
 <pre><code class="bash">cd front/ &amp; node -v &amp; npm -v &amp; npm i &amp;&amp; npm run build</code></pre>
-<h4 id="构建运行"><a href="#构建运行" class="headerlink" title="构建运行"></a><span>构建运行</span></h4><p>&emsp;&emsp;基础配置完成后，我们进入项目主页进行一次构建测试</p>
+<h4 id="构建运行"><a href="#构建运行" class="headerlink" title="构建运行"></a>构建运行</h4><p>&emsp;&emsp;基础配置完成后，我们进入项目主页进行一次构建测试</p>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-task-building.png" alt></p>
 <p>&emsp;&emsp;构建成功后进入任务的工作空间，可以查看到项目已经打包成功，项目的目录结构描述详见我的另一篇博客<a href="/2019-02-23-server-front-separate/">前后端分离开发模式的实践总结</a></p>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-task-build-success.png" alt></p>
-<h3 id="Jenkins任务自动化"><a href="#Jenkins任务自动化" class="headerlink" title="Jenkins任务自动化"></a><span>Jenkins任务自动化</span></h3><p>&emsp;&emsp;至此项目已经能够通过jenkins平台来进行打包操作了，但是这还远远没达到<strong>自动化</strong>的概念，我们的目标是通过<strong>git代码提交操作来触发构建</strong>并且<strong>自动部署</strong>到生产/演示服务器上，所以接下来进行自动化的配置工作</p>
-<h4 id="自动构建"><a href="#自动构建" class="headerlink" title="自动构建"></a><span>自动构建</span></h4><p>&emsp;&emsp;自动构建是指通过Git服务器的Webhooks来触发Jenkins的打包构建流程，在这里我们将实现以下流程：</p>
+<h3 id="Jenkins任务自动化"><a href="#Jenkins任务自动化" class="headerlink" title="Jenkins任务自动化"></a>Jenkins任务自动化</h3><p>&emsp;&emsp;至此项目已经能够通过jenkins平台来进行打包操作了，但是这还远远没达到<strong>自动化</strong>的概念，我们的目标是通过<strong>git代码提交操作来触发构建</strong>并且<strong>自动部署</strong>到生产/演示服务器上，所以接下来进行自动化的配置工作</p>
+<h4 id="自动构建"><a href="#自动构建" class="headerlink" title="自动构建"></a>自动构建</h4><p>&emsp;&emsp;自动构建是指通过Git服务器的Webhooks来触发Jenkins的打包构建流程，在这里我们将实现以下流程：</p>
 <ul>
 <li>更新代码至github项目的master分支</li>
 <li>jenkins开始构建代码</li>
@@ -511,7 +376,7 @@ npm run build</code></pre>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-github-add-webhook.png" alt></p>
 <p>&emsp;&emsp;当然，别忘记了在jenkins的任务中勾选Github hook触发构建</p>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-task-github-hook-setting.png" alt></p>
-<h4 id="自动部署"><a href="#自动部署" class="headerlink" title="自动部署"></a><span>自动部署</span></h4><p>&emsp;&emsp;自动部署是指在代码构建完成后将生成的发布代码推送到远程服务器中并启动它们，流程如下：</p>
+<h4 id="自动部署"><a href="#自动部署" class="headerlink" title="自动部署"></a>自动部署</h4><p>&emsp;&emsp;自动部署是指在代码构建完成后将生成的发布代码推送到远程服务器中并启动它们，流程如下：</p>
 <ul>
 <li>代码构建成功后上传打包目录</li>
 <li>运行远程脚本重启服务</li>
@@ -526,379 +391,68 @@ sed -i &#39;s/\r//&#39; $COMMAND_PATH/*.sh
 sh $COMMAND_PATH/stop.sh test
 # 启动服务
 sh $COMMAND_PATH/start.sh test</code></pre>
-<h4 id="构建通知"><a href="#构建通知" class="headerlink" title="构建通知"></a><span>构建通知</span></h4><p>&emsp;&emsp;在这里我们使用钉钉来做通知功能，钉钉通知的配置在上文已经介绍过了，通知的的类型有四种，我们需要哪种类型的通知直接勾选即可，四种通知类型正好对应jenkins任务构建的三种状态：</p>
+<h4 id="构建通知"><a href="#构建通知" class="headerlink" title="构建通知"></a>构建通知</h4><p>&emsp;&emsp;在这里我们使用钉钉来做通知功能，钉钉通知的配置在上文已经介绍过了，通知的的类型有四种，我们需要哪种类型的通知直接勾选即可，四种通知类型正好对应jenkins任务构建的三种状态：</p>
 <ul>
 <li>成功：构建步骤与构建后的操作全部成功，对应<strong>构建成功时通知</strong></li>
 <li>失败：构建步骤失败，对应<strong>构建失败时通知</strong></li>
 <li>不稳定：构建步骤成功但构建后的操作存在失败的情况，对应<strong>构建中断时通知</strong></li>
 </ul>
-<h3 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a><span>常见问题</span></h3><h4 id="中文乱码"><a href="#中文乱码" class="headerlink" title="中文乱码"></a><span>中文乱码</span></h4><p>&emsp;&emsp;在<strong>jenkins/系统管理/系统设置</strong>中添加全局属性：</p>
+<h3 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h3><h4 id="中文乱码"><a href="#中文乱码" class="headerlink" title="中文乱码"></a>中文乱码</h4><p>&emsp;&emsp;在<strong>jenkins/系统管理/系统设置</strong>中添加全局属性：</p>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-global-env-config.png" alt></p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a><span>参考资料</span></h1><ul>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
 <li><a href="https://blog.csdn.net/houyefeng/article/details/51027885" target="_blank" rel="noopener">Jenkins——应用篇——插件使用——Publish over SSH</a></li>
 <li><a href="https://blog.csdn.net/workdsz/article/details/77947183" target="_blank" rel="noopener">Jenkins 集成钉钉机器人</a></li>
 <li><a href="https://blog.csdn.net/ZZY1078689276/article/details/77839045" target="_blank" rel="noopener">Jenkins之解决乱码问题</a></li>
 <li><a href="https://blog.csdn.net/qq_21768483/article/details/80177920" target="_blank" rel="noopener">Jenkins与Github集成 webhook配置</a></li>
 </ul>
 
-        </div>
-        
-            <ul class="post-copyright">
-            <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2019-03-01-devops-practice/">前后端分离模式下的DevOps</a></li>
-            <li><strong>本文作者：</strong><a href="https://chenjianhui.site">JianhuiChen</a></li>
-            <li><strong>本文链接：</strong><a href="https://chenjianhui.site/2019-03-01-devops-practice/">https://chenjianhui.site/2019-03-01-devops-practice/</a></li>
-            <li><strong>发布时间：</strong>2019-03-01</li>
-            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
-            </li>
-            </ul>
-        
-        
-        <hr style="height:1px;margin:1rem 0">
-        <div class="level is-size-7 is-uppercase">
-            <div class="level-start">
-                <div class="level-item">
-                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
-                    <a class="has-link-grey -link" href="/tags/devops/">devops</a>,&nbsp;<a class="has-link-grey -link" href="/tags/jenkins/">jenkins</a>,&nbsp;<a class="has-link-grey -link" href="/tags/maven/">maven</a>,&nbsp;<a class="has-link-grey -link" href="/tags/nodejs/">nodejs</a>
-                </div>
-            </div>
-        </div>
-        
-        
-        
-    </div>
-</div>
+  </div>
+</article>
+<ul class="post-copyright">
+  <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2019-03-01-devops-practice/">前后端分离模式下的DevOps</a></li>
+  <li><strong>本文作者：</strong><a href="https://chenjianhui.site">JianhuiChen</a></li>
+  <li><strong>本文链接：</strong><a href="https://chenjianhui.site/2019-03-01-devops-practice/">https://chenjianhui.site/2019-03-01-devops-practice/</a></li>
+  <li><strong>发布时间：</strong>2019-03-01</li>
+  <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+<div id="gitalk-container"></div>
 
-
-
-
-
-<div class="card card-transparent">
-    <div class="level post-navigation is-flex-wrap is-mobile">
-        
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2019-03-07-blog-with-jenkins/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">我的博客可以自己部署啦</span>
-            </a>
-        </div>
-        
-        
-        <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2019-02-23-server-front-separate/">
-                <span class="level-item">前后端分离开发模式的实践总结</span>
-                <i class="level-item fas fa-chevron-right"></i>
-            </a>
-        </div>
-        
-    </div>
-</div>
-
-
-
-<div class="card">
-    <div class="card-content">
-        <h3 class="title is-5 has-text-weight-normal">评论</h3>
-        
-<div id="comment-container"></div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
-<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
-<script>
-    var gitalk = new Gitalk({
-        clientID: 'bd0cbb30da9c24da8c7c',
-        clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
-        id: '98ab46d225365f535eb3c09166d966c6',
-        repo: 'blog',
-        owner: 'calebman',
-        admin: "calebman"
-    })
-    gitalk.render('comment-container')
-</script>
-
-    </div>
-</div>
-
-<link rel="stylesheet" href="/css/article-nice.css">
+<!-- Gittalk.js -->
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
 <!-- Highlight.js -->
-<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<link rel="stylesheet" href="/css/hljs.css">
+<script src="/js/highlight.min.js"></script>
 <script>
-    hljs.initHighlightingOnLoad();
-</script></div>
-                
-                
-
-
-
-
-<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right is-sticky">
-    
-        
-<div class="card widget column-left is-sticky" id="toc">
-    <div class="card-content">
-        <div class="menu">
-            <h3 class="menu-label">
-                目录
-            </h3>
-            <ul class="menu-list"><li>
-        <a class="is-flex" href="#背景概述">
-        <span class="has-mr-6">1</span>
-        <span>背景概述</span>
-        </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#理解Devops">
-        <span class="has-mr-6">1.1</span>
-        <span>理解Devops</span>
-        </a></li><li>
-        <a class="is-flex" href="#我为何要引入Devops">
-        <span class="has-mr-6">1.2</span>
-        <span>我为何要引入Devops</span>
-        </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#背景简介">
-        <span class="has-mr-6">1.2.1</span>
-        <span>背景简介</span>
-        </a></li><li>
-        <a class="is-flex" href="#应用架构简介">
-        <span class="has-mr-6">1.2.2</span>
-        <span>应用架构简介</span>
-        </a></li><li>
-        <a class="is-flex" href="#冲突与问题">
-        <span class="has-mr-6">1.2.3</span>
-        <span>冲突与问题</span>
-        </a></li><li>
-        <a class="is-flex" href="#理想环境">
-        <span class="has-mr-6">1.2.4</span>
-        <span>理想环境</span>
-        </a></li></ul></li></ul></li><li>
-        <a class="is-flex" href="#Devops实践">
-        <span class="has-mr-6">2</span>
-        <span>Devops实践</span>
-        </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#Windows10环境搭建">
-        <span class="has-mr-6">2.1</span>
-        <span>Windows10环境搭建</span>
-        </a></li><li>
-        <a class="is-flex" href="#CentOS7-3环境搭建">
-        <span class="has-mr-6">2.2</span>
-        <span>CentOS7-3环境搭建</span>
-        </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#git环境">
-        <span class="has-mr-6">2.2.1</span>
-        <span>git环境</span>
-        </a></li><li>
-        <a class="is-flex" href="#jdk环境">
-        <span class="has-mr-6">2.2.2</span>
-        <span>jdk环境</span>
-        </a></li><li>
-        <a class="is-flex" href="#tomcat环境">
-        <span class="has-mr-6">2.2.3</span>
-        <span>tomcat环境</span>
-        </a></li><li>
-        <a class="is-flex" href="#jenkins环境">
-        <span class="has-mr-6">2.2.4</span>
-        <span>jenkins环境</span>
-        </a></li></ul></li><li>
-        <a class="is-flex" href="#配置Jenkins">
-        <span class="has-mr-6">2.3</span>
-        <span>配置Jenkins</span>
-        </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#Jenkins的初始化">
-        <span class="has-mr-6">2.3.1</span>
-        <span>Jenkins的初始化</span>
-        </a></li><li>
-        <a class="is-flex" href="#Jenkins的环境配置">
-        <span class="has-mr-6">2.3.2</span>
-        <span>Jenkins的环境配置</span>
-        </a></li><li>
-        <a class="is-flex" href="#Jenkins的任务配置">
-        <span class="has-mr-6">2.3.3</span>
-        <span>Jenkins的任务配置</span>
-        </a></li><li>
-        <a class="is-flex" href="#Jenkins任务自动化">
-        <span class="has-mr-6">2.3.4</span>
-        <span>Jenkins任务自动化</span>
-        </a></li><li>
-        <a class="is-flex" href="#常见问题">
-        <span class="has-mr-6">2.3.5</span>
-        <span>常见问题</span>
-        </a></li></ul></li></ul></li><li>
-        <a class="is-flex" href="#参考资料">
-        <span class="has-mr-6">3</span>
-        <span>参考资料</span>
-        </a></li></ul>
-        </div>
-    </div>
-</div>
-
-
-    
-    
-</div>
-
-            </div>
-        </div>
-    </section>
-    <footer class="footer">
-    <div class="container">
-        <div class="level">
-            <div class="level-start has-text-centered-mobile">
-                <p class="footer-logo is-block has-mb-6" href="/">
-                
-                    <img src="/images/logo.svg" alt="前后端分离模式下的DevOps" height="28">
-                
-                <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
-                </p>
-                <p class="is-size-7">
-                &copy; 2020 JianhuiChen&nbsp;
-                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
-                
-                </p>
-            </div>
-            <div class="level-end">
-            
-                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
-                
-                
-                <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
-                        
-                        <i class="fab fa-creative-commons"></i>&nbsp;<i class="fab fa-creative-commons-by"></i>&nbsp;<i class="fab fa-creative-commons-nc"></i>&nbsp;<i class="fab fa-creative-commons-sa"></i>&nbsp;
-                        
-                    </a>
-                </p>
-                
-                </div>
-            
-            </div>
-        </div>
-    </div>
-</footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
-<script>moment.locale("zh-CN");</script>
-
-
-    
-    
-    
-    <script src="/js/animation.js"></script>
-    
-
-    
-    
-    
-    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
-    <script src="/js/gallery.js" defer></script>
-    
-
-    
-    
-
-<div id="outdated">
-    <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
-            my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        outdatedBrowser({
-            bgColor: '#f25648',
-            color: '#ffffff',
-            lowerThan: 'flex'
-        });
-    });
+  hljs.initHighlightingOnLoad();
+  const gitalk = new Gitalk({
+    clientID: 'bd0cbb30da9c24da8c7c',
+    clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
+    repo: 'blog',
+    owner: 'calebman',
+    admin: ['calebman']
+  })
+  gitalk.render('gitalk-container')
 </script>
+  </main>
 
+  <footer class="footer">
+    <ul class="footer-links">
+      <section class="copyright">
+        <a href="https://chenjianhui.site">JianhuiChen</a> © 2017 - 2020 | 
+        <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
+      </section>
+    </ul>
+  </footer>
 
-    
-    
-<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    MathJax.Hub.Config({
-        'HTML-CSS': {
-            matchFontHeight: false
-        },
-        SVG: {
-            matchFontHeight: false
-        },
-        CommonHTML: {
-            matchFontHeight: false
-        },
-        tex2jax: {
-            inlineMath: [
-                ['$','$'],
-                ['\\(','\\)']
-            ]
-        }
-    });
-});
-</script>
+  
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/simple.js"></script>
+  
+  
 
-    
-    
-
-<a id="back-to-top" title="回到顶端" href="javascript:;">
-    <i class="fas fa-chevron-up"></i>
-</a>
-<script src="/js/back-to-top.js" defer></script>
-
-
-    
-    
-
-    
-    
-    
-    
-
-    
-    
-    
-    
-    
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
-    <script src="/js/clipboard.js" defer></script>
-    
-
-    
-    
-    
-
-
-<script src="/js/main.js" defer></script>
-
-    
-    <div class="searchbox ins-search">
-    <div class="searchbox-container ins-search-container">
-        <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
-            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
-        </div>
-        <div class="searchbox-result-wrapper ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
-</div>
-<script>
-    (function (window) {
-        var INSIGHT_CONFIG = {
-            TRANSLATION: {
-                POSTS: '文章',
-                PAGES: '页面',
-                CATEGORIES: '分类',
-                TAGS: '标签',
-                UNTITLED: '(无标题)',
-            },
-            CONTENT_URL: '/content.json',
-        };
-        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-    })(window);
-</script>
-<script src="/js/insight.js" defer></script>
-<link rel="stylesheet" href="/css/search.css">
-<link rel="stylesheet" href="/css/insight.css">
-    
 </body>
+
 </html>

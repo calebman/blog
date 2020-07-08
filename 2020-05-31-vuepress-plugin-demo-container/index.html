@@ -1,213 +1,74 @@
+
+
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
+
 <head><meta name="generator" content="Hexo 3.9.0">
-    <meta charset="utf-8">
-<title>使用 Vuepress 编写组件示例文档的最佳实践 - Sincerity</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-
-
-    <meta name="description" content="&amp;emsp;&amp;emsp;这篇文章面向使用 Vuepress 来开发 Vue 组件文档库的用户服务，去年差不多这个时候我为公司开发了一个基于 AntDesignVue 封装的高阶组件库，经过一年的版本迭代与文档更新，收获了很多坑点，其中有一个就是关于组件示例维护相关的，今年有意重构组件库的文档与代码结构，后面会陆陆续续将踩到的坑点与相应的解决方案一一描述，好的进入今天的主题：文档示例编写的最佳实践方">
-<meta name="keywords" content="vuejs,vuepress,plugin">
-<meta property="og:type" content="article">
-<meta property="og:title" content="使用 Vuepress 编写组件示例文档的最佳实践">
-<meta property="og:url" content="https://chenjianhui.site/2020-05-31-vuepress-plugin-demo-container/index.html">
-<meta property="og:site_name" content="Sincerity">
-<meta property="og:description" content="&amp;emsp;&amp;emsp;这篇文章面向使用 Vuepress 来开发 Vue 组件文档库的用户服务，去年差不多这个时候我为公司开发了一个基于 AntDesignVue 封装的高阶组件库，经过一年的版本迭代与文档更新，收获了很多坑点，其中有一个就是关于组件示例维护相关的，今年有意重构组件库的文档与代码结构，后面会陆陆续续将踩到的坑点与相应的解决方案一一描述，好的进入今天的主题：文档示例编写的最佳实践方">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://resources.chenjianhui.site/2020-05-31-home-pic.jpg">
-<meta property="og:updated_time" content="2020-07-08T02:46:41.183Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="使用 Vuepress 编写组件示例文档的最佳实践">
-<meta name="twitter:description" content="&amp;emsp;&amp;emsp;这篇文章面向使用 Vuepress 来开发 Vue 组件文档库的用户服务，去年差不多这个时候我为公司开发了一个基于 AntDesignVue 封装的高阶组件库，经过一年的版本迭代与文档更新，收获了很多坑点，其中有一个就是关于组件示例维护相关的，今年有意重构组件库的文档与代码结构，后面会陆陆续续将踩到的坑点与相应的解决方案一一描述，好的进入今天的主题：文档示例编写的最佳实践方">
-<meta name="twitter:image" content="https://resources.chenjianhui.site/2020-05-31-home-pic.jpg">
-
-
-
-
-
-<link rel="alternative" href="/atom.xml" title="使用 Vuepress 编写组件示例文档的最佳实践" type="application/atom+xml">
-
-
-
-<link rel="icon" href="/images/favicon-32x32.png">
-
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
-
-
-    
-    
-    
-    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
-    
-
-    
-    
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
-    
-
-    
-    
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
-
-
-    
-    
-    
-    
-
-<link rel="stylesheet" href="/css/back-to-top.css">
-
-
-    
-    
-
-    
-    
-    
-    
-<script>
-    (function(h,o,t,j,a,r){
-        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-        h._hjSettings={hjid:19960428,hjsv:6};
-        a=o.getElementsByTagName('head')[0];
-        r=o.createElement('script');r.async=1;
-        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-        a.appendChild(r);
-    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-</script>
-
-
-    
-    
-<link rel="stylesheet" href="/css/progressbar.css">
-<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
-
-    
-    
-    
-
-    
-    
-    
-
-
-<link rel="stylesheet" href="/css/style.css">
+  <meta charset="UTF-8">
+  <title>使用 Vuepress 编写组件示例文档的最佳实践 [ Sincerity ]</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="icon" href="/images/favicon-32x32.png">
+  
+  <!-- stylesheets list from _config.yml -->
+  
+  <link rel="stylesheet" href="/css/simple.css">
+  
+  <link rel="stylesheet" href="/css/font.css">
+  
+  
 </head>
-<body class="is-3-column">
-    <nav class="navbar navbar-main">
-    <div class="container">
-        <div class="navbar-brand is-flex-center">
-            <a class="navbar-item navbar-logo" href="/">
-            
-                <img src="/images/logo.svg" alt="使用 Vuepress 编写组件示例文档的最佳实践" height="28">
-            
-            </a>
-        </div>
-        <div class="navbar-menu">
-            
-            <div class="navbar-start">
-                
-                <a class="navbar-item" href="/">Home</a>
-                
-                <a class="navbar-item" href="/archives">Archives</a>
-                
-                <a class="navbar-item" href="/categories">Categories</a>
-                
-                <a class="navbar-item" href="/tags">Tags</a>
-                
-                <a class="navbar-item" href="/leetcode">LeetCode</a>
-                
-                <a class="navbar-item" href="/projects">Projects</a>
-                
-                <a class="navbar-item" href="/about">About</a>
-                
-            </div>
-            
-            <div class="navbar-end">
-                
-                    
-                    
-                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://github.com/calebman">
-                        
-                        <i class="fab fa-github"></i>
-                        
-                    </a>
-                    
-                
-                
-                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
-                    <i class="fas fa-list-ul"></i>
-                </a>
-                
-                
-                <a class="navbar-item search" title="搜索" href="javascript:;">
-                    <i class="fas fa-search"></i>
-                </a>
-                
-            </div>
-        </div>
-    </div>
-</nav>
-    
-    <section class="section">
-        <div class="container">
-            <div class="columns">
-                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
-    
-    <div class="card-image">
-        <span class="image is-7by1">
-            <img class="thumbnail" src="https://resources.chenjianhui.site/2020-05-31-home-pic.jpg" alt="使用 Vuepress 编写组件示例文档的最佳实践">
-        </span>
-    </div>
-    
-    <div class="card-content article ">
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <i class="fas fa-angle-double-right"></i>使用 Vuepress 编写组件示例文档的最佳实践
-            
-        </h1>
+
+<body>
+
+  <header class="header">
+    <nav class="nav">
+      <a href="/" class="nav-logo"><img src="/images/avatar.png" width="50" height="50" alt="Logo"></a>
+      <ul class="nav-links">
         
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-05-31T21:09:46.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-05-31</time>
-                
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-07-08T02:46:41.183Z"><i class="far fa-calendar-check">&nbsp;</i>2020-07-08</time>
-                
-                
-                <div class="level-item">
-                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
-                <a class="has-link-grey -link" href="/categories/前端/">前端</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    <i class="far fa-clock"></i>&nbsp;
-                    
-                    
-                    9 分钟 读完 (大约 1377 个字)
-                </span>
-                
-                
-            </div>
-        </div>
+        <li><a href="/">文章列表</a></li>
         
-        <div id="article-content" class="content">
-            <p>&emsp;&emsp;这篇文章面向使用 <code>Vuepress</code> 来开发 <code>Vue</code> 组件文档库的用户服务，去年差不多这个时候我为公司开发了一个基于 AntDesignVue 封装的高阶组件库，经过一年的版本迭代与文档更新，收获了很多坑点，其中有一个就是关于组件示例维护相关的，今年有意重构组件库的文档与代码结构，后面会陆陆续续将踩到的坑点与相应的解决方案一一描述，好的进入今天的主题：<strong>文档示例编写的最佳实践方案</strong>。</p>
+        <li><a href="/archives">归档</a></li>
+        
+        <li><a href="/leetcode">力扣</a></li>
+        
+        <li><a href="/about">关于我</a></li>
+        
+        <li><a href="https://github.com/calebman">Github</a></li>
+        
+      </ul>
+    </nav>
+  </header>
+
+  <main class="content">
+    <article class="article">
+  <h1 class="article-title">使用 Vuepress 编写组件示例文档的最佳实践</h1>
+  <span class="article-date">2020-05-31</span>
+  
+  
+  <a class="article-tag" href="/tags/vuejs">
+    vuejs
+  </a>
+  
+  <a class="article-tag" href="/tags/vuepress">
+    vuepress
+  </a>
+  
+  <a class="article-tag" href="/tags/plugin">
+    plugin
+  </a>
+  
+  
+
+  <div class="article-content">
+    <p>&emsp;&emsp;这篇文章面向使用 <code>Vuepress</code> 来开发 <code>Vue</code> 组件文档库的用户服务，去年差不多这个时候我为公司开发了一个基于 AntDesignVue 封装的高阶组件库，经过一年的版本迭代与文档更新，收获了很多坑点，其中有一个就是关于组件示例维护相关的，今年有意重构组件库的文档与代码结构，后面会陆陆续续将踩到的坑点与相应的解决方案一一描述，好的进入今天的主题：<strong>文档示例编写的最佳实践方案</strong>。</p>
 <a id="more"></a>
 
 <blockquote>
 <p>关于最佳实践方案我提供了一个插件 <a href="https://github.com/calebman/vuepress-plugin-demo-container" target="_blank" rel="noopener">vuepress-plugin-demo-container</a> 来统一解决，插件的具体介绍、示例与使用文档 <a href="https://docs.chenjianhui.site/vuepress-plugin-demo-container/zh/" target="_blank" rel="noopener">点此访问</a>。</p>
 </blockquote>
-<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a><span>前言</span></h1><h2 id="什么是组件示例文档？"><a href="#什么是组件示例文档？" class="headerlink" title="什么是组件示例文档？"></a><span>什么是组件示例文档？</span></h2><p>当你使用 Vue、React 或者其他语言编写了一个组件库，如 <a href="https://element.eleme.cn/2.0/#/zh-CN" target="_blank" rel="noopener">Element UI</a>、<a href="https://www.antdv.com/docs/vue/introduce-cn/" target="_blank" rel="noopener">Ant Design Vue</a> 或是像我一样基于它们开发的业务封装库，都需要使用文档来支撑，而使用文档必然会<strong>包含代码与示例</strong>，这部分就是组件示例文档。</p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><h2 id="什么是组件示例文档？"><a href="#什么是组件示例文档？" class="headerlink" title="什么是组件示例文档？"></a>什么是组件示例文档？</h2><p>当你使用 Vue、React 或者其他语言编写了一个组件库，如 <a href="https://element.eleme.cn/2.0/#/zh-CN" target="_blank" rel="noopener">Element UI</a>、<a href="https://www.antdv.com/docs/vue/introduce-cn/" target="_blank" rel="noopener">Ant Design Vue</a> 或是像我一样基于它们开发的业务封装库，都需要使用文档来支撑，而使用文档必然会<strong>包含代码与示例</strong>，这部分就是组件示例文档。</p>
 <p>举个例子，Element UI 的 <a href="https://element.eleme.cn/2.0/#/zh-CN/component/color-picker" target="_blank" rel="noopener">Color Picker</a> 组件文档，其中就包含了多份示例代码，假设我们现在完成了组件开发，需要使用 Vuepress 写一份和它一样的使用文档，该怎么做呢？</p>
-<h2 id="使用-Vuepress-构建组件示例文档"><a href="#使用-Vuepress-构建组件示例文档" class="headerlink" title="使用 Vuepress 构建组件示例文档"></a><span>使用-Vuepress-构建组件示例文档</span></h2><h3 id="方案一"><a href="#方案一" class="headerlink" title="方案一"></a><span>方案一</span></h3><p>熟悉 Vuepress 的同学应该不难想到解决方案，由于 Vuepress 支持在 Markdown 中编写符合 Vue 语法的代码，所以我们可以这么写：</p>
+<h2 id="使用-Vuepress-构建组件示例文档"><a href="#使用-Vuepress-构建组件示例文档" class="headerlink" title="使用 Vuepress 构建组件示例文档"></a>使用 Vuepress 构建组件示例文档</h2><h3 id="方案一"><a href="#方案一" class="headerlink" title="方案一"></a>方案一</h3><p>熟悉 Vuepress 的同学应该不难想到解决方案，由于 Vuepress 支持在 Markdown 中编写符合 Vue 语法的代码，所以我们可以这么写：</p>
 <pre><code class="html">## 示例展示
 &lt;template&gt;
   &lt;color-picker size=&quot;mini&quot;&gt;&lt;/color-picker&gt;
@@ -218,20 +79,20 @@
   &lt;color-picker size=&quot;mini&quot;&gt;&lt;/color-picker&gt;
 &lt;/template&gt;
 `` ` &lt;= 删除左侧空格</code></pre>
-<h3 id="方案二"><a href="#方案二" class="headerlink" title="方案二"></a><span>方案二</span></h3><p>如果示例中还包含 <code>export default {}</code> 代码块，我们可以借助 Vuepress 会自动注册 <code>components</code> 目录下组件的特性，或者通过 <code>enhanceApp.js</code> 钩子自己注册示例代码文件，然后使用 <code>&lt;&lt;&lt; @/filepath</code> 语法将示例代码文件引入，这部分操作的具体文档可以 <a href="https://vuepress.vuejs.org/zh/guide/markdown.html#%E5%AF%BC%E5%85%A5%E4%BB%A3%E7%A0%81%E6%AE%B5" target="_blank" rel="noopener">点此查看</a>，这么操作下来写法变成了这样：</p>
+<h3 id="方案二"><a href="#方案二" class="headerlink" title="方案二"></a>方案二</h3><p>如果示例中还包含 <code>export default {}</code> 代码块，我们可以借助 Vuepress 会自动注册 <code>components</code> 目录下组件的特性，或者通过 <code>enhanceApp.js</code> 钩子自己注册示例代码文件，然后使用 <code>&lt;&lt;&lt; @/filepath</code> 语法将示例代码文件引入，这部分操作的具体文档可以 <a href="https://vuepress.vuejs.org/zh/guide/markdown.html#%E5%AF%BC%E5%85%A5%E4%BB%A3%E7%A0%81%E6%AE%B5" target="_blank" rel="noopener">点此查看</a>，这么操作下来写法变成了这样：</p>
 <pre><code class="html">## 示例展示
 &lt;color-picker-basic-demo&gt;&lt;/color-picker-basic-demo&gt;
 ## 示例代码如下
 ```html
 &lt;&lt;&lt; @/docs/.vuepress/components/color-picker-basic-demo.vue
 `` ` &lt;= 删除左侧空格</code></pre>
-<h3 id="方案三"><a href="#方案三" class="headerlink" title="方案三"></a><span>方案三</span></h3><p>当然这么做还不太行，我们还想要和 Element UI 或者 Ant Design Vue 一样漂亮的示例代码块，示例部分有框框包起来，代码部分可以省略/展开并提供复制功能、在线编辑功能。这倒也不难，我们可以自己开发一个 <code>DemoBlock</code> 组件来包裹组件示例，结构和样式都可以开发成你自己喜欢的样子，这部分做完后写法变成了这样：</p>
+<h3 id="方案三"><a href="#方案三" class="headerlink" title="方案三"></a>方案三</h3><p>当然这么做还不太行，我们还想要和 Element UI 或者 Ant Design Vue 一样漂亮的示例代码块，示例部分有框框包起来，代码部分可以省略/展开并提供复制功能、在线编辑功能。这倒也不难，我们可以自己开发一个 <code>DemoBlock</code> 组件来包裹组件示例，结构和样式都可以开发成你自己喜欢的样子，这部分做完后写法变成了这样：</p>
 <pre><code class="html">&lt;demo-block source=&quot;&lt;color-picker size=\&quot;mini\&quot;&gt;&lt;/color-picker&gt;&quot;&gt;
   &lt;template slot=&quot;demo&quot;&gt;
     &lt;color-picker size=&quot;mini&quot;&gt;&lt;/color-picker&gt;
   &lt;/template&gt;
 &lt;/demo-block&gt;</code></pre>
-<h3 id="方案四"><a href="#方案四" class="headerlink" title="方案四"></a><span>方案四</span></h3><p>你会发现 <code>&lt;&lt;&lt; @/filepath</code> 语法在组件内就不好使了，示例和代码得写两遍才行，而且代码还得作为一个 <code>String</code> 传递进去，那有没有办法在上述的实现基础上不写两边示例代码呢？</p>
+<h3 id="方案四"><a href="#方案四" class="headerlink" title="方案四"></a>方案四</h3><p>你会发现 <code>&lt;&lt;&lt; @/filepath</code> 语法在组件内就不好使了，示例和代码得写两遍才行，而且代码还得作为一个 <code>String</code> 传递进去，那有没有办法在上述的实现基础上不写两边示例代码呢？</p>
 <p><strong>办法当然是有的，程序员的智慧是无穷的</strong>，<a href="https://github.com/vuepress-reco/vuepress-plugin-extract-code" target="_blank" rel="noopener">vuepress-plugin-extract-code</a> 这个插件给了解决方案，它手动解析了组件内的 <code>&lt;&lt;&lt; @/filepath</code> 语法并将其转换成了代码文本，使用这个插件后写法变成了这样：</p>
 <pre><code class="html">&lt;reco-demo&gt;
   &lt;color-picker-basic-demo slot=&quot;demo&quot;&gt;&lt;/color-picker-basic-demo&gt;
@@ -239,7 +100,7 @@
     &lt;&lt;&lt; @/docs/.vuepress/components/color-picker-basic-demo.vue
   &lt;/template&gt;
 &lt;/reco-demo&gt;</code></pre>
-<h3 id="方案-Element-UI"><a href="#方案-Element-UI" class="headerlink" title="方案 Element UI"></a><span>方案-Element-UI</span></h3><p>到这里我们已经演变了四个版本，暂停一下我们去看看 Element UI 的组件文档是怎么编写的，<a href="https://github.com/ElemeFE/element/blob/dev/examples/docs/zh-CN/color-picker.md" target="_blank" rel="noopener">点此查看 Color Picker 的文档</a>，不想点的直接看下方示例：</p>
+<h3 id="方案-Element-UI"><a href="#方案-Element-UI" class="headerlink" title="方案 Element UI"></a>方案 Element UI</h3><p>到这里我们已经演变了四个版本，暂停一下我们去看看 Element UI 的组件文档是怎么编写的，<a href="https://github.com/ElemeFE/element/blob/dev/examples/docs/zh-CN/color-picker.md" target="_blank" rel="noopener">点此查看 Color Picker 的文档</a>，不想点的直接看下方示例：</p>
 <pre><code class="html">::: demo 使用 v-model 与 Vue 实例中的一个变量进行双向绑定，绑定的变量需要是字符串类型。
 ``` html
 &lt;template&gt;
@@ -263,323 +124,56 @@
 <li><strong>不复杂的示例可以直接写在 Markdown 中编写，不需要每个示例都建一个文件</strong></li>
 </ol>
 <p>而对比方案四的好处就在于第2点，相比之下后者有更高的灵活度，而方案四需要每个示例都建一个 Vue 文件并且被 Vuepress 全局引入。</p>
-<h2 id="如何实现？"><a href="#如何实现？" class="headerlink" title="如何实现？"></a><span>如何实现？</span></h2><p><a href="https://github.com/calebman/vuepress-plugin-demo-container" target="_blank" rel="noopener">vuepress-plugin-demo-container</a> 已经实现了上述最佳方案，在 Vuepress 中引入该插件即可获得想要的效果，关于该插件的介绍可以 <a href="https://docs.chenjianhui.site/vuepress-plugin-demo-container/zh/" target="_blank" rel="noopener">点此查看</a>，文档提供了<strong>它的工作原理、渲染效果、与插件比较及使用方式</strong>等描述，在这里我就不再赘述了，如果有建议或疑问可以通过或者评论或者 <a href="https://github.com/calebman/vuepress-plugin-demo-container/issues" target="_blank" rel="noopener">Issus</a> 提供给我，我将尽力解答。</p>
-<h1 id="关于公众号"><a href="#关于公众号" class="headerlink" title="关于公众号"></a><span>关于公众号</span></h1><p><img src="https://resources.chenjianhui.site/wechat-qrcode.png" alt></p>
+<h2 id="如何实现？"><a href="#如何实现？" class="headerlink" title="如何实现？"></a>如何实现？</h2><p><a href="https://github.com/calebman/vuepress-plugin-demo-container" target="_blank" rel="noopener">vuepress-plugin-demo-container</a> 已经实现了上述最佳方案，在 Vuepress 中引入该插件即可获得想要的效果，关于该插件的介绍可以 <a href="https://docs.chenjianhui.site/vuepress-plugin-demo-container/zh/" target="_blank" rel="noopener">点此查看</a>，文档提供了<strong>它的工作原理、渲染效果、与插件比较及使用方式</strong>等描述，在这里我就不再赘述了，如果有建议或疑问可以通过或者评论或者 <a href="https://github.com/calebman/vuepress-plugin-demo-container/issues" target="_blank" rel="noopener">Issus</a> 提供给我，我将尽力解答。</p>
+<h1 id="关于公众号"><a href="#关于公众号" class="headerlink" title="关于公众号"></a>关于公众号</h1><p><img src="https://resources.chenjianhui.site/wechat-qrcode.png" alt></p>
 
-        </div>
-        
-            <ul class="post-copyright">
-            <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2020-05-31-vuepress-plugin-demo-container/">使用 Vuepress 编写组件示例文档的最佳实践</a></li>
-            <li><strong>本文作者：</strong><a href="https://chenjianhui.site">JianhuiChen</a></li>
-            <li><strong>本文链接：</strong><a href="https://chenjianhui.site/2020-05-31-vuepress-plugin-demo-container/">https://chenjianhui.site/2020-05-31-vuepress-plugin-demo-container/</a></li>
-            <li><strong>发布时间：</strong>2020-05-31</li>
-            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
-            </li>
-            </ul>
-        
-        
-        <hr style="height:1px;margin:1rem 0">
-        <div class="level is-size-7 is-uppercase">
-            <div class="level-start">
-                <div class="level-item">
-                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
-                    <a class="has-link-grey -link" href="/tags/plugin/">plugin</a>,&nbsp;<a class="has-link-grey -link" href="/tags/vuejs/">vuejs</a>,&nbsp;<a class="has-link-grey -link" href="/tags/vuepress/">vuepress</a>
-                </div>
-            </div>
-        </div>
-        
-        
-        
-    </div>
-</div>
+  </div>
+</article>
+<ul class="post-copyright">
+  <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2020-05-31-vuepress-plugin-demo-container/">使用 Vuepress 编写组件示例文档的最佳实践</a></li>
+  <li><strong>本文作者：</strong><a href="https://chenjianhui.site">JianhuiChen</a></li>
+  <li><strong>本文链接：</strong><a href="https://chenjianhui.site/2020-05-31-vuepress-plugin-demo-container/">https://chenjianhui.site/2020-05-31-vuepress-plugin-demo-container/</a></li>
+  <li><strong>发布时间：</strong>2020-05-31</li>
+  <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+<div id="gitalk-container"></div>
 
-
-
-
-
-<div class="card card-transparent">
-    <div class="level post-navigation is-flex-wrap is-mobile">
-        
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2020-06-23-upgrade-openssh7.7p1-centos6/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">CentOS 6.5 升级 OpenSSH 服务</span>
-            </a>
-        </div>
-        
-        
-        <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2020-01-09-spring-transaction/">
-                <span class="level-item">多数据源下SpringTransaction的探究</span>
-                <i class="level-item fas fa-chevron-right"></i>
-            </a>
-        </div>
-        
-    </div>
-</div>
-
-
-
-<div class="card">
-    <div class="card-content">
-        <h3 class="title is-5 has-text-weight-normal">评论</h3>
-        
-<div id="comment-container"></div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
-<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
-<script>
-    var gitalk = new Gitalk({
-        clientID: 'bd0cbb30da9c24da8c7c',
-        clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
-        id: 'e04761e20a6d57943cceaf5f89e509c5',
-        repo: 'blog',
-        owner: 'calebman',
-        admin: "calebman"
-    })
-    gitalk.render('comment-container')
-</script>
-
-    </div>
-</div>
-
-<link rel="stylesheet" href="/css/article-nice.css">
+<!-- Gittalk.js -->
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
 <!-- Highlight.js -->
-<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<link rel="stylesheet" href="/css/hljs.css">
+<script src="/js/highlight.min.js"></script>
 <script>
-    hljs.initHighlightingOnLoad();
-</script></div>
-                
-                
-
-
-
-
-<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right is-sticky">
-    
-        
-<div class="card widget column-left is-sticky" id="toc">
-    <div class="card-content">
-        <div class="menu">
-            <h3 class="menu-label">
-                目录
-            </h3>
-            <ul class="menu-list"><li>
-        <a class="is-flex" href="#前言">
-        <span class="has-mr-6">1</span>
-        <span>前言</span>
-        </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#什么是组件示例文档？">
-        <span class="has-mr-6">1.1</span>
-        <span>什么是组件示例文档？</span>
-        </a></li><li>
-        <a class="is-flex" href="#使用-Vuepress-构建组件示例文档">
-        <span class="has-mr-6">1.2</span>
-        <span>使用-Vuepress-构建组件示例文档</span>
-        </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#方案一">
-        <span class="has-mr-6">1.2.1</span>
-        <span>方案一</span>
-        </a></li><li>
-        <a class="is-flex" href="#方案二">
-        <span class="has-mr-6">1.2.2</span>
-        <span>方案二</span>
-        </a></li><li>
-        <a class="is-flex" href="#方案三">
-        <span class="has-mr-6">1.2.3</span>
-        <span>方案三</span>
-        </a></li><li>
-        <a class="is-flex" href="#方案四">
-        <span class="has-mr-6">1.2.4</span>
-        <span>方案四</span>
-        </a></li><li>
-        <a class="is-flex" href="#方案-Element-UI">
-        <span class="has-mr-6">1.2.5</span>
-        <span>方案-Element-UI</span>
-        </a></li></ul></li><li>
-        <a class="is-flex" href="#如何实现？">
-        <span class="has-mr-6">1.3</span>
-        <span>如何实现？</span>
-        </a></li></ul></li><li>
-        <a class="is-flex" href="#关于公众号">
-        <span class="has-mr-6">2</span>
-        <span>关于公众号</span>
-        </a></li></ul>
-        </div>
-    </div>
-</div>
-
-
-    
-    
-</div>
-
-            </div>
-        </div>
-    </section>
-    <footer class="footer">
-    <div class="container">
-        <div class="level">
-            <div class="level-start has-text-centered-mobile">
-                <p class="footer-logo is-block has-mb-6" href="/">
-                
-                    <img src="/images/logo.svg" alt="使用 Vuepress 编写组件示例文档的最佳实践" height="28">
-                
-                <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
-                </p>
-                <p class="is-size-7">
-                &copy; 2020 JianhuiChen&nbsp;
-                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
-                
-                </p>
-            </div>
-            <div class="level-end">
-            
-                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
-                
-                
-                <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
-                        
-                        <i class="fab fa-creative-commons"></i>&nbsp;<i class="fab fa-creative-commons-by"></i>&nbsp;<i class="fab fa-creative-commons-nc"></i>&nbsp;<i class="fab fa-creative-commons-sa"></i>&nbsp;
-                        
-                    </a>
-                </p>
-                
-                </div>
-            
-            </div>
-        </div>
-    </div>
-</footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
-<script>moment.locale("zh-CN");</script>
-
-
-    
-    
-    
-    <script src="/js/animation.js"></script>
-    
-
-    
-    
-    
-    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
-    <script src="/js/gallery.js" defer></script>
-    
-
-    
-    
-
-<div id="outdated">
-    <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
-            my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        outdatedBrowser({
-            bgColor: '#f25648',
-            color: '#ffffff',
-            lowerThan: 'flex'
-        });
-    });
+  hljs.initHighlightingOnLoad();
+  const gitalk = new Gitalk({
+    clientID: 'bd0cbb30da9c24da8c7c',
+    clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
+    repo: 'blog',
+    owner: 'calebman',
+    admin: ['calebman']
+  })
+  gitalk.render('gitalk-container')
 </script>
+  </main>
 
+  <footer class="footer">
+    <ul class="footer-links">
+      <section class="copyright">
+        <a href="https://chenjianhui.site">JianhuiChen</a> © 2017 - 2020 | 
+        <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
+      </section>
+    </ul>
+  </footer>
 
-    
-    
-<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    MathJax.Hub.Config({
-        'HTML-CSS': {
-            matchFontHeight: false
-        },
-        SVG: {
-            matchFontHeight: false
-        },
-        CommonHTML: {
-            matchFontHeight: false
-        },
-        tex2jax: {
-            inlineMath: [
-                ['$','$'],
-                ['\\(','\\)']
-            ]
-        }
-    });
-});
-</script>
+  
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/simple.js"></script>
+  
+  
 
-    
-    
-
-<a id="back-to-top" title="回到顶端" href="javascript:;">
-    <i class="fas fa-chevron-up"></i>
-</a>
-<script src="/js/back-to-top.js" defer></script>
-
-
-    
-    
-
-    
-    
-    
-    
-
-    
-    
-    
-    
-    
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
-    <script src="/js/clipboard.js" defer></script>
-    
-
-    
-    
-    
-
-
-<script src="/js/main.js" defer></script>
-
-    
-    <div class="searchbox ins-search">
-    <div class="searchbox-container ins-search-container">
-        <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
-            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
-        </div>
-        <div class="searchbox-result-wrapper ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
-</div>
-<script>
-    (function (window) {
-        var INSIGHT_CONFIG = {
-            TRANSLATION: {
-                POSTS: '文章',
-                PAGES: '页面',
-                CATEGORIES: '分类',
-                TAGS: '标签',
-                UNTITLED: '(无标题)',
-            },
-            CONTENT_URL: '/content.json',
-        };
-        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-    })(window);
-</script>
-<script src="/js/insight.js" defer></script>
-<link rel="stylesheet" href="/css/search.css">
-<link rel="stylesheet" href="/css/insight.css">
-    
 </body>
+
 </html>

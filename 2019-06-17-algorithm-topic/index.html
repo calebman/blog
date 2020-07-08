@@ -1,210 +1,67 @@
+
+
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
+
 <head><meta name="generator" content="Hexo 3.9.0">
-    <meta charset="utf-8">
-<title>算法——24点游戏 - Sincerity</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-
-
-    <meta name="description" content="&amp;emsp;&amp;emsp;给定四个1-10的正整数，可以进行+ - * / 四种运算，每个数字只能用一次，任意组合构造表达式使结果为24，要找出所有可能的组合？">
-<meta name="keywords" content="Algorithm,Java">
-<meta property="og:type" content="article">
-<meta property="og:title" content="算法——24点游戏">
-<meta property="og:url" content="https://chenjianhui.site/2019-06-17-algorithm-topic/index.html">
-<meta property="og:site_name" content="Sincerity">
-<meta property="og:description" content="&amp;emsp;&amp;emsp;给定四个1-10的正整数，可以进行+ - * / 四种运算，每个数字只能用一次，任意组合构造表达式使结果为24，要找出所有可能的组合？">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://resources.chenjianhui.site/algorithm-home-pic.jpeg">
-<meta property="og:updated_time" content="2020-07-08T02:46:41.179Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="算法——24点游戏">
-<meta name="twitter:description" content="&amp;emsp;&amp;emsp;给定四个1-10的正整数，可以进行+ - * / 四种运算，每个数字只能用一次，任意组合构造表达式使结果为24，要找出所有可能的组合？">
-<meta name="twitter:image" content="https://resources.chenjianhui.site/algorithm-home-pic.jpeg">
-
-
-
-
-
-<link rel="alternative" href="/atom.xml" title="算法——24点游戏" type="application/atom+xml">
-
-
-
-<link rel="icon" href="/images/favicon-32x32.png">
-
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
-
-
-    
-    
-    
-    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
-    
-
-    
-    
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
-    
-
-    
-    
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
-
-
-    
-    
-    
-    
-
-<link rel="stylesheet" href="/css/back-to-top.css">
-
-
-    
-    
-
-    
-    
-    
-    
-<script>
-    (function(h,o,t,j,a,r){
-        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-        h._hjSettings={hjid:19960428,hjsv:6};
-        a=o.getElementsByTagName('head')[0];
-        r=o.createElement('script');r.async=1;
-        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-        a.appendChild(r);
-    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-</script>
-
-
-    
-    
-<link rel="stylesheet" href="/css/progressbar.css">
-<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
-
-    
-    
-    
-
-    
-    
-    
-
-
-<link rel="stylesheet" href="/css/style.css">
+  <meta charset="UTF-8">
+  <title>算法——24点游戏 [ Sincerity ]</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="icon" href="/images/favicon-32x32.png">
+  
+  <!-- stylesheets list from _config.yml -->
+  
+  <link rel="stylesheet" href="/css/simple.css">
+  
+  <link rel="stylesheet" href="/css/font.css">
+  
+  
 </head>
-<body class="is-3-column">
-    <nav class="navbar navbar-main">
-    <div class="container">
-        <div class="navbar-brand is-flex-center">
-            <a class="navbar-item navbar-logo" href="/">
-            
-                <img src="/images/logo.svg" alt="算法——24点游戏" height="28">
-            
-            </a>
-        </div>
-        <div class="navbar-menu">
-            
-            <div class="navbar-start">
-                
-                <a class="navbar-item" href="/">Home</a>
-                
-                <a class="navbar-item" href="/archives">Archives</a>
-                
-                <a class="navbar-item" href="/categories">Categories</a>
-                
-                <a class="navbar-item" href="/tags">Tags</a>
-                
-                <a class="navbar-item" href="/leetcode">LeetCode</a>
-                
-                <a class="navbar-item" href="/projects">Projects</a>
-                
-                <a class="navbar-item" href="/about">About</a>
-                
-            </div>
-            
-            <div class="navbar-end">
-                
-                    
-                    
-                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://github.com/calebman">
-                        
-                        <i class="fab fa-github"></i>
-                        
-                    </a>
-                    
-                
-                
-                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
-                    <i class="fas fa-list-ul"></i>
-                </a>
-                
-                
-                <a class="navbar-item search" title="搜索" href="javascript:;">
-                    <i class="fas fa-search"></i>
-                </a>
-                
-            </div>
-        </div>
-    </div>
-</nav>
-    
-    <section class="section">
-        <div class="container">
-            <div class="columns">
-                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
-    
-    <div class="card-image">
-        <span class="image is-7by1">
-            <img class="thumbnail" src="https://resources.chenjianhui.site/algorithm-home-pic.jpeg" alt="算法——24点游戏">
-        </span>
-    </div>
-    
-    <div class="card-content article ">
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <i class="fas fa-angle-double-right"></i>算法——24点游戏
-            
-        </h1>
+
+<body>
+
+  <header class="header">
+    <nav class="nav">
+      <a href="/" class="nav-logo"><img src="/images/avatar.png" width="50" height="50" alt="Logo"></a>
+      <ul class="nav-links">
         
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-06-17T21:47:06.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-06-17</time>
-                
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-07-08T02:46:41.179Z"><i class="far fa-calendar-check">&nbsp;</i>2020-07-08</time>
-                
-                
-                <div class="level-item">
-                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
-                <a class="has-link-grey -link" href="/categories/Algorithm/">Algorithm</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    <i class="far fa-clock"></i>&nbsp;
-                    
-                    
-                    9 分钟 读完 (大约 1301 个字)
-                </span>
-                
-                
-            </div>
-        </div>
+        <li><a href="/">文章列表</a></li>
         
-        <div id="article-content" class="content">
-            <p>&emsp;&emsp;给定四个1-10的正整数，可以进行+ - * / 四种运算，每个数字只能用一次，任意组合构造表达式使结果为24，要找出所有可能的组合？</p>
+        <li><a href="/archives">归档</a></li>
+        
+        <li><a href="/leetcode">力扣</a></li>
+        
+        <li><a href="/about">关于我</a></li>
+        
+        <li><a href="https://github.com/calebman">Github</a></li>
+        
+      </ul>
+    </nav>
+  </header>
+
+  <main class="content">
+    <article class="article">
+  <h1 class="article-title">算法——24点游戏</h1>
+  <span class="article-date">2019-06-17</span>
+  
+  
+  <a class="article-tag" href="/tags/Algorithm">
+    Algorithm
+  </a>
+  
+  <a class="article-tag" href="/tags/Java">
+    Java
+  </a>
+  
+  
+
+  <div class="article-content">
+    <p>&emsp;&emsp;给定四个1-10的正整数，可以进行+ - * / 四种运算，每个数字只能用一次，任意组合构造表达式使结果为24，要找出所有可能的组合？</p>
 <a id="more"></a>
 
-<h1 id="解题思考"><a href="#解题思考" class="headerlink" title="解题思考"></a><span>解题思考</span></h1><p>&emsp;&emsp;初拿到题目最先想到的就是穷举法了，我们先假设四个数字为A、B、C、D，然后穷举所有的可能性，简单算一下可以得到一共有<strong>4! * 4^3 = 1536</strong>种可能性，如下图所示：</p>
+<h1 id="解题思考"><a href="#解题思考" class="headerlink" title="解题思考"></a>解题思考</h1><p>&emsp;&emsp;初拿到题目最先想到的就是穷举法了，我们先假设四个数字为A、B、C、D，然后穷举所有的可能性，简单算一下可以得到一共有<strong>4! * 4^3 = 1536</strong>种可能性，如下图所示：</p>
 <p><img src="https://resources.chenjianhui.site/2019-06-17-24game-tree.jpg" alt></p>
-<h1 id="DFS解法"><a href="#DFS解法" class="headerlink" title="DFS解法"></a><span>DFS解法</span></h1><p>&emsp;&emsp;DFS是<strong>Depth-First search 深度优先搜索</strong>的简称，与其对应的还有BFS(<strong>Breadth-First-Search 广度优先搜索</strong>)，在这里我们使用递归的方式深度优先遍历搜索树找到所有可能性，然后根据得出的算术表达式（如1+2+3*4）计算并判断筛选出计算结果为24的组合，代码如下：</p>
+<h1 id="DFS解法"><a href="#DFS解法" class="headerlink" title="DFS解法"></a>DFS解法</h1><p>&emsp;&emsp;DFS是<strong>Depth-First search 深度优先搜索</strong>的简称，与其对应的还有BFS(<strong>Breadth-First-Search 广度优先搜索</strong>)，在这里我们使用递归的方式深度优先遍历搜索树找到所有可能性，然后根据得出的算术表达式（如1+2+3*4）计算并判断筛选出计算结果为24的组合，代码如下：</p>
 <pre><code class="java">import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -433,299 +290,56 @@ public class Count24 {
 4+8+6*2
 4*6+2/8
 4*8-2-6
-...</code></pre><h1 id="优化思路"><a href="#优化思路" class="headerlink" title="优化思路"></a><span>优化思路</span></h1><p>&emsp;&emsp;上述算法做了很多的重复计算，众所周知，加法和乘法是满足交换律的，所以如<code>1*2*3*4</code>这类组合任意排列所得的计算结果都是相同的，针对这部分我们可以如<a href="/2019-06-13-algorithm-topic/">爬楼梯问题的备忘录算法</a>缓存计算结果，防止重复计算。</p>
-<h1 id="题目拓展，添加优先级"><a href="#题目拓展，添加优先级" class="headerlink" title="题目拓展，添加优先级"></a><span>题目拓展，添加优先级</span></h1><p>&emsp;&emsp;我们简单的将上述的24点游戏扩展一下，除了数字和运算符我们再加上括号的选择，这个时候有多少种情况？代码该如何变更？其实简单想想加上括号即让任意组合如ABCD又演变出了五种加括号的方式<code>((AB)C)D、(A(BC))D、(AB)(CD)、A(((BC)D)、A(B(CD))</code>，然后根据括号运算搜索出正确答案即可，有兴趣的同学可以修改上述代码完成该题。</p>
+...</code></pre><h1 id="优化思路"><a href="#优化思路" class="headerlink" title="优化思路"></a>优化思路</h1><p>&emsp;&emsp;上述算法做了很多的重复计算，众所周知，加法和乘法是满足交换律的，所以如<code>1*2*3*4</code>这类组合任意排列所得的计算结果都是相同的，针对这部分我们可以如<a href="/2019-06-13-algorithm-topic/">爬楼梯问题的备忘录算法</a>缓存计算结果，防止重复计算。</p>
+<h1 id="题目拓展，添加优先级"><a href="#题目拓展，添加优先级" class="headerlink" title="题目拓展，添加优先级"></a>题目拓展，添加优先级</h1><p>&emsp;&emsp;我们简单的将上述的24点游戏扩展一下，除了数字和运算符我们再加上括号的选择，这个时候有多少种情况？代码该如何变更？其实简单想想加上括号即让任意组合如ABCD又演变出了五种加括号的方式<code>((AB)C)D、(A(BC))D、(AB)(CD)、A(((BC)D)、A(B(CD))</code>，然后根据括号运算搜索出正确答案即可，有兴趣的同学可以修改上述代码完成该题。</p>
 
-        </div>
-        
-            <ul class="post-copyright">
-            <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2019-06-17-algorithm-topic/">算法——24点游戏</a></li>
-            <li><strong>本文作者：</strong><a href="https://chenjianhui.site">JianhuiChen</a></li>
-            <li><strong>本文链接：</strong><a href="https://chenjianhui.site/2019-06-17-algorithm-topic/">https://chenjianhui.site/2019-06-17-algorithm-topic/</a></li>
-            <li><strong>发布时间：</strong>2019-06-17</li>
-            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
-            </li>
-            </ul>
-        
-        
-        <hr style="height:1px;margin:1rem 0">
-        <div class="level is-size-7 is-uppercase">
-            <div class="level-start">
-                <div class="level-item">
-                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
-                    <a class="has-link-grey -link" href="/tags/Algorithm/">Algorithm</a>,&nbsp;<a class="has-link-grey -link" href="/tags/Java/">Java</a>
-                </div>
-            </div>
-        </div>
-        
-        
-        
-    </div>
-</div>
+  </div>
+</article>
+<ul class="post-copyright">
+  <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2019-06-17-algorithm-topic/">算法——24点游戏</a></li>
+  <li><strong>本文作者：</strong><a href="https://chenjianhui.site">JianhuiChen</a></li>
+  <li><strong>本文链接：</strong><a href="https://chenjianhui.site/2019-06-17-algorithm-topic/">https://chenjianhui.site/2019-06-17-algorithm-topic/</a></li>
+  <li><strong>发布时间：</strong>2019-06-17</li>
+  <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+<div id="gitalk-container"></div>
 
-
-
-
-
-<div class="card card-transparent">
-    <div class="level post-navigation is-flex-wrap is-mobile">
-        
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2019-06-20-algorithm-topic/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">算法——猫鼠游戏</span>
-            </a>
-        </div>
-        
-        
-        <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2019-06-13-algorithm-topic/">
-                <span class="level-item">算法——爬楼梯问题</span>
-                <i class="level-item fas fa-chevron-right"></i>
-            </a>
-        </div>
-        
-    </div>
-</div>
-
-
-
-<div class="card">
-    <div class="card-content">
-        <h3 class="title is-5 has-text-weight-normal">评论</h3>
-        
-<div id="comment-container"></div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
-<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
-<script>
-    var gitalk = new Gitalk({
-        clientID: 'bd0cbb30da9c24da8c7c',
-        clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
-        id: 'cabe462fea2cf05fc1407a76e2878c10',
-        repo: 'blog',
-        owner: 'calebman',
-        admin: "calebman"
-    })
-    gitalk.render('comment-container')
-</script>
-
-    </div>
-</div>
-
-<link rel="stylesheet" href="/css/article-nice.css">
+<!-- Gittalk.js -->
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
 <!-- Highlight.js -->
-<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<link rel="stylesheet" href="/css/hljs.css">
+<script src="/js/highlight.min.js"></script>
 <script>
-    hljs.initHighlightingOnLoad();
-</script></div>
-                
-                
-
-
-
-
-<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right is-sticky">
-    
-        
-<div class="card widget column-left is-sticky" id="toc">
-    <div class="card-content">
-        <div class="menu">
-            <h3 class="menu-label">
-                目录
-            </h3>
-            <ul class="menu-list"><li>
-        <a class="is-flex" href="#解题思考">
-        <span class="has-mr-6">1</span>
-        <span>解题思考</span>
-        </a></li><li>
-        <a class="is-flex" href="#DFS解法">
-        <span class="has-mr-6">2</span>
-        <span>DFS解法</span>
-        </a></li><li>
-        <a class="is-flex" href="#优化思路">
-        <span class="has-mr-6">3</span>
-        <span>优化思路</span>
-        </a></li><li>
-        <a class="is-flex" href="#题目拓展，添加优先级">
-        <span class="has-mr-6">4</span>
-        <span>题目拓展，添加优先级</span>
-        </a></li></ul>
-        </div>
-    </div>
-</div>
-
-
-    
-    
-</div>
-
-            </div>
-        </div>
-    </section>
-    <footer class="footer">
-    <div class="container">
-        <div class="level">
-            <div class="level-start has-text-centered-mobile">
-                <p class="footer-logo is-block has-mb-6" href="/">
-                
-                    <img src="/images/logo.svg" alt="算法——24点游戏" height="28">
-                
-                <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
-                </p>
-                <p class="is-size-7">
-                &copy; 2020 JianhuiChen&nbsp;
-                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
-                
-                </p>
-            </div>
-            <div class="level-end">
-            
-                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
-                
-                
-                <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
-                        
-                        <i class="fab fa-creative-commons"></i>&nbsp;<i class="fab fa-creative-commons-by"></i>&nbsp;<i class="fab fa-creative-commons-nc"></i>&nbsp;<i class="fab fa-creative-commons-sa"></i>&nbsp;
-                        
-                    </a>
-                </p>
-                
-                </div>
-            
-            </div>
-        </div>
-    </div>
-</footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
-<script>moment.locale("zh-CN");</script>
-
-
-    
-    
-    
-    <script src="/js/animation.js"></script>
-    
-
-    
-    
-    
-    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
-    <script src="/js/gallery.js" defer></script>
-    
-
-    
-    
-
-<div id="outdated">
-    <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
-            my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        outdatedBrowser({
-            bgColor: '#f25648',
-            color: '#ffffff',
-            lowerThan: 'flex'
-        });
-    });
+  hljs.initHighlightingOnLoad();
+  const gitalk = new Gitalk({
+    clientID: 'bd0cbb30da9c24da8c7c',
+    clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
+    repo: 'blog',
+    owner: 'calebman',
+    admin: ['calebman']
+  })
+  gitalk.render('gitalk-container')
 </script>
+  </main>
 
+  <footer class="footer">
+    <ul class="footer-links">
+      <section class="copyright">
+        <a href="https://chenjianhui.site">JianhuiChen</a> © 2017 - 2020 | 
+        <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
+      </section>
+    </ul>
+  </footer>
 
-    
-    
-<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    MathJax.Hub.Config({
-        'HTML-CSS': {
-            matchFontHeight: false
-        },
-        SVG: {
-            matchFontHeight: false
-        },
-        CommonHTML: {
-            matchFontHeight: false
-        },
-        tex2jax: {
-            inlineMath: [
-                ['$','$'],
-                ['\\(','\\)']
-            ]
-        }
-    });
-});
-</script>
+  
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/simple.js"></script>
+  
+  
 
-    
-    
-
-<a id="back-to-top" title="回到顶端" href="javascript:;">
-    <i class="fas fa-chevron-up"></i>
-</a>
-<script src="/js/back-to-top.js" defer></script>
-
-
-    
-    
-
-    
-    
-    
-    
-
-    
-    
-    
-    
-    
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
-    <script src="/js/clipboard.js" defer></script>
-    
-
-    
-    
-    
-
-
-<script src="/js/main.js" defer></script>
-
-    
-    <div class="searchbox ins-search">
-    <div class="searchbox-container ins-search-container">
-        <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
-            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
-        </div>
-        <div class="searchbox-result-wrapper ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
-</div>
-<script>
-    (function (window) {
-        var INSIGHT_CONFIG = {
-            TRANSLATION: {
-                POSTS: '文章',
-                PAGES: '页面',
-                CATEGORIES: '分类',
-                TAGS: '标签',
-                UNTITLED: '(无标题)',
-            },
-            CONTENT_URL: '/content.json',
-        };
-        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-    })(window);
-</script>
-<script src="/js/insight.js" defer></script>
-<link rel="stylesheet" href="/css/search.css">
-<link rel="stylesheet" href="/css/insight.css">
-    
 </body>
+
 </html>

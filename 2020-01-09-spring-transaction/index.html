@@ -1,214 +1,71 @@
+
+
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
+
 <head><meta name="generator" content="Hexo 3.9.0">
-    <meta charset="utf-8">
-<title>多数据源下SpringTransaction的探究 - Sincerity</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-
-
-    <meta name="description" content="&amp;emsp;&amp;emsp;最近的项目开发中有部分同事反馈到现开发系统中存在一些声明式（注解）事务不生效的问题，经过一个多小时的排查最终定位了问题所在，在此记录一下。">
-<meta name="keywords" content="Spring,Transaction">
-<meta property="og:type" content="article">
-<meta property="og:title" content="多数据源下SpringTransaction的探究">
-<meta property="og:url" content="https://chenjianhui.site/2020-01-09-spring-transaction/index.html">
-<meta property="og:site_name" content="Sincerity">
-<meta property="og:description" content="&amp;emsp;&amp;emsp;最近的项目开发中有部分同事反馈到现开发系统中存在一些声明式（注解）事务不生效的问题，经过一个多小时的排查最终定位了问题所在，在此记录一下。">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://resources.chenjianhui.site/2020-01-09-home-pic.jpeg">
-<meta property="og:updated_time" content="2020-07-08T02:46:41.183Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="多数据源下SpringTransaction的探究">
-<meta name="twitter:description" content="&amp;emsp;&amp;emsp;最近的项目开发中有部分同事反馈到现开发系统中存在一些声明式（注解）事务不生效的问题，经过一个多小时的排查最终定位了问题所在，在此记录一下。">
-<meta name="twitter:image" content="https://resources.chenjianhui.site/2020-01-09-home-pic.jpeg">
-
-
-
-
-
-<link rel="alternative" href="/atom.xml" title="多数据源下SpringTransaction的探究" type="application/atom+xml">
-
-
-
-<link rel="icon" href="/images/favicon-32x32.png">
-
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
-
-
-    
-    
-    
-    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
-    
-
-    
-    
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
-    
-
-    
-    
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
-
-
-    
-    
-    
-    
-
-<link rel="stylesheet" href="/css/back-to-top.css">
-
-
-    
-    
-
-    
-    
-    
-    
-<script>
-    (function(h,o,t,j,a,r){
-        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-        h._hjSettings={hjid:19960428,hjsv:6};
-        a=o.getElementsByTagName('head')[0];
-        r=o.createElement('script');r.async=1;
-        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-        a.appendChild(r);
-    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-</script>
-
-
-    
-    
-<link rel="stylesheet" href="/css/progressbar.css">
-<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
-
-    
-    
-    
-
-    
-    
-    
-
-
-<link rel="stylesheet" href="/css/style.css">
+  <meta charset="UTF-8">
+  <title>多数据源下SpringTransaction的探究 [ Sincerity ]</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="icon" href="/images/favicon-32x32.png">
+  
+  <!-- stylesheets list from _config.yml -->
+  
+  <link rel="stylesheet" href="/css/simple.css">
+  
+  <link rel="stylesheet" href="/css/font.css">
+  
+  
 </head>
-<body class="is-3-column">
-    <nav class="navbar navbar-main">
-    <div class="container">
-        <div class="navbar-brand is-flex-center">
-            <a class="navbar-item navbar-logo" href="/">
-            
-                <img src="/images/logo.svg" alt="多数据源下SpringTransaction的探究" height="28">
-            
-            </a>
-        </div>
-        <div class="navbar-menu">
-            
-            <div class="navbar-start">
-                
-                <a class="navbar-item" href="/">Home</a>
-                
-                <a class="navbar-item" href="/archives">Archives</a>
-                
-                <a class="navbar-item" href="/categories">Categories</a>
-                
-                <a class="navbar-item" href="/tags">Tags</a>
-                
-                <a class="navbar-item" href="/leetcode">LeetCode</a>
-                
-                <a class="navbar-item" href="/projects">Projects</a>
-                
-                <a class="navbar-item" href="/about">About</a>
-                
-            </div>
-            
-            <div class="navbar-end">
-                
-                    
-                    
-                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://github.com/calebman">
-                        
-                        <i class="fab fa-github"></i>
-                        
-                    </a>
-                    
-                
-                
-                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
-                    <i class="fas fa-list-ul"></i>
-                </a>
-                
-                
-                <a class="navbar-item search" title="搜索" href="javascript:;">
-                    <i class="fas fa-search"></i>
-                </a>
-                
-            </div>
-        </div>
-    </div>
-</nav>
-    
-    <section class="section">
-        <div class="container">
-            <div class="columns">
-                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
-    
-    <div class="card-image">
-        <span class="image is-7by1">
-            <img class="thumbnail" src="https://resources.chenjianhui.site/2020-01-09-home-pic.jpeg" alt="多数据源下SpringTransaction的探究">
-        </span>
-    </div>
-    
-    <div class="card-content article ">
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <i class="fas fa-angle-double-right"></i>多数据源下SpringTransaction的探究
-            
-        </h1>
+
+<body>
+
+  <header class="header">
+    <nav class="nav">
+      <a href="/" class="nav-logo"><img src="/images/avatar.png" width="50" height="50" alt="Logo"></a>
+      <ul class="nav-links">
         
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-01-09T21:18:11.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-01-09</time>
-                
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-07-08T02:46:41.183Z"><i class="far fa-calendar-check">&nbsp;</i>2020-07-08</time>
-                
-                
-                <div class="level-item">
-                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
-                <a class="has-link-grey -link" href="/categories/随笔/">随笔</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    <i class="far fa-clock"></i>&nbsp;
-                    
-                    
-                    24 分钟 读完 (大约 3666 个字)
-                </span>
-                
-                
-            </div>
-        </div>
+        <li><a href="/">文章列表</a></li>
         
-        <div id="article-content" class="content">
-            <p>&emsp;&emsp;最近的项目开发中有部分同事反馈到现开发系统中存在一些声明式（注解）事务不生效的问题，经过一个多小时的排查最终定位了问题所在，在此记录一下。</p>
+        <li><a href="/archives">归档</a></li>
+        
+        <li><a href="/leetcode">力扣</a></li>
+        
+        <li><a href="/about">关于我</a></li>
+        
+        <li><a href="https://github.com/calebman">Github</a></li>
+        
+      </ul>
+    </nav>
+  </header>
+
+  <main class="content">
+    <article class="article">
+  <h1 class="article-title">多数据源下SpringTransaction的探究</h1>
+  <span class="article-date">2020-01-09</span>
+  
+  
+  <a class="article-tag" href="/tags/Spring">
+    Spring
+  </a>
+  
+  <a class="article-tag" href="/tags/Transaction">
+    Transaction
+  </a>
+  
+  
+
+  <div class="article-content">
+    <p>&emsp;&emsp;最近的项目开发中有部分同事反馈到现开发系统中存在一些声明式（注解）事务不生效的问题，经过一个多小时的排查最终定位了问题所在，在此记录一下。</p>
 <a id="more"></a>
 
-<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a><span>前言</span></h1><h3 id="技术背景"><a href="#技术背景" class="headerlink" title="技术背景"></a><span>技术背景</span></h3><p>现开发的系统使用<code>SpringBoot+JPA+Hibernate</code>作为基础框架进行开发，当然整体上还包括一些权限方面<code>Security</code>等和本次问题排查无关的信息不再详谈，以下是核心库的版本信息。</p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><h3 id="技术背景"><a href="#技术背景" class="headerlink" title="技术背景"></a>技术背景</h3><p>现开发的系统使用<code>SpringBoot+JPA+Hibernate</code>作为基础框架进行开发，当然整体上还包括一些权限方面<code>Security</code>等和本次问题排查无关的信息不再详谈，以下是核心库的版本信息。</p>
 <ul>
 <li>SpringBoot：2.1.5.RELEASE</li>
 <li>Hibernate：5.3.10.Final</li>
 </ul>
 <p>与常规系统不一样的地方在于，本系统由于业务的特殊性采用了双数据源的方案，既然是双数据源那么事务管理器方面也会对应配置两个。</p>
-<h3 id="双数据源实现方案"><a href="#双数据源实现方案" class="headerlink" title="双数据源实现方案"></a><span>双数据源实现方案</span></h3><p>基于<code>JPA</code>实现双数据源并不麻烦，只需要建立两个配置类分别定义<code>DataSource、SessionFactory、PlatformTransactionManager</code>对象，其中<code>SessionFactory</code>配置好<code>Dao</code>层的扫描路径区分开即可，以下是配置的示例代码：</p>
+<h3 id="双数据源实现方案"><a href="#双数据源实现方案" class="headerlink" title="双数据源实现方案"></a>双数据源实现方案</h3><p>基于<code>JPA</code>实现双数据源并不麻烦，只需要建立两个配置类分别定义<code>DataSource、SessionFactory、PlatformTransactionManager</code>对象，其中<code>SessionFactory</code>配置好<code>Dao</code>层的扫描路径区分开即可，以下是配置的示例代码：</p>
 <pre><code class="java">@Configuration
 public class SystemDSConfiguration {
 
@@ -269,7 +126,7 @@ public class BusinessDSConfiguration {
         // ...
     }
 }</code></pre>
-<h3 id="声明式事务的使用"><a href="#声明式事务的使用" class="headerlink" title="声明式事务的使用"></a><span>声明式事务的使用</span></h3><p>熟悉<code>SpringBoot</code>的同学应该都知道，声明式使用事务只需要在服务的实现类或者函数上写上<code>@Transactional</code>注解即可，所以本系统对于事务的使用也很简单，示例代码如下：</p>
+<h3 id="声明式事务的使用"><a href="#声明式事务的使用" class="headerlink" title="声明式事务的使用"></a>声明式事务的使用</h3><p>熟悉<code>SpringBoot</code>的同学应该都知道，声明式使用事务只需要在服务的实现类或者函数上写上<code>@Transactional</code>注解即可，所以本系统对于事务的使用也很简单，示例代码如下：</p>
 <pre><code class="java">package com.zjcds.tj.server.business.service.impl;
 
 @Slf4j
@@ -292,14 +149,14 @@ public class BusinessService implements IBusinessService {
   // more code ...
 }</code></pre>
 <p>这个服务按照预期的运行结果BussinessEntity业务实体不应该被持久化到数据库中，但这篇文章的出现代表代码的执行结果正好与预期相反，所以接下来就要排查一下为什么事务没有生效呢？</p>
-<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a><span>分析</span></h1><p>分析问题的产生原因之前我们先要搞懂<code>@Transactional</code>是怎么起作用的，我尝试把<code>@Transactional 工作原理</code>作为关键字在<code>google</code>中搜索，看了一部分文章后总结了有以下几类</p>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>分析问题的产生原因之前我们先要搞懂<code>@Transactional</code>是怎么起作用的，我尝试把<code>@Transactional 工作原理</code>作为关键字在<code>google</code>中搜索，看了一部分文章后总结了有以下几类</p>
 <ul>
 <li>讲<code>@Transactional</code>用法一类（如何使用、声明式、命令式）</li>
 <li>讲事务概念性一类（事务的属性和行为等等）</li>
 <li>讲Spring实现事务的原理与核心一类</li>
 </ul>
 <p>结合搜索到的内容我准备按照自己的思路进源码看一看，毕竟源码面前无秘密。接下来我将叙述一下我如何从源码中找到我想要的东西。</p>
-<h3 id="整合搜索结果"><a href="#整合搜索结果" class="headerlink" title="整合搜索结果"></a><span>整合搜索结果</span></h3><p>刚才我说到结合搜索到的内容，但没说是什么内容，这里我给一下搜索内容中我认为比较重要的一些知识点：</p>
+<h3 id="整合搜索结果"><a href="#整合搜索结果" class="headerlink" title="整合搜索结果"></a>整合搜索结果</h3><p>刚才我说到结合搜索到的内容，但没说是什么内容，这里我给一下搜索内容中我认为比较重要的一些知识点：</p>
 <ol>
 <li>SpringBoot有两种方式开启事务<ul>
 <li>自动装载依赖于<code>TransactionAutoConfiguration</code></li>
@@ -318,7 +175,7 @@ public class BusinessService implements IBusinessService {
 <li>第二种是<code>@Import机制</code>，通过扫描@Import注解中定义的类进行装配</li>
 </ul>
 </blockquote>
-<h3 id="TransactionAutoConfiguration的探究"><a href="#TransactionAutoConfiguration的探究" class="headerlink" title="TransactionAutoConfiguration的探究"></a><span>TransactionAutoConfiguration的探究</span></h3><p>TransactionAutoConfiguration的代码如下，代码量并不多并且我大部分都给出了注释，接下来我们该如何去看这个代码呢？</p>
+<h3 id="TransactionAutoConfiguration的探究"><a href="#TransactionAutoConfiguration的探究" class="headerlink" title="TransactionAutoConfiguration的探究"></a>TransactionAutoConfiguration的探究</h3><p>TransactionAutoConfiguration的代码如下，代码量并不多并且我大部分都给出了注释，接下来我们该如何去看这个代码呢？</p>
 <p><strong>结合第二个知识点，Spring事务是基于AOP运作的</strong>，既然是基于<code>AOP</code>那就一定会有切面的定义。</p>
 <blockquote>
 <p>SpringAOP的实现方式有两种</p>
@@ -397,7 +254,7 @@ public class TransactionAutoConfiguration {
 
 }</code></pre>
 <p>观察这个类你很快就能发现一个关键点，你要找到切面配置就在最下方<code>EnableTransactionManagementConfiguration</code>这个类中，而这个类又使用了<code>@EnableTransactionManagement</code>这个注解，而它也是我们前面提到手动开启事务的注解，所以无论如何我们都得关注一下它。</p>
-<h3 id="EnableTransactionManagement的探究"><a href="#EnableTransactionManagement的探究" class="headerlink" title="@EnableTransactionManagement的探究"></a><span>EnableTransactionManagement的探究</span></h3><p>首先我们看看@EnableTransactionManagement的代码</p>
+<h3 id="EnableTransactionManagement的探究"><a href="#EnableTransactionManagement的探究" class="headerlink" title="@EnableTransactionManagement的探究"></a>@EnableTransactionManagement的探究</h3><p>首先我们看看@EnableTransactionManagement的代码</p>
 <pre><code class="java">@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
@@ -496,7 +353,7 @@ public class ProxyTransactionManagementConfiguration extends AbstractTransaction
 
 }</code></pre>
 <p><strong>至此我们已经找到了事务方法拦截器<code>TransactionInterceptor</code>的定义之处，接下来就看看我们的方法被事务拦截后干了什么？</strong></p>
-<h3 id="TransactionInterceptor探究"><a href="#TransactionInterceptor探究" class="headerlink" title="TransactionInterceptor探究"></a><span>TransactionInterceptor探究</span></h3><p>阅读TransactionInterceptor这个类不难发现<code>invoke</code>即是事务拦截的主要实现，而它仅有两句代码而已，主要是调用了父类的<code>invokeWithinTransaction</code>方法。</p>
+<h3 id="TransactionInterceptor探究"><a href="#TransactionInterceptor探究" class="headerlink" title="TransactionInterceptor探究"></a>TransactionInterceptor探究</h3><p>阅读TransactionInterceptor这个类不难发现<code>invoke</code>即是事务拦截的主要实现，而它仅有两句代码而已，主要是调用了父类的<code>invokeWithinTransaction</code>方法。</p>
 <pre><code class="java">// MethodInterceptor 方法拦截接口 invoke作为具体实现函数
 public class TransactionInterceptor extends TransactionAspectSupport implements MethodInterceptor, Serializable {
 
@@ -609,7 +466,7 @@ protected PlatformTransactionManager determineTransactionManager(@Nullable Trans
         return defaultTransactionManager;
     }
 }</code></pre>
-<h3 id="问题浮出水面"><a href="#问题浮出水面" class="headerlink" title="问题浮出水面"></a><span>问题浮出水面</span></h3><p><strong>经过debug分析我找到了事务失效的原因，由于我的Bussiness模块获取了System模块的事务管理器导致其事务失效。</strong> 这里有人可能会感到疑惑，获取了错误的事务管理器不会报错么？</p>
+<h3 id="问题浮出水面"><a href="#问题浮出水面" class="headerlink" title="问题浮出水面"></a>问题浮出水面</h3><p><strong>经过debug分析我找到了事务失效的原因，由于我的Bussiness模块获取了System模块的事务管理器导致其事务失效。</strong> 这里有人可能会感到疑惑，获取了错误的事务管理器不会报错么？</p>
 <p>这块我们可以这么分析，想想在<code>mysql</code>中我们是怎么开启事务的。</p>
 <pre><code class="bash">mysql&gt; begin; # 数据库A开启事务
 Query OK, 0 rows affected (0.00 sec)
@@ -630,7 +487,7 @@ mysql&gt; rollback; # 数据库A回滚
 Query OK, 0 rows affected (0.01 sec)
 
 mysql&gt; </code></pre>
-<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a><span>解决方案</span></h1><p>既然问题已经找到了接下来要考虑下如何解决，其实上文很早的时候就提到了<code>@Transactional</code>有一个配置叫做<code>transactionManager</code>，可以指定当前启用事务的方法用哪个事务管理器。</p>
+<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>既然问题已经找到了接下来要考虑下如何解决，其实上文很早的时候就提到了<code>@Transactional</code>有一个配置叫做<code>transactionManager</code>，可以指定当前启用事务的方法用哪个事务管理器。</p>
 <pre><code class="java">@Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
@@ -697,330 +554,55 @@ public class MyProxyTransactionManagementConfiguration extends ProxyTransactionM
         };
     }
 }</code></pre>
-<h1 id="关于公众号"><a href="#关于公众号" class="headerlink" title="关于公众号"></a><span>关于公众号</span></h1><p><img src="https://resources.chenjianhui.site/wechat-qrcode.png" alt></p>
+<h1 id="关于公众号"><a href="#关于公众号" class="headerlink" title="关于公众号"></a>关于公众号</h1><p><img src="https://resources.chenjianhui.site/wechat-qrcode.png" alt></p>
 
-        </div>
-        
-            <ul class="post-copyright">
-            <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2020-01-09-spring-transaction/">多数据源下SpringTransaction的探究</a></li>
-            <li><strong>本文作者：</strong><a href="https://chenjianhui.site">JianhuiChen</a></li>
-            <li><strong>本文链接：</strong><a href="https://chenjianhui.site/2020-01-09-spring-transaction/">https://chenjianhui.site/2020-01-09-spring-transaction/</a></li>
-            <li><strong>发布时间：</strong>2020-01-09</li>
-            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
-            </li>
-            </ul>
-        
-        
-        <hr style="height:1px;margin:1rem 0">
-        <div class="level is-size-7 is-uppercase">
-            <div class="level-start">
-                <div class="level-item">
-                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
-                    <a class="has-link-grey -link" href="/tags/Spring/">Spring</a>,&nbsp;<a class="has-link-grey -link" href="/tags/Transaction/">Transaction</a>
-                </div>
-            </div>
-        </div>
-        
-        
-        
-    </div>
-</div>
+  </div>
+</article>
+<ul class="post-copyright">
+  <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2020-01-09-spring-transaction/">多数据源下SpringTransaction的探究</a></li>
+  <li><strong>本文作者：</strong><a href="https://chenjianhui.site">JianhuiChen</a></li>
+  <li><strong>本文链接：</strong><a href="https://chenjianhui.site/2020-01-09-spring-transaction/">https://chenjianhui.site/2020-01-09-spring-transaction/</a></li>
+  <li><strong>发布时间：</strong>2020-01-09</li>
+  <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+<div id="gitalk-container"></div>
 
-
-
-
-
-<div class="card card-transparent">
-    <div class="level post-navigation is-flex-wrap is-mobile">
-        
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2020-05-31-vuepress-plugin-demo-container/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">使用 Vuepress 编写组件示例文档的最佳实践</span>
-            </a>
-        </div>
-        
-        
-        <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2020-01-07-cache-opening/">
-                <span class="level-item">缓存系列——开篇</span>
-                <i class="level-item fas fa-chevron-right"></i>
-            </a>
-        </div>
-        
-    </div>
-</div>
-
-
-
-<div class="card">
-    <div class="card-content">
-        <h3 class="title is-5 has-text-weight-normal">评论</h3>
-        
-<div id="comment-container"></div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
-<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
-<script>
-    var gitalk = new Gitalk({
-        clientID: 'bd0cbb30da9c24da8c7c',
-        clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
-        id: 'f9dfe2b5f108738a9284a339e44a30e9',
-        repo: 'blog',
-        owner: 'calebman',
-        admin: "calebman"
-    })
-    gitalk.render('comment-container')
-</script>
-
-    </div>
-</div>
-
-<link rel="stylesheet" href="/css/article-nice.css">
+<!-- Gittalk.js -->
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
 <!-- Highlight.js -->
-<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<link rel="stylesheet" href="/css/hljs.css">
+<script src="/js/highlight.min.js"></script>
 <script>
-    hljs.initHighlightingOnLoad();
-</script></div>
-                
-                
-
-
-
-
-<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right is-sticky">
-    
-        
-<div class="card widget column-left is-sticky" id="toc">
-    <div class="card-content">
-        <div class="menu">
-            <h3 class="menu-label">
-                目录
-            </h3>
-            <ul class="menu-list"><li>
-        <a class="is-flex" href="#前言">
-        <span class="has-mr-6">1</span>
-        <span>前言</span>
-        </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#技术背景">
-        <span class="has-mr-6">1.1</span>
-        <span>技术背景</span>
-        </a></li><li>
-        <a class="is-flex" href="#双数据源实现方案">
-        <span class="has-mr-6">1.2</span>
-        <span>双数据源实现方案</span>
-        </a></li><li>
-        <a class="is-flex" href="#声明式事务的使用">
-        <span class="has-mr-6">1.3</span>
-        <span>声明式事务的使用</span>
-        </a></li></ul></li><li>
-        <a class="is-flex" href="#分析">
-        <span class="has-mr-6">2</span>
-        <span>分析</span>
-        </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#整合搜索结果">
-        <span class="has-mr-6">2.1</span>
-        <span>整合搜索结果</span>
-        </a></li><li>
-        <a class="is-flex" href="#TransactionAutoConfiguration的探究">
-        <span class="has-mr-6">2.2</span>
-        <span>TransactionAutoConfiguration的探究</span>
-        </a></li><li>
-        <a class="is-flex" href="#EnableTransactionManagement的探究">
-        <span class="has-mr-6">2.3</span>
-        <span>EnableTransactionManagement的探究</span>
-        </a></li><li>
-        <a class="is-flex" href="#TransactionInterceptor探究">
-        <span class="has-mr-6">2.4</span>
-        <span>TransactionInterceptor探究</span>
-        </a></li><li>
-        <a class="is-flex" href="#问题浮出水面">
-        <span class="has-mr-6">2.5</span>
-        <span>问题浮出水面</span>
-        </a></li></ul></li><li>
-        <a class="is-flex" href="#解决方案">
-        <span class="has-mr-6">3</span>
-        <span>解决方案</span>
-        </a></li><li>
-        <a class="is-flex" href="#关于公众号">
-        <span class="has-mr-6">4</span>
-        <span>关于公众号</span>
-        </a></li></ul>
-        </div>
-    </div>
-</div>
-
-
-    
-    
-</div>
-
-            </div>
-        </div>
-    </section>
-    <footer class="footer">
-    <div class="container">
-        <div class="level">
-            <div class="level-start has-text-centered-mobile">
-                <p class="footer-logo is-block has-mb-6" href="/">
-                
-                    <img src="/images/logo.svg" alt="多数据源下SpringTransaction的探究" height="28">
-                
-                <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
-                </p>
-                <p class="is-size-7">
-                &copy; 2020 JianhuiChen&nbsp;
-                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
-                
-                </p>
-            </div>
-            <div class="level-end">
-            
-                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
-                
-                
-                <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
-                        
-                        <i class="fab fa-creative-commons"></i>&nbsp;<i class="fab fa-creative-commons-by"></i>&nbsp;<i class="fab fa-creative-commons-nc"></i>&nbsp;<i class="fab fa-creative-commons-sa"></i>&nbsp;
-                        
-                    </a>
-                </p>
-                
-                </div>
-            
-            </div>
-        </div>
-    </div>
-</footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
-<script>moment.locale("zh-CN");</script>
-
-
-    
-    
-    
-    <script src="/js/animation.js"></script>
-    
-
-    
-    
-    
-    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
-    <script src="/js/gallery.js" defer></script>
-    
-
-    
-    
-
-<div id="outdated">
-    <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
-            my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        outdatedBrowser({
-            bgColor: '#f25648',
-            color: '#ffffff',
-            lowerThan: 'flex'
-        });
-    });
+  hljs.initHighlightingOnLoad();
+  const gitalk = new Gitalk({
+    clientID: 'bd0cbb30da9c24da8c7c',
+    clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
+    repo: 'blog',
+    owner: 'calebman',
+    admin: ['calebman']
+  })
+  gitalk.render('gitalk-container')
 </script>
+  </main>
 
+  <footer class="footer">
+    <ul class="footer-links">
+      <section class="copyright">
+        <a href="https://chenjianhui.site">JianhuiChen</a> © 2017 - 2020 | 
+        <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
+      </section>
+    </ul>
+  </footer>
 
-    
-    
-<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    MathJax.Hub.Config({
-        'HTML-CSS': {
-            matchFontHeight: false
-        },
-        SVG: {
-            matchFontHeight: false
-        },
-        CommonHTML: {
-            matchFontHeight: false
-        },
-        tex2jax: {
-            inlineMath: [
-                ['$','$'],
-                ['\\(','\\)']
-            ]
-        }
-    });
-});
-</script>
+  
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/simple.js"></script>
+  
+  
 
-    
-    
-
-<a id="back-to-top" title="回到顶端" href="javascript:;">
-    <i class="fas fa-chevron-up"></i>
-</a>
-<script src="/js/back-to-top.js" defer></script>
-
-
-    
-    
-
-    
-    
-    
-    
-
-    
-    
-    
-    
-    
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
-    <script src="/js/clipboard.js" defer></script>
-    
-
-    
-    
-    
-
-
-<script src="/js/main.js" defer></script>
-
-    
-    <div class="searchbox ins-search">
-    <div class="searchbox-container ins-search-container">
-        <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
-            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
-        </div>
-        <div class="searchbox-result-wrapper ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
-</div>
-<script>
-    (function (window) {
-        var INSIGHT_CONFIG = {
-            TRANSLATION: {
-                POSTS: '文章',
-                PAGES: '页面',
-                CATEGORIES: '分类',
-                TAGS: '标签',
-                UNTITLED: '(无标题)',
-            },
-            CONTENT_URL: '/content.json',
-        };
-        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-    })(window);
-</script>
-<script src="/js/insight.js" defer></script>
-<link rel="stylesheet" href="/css/search.css">
-<link rel="stylesheet" href="/css/insight.css">
-    
 </body>
+
 </html>

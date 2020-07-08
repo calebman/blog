@@ -1,208 +1,65 @@
+
+
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
+
 <head><meta name="generator" content="Hexo 3.9.0">
-    <meta charset="utf-8">
-<title>算法——猫鼠游戏 - Sincerity</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-
-
-    <meta name="description" content="&amp;emsp;&amp;emsp;给定一张地图，其中包含猫、老鼠、障碍物三类元素，游戏初始化时猫在地图的左上角，老鼠在地图的右下角，猫每个回合可以选择自己临近格子移动一步，不可超过地图边界，不可移动至有障碍物处，请设计一个算法让猫使用最少的回合抓住老鼠。">
-<meta name="keywords" content="Algorithm,Java">
-<meta property="og:type" content="article">
-<meta property="og:title" content="算法——猫鼠游戏">
-<meta property="og:url" content="https://chenjianhui.site/2019-06-20-algorithm-topic/index.html">
-<meta property="og:site_name" content="Sincerity">
-<meta property="og:description" content="&amp;emsp;&amp;emsp;给定一张地图，其中包含猫、老鼠、障碍物三类元素，游戏初始化时猫在地图的左上角，老鼠在地图的右下角，猫每个回合可以选择自己临近格子移动一步，不可超过地图边界，不可移动至有障碍物处，请设计一个算法让猫使用最少的回合抓住老鼠。">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://resources.chenjianhui.site/algorithm-home-pic.jpeg">
-<meta property="og:updated_time" content="2020-07-08T02:46:41.179Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="算法——猫鼠游戏">
-<meta name="twitter:description" content="&amp;emsp;&amp;emsp;给定一张地图，其中包含猫、老鼠、障碍物三类元素，游戏初始化时猫在地图的左上角，老鼠在地图的右下角，猫每个回合可以选择自己临近格子移动一步，不可超过地图边界，不可移动至有障碍物处，请设计一个算法让猫使用最少的回合抓住老鼠。">
-<meta name="twitter:image" content="https://resources.chenjianhui.site/algorithm-home-pic.jpeg">
-
-
-
-
-
-<link rel="alternative" href="/atom.xml" title="算法——猫鼠游戏" type="application/atom+xml">
-
-
-
-<link rel="icon" href="/images/favicon-32x32.png">
-
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
-
-
-    
-    
-    
-    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
-    
-
-    
-    
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
-    
-
-    
-    
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
-
-
-    
-    
-    
-    
-
-<link rel="stylesheet" href="/css/back-to-top.css">
-
-
-    
-    
-
-    
-    
-    
-    
-<script>
-    (function(h,o,t,j,a,r){
-        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-        h._hjSettings={hjid:19960428,hjsv:6};
-        a=o.getElementsByTagName('head')[0];
-        r=o.createElement('script');r.async=1;
-        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-        a.appendChild(r);
-    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-</script>
-
-
-    
-    
-<link rel="stylesheet" href="/css/progressbar.css">
-<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
-
-    
-    
-    
-
-    
-    
-    
-
-
-<link rel="stylesheet" href="/css/style.css">
+  <meta charset="UTF-8">
+  <title>算法——猫鼠游戏 [ Sincerity ]</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="icon" href="/images/favicon-32x32.png">
+  
+  <!-- stylesheets list from _config.yml -->
+  
+  <link rel="stylesheet" href="/css/simple.css">
+  
+  <link rel="stylesheet" href="/css/font.css">
+  
+  
 </head>
-<body class="is-3-column">
-    <nav class="navbar navbar-main">
-    <div class="container">
-        <div class="navbar-brand is-flex-center">
-            <a class="navbar-item navbar-logo" href="/">
-            
-                <img src="/images/logo.svg" alt="算法——猫鼠游戏" height="28">
-            
-            </a>
-        </div>
-        <div class="navbar-menu">
-            
-            <div class="navbar-start">
-                
-                <a class="navbar-item" href="/">Home</a>
-                
-                <a class="navbar-item" href="/archives">Archives</a>
-                
-                <a class="navbar-item" href="/categories">Categories</a>
-                
-                <a class="navbar-item" href="/tags">Tags</a>
-                
-                <a class="navbar-item" href="/leetcode">LeetCode</a>
-                
-                <a class="navbar-item" href="/projects">Projects</a>
-                
-                <a class="navbar-item" href="/about">About</a>
-                
-            </div>
-            
-            <div class="navbar-end">
-                
-                    
-                    
-                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://github.com/calebman">
-                        
-                        <i class="fab fa-github"></i>
-                        
-                    </a>
-                    
-                
-                
-                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
-                    <i class="fas fa-list-ul"></i>
-                </a>
-                
-                
-                <a class="navbar-item search" title="搜索" href="javascript:;">
-                    <i class="fas fa-search"></i>
-                </a>
-                
-            </div>
-        </div>
-    </div>
-</nav>
-    
-    <section class="section">
-        <div class="container">
-            <div class="columns">
-                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
-    
-    <div class="card-image">
-        <span class="image is-7by1">
-            <img class="thumbnail" src="https://resources.chenjianhui.site/algorithm-home-pic.jpeg" alt="算法——猫鼠游戏">
-        </span>
-    </div>
-    
-    <div class="card-content article ">
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <i class="fas fa-angle-double-right"></i>算法——猫鼠游戏
-            
-        </h1>
+
+<body>
+
+  <header class="header">
+    <nav class="nav">
+      <a href="/" class="nav-logo"><img src="/images/avatar.png" width="50" height="50" alt="Logo"></a>
+      <ul class="nav-links">
         
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-06-20T19:23:16.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-06-20</time>
-                
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-07-08T02:46:41.179Z"><i class="far fa-calendar-check">&nbsp;</i>2020-07-08</time>
-                
-                
-                <div class="level-item">
-                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
-                <a class="has-link-grey -link" href="/categories/Algorithm/">Algorithm</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    <i class="far fa-clock"></i>&nbsp;
-                    
-                    
-                    31 分钟 读完 (大约 4651 个字)
-                </span>
-                
-                
-            </div>
-        </div>
+        <li><a href="/">文章列表</a></li>
         
-        <div id="article-content" class="content">
-            <p>&emsp;&emsp;给定一张地图，其中包含<code>猫</code>、<code>老鼠</code>、<code>障碍物</code>三类元素，游戏初始化时猫在地图的左上角，老鼠在地图的右下角，猫每个回合可以选择自己临近格子移动一步，不可超过地图边界，不可移动至有障碍物处，请设计一个算法让<code>猫</code>使用最少的回合抓住<code>老鼠</code>。</p>
+        <li><a href="/archives">归档</a></li>
+        
+        <li><a href="/leetcode">力扣</a></li>
+        
+        <li><a href="/about">关于我</a></li>
+        
+        <li><a href="https://github.com/calebman">Github</a></li>
+        
+      </ul>
+    </nav>
+  </header>
+
+  <main class="content">
+    <article class="article">
+  <h1 class="article-title">算法——猫鼠游戏</h1>
+  <span class="article-date">2019-06-20</span>
+  
+  
+  <a class="article-tag" href="/tags/Algorithm">
+    Algorithm
+  </a>
+  
+  <a class="article-tag" href="/tags/Java">
+    Java
+  </a>
+  
+  
+
+  <div class="article-content">
+    <p>&emsp;&emsp;给定一张地图，其中包含<code>猫</code>、<code>老鼠</code>、<code>障碍物</code>三类元素，游戏初始化时猫在地图的左上角，老鼠在地图的右下角，猫每个回合可以选择自己临近格子移动一步，不可超过地图边界，不可移动至有障碍物处，请设计一个算法让<code>猫</code>使用最少的回合抓住<code>老鼠</code>。</p>
 <a id="more"></a>
 
-<h1 id="游戏设计"><a href="#游戏设计" class="headerlink" title="游戏设计"></a><span>游戏设计</span></h1><p>&emsp;&emsp;首先我们需要设计出整个游戏，并预留出猫的移动逻辑交给用户去实现，这里我基于canvas设计了<a href="https://resources.chenjianhui.site/cat-mouse-game-gen-0.1.9.js" target="_blank" rel="noopener">cat-mouse-game-gen.js</a>来作为游戏构建程序，借助这个脚本使用如下代码即可构建一个猫鼠游戏棋盘：</p>
+<h1 id="游戏设计"><a href="#游戏设计" class="headerlink" title="游戏设计"></a>游戏设计</h1><p>&emsp;&emsp;首先我们需要设计出整个游戏，并预留出猫的移动逻辑交给用户去实现，这里我基于canvas设计了<a href="https://resources.chenjianhui.site/cat-mouse-game-gen-0.1.9.js" target="_blank" rel="noopener">cat-mouse-game-gen.js</a>来作为游戏构建程序，借助这个脚本使用如下代码即可构建一个猫鼠游戏棋盘：</p>
 <pre><code class="html">&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;en&quot;&gt;
 &lt;body&gt;
@@ -254,8 +111,8 @@
 <canvas id="randomPlace">not support canvas</canvas>
 
 
-<h1 id="算法设计"><a href="#算法设计" class="headerlink" title="算法设计"></a><span>算法设计</span></h1><p>&emsp;&emsp;至此我们已经有了一个可以根据算法移动的猫了，接下来就是设计猫抓老鼠的算法，我们稍微转化一下这个问题，其实就是根据行动决策函数中的棋盘局势数组去找猫到老鼠之间的<strong>最短路径</strong>，既然要找最短路径我们免不了要对棋盘进行遍历搜索，在上一篇博客<a href="/2019-06-17-algorithm-topic">24点游戏</a>中我们讲到搜索算法有<code>DFS</code>与<code>BFS</code>两种策略，我们对比一下这两种策略，<code>DFS</code>算法属于一种<strong>盲目搜索</strong>，要找到最短路径必然要遍历全局，而<code>BFS</code>扩散式搜索，只要第一次搜索到终点就可以退出，不需要遍历全局，因此在这里我们将使用<code>BFS</code>实现猫的行动策略。</p>
-<h2 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a><span>设计思路</span></h2><p>&emsp;&emsp;我们先假设有一个4*8的棋盘，猫在棋盘的左上角（数组的下标0处），老鼠在棋盘的右下角（数组下标31处），并在3、 10、 13、 18、 28处位置设置了5个障碍物，现在我将基于这个局势去模拟<code>BFS</code>算法的搜索流程。</p>
+<h1 id="算法设计"><a href="#算法设计" class="headerlink" title="算法设计"></a>算法设计</h1><p>&emsp;&emsp;至此我们已经有了一个可以根据算法移动的猫了，接下来就是设计猫抓老鼠的算法，我们稍微转化一下这个问题，其实就是根据行动决策函数中的棋盘局势数组去找猫到老鼠之间的<strong>最短路径</strong>，既然要找最短路径我们免不了要对棋盘进行遍历搜索，在上一篇博客<a href="/2019-06-17-algorithm-topic">24点游戏</a>中我们讲到搜索算法有<code>DFS</code>与<code>BFS</code>两种策略，我们对比一下这两种策略，<code>DFS</code>算法属于一种<strong>盲目搜索</strong>，要找到最短路径必然要遍历全局，而<code>BFS</code>扩散式搜索，只要第一次搜索到终点就可以退出，不需要遍历全局，因此在这里我们将使用<code>BFS</code>实现猫的行动策略。</p>
+<h2 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h2><p>&emsp;&emsp;我们先假设有一个4*8的棋盘，猫在棋盘的左上角（数组的下标0处），老鼠在棋盘的右下角（数组下标31处），并在3、 10、 13、 18、 28处位置设置了5个障碍物，现在我将基于这个局势去模拟<code>BFS</code>算法的搜索流程。</p>
 <table>
 <thead>
 <tr>
@@ -270,10 +127,10 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>0<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f431.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f431.png?v8">&#x1f431;</span></td>
+<td>0:cat:</td>
 <td>1</td>
 <td>2</td>
-<td><strong>3</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>3</strong>:mountain_bicyclist:</td>
 <td>4</td>
 <td>5</td>
 <td>6</td>
@@ -282,17 +139,17 @@
 <tr>
 <td>8</td>
 <td>9</td>
-<td><strong>10</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>10</strong>:mountain_bicyclist:</td>
 <td>11</td>
 <td>12</td>
-<td><strong>13</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>13</strong>:mountain_bicyclist:</td>
 <td>14</td>
 <td>15</td>
 </tr>
 <tr>
 <td>16</td>
 <td>17</td>
-<td><strong>18</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>18</strong>:mountain_bicyclist:</td>
 <td>19</td>
 <td>20</td>
 <td>21</td>
@@ -304,10 +161,10 @@
 <td>25</td>
 <td>26</td>
 <td>27</td>
-<td><strong>28</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>28</strong>:mountain_bicyclist:</td>
 <td>29</td>
 <td>30</td>
-<td>31<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8">&#x1f42d;</span></td>
+<td>31:mouse:</td>
 </tr>
 <tr>
 <td></td>
@@ -334,7 +191,7 @@
 <li><strong>[回合12]</strong>  5 =&gt; [6]，23 =&gt; [31]，到达目标点，索引走过的路径为<strong>31,23,22,21,20,19,27,26,25,24,16,8,0</strong></li>
 </ol>
 <p>&emsp;&emsp;整个流程简单来说就是自左到右自上到下遍历了全部的节点，只不过它是根据层次优先进行遍历的，在层次遍历的过程中如果遇到了目标点位即可返回，因为同一个层次所消耗的回合数是相同的，所以第一次遇到目标点位的路径即是最优解之一。</p>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a><span>代码实现</span></h2><p>&emsp;&emsp;清楚算法流程后，代码的实现相对简单，可以使用递归也可以使用队列，我这边是递归完成最短路径搜索的，具体实现如下：</p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>&emsp;&emsp;清楚算法流程后，代码的实现相对简单，可以使用递归也可以使用队列，我这边是递归完成最短路径搜索的，具体实现如下：</p>
 <pre><code class="javascript">class BFSCat {
     constructor(options) {
         // 定义基础行列信息
@@ -425,7 +282,7 @@
         return point.flag !== 3
     }
 }</code></pre>
-<h2 id="效果演示"><a href="#效果演示" class="headerlink" title="效果演示"></a><span>效果演示</span></h2><p>&emsp;&emsp;将使用基于<code>BFS</code>算法策略设计的猫加入到猫鼠游戏，效果如下：</p>
+<h2 id="效果演示"><a href="#效果演示" class="headerlink" title="效果演示"></a>效果演示</h2><p>&emsp;&emsp;将使用基于<code>BFS</code>算法策略设计的猫加入到猫鼠游戏，效果如下：</p>
 <pre><code class="html">&lt;canvas id=&quot;BFSPlace&quot;&gt;not support canvas&lt;/canvas&gt;
 &lt;script&gt;
     let cacheWays = null
@@ -445,7 +302,7 @@
 <canvas id="BFSPlace">not support canvas</canvas>
 
 
-<h1 id="加强版猫鼠游戏"><a href="#加强版猫鼠游戏" class="headerlink" title="加强版猫鼠游戏"></a><span>加强版猫鼠游戏</span></h1><p>&emsp;&emsp;普通版的猫鼠游戏我们使用基于<code>BFS</code>的最短路径搜索算法即可找到最优解了，现在我们将游戏升级，引入不同类型的道路，请设计一个算法让<code>猫</code>使用最少的体力抓住<code>老鼠</code>，其中加强版猫鼠游戏引入的三种道路类型如下：</p>
+<h1 id="加强版猫鼠游戏"><a href="#加强版猫鼠游戏" class="headerlink" title="加强版猫鼠游戏"></a>加强版猫鼠游戏</h1><p>&emsp;&emsp;普通版的猫鼠游戏我们使用基于<code>BFS</code>的最短路径搜索算法即可找到最优解了，现在我们将游戏升级，引入不同类型的道路，请设计一个算法让<code>猫</code>使用最少的体力抓住<code>老鼠</code>，其中加强版猫鼠游戏引入的三种道路类型如下：</p>
 <ul>
 <li>普通道路 <img src="https://resources.chenjianhui.site/2019-06-20-game-background.png?imageView2/2/w/36/h/36/q/75%7Cimageslim" alt>：消耗<strong>一点</strong>体力值</li>
 <li>草地 <img src="https://resources.chenjianhui.site/grassland-1.png?imageView2/2/w/45/h/45/q/75%7Cimageslim" alt>：消耗<strong>两点</strong>体力值</li>
@@ -462,8 +319,8 @@
 <canvas id="complexRoadPlace">not support canvas</canvas>
 
 
-<h2 id="解题思考"><a href="#解题思考" class="headerlink" title="解题思考"></a><span>解题思考</span></h2><p>&emsp;&emsp;加强版本的游戏要考虑体力消耗最小，因此最短的路径未必消耗的体力就是最少的，这个很容易理解，所以我们不能单考虑最短路径这个方面去解题了，还应该考虑到不同道路的体力消耗。</p>
-<h2 id="A星寻路算法"><a href="#A星寻路算法" class="headerlink" title="A星寻路算法"></a><span>A星寻路算法</span></h2><p>&emsp;&emsp;可以直接点击<a href="https://zh.wikipedia.org/wiki/A*搜尋演算法" target="_blank" rel="noopener">A*算法wiki</a>查看一下算法的背景，我在这里只介绍算法的一些核心概念，在A*算法中有两个核心概念</p>
+<h2 id="解题思考"><a href="#解题思考" class="headerlink" title="解题思考"></a>解题思考</h2><p>&emsp;&emsp;加强版本的游戏要考虑体力消耗最小，因此最短的路径未必消耗的体力就是最少的，这个很容易理解，所以我们不能单考虑最短路径这个方面去解题了，还应该考虑到不同道路的体力消耗。</p>
+<h2 id="A星寻路算法"><a href="#A星寻路算法" class="headerlink" title="A星寻路算法"></a>A星寻路算法</h2><p>&emsp;&emsp;可以直接点击<a href="https://zh.wikipedia.org/wiki/A*搜尋演算法" target="_blank" rel="noopener">A*算法wiki</a>查看一下算法的背景，我在这里只介绍算法的一些核心概念，在A*算法中有两个核心概念</p>
 <ul>
 <li><strong>G值</strong>：<strong>起始点</strong>到<strong>行动点</strong>的<strong>移动量</strong><ul>
 <li>起始点：猫的初始位置</li>
@@ -492,10 +349,10 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>0<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f431.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f431.png?v8">&#x1f431;</span></td>
+<td>0:cat:</td>
 <td>1<strong>(2)</strong></td>
 <td>2</td>
-<td><strong>3</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>3</strong>:mountain_bicyclist:</td>
 <td>4</td>
 <td>5</td>
 <td>6</td>
@@ -504,17 +361,17 @@
 <tr>
 <td>8</td>
 <td>9<strong>(2)</strong></td>
-<td><strong>10</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>10</strong>:mountain_bicyclist:</td>
 <td>11</td>
 <td>12</td>
-<td><strong>13</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>13</strong>:mountain_bicyclist:</td>
 <td>14</td>
 <td>15<strong>(2)</strong></td>
 </tr>
 <tr>
 <td>16</td>
 <td>17</td>
-<td><strong>18</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>18</strong>:mountain_bicyclist:</td>
 <td>19</td>
 <td>20<strong>(3)</strong></td>
 <td>21<strong>(3)</strong></td>
@@ -526,10 +383,10 @@
 <td>25</td>
 <td>26</td>
 <td>27</td>
-<td><strong>28</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>28</strong>:mountain_bicyclist:</td>
 <td>29</td>
 <td>30</td>
-<td>31<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8">&#x1f42d;</span></td>
+<td>31:mouse:</td>
 </tr>
 <tr>
 <td></td>
@@ -547,7 +404,7 @@
 <li><strong>open列表</strong>：记录下所有<strong>被考虑</strong>的点位列表</li>
 <li><strong>close列表</strong>：记录下所有<strong>不被考虑</strong>的点位列表</li>
 </ul>
-<p>&emsp;&emsp;现在我将基于这个局势去模拟<strong>A星算法</strong>的搜索流程，其中🔕代表不被考虑的点位close、<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b6.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b6.png?v8">&#x1f6b6;</span>代表当前行动点、<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f431.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f431.png?v8">&#x1f431;</span>代表被考虑的点位open、<strong>F()</strong>括号内部的值代表被考虑点位的和值<code>G + H</code>，现在我们一步一步的模拟如下：</p>
+<p>&emsp;&emsp;现在我将基于这个局势去模拟<strong>A星算法</strong>的搜索流程，其中🔕代表不被考虑的点位close、:walking_man:代表当前行动点、:cat:代表被考虑的点位open、<strong>F()</strong>括号内部的值代表被考虑点位的和值<code>G + H</code>，现在我们一步一步的模拟如下：</p>
 <ol>
 <li><strong>[回合1]</strong> 基于位置0搜索到可能走法[1, 8]，计算和值为[1(2 + 9), 8(1 + 9)]，<code>open = [1(11), 8(10)]</code>、<code>close = [0(10)]</code>，括号内为和值F</li>
 </ol>
@@ -565,10 +422,10 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>0<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b6.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b6.png?v8">&#x1f6b6;</span></td>
-<td>1<strong>(2)</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f431.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f431.png?v8">&#x1f431;</span>F(11)</td>
+<td>0:no_bell::walking_man:</td>
+<td>1<strong>(2)</strong>:cat:F(11)</td>
 <td>2</td>
-<td><strong>3</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>3</strong>:mountain_bicyclist:</td>
 <td>4</td>
 <td>5</td>
 <td>6</td>
@@ -577,17 +434,17 @@
 <tr>
 <td>8🐱F(10)</td>
 <td>9<strong>(2)</strong></td>
-<td><strong>10</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>10</strong>:mountain_bicyclist:</td>
 <td>11</td>
 <td>12</td>
-<td><strong>13</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>13</strong>:mountain_bicyclist:</td>
 <td>14</td>
 <td>15<strong>(2)</strong></td>
 </tr>
 <tr>
 <td>16</td>
 <td>17</td>
-<td><strong>18</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>18</strong>:mountain_bicyclist:</td>
 <td>19</td>
 <td>20<strong>(3)</strong></td>
 <td>21<strong>(3)</strong></td>
@@ -599,10 +456,10 @@
 <td>25</td>
 <td>26</td>
 <td>27</td>
-<td><strong>28</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>28</strong>:mountain_bicyclist:</td>
 <td>29</td>
 <td>30</td>
-<td>31<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8">&#x1f42d;</span></td>
+<td>31:mouse:</td>
 </tr>
 <tr>
 <td></td>
@@ -632,29 +489,29 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>0<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>0:no_bell:</td>
 <td>1<strong>(2)</strong>🐱F(11)</td>
 <td>2</td>
-<td><strong>3</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>3</strong>:mountain_bicyclist:</td>
 <td>4</td>
 <td>5</td>
 <td>6</td>
 <td>7</td>
 </tr>
 <tr>
-<td>8<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b6.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b6.png?v8">&#x1f6b6;</span></td>
+<td>8:no_bell::walking_man:</td>
 <td>9<strong>(2)</strong>🐱F(11)</td>
-<td><strong>10</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>10</strong>:mountain_bicyclist:</td>
 <td>11</td>
 <td>12</td>
-<td><strong>13</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>13</strong>:mountain_bicyclist:</td>
 <td>14</td>
 <td>15<strong>(2)</strong></td>
 </tr>
 <tr>
 <td>16🐱F(10)</td>
 <td>17</td>
-<td><strong>18</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>18</strong>:mountain_bicyclist:</td>
 <td>19</td>
 <td>20<strong>(3)</strong></td>
 <td>21<strong>(3)</strong></td>
@@ -666,10 +523,10 @@
 <td>25</td>
 <td>26</td>
 <td>27</td>
-<td><strong>28</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>28</strong>:mountain_bicyclist:</td>
 <td>29</td>
 <td>30</td>
-<td>31<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8">&#x1f42d;</span></td>
+<td>31:mouse:</td>
 </tr>
 <tr>
 <td></td>
@@ -699,29 +556,29 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>0<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>0:no_bell:</td>
 <td>1<strong>(2)</strong>🐱F(11)</td>
 <td>2</td>
-<td><strong>3</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>3</strong>:mountain_bicyclist:</td>
 <td>4</td>
 <td>5</td>
 <td>6</td>
 <td>7</td>
 </tr>
 <tr>
-<td>8<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>8:no_bell:</td>
 <td>9<strong>(2)</strong>🐱F(11)</td>
-<td><strong>10</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>10</strong>:mountain_bicyclist:</td>
 <td>11</td>
 <td>12</td>
-<td><strong>13</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>13</strong>:mountain_bicyclist:</td>
 <td>14</td>
 <td>15<strong>(2)</strong></td>
 </tr>
 <tr>
-<td>16<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b6.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b6.png?v8">&#x1f6b6;</span></td>
+<td>16:no_bell::walking_man:</td>
 <td>17🐱F(10)</td>
-<td><strong>18</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>18</strong>:mountain_bicyclist:</td>
 <td>19</td>
 <td>20<strong>(3)</strong></td>
 <td>21<strong>(3)</strong></td>
@@ -733,10 +590,10 @@
 <td>25</td>
 <td>26</td>
 <td>27</td>
-<td><strong>28</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>28</strong>:mountain_bicyclist:</td>
 <td>29</td>
 <td>30</td>
-<td>31<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8">&#x1f42d;</span></td>
+<td>31:mouse:</td>
 </tr>
 <tr>
 <td></td>
@@ -766,29 +623,29 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>0<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>0:no_bell:</td>
 <td>1<strong>(2)</strong>🐱F(11)</td>
 <td>2</td>
-<td><strong>3</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>3</strong>:mountain_bicyclist:</td>
 <td>4</td>
 <td>5</td>
 <td>6</td>
 <td>7</td>
 </tr>
 <tr>
-<td>8<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>8:no_bell:</td>
 <td>9<strong>(2)</strong>🐱F(11)</td>
-<td><strong>10</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>10</strong>:mountain_bicyclist:</td>
 <td>11</td>
 <td>12</td>
-<td><strong>13</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>13</strong>:mountain_bicyclist:</td>
 <td>14</td>
 <td>15<strong>(2)</strong></td>
 </tr>
 <tr>
-<td>16<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
-<td>17<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b6.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b6.png?v8">&#x1f6b6;</span></td>
-<td><strong>18</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td>16:no_bell:</td>
+<td>17:no_bell::walking_man:</td>
+<td><strong>18</strong>:mountain_bicyclist:</td>
 <td>19</td>
 <td>20<strong>(3)</strong></td>
 <td>21<strong>(3)</strong></td>
@@ -800,10 +657,10 @@
 <td>25🐱F(10)</td>
 <td>26</td>
 <td>27</td>
-<td><strong>28</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>28</strong>:mountain_bicyclist:</td>
 <td>29</td>
 <td>30</td>
-<td>31<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8">&#x1f42d;</span></td>
+<td>31:mouse:</td>
 </tr>
 <tr>
 <td></td>
@@ -833,29 +690,29 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>0<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>0:no_bell:</td>
 <td>1<strong>(2)</strong>🐱F(11)</td>
 <td>2</td>
-<td><strong>3</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>3</strong>:mountain_bicyclist:</td>
 <td>4</td>
 <td>5</td>
 <td>6</td>
 <td>7</td>
 </tr>
 <tr>
-<td>8<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>8:no_bell:</td>
 <td>9<strong>(2)</strong>🐱F(11)</td>
-<td><strong>10</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>10</strong>:mountain_bicyclist:</td>
 <td>11</td>
 <td>12</td>
-<td><strong>13</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>13</strong>:mountain_bicyclist:</td>
 <td>14</td>
 <td>15<strong>(2)</strong></td>
 </tr>
 <tr>
-<td>16<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
-<td>17<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
-<td><strong>18</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td>16:no_bell:</td>
+<td>17:no_bell:</td>
+<td><strong>18</strong>:mountain_bicyclist:</td>
 <td>19</td>
 <td>20<strong>(3)</strong></td>
 <td>21<strong>(3)</strong></td>
@@ -864,13 +721,13 @@
 </tr>
 <tr>
 <td>24<strong>(2)</strong>🐱F(11)</td>
-<td>25<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b6.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b6.png?v8">&#x1f6b6;</span></td>
+<td>25:no_bell::walking_man:</td>
 <td>26🐱F(10)</td>
 <td>27</td>
-<td><strong>28</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>28</strong>:mountain_bicyclist:</td>
 <td>29</td>
 <td>30</td>
-<td>31<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8">&#x1f42d;</span></td>
+<td>31:mouse:</td>
 </tr>
 <tr>
 <td></td>
@@ -900,29 +757,29 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>0<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>0:no_bell:</td>
 <td>1<strong>(2)</strong>🐱F(11)</td>
 <td>2</td>
-<td><strong>3</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>3</strong>:mountain_bicyclist:</td>
 <td>4</td>
 <td>5</td>
 <td>6</td>
 <td>7</td>
 </tr>
 <tr>
-<td>8<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>8:no_bell:</td>
 <td>9<strong>(2)</strong>🐱F(11)</td>
-<td><strong>10</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>10</strong>:mountain_bicyclist:</td>
 <td>11</td>
 <td>12</td>
-<td><strong>13</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>13</strong>:mountain_bicyclist:</td>
 <td>14</td>
 <td>15<strong>(2)</strong></td>
 </tr>
 <tr>
-<td>16<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
-<td>17<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
-<td><strong>18</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td>16:no_bell:</td>
+<td>17:no_bell:</td>
+<td><strong>18</strong>:mountain_bicyclist:</td>
 <td>19</td>
 <td>20<strong>(3)</strong></td>
 <td>21<strong>(3)</strong></td>
@@ -931,13 +788,13 @@
 </tr>
 <tr>
 <td>24<strong>(2)</strong>🐱F(11)</td>
-<td>25<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>25:no_bell:</td>
 <td>26🔕🚶</td>
 <td>27🐱F(10)</td>
-<td><strong>28</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>28</strong>:mountain_bicyclist:</td>
 <td>29</td>
 <td>30</td>
-<td>31<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8">&#x1f42d;</span></td>
+<td>31:mouse:</td>
 </tr>
 <tr>
 <td></td>
@@ -967,29 +824,29 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>0<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>0:no_bell:</td>
 <td>1<strong>(2)</strong>🐱F(11)</td>
 <td>2</td>
-<td><strong>3</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>3</strong>:mountain_bicyclist:</td>
 <td>4</td>
 <td>5</td>
 <td>6</td>
 <td>7</td>
 </tr>
 <tr>
-<td>8<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>8:no_bell:</td>
 <td>9<strong>(2)</strong>🐱F(11)</td>
-<td><strong>10</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>10</strong>:mountain_bicyclist:</td>
 <td>11</td>
 <td>12</td>
-<td><strong>13</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>13</strong>:mountain_bicyclist:</td>
 <td>14</td>
 <td>15<strong>(2)</strong></td>
 </tr>
 <tr>
-<td>16<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
-<td>17<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
-<td><strong>18</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td>16:no_bell:</td>
+<td>17:no_bell:</td>
+<td><strong>18</strong>:mountain_bicyclist:</td>
 <td>19🐱F(12)</td>
 <td>20<strong>(3)</strong></td>
 <td>21<strong>(3)</strong></td>
@@ -998,13 +855,13 @@
 </tr>
 <tr>
 <td>24<strong>(2)</strong>🐱F(11)</td>
-<td>25<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>25:no_bell:</td>
 <td>26🔕</td>
 <td>27🔕🚶</td>
-<td><strong>28</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>28</strong>:mountain_bicyclist:</td>
 <td>29</td>
 <td>30</td>
-<td>31<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8">&#x1f42d;</span></td>
+<td>31:mouse:</td>
 </tr>
 <tr>
 <td></td>
@@ -1034,29 +891,29 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>0<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>0:no_bell:</td>
 <td>1<strong>(2)</strong>🔕🚶</td>
 <td>2🐱F(11)</td>
-<td><strong>3</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>3</strong>:mountain_bicyclist:</td>
 <td>4</td>
 <td>5</td>
 <td>6</td>
 <td>7</td>
 </tr>
 <tr>
-<td>8<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>8:no_bell:</td>
 <td>9<strong>(2)</strong>🐱F(11)</td>
-<td><strong>10</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>10</strong>:mountain_bicyclist:</td>
 <td>11</td>
 <td>12</td>
-<td><strong>13</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>13</strong>:mountain_bicyclist:</td>
 <td>14</td>
 <td>15<strong>(2)</strong></td>
 </tr>
 <tr>
-<td>16<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
-<td>17<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
-<td><strong>18</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td>16:no_bell:</td>
+<td>17:no_bell:</td>
+<td><strong>18</strong>:mountain_bicyclist:</td>
 <td>19🐱F(12)</td>
 <td>20<strong>(3)</strong></td>
 <td>21<strong>(3)</strong></td>
@@ -1065,13 +922,13 @@
 </tr>
 <tr>
 <td>24<strong>(2)</strong>🐱F(11)</td>
-<td>25<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>25:no_bell:</td>
 <td>26🔕</td>
 <td>27🔕</td>
-<td><strong>28</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>28</strong>:mountain_bicyclist:</td>
 <td>29</td>
 <td>30</td>
-<td>31<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8">&#x1f42d;</span></td>
+<td>31:mouse:</td>
 </tr>
 <tr>
 <td></td>
@@ -1101,29 +958,29 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>0<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>0:no_bell:</td>
 <td>1<strong>(2)</strong>🔕</td>
 <td>2🔕</td>
-<td><strong>3</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>3</strong>:mountain_bicyclist:</td>
 <td>4</td>
 <td>5</td>
 <td>6</td>
 <td>7</td>
 </tr>
 <tr>
-<td>8<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>8:no_bell:</td>
 <td>9<strong>(2)</strong>🔕</td>
-<td><strong>10</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>10</strong>:mountain_bicyclist:</td>
 <td>11🐱F(14)</td>
 <td>12</td>
-<td><strong>13</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>13</strong>:mountain_bicyclist:</td>
 <td>14</td>
 <td>15<strong>(2)</strong></td>
 </tr>
 <tr>
-<td>16<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
-<td>17<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
-<td><strong>18</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td>16:no_bell:</td>
+<td>17:no_bell:</td>
+<td><strong>18</strong>:mountain_bicyclist:</td>
 <td>19🔕🚶</td>
 <td>20<strong>(3)</strong>🐱F(14)</td>
 <td>21<strong>(3)</strong></td>
@@ -1132,13 +989,13 @@
 </tr>
 <tr>
 <td>24<strong>(2)</strong>🔕</td>
-<td>25<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>25:no_bell:</td>
 <td>26🔕</td>
 <td>27🔕</td>
-<td><strong>28</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>28</strong>:mountain_bicyclist:</td>
 <td>29</td>
 <td>30</td>
-<td>31<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8">&#x1f42d;</span></td>
+<td>31:mouse:</td>
 </tr>
 <tr>
 <td></td>
@@ -1168,29 +1025,29 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>0<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>0:no_bell:</td>
 <td>1<strong>(2)</strong>🔕</td>
 <td>2🔕</td>
-<td><strong>3</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>3</strong>:mountain_bicyclist:</td>
 <td>4</td>
 <td>5</td>
 <td>6</td>
 <td>7</td>
 </tr>
 <tr>
-<td>8<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>8:no_bell:</td>
 <td>9<strong>(2)</strong>🔕</td>
-<td><strong>10</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>10</strong>:mountain_bicyclist:</td>
 <td>11🐱F(14)</td>
 <td>12🐱F(16)</td>
-<td><strong>13</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>13</strong>:mountain_bicyclist:</td>
 <td>14</td>
 <td>15<strong>(2)</strong></td>
 </tr>
 <tr>
-<td>16<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
-<td>17<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
-<td><strong>18</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td>16:no_bell:</td>
+<td>17:no_bell:</td>
+<td><strong>18</strong>:mountain_bicyclist:</td>
 <td>19🔕</td>
 <td>20<strong>(3)</strong>🔕🚶</td>
 <td>21<strong>(3)</strong>🐱F(16)</td>
@@ -1199,13 +1056,13 @@
 </tr>
 <tr>
 <td>24<strong>(2)</strong>🔕</td>
-<td>25<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>25:no_bell:</td>
 <td>26🔕</td>
 <td>27🔕</td>
-<td><strong>28</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>28</strong>:mountain_bicyclist:</td>
 <td>29</td>
 <td>30</td>
-<td>31<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8">&#x1f42d;</span></td>
+<td>31:mouse:</td>
 </tr>
 <tr>
 <td></td>
@@ -1235,29 +1092,29 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>0<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>0:no_bell:</td>
 <td>1<strong>(2)</strong>🔕</td>
 <td>2🔕</td>
-<td><strong>3</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>3</strong>:mountain_bicyclist:</td>
 <td>4</td>
 <td>5</td>
 <td>6</td>
 <td>7</td>
 </tr>
 <tr>
-<td>8<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>8:no_bell:</td>
 <td>9<strong>(2)</strong>🔕</td>
-<td><strong>10</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>10</strong>:mountain_bicyclist:</td>
 <td>11🔕🚶</td>
 <td>12🐱F(14)</td>
-<td><strong>13</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>13</strong>:mountain_bicyclist:</td>
 <td>14</td>
 <td>15<strong>(2)</strong></td>
 </tr>
 <tr>
-<td>16<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
-<td>17<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
-<td><strong>18</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td>16:no_bell:</td>
+<td>17:no_bell:</td>
+<td><strong>18</strong>:mountain_bicyclist:</td>
 <td>19🔕</td>
 <td>20<strong>(3)</strong>🔕</td>
 <td>21<strong>(3)</strong>🐱F(16)</td>
@@ -1266,13 +1123,13 @@
 </tr>
 <tr>
 <td>24<strong>(2)</strong>🔕</td>
-<td>25<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>25:no_bell:</td>
 <td>26🔕</td>
 <td>27🔕</td>
-<td><strong>28</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>28</strong>:mountain_bicyclist:</td>
 <td>29</td>
 <td>30</td>
-<td>31<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8">&#x1f42d;</span></td>
+<td>31:mouse:</td>
 </tr>
 <tr>
 <td></td>
@@ -1302,29 +1159,29 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>0<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>0:no_bell:</td>
 <td>1<strong>(2)</strong>🔕</td>
 <td>2🔕</td>
-<td><strong>3</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>3</strong>:mountain_bicyclist:</td>
 <td>4🔕</td>
 <td>5🔕</td>
 <td>6🔕🚶</td>
 <td>7🐱F(16)</td>
 </tr>
 <tr>
-<td>8<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>8:no_bell:</td>
 <td>9<strong>(2)</strong>🔕</td>
-<td><strong>10</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>10</strong>:mountain_bicyclist:</td>
 <td>11🔕</td>
 <td>12🔕</td>
-<td><strong>13</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>13</strong>:mountain_bicyclist:</td>
 <td>14🐱F(16)</td>
 <td>15<strong>(2)</strong></td>
 </tr>
 <tr>
-<td>16<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
-<td>17<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
-<td><strong>18</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td>16:no_bell:</td>
+<td>17:no_bell:</td>
+<td><strong>18</strong>:mountain_bicyclist:</td>
 <td>19🔕</td>
 <td>20<strong>(3)</strong>🔕</td>
 <td>21<strong>(3)</strong>🐱F(16)</td>
@@ -1333,13 +1190,13 @@
 </tr>
 <tr>
 <td>24<strong>(2)</strong>🔕</td>
-<td>25<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>25:no_bell:</td>
 <td>26🔕</td>
 <td>27🔕</td>
-<td><strong>28</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>28</strong>:mountain_bicyclist:</td>
 <td>29</td>
 <td>30</td>
-<td>31<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8">&#x1f42d;</span></td>
+<td>31:mouse:</td>
 </tr>
 <tr>
 <td></td>
@@ -1369,29 +1226,29 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>0<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>0:no_bell:</td>
 <td>1<strong>(2)</strong>🔕</td>
 <td>2🔕</td>
-<td><strong>3</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>3</strong>:mountain_bicyclist:</td>
 <td>4🔕</td>
 <td>5🔕</td>
 <td>6🔕</td>
 <td>7🔕🚶</td>
 </tr>
 <tr>
-<td>8<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>8:no_bell:</td>
 <td>9<strong>(2)</strong>🔕</td>
-<td><strong>10</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>10</strong>:mountain_bicyclist:</td>
 <td>11🔕</td>
 <td>12🔕</td>
-<td><strong>13</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>13</strong>:mountain_bicyclist:</td>
 <td>14🐱F(16)</td>
 <td>15<strong>(2)</strong>🐱F(17)</td>
 </tr>
 <tr>
-<td>16<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
-<td>17<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
-<td><strong>18</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td>16:no_bell:</td>
+<td>17:no_bell:</td>
+<td><strong>18</strong>:mountain_bicyclist:</td>
 <td>19🔕</td>
 <td>20<strong>(3)</strong>🔕</td>
 <td>21<strong>(3)</strong>🐱F(16)</td>
@@ -1400,13 +1257,13 @@
 </tr>
 <tr>
 <td>24<strong>(2)</strong>🔕</td>
-<td>25<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>25:no_bell:</td>
 <td>26🔕</td>
 <td>27🔕</td>
-<td><strong>28</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>28</strong>:mountain_bicyclist:</td>
 <td>29</td>
 <td>30</td>
-<td>31<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8">&#x1f42d;</span></td>
+<td>31:mouse:</td>
 </tr>
 <tr>
 <td></td>
@@ -1436,29 +1293,29 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>0<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>0:no_bell:</td>
 <td>1<strong>(2)</strong>🔕</td>
 <td>2🔕</td>
-<td><strong>3</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>3</strong>:mountain_bicyclist:</td>
 <td>4🔕</td>
 <td>5🔕</td>
 <td>6🔕</td>
 <td>7🔕</td>
 </tr>
 <tr>
-<td>8<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>8:no_bell:</td>
 <td>9<strong>(2)</strong>🔕</td>
-<td><strong>10</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>10</strong>:mountain_bicyclist:</td>
 <td>11🔕</td>
 <td>12🔕</td>
-<td><strong>13</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>13</strong>:mountain_bicyclist:</td>
 <td>14🔕🚶</td>
 <td>15<strong>(2)</strong>🐱F(17)</td>
 </tr>
 <tr>
-<td>16<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
-<td>17<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
-<td><strong>18</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td>16:no_bell:</td>
+<td>17:no_bell:</td>
+<td><strong>18</strong>:mountain_bicyclist:</td>
 <td>19🔕</td>
 <td>20<strong>(3)</strong>🔕</td>
 <td>21<strong>(3)</strong>🐱F(16)</td>
@@ -1467,13 +1324,13 @@
 </tr>
 <tr>
 <td>24<strong>(2)</strong>🔕</td>
-<td>25<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>25:no_bell:</td>
 <td>26🔕</td>
 <td>27🔕</td>
-<td><strong>28</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>28</strong>:mountain_bicyclist:</td>
 <td>29</td>
 <td>30</td>
-<td>31<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8">&#x1f42d;</span></td>
+<td>31:mouse:</td>
 </tr>
 <tr>
 <td></td>
@@ -1503,29 +1360,29 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>0<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>0:no_bell:</td>
 <td>1<strong>(2)</strong>🔕</td>
 <td>2🔕</td>
-<td><strong>3</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>3</strong>:mountain_bicyclist:</td>
 <td>4🔕</td>
 <td>5🔕</td>
 <td>6🔕</td>
 <td>7🔕</td>
 </tr>
 <tr>
-<td>8<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>8:no_bell:</td>
 <td>9<strong>(2)</strong>🔕</td>
-<td><strong>10</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>10</strong>:mountain_bicyclist:</td>
 <td>11🔕</td>
 <td>12🔕</td>
-<td><strong>13</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>13</strong>:mountain_bicyclist:</td>
 <td>14🔕</td>
 <td>15<strong>(2)</strong>🐱F(17)</td>
 </tr>
 <tr>
-<td>16<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
-<td>17<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
-<td><strong>18</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td>16:no_bell:</td>
+<td>17:no_bell:</td>
+<td><strong>18</strong>:mountain_bicyclist:</td>
 <td>19🔕</td>
 <td>20<strong>(3)</strong>🔕</td>
 <td>21<strong>(3)</strong>🐱F(16)</td>
@@ -1534,13 +1391,13 @@
 </tr>
 <tr>
 <td>24<strong>(2)</strong>🔕</td>
-<td>25<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>25:no_bell:</td>
 <td>26🔕</td>
 <td>27🔕</td>
-<td><strong>28</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>28</strong>:mountain_bicyclist:</td>
 <td>29</td>
 <td>30🐱F(16)</td>
-<td>31<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8">&#x1f42d;</span></td>
+<td>31:mouse:</td>
 </tr>
 <tr>
 <td></td>
@@ -1570,29 +1427,29 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>0<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>0:no_bell:</td>
 <td>1<strong>(2)</strong>🔕</td>
 <td>2🔕</td>
-<td><strong>3</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>3</strong>:mountain_bicyclist:</td>
 <td>4🔕</td>
 <td>5🔕</td>
 <td>6🔕</td>
 <td>7🔕</td>
 </tr>
 <tr>
-<td>8<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>8:no_bell:</td>
 <td>9<strong>(2)</strong>🔕</td>
-<td><strong>10</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>10</strong>:mountain_bicyclist:</td>
 <td>11🔕</td>
 <td>12🔕</td>
-<td><strong>13</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>13</strong>:mountain_bicyclist:</td>
 <td>14🔕</td>
 <td>15<strong>(2)</strong>🐱F(17)</td>
 </tr>
 <tr>
-<td>16<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
-<td>17<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
-<td><strong>18</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td>16:no_bell:</td>
+<td>17:no_bell:</td>
+<td><strong>18</strong>:mountain_bicyclist:</td>
 <td>19🔕</td>
 <td>20<strong>(3)</strong>🔕</td>
 <td>21<strong>(3)</strong>🐱F(16)</td>
@@ -1601,13 +1458,13 @@
 </tr>
 <tr>
 <td>24<strong>(2)</strong>🔕</td>
-<td>25<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f515.png?v8">&#x1f515;</span></td>
+<td>25:no_bell:</td>
 <td>26🔕</td>
 <td>27🔕</td>
-<td><strong>28</strong><span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f6b5.png?v8">&#x1f6b5;</span></td>
+<td><strong>28</strong>:mountain_bicyclist:</td>
 <td>29🐱F(18)</td>
 <td>30🔕🚶</td>
-<td>31<span class="github-emoji" style="background:no-repeat url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8) center/contain" data-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f42d.png?v8">&#x1f42d;</span>🐱F(16)</td>
+<td>31:mouse:🐱F(16)</td>
 </tr>
 <tr>
 <td></td>
@@ -1620,7 +1477,7 @@
 <td></td>
 </tr>
 </tbody></table>
-<h2 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a><span>代码实现-1</span></h2><pre><code class="javascript">class AStarCat {
+<h2 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h2><pre><code class="javascript">class AStarCat {
     constructor(options) {
         // 定义基础行列信息
         this.columns = (options &amp;&amp; options.columns) || 16
@@ -1738,7 +1595,7 @@
         return point.flag !== 3
     }
 }</code></pre>
-<h2 id="效果演示-1"><a href="#效果演示-1" class="headerlink" title="效果演示"></a><span>效果演示-1</span></h2><pre><code class="html">&lt;canvas id=&quot;AStarPlace&quot;&gt;not support canvas&lt;/canvas&gt;
+<h2 id="效果演示-1"><a href="#效果演示-1" class="headerlink" title="效果演示"></a>效果演示</h2><pre><code class="html">&lt;canvas id=&quot;AStarPlace&quot;&gt;not support canvas&lt;/canvas&gt;
 &lt;script&gt;
     let cacheWays = null
     let index = 0
@@ -1759,8 +1616,8 @@
 <canvas id="AStarPlace">not support canvas</canvas>
 
 
-<h1 id="升级玩法"><a href="#升级玩法" class="headerlink" title="升级玩法"></a><span>升级玩法</span></h1><p>&emsp;&emsp;在这个游戏中，我们不仅可以设计猫的行动策略函数，还可以设计老鼠的行动策略函数来躲避猫的追击，有兴趣的同学可以想想如果躲避算法又应该如何实现。</p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a><span>参考资料</span></h1><ul>
+<h1 id="升级玩法"><a href="#升级玩法" class="headerlink" title="升级玩法"></a>升级玩法</h1><p>&emsp;&emsp;在这个游戏中，我们不仅可以设计猫的行动策略函数，还可以设计老鼠的行动策略函数来躲避猫的追击，有兴趣的同学可以想想如果躲避算法又应该如何实现。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
 <li><a href="https://blog.csdn.net/hitwhylz/article/details/41383561" target="_blank" rel="noopener">A星寻路算法-(入门级) - Colin丶- CSDN博客</a></li>
 </ul>
 
@@ -1800,328 +1657,53 @@
     })
 </script>
 
-        </div>
-        
-            <ul class="post-copyright">
-            <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2019-06-20-algorithm-topic/">算法——猫鼠游戏</a></li>
-            <li><strong>本文作者：</strong><a href="https://chenjianhui.site">JianhuiChen</a></li>
-            <li><strong>本文链接：</strong><a href="https://chenjianhui.site/2019-06-20-algorithm-topic/">https://chenjianhui.site/2019-06-20-algorithm-topic/</a></li>
-            <li><strong>发布时间：</strong>2019-06-20</li>
-            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
-            </li>
-            </ul>
-        
-        
-        <hr style="height:1px;margin:1rem 0">
-        <div class="level is-size-7 is-uppercase">
-            <div class="level-start">
-                <div class="level-item">
-                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
-                    <a class="has-link-grey -link" href="/tags/Algorithm/">Algorithm</a>,&nbsp;<a class="has-link-grey -link" href="/tags/Java/">Java</a>
-                </div>
-            </div>
-        </div>
-        
-        
-        
-    </div>
-</div>
+  </div>
+</article>
+<ul class="post-copyright">
+  <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2019-06-20-algorithm-topic/">算法——猫鼠游戏</a></li>
+  <li><strong>本文作者：</strong><a href="https://chenjianhui.site">JianhuiChen</a></li>
+  <li><strong>本文链接：</strong><a href="https://chenjianhui.site/2019-06-20-algorithm-topic/">https://chenjianhui.site/2019-06-20-algorithm-topic/</a></li>
+  <li><strong>发布时间：</strong>2019-06-20</li>
+  <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+<div id="gitalk-container"></div>
 
-
-
-
-
-<div class="card card-transparent">
-    <div class="level post-navigation is-flex-wrap is-mobile">
-        
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2019-07-14-thinking-topic/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">海岛寻宝问题</span>
-            </a>
-        </div>
-        
-        
-        <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2019-06-17-algorithm-topic/">
-                <span class="level-item">算法——24点游戏</span>
-                <i class="level-item fas fa-chevron-right"></i>
-            </a>
-        </div>
-        
-    </div>
-</div>
-
-
-
-<div class="card">
-    <div class="card-content">
-        <h3 class="title is-5 has-text-weight-normal">评论</h3>
-        
-<div id="comment-container"></div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
-<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
-<script>
-    var gitalk = new Gitalk({
-        clientID: 'bd0cbb30da9c24da8c7c',
-        clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
-        id: '76f8ba1c25064ca9e376db4c0868e7df',
-        repo: 'blog',
-        owner: 'calebman',
-        admin: "calebman"
-    })
-    gitalk.render('comment-container')
-</script>
-
-    </div>
-</div>
-
-<link rel="stylesheet" href="/css/article-nice.css">
+<!-- Gittalk.js -->
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
 <!-- Highlight.js -->
-<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<link rel="stylesheet" href="/css/hljs.css">
+<script src="/js/highlight.min.js"></script>
 <script>
-    hljs.initHighlightingOnLoad();
-</script></div>
-                
-                
-
-
-
-
-<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right is-sticky">
-    
-        
-<div class="card widget column-left is-sticky" id="toc">
-    <div class="card-content">
-        <div class="menu">
-            <h3 class="menu-label">
-                目录
-            </h3>
-            <ul class="menu-list"><li>
-        <a class="is-flex" href="#游戏设计">
-        <span class="has-mr-6">1</span>
-        <span>游戏设计</span>
-        </a></li><li>
-        <a class="is-flex" href="#算法设计">
-        <span class="has-mr-6">2</span>
-        <span>算法设计</span>
-        </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#设计思路">
-        <span class="has-mr-6">2.1</span>
-        <span>设计思路</span>
-        </a></li><li>
-        <a class="is-flex" href="#代码实现">
-        <span class="has-mr-6">2.2</span>
-        <span>代码实现</span>
-        </a></li><li>
-        <a class="is-flex" href="#效果演示">
-        <span class="has-mr-6">2.3</span>
-        <span>效果演示</span>
-        </a></li></ul></li><li>
-        <a class="is-flex" href="#加强版猫鼠游戏">
-        <span class="has-mr-6">3</span>
-        <span>加强版猫鼠游戏</span>
-        </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#解题思考">
-        <span class="has-mr-6">3.1</span>
-        <span>解题思考</span>
-        </a></li><li>
-        <a class="is-flex" href="#A星寻路算法">
-        <span class="has-mr-6">3.2</span>
-        <span>A星寻路算法</span>
-        </a></li><li>
-        <a class="is-flex" href="#代码实现-1">
-        <span class="has-mr-6">3.3</span>
-        <span>代码实现-1</span>
-        </a></li><li>
-        <a class="is-flex" href="#效果演示-1">
-        <span class="has-mr-6">3.4</span>
-        <span>效果演示-1</span>
-        </a></li></ul></li><li>
-        <a class="is-flex" href="#升级玩法">
-        <span class="has-mr-6">4</span>
-        <span>升级玩法</span>
-        </a></li><li>
-        <a class="is-flex" href="#参考资料">
-        <span class="has-mr-6">5</span>
-        <span>参考资料</span>
-        </a></li></ul>
-        </div>
-    </div>
-</div>
-
-
-    
-    
-</div>
-
-            </div>
-        </div>
-    </section>
-    <footer class="footer">
-    <div class="container">
-        <div class="level">
-            <div class="level-start has-text-centered-mobile">
-                <p class="footer-logo is-block has-mb-6" href="/">
-                
-                    <img src="/images/logo.svg" alt="算法——猫鼠游戏" height="28">
-                
-                <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
-                </p>
-                <p class="is-size-7">
-                &copy; 2020 JianhuiChen&nbsp;
-                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
-                
-                </p>
-            </div>
-            <div class="level-end">
-            
-                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
-                
-                
-                <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
-                        
-                        <i class="fab fa-creative-commons"></i>&nbsp;<i class="fab fa-creative-commons-by"></i>&nbsp;<i class="fab fa-creative-commons-nc"></i>&nbsp;<i class="fab fa-creative-commons-sa"></i>&nbsp;
-                        
-                    </a>
-                </p>
-                
-                </div>
-            
-            </div>
-        </div>
-    </div>
-</footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
-<script>moment.locale("zh-CN");</script>
-
-
-    
-    
-    
-    <script src="/js/animation.js"></script>
-    
-
-    
-    
-    
-    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
-    <script src="/js/gallery.js" defer></script>
-    
-
-    
-    
-
-<div id="outdated">
-    <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
-            my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        outdatedBrowser({
-            bgColor: '#f25648',
-            color: '#ffffff',
-            lowerThan: 'flex'
-        });
-    });
+  hljs.initHighlightingOnLoad();
+  const gitalk = new Gitalk({
+    clientID: 'bd0cbb30da9c24da8c7c',
+    clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
+    repo: 'blog',
+    owner: 'calebman',
+    admin: ['calebman']
+  })
+  gitalk.render('gitalk-container')
 </script>
+  </main>
 
+  <footer class="footer">
+    <ul class="footer-links">
+      <section class="copyright">
+        <a href="https://chenjianhui.site">JianhuiChen</a> © 2017 - 2020 | 
+        <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
+      </section>
+    </ul>
+  </footer>
 
-    
-    
-<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    MathJax.Hub.Config({
-        'HTML-CSS': {
-            matchFontHeight: false
-        },
-        SVG: {
-            matchFontHeight: false
-        },
-        CommonHTML: {
-            matchFontHeight: false
-        },
-        tex2jax: {
-            inlineMath: [
-                ['$','$'],
-                ['\\(','\\)']
-            ]
-        }
-    });
-});
-</script>
+  
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/simple.js"></script>
+  
+  
 
-    
-    
-
-<a id="back-to-top" title="回到顶端" href="javascript:;">
-    <i class="fas fa-chevron-up"></i>
-</a>
-<script src="/js/back-to-top.js" defer></script>
-
-
-    
-    
-
-    
-    
-    
-    
-
-    
-    
-    
-    
-    
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
-    <script src="/js/clipboard.js" defer></script>
-    
-
-    
-    
-    
-
-
-<script src="/js/main.js" defer></script>
-
-    
-    <div class="searchbox ins-search">
-    <div class="searchbox-container ins-search-container">
-        <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
-            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
-        </div>
-        <div class="searchbox-result-wrapper ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
-</div>
-<script>
-    (function (window) {
-        var INSIGHT_CONFIG = {
-            TRANSLATION: {
-                POSTS: '文章',
-                PAGES: '页面',
-                CATEGORIES: '分类',
-                TAGS: '标签',
-                UNTITLED: '(无标题)',
-            },
-            CONTENT_URL: '/content.json',
-        };
-        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-    })(window);
-</script>
-<script src="/js/insight.js" defer></script>
-<link rel="stylesheet" href="/css/search.css">
-<link rel="stylesheet" href="/css/insight.css">
-    
 </body>
+
 </html>

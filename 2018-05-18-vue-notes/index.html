@@ -1,208 +1,69 @@
+
+
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
+
 <head><meta name="generator" content="Hexo 3.9.0">
-    <meta charset="utf-8">
-<title>纯正后端的vue轮子笔记 - Sincerity</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-
-
-    <meta name="description" content="好记性不如烂笔头，多造轮子多做笔记">
-<meta name="keywords" content="vuejs,vue-router,vuex">
-<meta property="og:type" content="article">
-<meta property="og:title" content="纯正后端的vue轮子笔记">
-<meta property="og:url" content="https://chenjianhui.site/2018-05-18-vue-notes/index.html">
-<meta property="og:site_name" content="Sincerity">
-<meta property="og:description" content="好记性不如烂笔头，多造轮子多做笔记">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://resources.chenjianhui.site/2018-05-18-home-pic.png">
-<meta property="og:updated_time" content="2020-07-08T02:46:41.179Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="纯正后端的vue轮子笔记">
-<meta name="twitter:description" content="好记性不如烂笔头，多造轮子多做笔记">
-<meta name="twitter:image" content="https://resources.chenjianhui.site/2018-05-18-home-pic.png">
-
-
-
-
-
-<link rel="alternative" href="/atom.xml" title="纯正后端的vue轮子笔记" type="application/atom+xml">
-
-
-
-<link rel="icon" href="/images/favicon-32x32.png">
-
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
-
-
-    
-    
-    
-    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
-    
-
-    
-    
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
-    
-
-    
-    
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
-
-
-    
-    
-    
-    
-
-<link rel="stylesheet" href="/css/back-to-top.css">
-
-
-    
-    
-
-    
-    
-    
-    
-<script>
-    (function(h,o,t,j,a,r){
-        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-        h._hjSettings={hjid:19960428,hjsv:6};
-        a=o.getElementsByTagName('head')[0];
-        r=o.createElement('script');r.async=1;
-        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-        a.appendChild(r);
-    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-</script>
-
-
-    
-    
-<link rel="stylesheet" href="/css/progressbar.css">
-<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
-
-    
-    
-    
-
-    
-    
-    
-
-
-<link rel="stylesheet" href="/css/style.css">
+  <meta charset="UTF-8">
+  <title>纯正后端的vue轮子笔记 [ Sincerity ]</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="icon" href="/images/favicon-32x32.png">
+  
+  <!-- stylesheets list from _config.yml -->
+  
+  <link rel="stylesheet" href="/css/simple.css">
+  
+  <link rel="stylesheet" href="/css/font.css">
+  
+  
 </head>
-<body class="is-3-column">
-    <nav class="navbar navbar-main">
-    <div class="container">
-        <div class="navbar-brand is-flex-center">
-            <a class="navbar-item navbar-logo" href="/">
-            
-                <img src="/images/logo.svg" alt="纯正后端的vue轮子笔记" height="28">
-            
-            </a>
-        </div>
-        <div class="navbar-menu">
-            
-            <div class="navbar-start">
-                
-                <a class="navbar-item" href="/">Home</a>
-                
-                <a class="navbar-item" href="/archives">Archives</a>
-                
-                <a class="navbar-item" href="/categories">Categories</a>
-                
-                <a class="navbar-item" href="/tags">Tags</a>
-                
-                <a class="navbar-item" href="/leetcode">LeetCode</a>
-                
-                <a class="navbar-item" href="/projects">Projects</a>
-                
-                <a class="navbar-item" href="/about">About</a>
-                
-            </div>
-            
-            <div class="navbar-end">
-                
-                    
-                    
-                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://github.com/calebman">
-                        
-                        <i class="fab fa-github"></i>
-                        
-                    </a>
-                    
-                
-                
-                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
-                    <i class="fas fa-list-ul"></i>
-                </a>
-                
-                
-                <a class="navbar-item search" title="搜索" href="javascript:;">
-                    <i class="fas fa-search"></i>
-                </a>
-                
-            </div>
-        </div>
-    </div>
-</nav>
-    
-    <section class="section">
-        <div class="container">
-            <div class="columns">
-                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
-    
-    <div class="card-image">
-        <span class="image is-7by1">
-            <img class="thumbnail" src="https://resources.chenjianhui.site/2018-05-18-home-pic.png" alt="纯正后端的vue轮子笔记">
-        </span>
-    </div>
-    
-    <div class="card-content article ">
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <i class="fas fa-angle-double-right"></i>纯正后端的vue轮子笔记
-            
-        </h1>
+
+<body>
+
+  <header class="header">
+    <nav class="nav">
+      <a href="/" class="nav-logo"><img src="/images/avatar.png" width="50" height="50" alt="Logo"></a>
+      <ul class="nav-links">
         
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-05-18T14:10:22.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2018-05-18</time>
-                
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-07-08T02:46:41.179Z"><i class="far fa-calendar-check">&nbsp;</i>2020-07-08</time>
-                
-                
-                <div class="level-item">
-                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
-                <a class="has-link-grey -link" href="/categories/前端/">前端</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    <i class="far fa-clock"></i>&nbsp;
-                    
-                    
-                    28 分钟 读完 (大约 4201 个字)
-                </span>
-                
-                
-            </div>
-        </div>
+        <li><a href="/">文章列表</a></li>
         
-        <div id="article-content" class="content">
-            <p>好记性不如烂笔头，多造轮子多做笔记</p>
+        <li><a href="/archives">归档</a></li>
+        
+        <li><a href="/leetcode">力扣</a></li>
+        
+        <li><a href="/about">关于我</a></li>
+        
+        <li><a href="https://github.com/calebman">Github</a></li>
+        
+      </ul>
+    </nav>
+  </header>
+
+  <main class="content">
+    <article class="article">
+  <h1 class="article-title">纯正后端的vue轮子笔记</h1>
+  <span class="article-date">2018-05-18</span>
+  
+  
+  <a class="article-tag" href="/tags/vuejs">
+    vuejs
+  </a>
+  
+  <a class="article-tag" href="/tags/vue-router">
+    vue-router
+  </a>
+  
+  <a class="article-tag" href="/tags/vuex">
+    vuex
+  </a>
+  
+  
+
+  <div class="article-content">
+    <p>好记性不如烂笔头，多造轮子多做笔记</p>
 <a id="more"></a>
 
-<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a><span>说明</span></h2><p>由于公司需要，<strong>我</strong>作为一个<strong>纯正的</strong>后端工程师，已经自学了半年多的vue了，愣是被逼成了一个小全栈，当然，小全栈这是往好听了说，事实上就是个前后端深度都不足的小菜鸡，在深知自己众多不足以及明白好记性不如<strong>烂</strong>笔头的道理下，多造轮子多做笔记总是不会错的：）</p>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>由于公司需要，<strong>我</strong>作为一个<strong>纯正的</strong>后端工程师，已经自学了半年多的vue了，愣是被逼成了一个小全栈，当然，小全栈这是往好听了说，事实上就是个前后端深度都不足的小菜鸡，在深知自己众多不足以及明白好记性不如<strong>烂</strong>笔头的道理下，多造轮子多做笔记总是不会错的：）</p>
 <p>所以最近得空我把我刚学vuejs的时候写的<a href="https://github.com/calebman/vue-DBM" target="_blank" rel="noopener">烂工程</a>重构了一下，重构的时候针对性的分模块做了一些笔记如下</p>
 <ul>
 <li>路由</li>
@@ -214,9 +75,9 @@
 <li>打包优化与用户体验</li>
 </ul>
 <p>如果不想拉这么长可以去 <a href="https://github.com/calebman/vue-DBM#%E5%BC%80%E5%8F%91%E5%89%8D%E5%87%86%E5%A4%87" target="_blank" rel="noopener">全球最大的同性交友网站</a> 查看</p>
-<h2 id="进入烂笔头模式"><a href="#进入烂笔头模式" class="headerlink" title="进入烂笔头模式"></a><span>进入烂笔头模式</span></h2><blockquote>
-<h3 id="路由"><a href="#路由" class="headerlink" title="路由"></a><span>路由</span></h3></blockquote>
-<h3 id="1-路由加载"><a href="#1-路由加载" class="headerlink" title="1. 路由加载"></a><span>1-路由加载</span></h3><pre><code class="javascript">// 直接加载页面
+<h2 id="进入烂笔头模式"><a href="#进入烂笔头模式" class="headerlink" title="进入烂笔头模式"></a>进入烂笔头模式</h2><blockquote>
+<h3 id="路由"><a href="#路由" class="headerlink" title="路由"></a>路由</h3></blockquote>
+<h3 id="1-路由加载"><a href="#1-路由加载" class="headerlink" title="1. 路由加载"></a>1. 路由加载</h3><pre><code class="javascript">// 直接加载页面
 import page from &#39;@/views/page&#39;;
 // 懒加载页面
 () =&gt; import(&#39;@/views/page&#39;);
@@ -224,11 +85,11 @@ import page from &#39;@/views/page&#39;;
 () =&gt; import(/* webpackChunkName: &quot;group-page&quot; */&#39;@/views/page1&#39;);
 () =&gt; import(/* webpackChunkName: &quot;group-page&quot; */&#39;@/views/page2&#39;);
 () =&gt; import(/* webpackChunkName: &quot;group-page&quot; */&#39;@/views/page3&#39;);</code></pre>
-<h3 id="2-404路由"><a href="#2-404路由" class="headerlink" title="2. 404路由"></a><span>2-404路由</span></h3><pre><code class="javascript">// 加载一个404页面
+<h3 id="2-404路由"><a href="#2-404路由" class="headerlink" title="2. 404路由"></a>2. 404路由</h3><pre><code class="javascript">// 加载一个404页面
 import page404 from &#39;@/views/page404&#39;;
 // 将以下路由配置放置在路由表的最末端，当路径无法匹配前面的所有路由时将会跳转至page404组件页面
 { path: &#39;*&#39;, component: page404}</code></pre>
-<h3 id="3-路由拦截"><a href="#3-路由拦截" class="headerlink" title="3. 路由拦截"></a><span>3-路由拦截</span></h3><pre><code class="javascript">// 路由跳转前的拦截器
+<h3 id="3-路由拦截"><a href="#3-路由拦截" class="headerlink" title="3. 路由拦截"></a>3. 路由拦截</h3><pre><code class="javascript">// 路由跳转前的拦截器
 router.beforeEach((to, from, next) =&gt; {
 
 });
@@ -240,14 +101,14 @@ router.afterEach(to =&gt; {
 router.onError((err) =&gt; {
 
 });</code></pre>
-<h3 id="4-动态路由"><a href="#4-动态路由" class="headerlink" title="4. 动态路由"></a><span>4-动态路由</span></h3><blockquote>
+<h3 id="4-动态路由"><a href="#4-动态路由" class="headerlink" title="4. 动态路由"></a>4. 动态路由</h3><blockquote>
 <p>动态路由一般配合页面级的权限控制使用</p>
 </blockquote>
 <pre><code class="javascript">// 通过router.addRoutes方法动态添加可访问路由
 router.addRoutes(addRouters)
 // hack方法 确保addRoutes已完成
 next({ ...to, replace: true }) // set the replace: true so the navigation will not leave a history record </code></pre>
-<h3 id="5-路由加载时动画"><a href="#5-路由加载时动画" class="headerlink" title="5. 路由加载时动画"></a><span>5-路由加载时动画</span></h3><blockquote>
+<h3 id="5-路由加载时动画"><a href="#5-路由加载时动画" class="headerlink" title="5. 路由加载时动画"></a>5. 路由加载时动画</h3><blockquote>
 <p>路由加载时的loading动画一般配合路由懒加载使用</p>
 </blockquote>
 <pre><code class="javascript">// 在状态管理中定义一个路由loading标志
@@ -279,14 +140,14 @@ router.onError(err =&gt; {
 // element-ui提供了v-loading指令可以直接使用
 &lt;router-view v-loading=&quot;$store.getters.routerLoading&quot;&gt;&lt;/router-view&gt;</code></pre>
 <blockquote>
-<h3 id="状态管理"><a href="#状态管理" class="headerlink" title="状态管理"></a><span>状态管理</span></h3></blockquote>
-<h3 id="1-小知识"><a href="#1-小知识" class="headerlink" title="1. 小知识"></a><span>1-小知识</span></h3><ul>
+<h3 id="状态管理"><a href="#状态管理" class="headerlink" title="状态管理"></a>状态管理</h3></blockquote>
+<h3 id="1-小知识"><a href="#1-小知识" class="headerlink" title="1. 小知识"></a>1. 小知识</h3><ul>
 <li>state中的数据修改需要通过mutation或action触发</li>
 <li>mutation中的方法必须是同步函数</li>
 <li>action可包含任意异步操作，可返回一个Promise</li>
 <li>mutation以及action可以重复，调用时将会依次调用，getter必须唯一</li>
 </ul>
-<h3 id="2-多模块"><a href="#2-多模块" class="headerlink" title="2. 多模块"></a><span>2-多模块</span></h3><blockquote>
+<h3 id="2-多模块"><a href="#2-多模块" class="headerlink" title="2. 多模块"></a>2. 多模块</h3><blockquote>
 <p>业务比较复杂时可使用状态管理中的多模块，有以下注意事项</p>
 </blockquote>
 <ul>
@@ -305,7 +166,7 @@ export default new Vuex.Store({
 })</code></pre>
 </li>
 </ul>
-<h3 id="3-辅助函数"><a href="#3-辅助函数" class="headerlink" title="3. 辅助函数"></a><span>3-辅助函数</span></h3><blockquote>
+<h3 id="3-辅助函数"><a href="#3-辅助函数" class="headerlink" title="3. 辅助函数"></a>3. 辅助函数</h3><blockquote>
 <p>Vuex除了提供了Store对象以外还对外提供了一些辅助函数</p>
 </blockquote>
 <ul>
@@ -342,7 +203,7 @@ methods: {
     // 映射 this.setName() 到 this.$store.commit(&#39;SET_NAME&#39;) })
     ...mapMutations({ setName: &#39;SET_NAME&#39; ])
 }</code></pre>
-<h3 id="4-数据持久化插件"><a href="#4-数据持久化插件" class="headerlink" title="4. 数据持久化插件"></a><span>4-数据持久化插件</span></h3><blockquote>
+<h3 id="4-数据持久化插件"><a href="#4-数据持久化插件" class="headerlink" title="4. 数据持久化插件"></a>4. 数据持久化插件</h3><blockquote>
 <p>刷新页面时希望状态不被丢失时可用此插件</p>
 </blockquote>
 <pre><code class="javascript">// 摘抄于 https://github.com/robinvdvleuten/vuex-persistedstate
@@ -362,7 +223,7 @@ const store = new Store({
     })
   ]
 })</code></pre>
-<h3 id="5-日志插件"><a href="#5-日志插件" class="headerlink" title="5. 日志插件"></a><span>5-日志插件</span></h3><blockquote>
+<h3 id="5-日志插件"><a href="#5-日志插件" class="headerlink" title="5. 日志插件"></a>5. 日志插件</h3><blockquote>
 <p>开发环境中希望能够跟踪状态变化并输出时可用此插件</p>
 </blockquote>
 <pre><code class="javascript">// createLogger是vuex中的内置插件
@@ -379,14 +240,14 @@ const store = new Store({
 })
 </code></pre>
 <blockquote>
-<h3 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a><span>权限管理</span></h3></blockquote>
-<h3 id="1-需要实现的功能"><a href="#1-需要实现的功能" class="headerlink" title="1. 需要实现的功能"></a><span>1-需要实现的功能</span></h3><ul>
+<h3 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h3></blockquote>
+<h3 id="1-需要实现的功能"><a href="#1-需要实现的功能" class="headerlink" title="1. 需要实现的功能"></a>1. 需要实现的功能</h3><ul>
 <li>根据用户登录后的权限表生成路由</li>
 <li>页面级的权限控制</li>
 <li>dom元素级的权限控制</li>
 <li>登录状态失效的处理</li>
 </ul>
-<h3 id="2-路由设计"><a href="#2-路由设计" class="headerlink" title="2. 路由设计"></a><span>2-路由设计</span></h3><blockquote>
+<h3 id="2-路由设计"><a href="#2-路由设计" class="headerlink" title="2. 路由设计"></a>2. 路由设计</h3><blockquote>
 <p>首先我们需要设计路由对象需要有哪些必要参数信息</p>
 <p>为了实现权限管理我们必须要有roles参数代表该路由必须拥有哪些权限才能访问</p>
 <p>为了更好的展示路由在这里设计了title、icon两个参数用于侧边栏的菜单展示</p>
@@ -440,7 +301,7 @@ export const asyncRouterMap = [
   },
   { path: &#39;*&#39;, redirect: &#39;/404&#39;, hidden: true }
 ]</code></pre>
-<h3 id="3-页面级的权限控制"><a href="#3-页面级的权限控制" class="headerlink" title="3. 页面级的权限控制"></a><span>3-页面级的权限控制</span></h3><blockquote>
+<h3 id="3-页面级的权限控制"><a href="#3-页面级的权限控制" class="headerlink" title="3. 页面级的权限控制"></a>3. 页面级的权限控制</h3><blockquote>
 <p>使用路由拦截来实现页面级的权限控制</p>
 <p>拦截路由跳转判断用户是否登录</p>
 <p>从拉取的用户信息中提取权限表通过addRoutes方法动态加载异步路由表</p>
@@ -484,7 +345,7 @@ router.beforeEach((to, from, next) =&gt; {
     }
   }
 });</code></pre>
-<h3 id="4-元素级的权限控制"><a href="#4-元素级的权限控制" class="headerlink" title="4. 元素级的权限控制"></a><span>4-元素级的权限控制</span></h3><blockquote>
+<h3 id="4-元素级的权限控制"><a href="#4-元素级的权限控制" class="headerlink" title="4. 元素级的权限控制"></a>4. 元素级的权限控制</h3><blockquote>
 <p>使用自定义指令来实现元素级的权限控制</p>
 <p>在被绑定元素插入父节点时验证用户是否包含该元素的所需权限</p>
 <p>根据鉴权结果来决定是否移除该元素</p>
@@ -524,8 +385,8 @@ export default {
 &lt;el-button v-permission=&quot;[&#39;admin&#39;]&quot;&gt;admin 可见&lt;/el-button&gt;
 &lt;el-button v-permission=&quot;[&#39;admin&#39;,&#39;watcher&#39;]&quot;&gt;watcher 可见&lt;/el-button&gt;</code></pre>
 <blockquote>
-<h3 id="render函数"><a href="#render函数" class="headerlink" title="render函数"></a><span>render函数</span></h3></blockquote>
-<h3 id="1-如何封装一个支持render渲染的组件"><a href="#1-如何封装一个支持render渲染的组件" class="headerlink" title="1. 如何封装一个支持render渲染的组件"></a><span>1-如何封装一个支持render渲染的组件</span></h3><ul>
+<h3 id="render函数"><a href="#render函数" class="headerlink" title="render函数"></a>render函数</h3></blockquote>
+<h3 id="1-如何封装一个支持render渲染的组件"><a href="#1-如何封装一个支持render渲染的组件" class="headerlink" title="1. 如何封装一个支持render渲染的组件"></a>1. 如何封装一个支持render渲染的组件</h3><ul>
 <li>首先创建一个函数式组件</li>
 </ul>
 <pre><code class="javascript">// 表格拓展函数式组件的实现
@@ -585,14 +446,14 @@ render: (h, params) =&gt;
     })
   ])</code></pre>
 <blockquote>
-<h3 id="混入"><a href="#混入" class="headerlink" title="混入"></a><span>混入</span></h3></blockquote>
-<h3 id="1-小知识-1"><a href="#1-小知识-1" class="headerlink" title="1. 小知识"></a><span>1-小知识-1</span></h3><ul>
+<h3 id="混入"><a href="#混入" class="headerlink" title="混入"></a>混入</h3></blockquote>
+<h3 id="1-小知识-1"><a href="#1-小知识-1" class="headerlink" title="1. 小知识"></a>1. 小知识</h3><ul>
 <li>混入对象将享有被混入组件的生命周期</li>
 <li>数据对象混入冲突时将以组件数据优先</li>
 <li>对象选项（如methods、components、directives）混入冲突时取组件对象的键值对</li>
 <li>同名钩子混合为数组，混入对象的钩子将在组件自身钩子之前调用</li>
 </ul>
-<h3 id="2-应用场景"><a href="#2-应用场景" class="headerlink" title="2. 应用场景"></a><span>2-应用场景</span></h3><ul>
+<h3 id="2-应用场景"><a href="#2-应用场景" class="headerlink" title="2. 应用场景"></a>2. 应用场景</h3><ul>
 <li>希望部分路由页面在离开时销毁但是不希望每个路由页面都定义局部路由时</li>
 </ul>
 <pre><code class="javascript">// 定义混入对象
@@ -688,13 +549,13 @@ export default {
 │      table-resize-mixin.js                   # 表格的自适应
 │      table-row-mouse-events-mixin.js         # 鼠标移动时的样式改变</code></pre>
 <blockquote>
-<h3 id="数据模拟"><a href="#数据模拟" class="headerlink" title="数据模拟"></a><span>数据模拟</span></h3></blockquote>
-<h3 id="1-需要实现的功能-1"><a href="#1-需要实现的功能-1" class="headerlink" title="1. 需要实现的功能"></a><span>1-需要实现的功能-1</span></h3><ul>
+<h3 id="数据模拟"><a href="#数据模拟" class="headerlink" title="数据模拟"></a>数据模拟</h3></blockquote>
+<h3 id="1-需要实现的功能-1"><a href="#1-需要实现的功能-1" class="headerlink" title="1. 需要实现的功能"></a>1. 需要实现的功能</h3><ul>
 <li>拦截Ajax请求并延时响应</li>
 <li>返回的统一的数据格式</li>
 <li>响应不同的模拟数据</li>
 </ul>
-<h3 id="2-配置Mockjs拦截Ajax请求"><a href="#2-配置Mockjs拦截Ajax请求" class="headerlink" title="2. 配置Mockjs拦截Ajax请求"></a><span>2-配置Mockjs拦截Ajax请求</span></h3><pre><code class="javascript">// see https://github.com/calebman/vue-DBM/blob/master/src/mock/index.js
+<h3 id="2-配置Mockjs拦截Ajax请求"><a href="#2-配置Mockjs拦截Ajax请求" class="headerlink" title="2. 配置Mockjs拦截Ajax请求"></a>2. 配置Mockjs拦截Ajax请求</h3><pre><code class="javascript">// see https://github.com/calebman/vue-DBM/blob/master/src/mock/index.js
 // 引入Mockjs
 import Mock from &#39;mockjs&#39;;
 // 配置延时
@@ -705,7 +566,7 @@ Mock.setup({
 Mock.mock(/\/user\/login/, &#39;post&#39;, loginAPI.loginByUsername);
 Mock.mock(/\/user\/logout/, &#39;post&#39;, loginAPI.logout);
 Mock.mock(/\/user\/info\.*/, &#39;get&#39;, loginAPI.getUserInfo);</code></pre>
-<h3 id="3-响应的统一数据格式"><a href="#3-响应的统一数据格式" class="headerlink" title="3. 响应的统一数据格式"></a><span>3-响应的统一数据格式</span></h3><pre><code class="javascript">// see https://github.com/calebman/vue-DBM/blob/master/src/mock/response.js
+<h3 id="3-响应的统一数据格式"><a href="#3-响应的统一数据格式" class="headerlink" title="3. 响应的统一数据格式"></a>3. 响应的统一数据格式</h3><pre><code class="javascript">// see https://github.com/calebman/vue-DBM/blob/master/src/mock/response.js
 /**
  * 统一响应工具类
  * 响应统一格式的数据
@@ -742,7 +603,7 @@ export default {
     }
   }
 }</code></pre>
-<h3 id="4-配置响应逻辑"><a href="#4-配置响应逻辑" class="headerlink" title="4. 配置响应逻辑"></a><span>4-配置响应逻辑</span></h3><pre><code class="javascript">// see https://github.com/calebman/vue-DBM/blob/master/src/mock/login.js
+<h3 id="4-配置响应逻辑"><a href="#4-配置响应逻辑" class="headerlink" title="4. 配置响应逻辑"></a>4. 配置响应逻辑</h3><pre><code class="javascript">// see https://github.com/calebman/vue-DBM/blob/master/src/mock/login.js
 
 import { param2Obj } from &#39;@/utils&#39;;
 import Response from &#39;./response&#39;;
@@ -788,7 +649,7 @@ export default {
   // 注销
   logout: () =&gt; Response.success()
 }</code></pre>
-<h3 id="5-模拟随机数据"><a href="#5-模拟随机数据" class="headerlink" title="5. 模拟随机数据"></a><span>5-模拟随机数据</span></h3><pre><code class="javascript">// see https://github.com/nuysoft/Mock/wiki
+<h3 id="5-模拟随机数据"><a href="#5-模拟随机数据" class="headerlink" title="5. 模拟随机数据"></a>5. 模拟随机数据</h3><pre><code class="javascript">// see https://github.com/nuysoft/Mock/wiki
 
 import Mock from &#39;mockjs&#39;;
 
@@ -825,14 +686,14 @@ function mockDate() {
     return mockDate;
 }</code></pre>
 <blockquote>
-<h3 id="打包优化"><a href="#打包优化" class="headerlink" title="打包优化"></a><span>打包优化</span></h3></blockquote>
-<h3 id="1-做哪部分的优化"><a href="#1-做哪部分的优化" class="headerlink" title="1. 做哪部分的优化"></a><span>1-做哪部分的优化</span></h3><ul>
+<h3 id="打包优化"><a href="#打包优化" class="headerlink" title="打包优化"></a>打包优化</h3></blockquote>
+<h3 id="1-做哪部分的优化"><a href="#1-做哪部分的优化" class="headerlink" title="1. 做哪部分的优化"></a>1. 做哪部分的优化</h3><ul>
 <li>cdn优化</li>
 <li>路由懒加载</li>
 <li>其他优化</li>
 <li>用户体验</li>
 </ul>
-<h3 id="2-cdn优化"><a href="#2-cdn优化" class="headerlink" title="2. cdn优化"></a><span>2-cdn优化</span></h3><blockquote>
+<h3 id="2-cdn优化"><a href="#2-cdn优化" class="headerlink" title="2. cdn优化"></a>2. cdn优化</h3><blockquote>
 <p>类似于vue、vue-router、moment、element-ui等提供了cdn的架或者工具类可在index.html中直接引入，然后配置webpack的externals使其不加入打包配置，从而减小app.js、vendor.js的体积</p>
 </blockquote>
 <ul>
@@ -868,17 +729,17 @@ function mockDate() {
     &#39;element-ui&#39;: &#39;ELEMENT&#39;
   }
 }</code></pre>
-<h3 id="3-路由懒加载"><a href="#3-路由懒加载" class="headerlink" title="3. 路由懒加载"></a><span>3-路由懒加载</span></h3><blockquote>
+<h3 id="3-路由懒加载"><a href="#3-路由懒加载" class="headerlink" title="3. 路由懒加载"></a>3. 路由懒加载</h3><blockquote>
 <p>路由懒加载能够将代码根据路由配置进行分割，加快首屏渲染的速度，在大型的单页应用中是必不可少的</p>
 <p>参见<a href="https://github.com/calebman/vue-DBM/blob/master/docs/router.md" target="_blank" rel="noopener">路由管理</a>的实现</p>
 </blockquote>
-<h3 id="5-其他优化"><a href="#5-其他优化" class="headerlink" title="5. 其他优化"></a><span>5-其他优化</span></h3><ul>
+<h3 id="5-其他优化"><a href="#5-其他优化" class="headerlink" title="5. 其他优化"></a>5. 其他优化</h3><ul>
 <li>尽量少的注册全局组件，使用UI框架可以参考文档做按需加载</li>
 <li>可以和服务端配合采用gzip压缩，减少传输耗时</li>
 <li>在更新不是很频繁的应用可考虑提高缓存时间</li>
 <li>例如moment、lodash这种庞大的工具库在使用的功能不多的情况下可考虑寻找替代品</li>
 </ul>
-<h3 id="6-用户体验"><a href="#6-用户体验" class="headerlink" title="6. 用户体验"></a><span>6-用户体验</span></h3><blockquote>
+<h3 id="6-用户体验"><a href="#6-用户体验" class="headerlink" title="6. 用户体验"></a>6. 用户体验</h3><blockquote>
 <p>一个单页应用到了一定规模不管怎么优化首屏渲染还是一个比较慢的过程，此时可以考虑在首屏渲染时使用一个加载动画告诉用户系统正在初始化</p>
 </blockquote>
 <ul>
@@ -909,424 +770,53 @@ function mockDate() {
   }
 };</code></pre>
 
-        </div>
-        
-            <ul class="post-copyright">
-            <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2018-05-18-vue-notes/">纯正后端的vue轮子笔记</a></li>
-            <li><strong>本文作者：</strong><a href="https://chenjianhui.site">JianhuiChen</a></li>
-            <li><strong>本文链接：</strong><a href="https://chenjianhui.site/2018-05-18-vue-notes/">https://chenjianhui.site/2018-05-18-vue-notes/</a></li>
-            <li><strong>发布时间：</strong>2018-05-18</li>
-            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
-            </li>
-            </ul>
-        
-        
-        <hr style="height:1px;margin:1rem 0">
-        <div class="level is-size-7 is-uppercase">
-            <div class="level-start">
-                <div class="level-item">
-                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
-                    <a class="has-link-grey -link" href="/tags/vue-router/">vue-router</a>,&nbsp;<a class="has-link-grey -link" href="/tags/vuejs/">vuejs</a>,&nbsp;<a class="has-link-grey -link" href="/tags/vuex/">vuex</a>
-                </div>
-            </div>
-        </div>
-        
-        
-        
-    </div>
-</div>
+  </div>
+</article>
+<ul class="post-copyright">
+  <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2018-05-18-vue-notes/">纯正后端的vue轮子笔记</a></li>
+  <li><strong>本文作者：</strong><a href="https://chenjianhui.site">JianhuiChen</a></li>
+  <li><strong>本文链接：</strong><a href="https://chenjianhui.site/2018-05-18-vue-notes/">https://chenjianhui.site/2018-05-18-vue-notes/</a></li>
+  <li><strong>发布时间：</strong>2018-05-18</li>
+  <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+<div id="gitalk-container"></div>
 
-
-
-
-
-<div class="card card-transparent">
-    <div class="level post-navigation is-flex-wrap is-mobile">
-        
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2018-05-23-build-http-server-with-netty/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">使用Netty构建Http容器</span>
-            </a>
-        </div>
-        
-        
-        <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2018-02-21-build-springboot-env/">
-                <span class="level-item">SpringBoot集成环境搭建</span>
-                <i class="level-item fas fa-chevron-right"></i>
-            </a>
-        </div>
-        
-    </div>
-</div>
-
-
-
-<div class="card">
-    <div class="card-content">
-        <h3 class="title is-5 has-text-weight-normal">评论</h3>
-        
-<div id="comment-container"></div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
-<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
-<script>
-    var gitalk = new Gitalk({
-        clientID: 'bd0cbb30da9c24da8c7c',
-        clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
-        id: 'ad82e68f5235366c6c647dcc3fb7244f',
-        repo: 'blog',
-        owner: 'calebman',
-        admin: "calebman"
-    })
-    gitalk.render('comment-container')
-</script>
-
-    </div>
-</div>
-
-<link rel="stylesheet" href="/css/article-nice.css">
+<!-- Gittalk.js -->
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
 <!-- Highlight.js -->
-<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<link rel="stylesheet" href="/css/hljs.css">
+<script src="/js/highlight.min.js"></script>
 <script>
-    hljs.initHighlightingOnLoad();
-</script></div>
-                
-                
-
-
-
-
-<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right is-sticky">
-    
-        
-<div class="card widget column-left is-sticky" id="toc">
-    <div class="card-content">
-        <div class="menu">
-            <h3 class="menu-label">
-                目录
-            </h3>
-            <ul class="menu-list"><li>
-        <a class="is-flex" href="#说明">
-        <span class="has-mr-6">1</span>
-        <span>说明</span>
-        </a></li><li>
-        <a class="is-flex" href="#进入烂笔头模式">
-        <span class="has-mr-6">2</span>
-        <span>进入烂笔头模式</span>
-        </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#路由">
-        <span class="has-mr-6">2.1</span>
-        <span>路由</span>
-        </a></li><li>
-        <a class="is-flex" href="#1-路由加载">
-        <span class="has-mr-6">2.2</span>
-        <span>1-路由加载</span>
-        </a></li><li>
-        <a class="is-flex" href="#2-404路由">
-        <span class="has-mr-6">2.3</span>
-        <span>2-404路由</span>
-        </a></li><li>
-        <a class="is-flex" href="#3-路由拦截">
-        <span class="has-mr-6">2.4</span>
-        <span>3-路由拦截</span>
-        </a></li><li>
-        <a class="is-flex" href="#4-动态路由">
-        <span class="has-mr-6">2.5</span>
-        <span>4-动态路由</span>
-        </a></li><li>
-        <a class="is-flex" href="#5-路由加载时动画">
-        <span class="has-mr-6">2.6</span>
-        <span>5-路由加载时动画</span>
-        </a></li><li>
-        <a class="is-flex" href="#状态管理">
-        <span class="has-mr-6">2.7</span>
-        <span>状态管理</span>
-        </a></li><li>
-        <a class="is-flex" href="#1-小知识">
-        <span class="has-mr-6">2.8</span>
-        <span>1-小知识</span>
-        </a></li><li>
-        <a class="is-flex" href="#2-多模块">
-        <span class="has-mr-6">2.9</span>
-        <span>2-多模块</span>
-        </a></li><li>
-        <a class="is-flex" href="#3-辅助函数">
-        <span class="has-mr-6">2.10</span>
-        <span>3-辅助函数</span>
-        </a></li><li>
-        <a class="is-flex" href="#4-数据持久化插件">
-        <span class="has-mr-6">2.11</span>
-        <span>4-数据持久化插件</span>
-        </a></li><li>
-        <a class="is-flex" href="#5-日志插件">
-        <span class="has-mr-6">2.12</span>
-        <span>5-日志插件</span>
-        </a></li><li>
-        <a class="is-flex" href="#权限管理">
-        <span class="has-mr-6">2.13</span>
-        <span>权限管理</span>
-        </a></li><li>
-        <a class="is-flex" href="#1-需要实现的功能">
-        <span class="has-mr-6">2.14</span>
-        <span>1-需要实现的功能</span>
-        </a></li><li>
-        <a class="is-flex" href="#2-路由设计">
-        <span class="has-mr-6">2.15</span>
-        <span>2-路由设计</span>
-        </a></li><li>
-        <a class="is-flex" href="#3-页面级的权限控制">
-        <span class="has-mr-6">2.16</span>
-        <span>3-页面级的权限控制</span>
-        </a></li><li>
-        <a class="is-flex" href="#4-元素级的权限控制">
-        <span class="has-mr-6">2.17</span>
-        <span>4-元素级的权限控制</span>
-        </a></li><li>
-        <a class="is-flex" href="#render函数">
-        <span class="has-mr-6">2.18</span>
-        <span>render函数</span>
-        </a></li><li>
-        <a class="is-flex" href="#1-如何封装一个支持render渲染的组件">
-        <span class="has-mr-6">2.19</span>
-        <span>1-如何封装一个支持render渲染的组件</span>
-        </a></li><li>
-        <a class="is-flex" href="#混入">
-        <span class="has-mr-6">2.20</span>
-        <span>混入</span>
-        </a></li><li>
-        <a class="is-flex" href="#1-小知识-1">
-        <span class="has-mr-6">2.21</span>
-        <span>1-小知识-1</span>
-        </a></li><li>
-        <a class="is-flex" href="#2-应用场景">
-        <span class="has-mr-6">2.22</span>
-        <span>2-应用场景</span>
-        </a></li><li>
-        <a class="is-flex" href="#数据模拟">
-        <span class="has-mr-6">2.23</span>
-        <span>数据模拟</span>
-        </a></li><li>
-        <a class="is-flex" href="#1-需要实现的功能-1">
-        <span class="has-mr-6">2.24</span>
-        <span>1-需要实现的功能-1</span>
-        </a></li><li>
-        <a class="is-flex" href="#2-配置Mockjs拦截Ajax请求">
-        <span class="has-mr-6">2.25</span>
-        <span>2-配置Mockjs拦截Ajax请求</span>
-        </a></li><li>
-        <a class="is-flex" href="#3-响应的统一数据格式">
-        <span class="has-mr-6">2.26</span>
-        <span>3-响应的统一数据格式</span>
-        </a></li><li>
-        <a class="is-flex" href="#4-配置响应逻辑">
-        <span class="has-mr-6">2.27</span>
-        <span>4-配置响应逻辑</span>
-        </a></li><li>
-        <a class="is-flex" href="#5-模拟随机数据">
-        <span class="has-mr-6">2.28</span>
-        <span>5-模拟随机数据</span>
-        </a></li><li>
-        <a class="is-flex" href="#打包优化">
-        <span class="has-mr-6">2.29</span>
-        <span>打包优化</span>
-        </a></li><li>
-        <a class="is-flex" href="#1-做哪部分的优化">
-        <span class="has-mr-6">2.30</span>
-        <span>1-做哪部分的优化</span>
-        </a></li><li>
-        <a class="is-flex" href="#2-cdn优化">
-        <span class="has-mr-6">2.31</span>
-        <span>2-cdn优化</span>
-        </a></li><li>
-        <a class="is-flex" href="#3-路由懒加载">
-        <span class="has-mr-6">2.32</span>
-        <span>3-路由懒加载</span>
-        </a></li><li>
-        <a class="is-flex" href="#5-其他优化">
-        <span class="has-mr-6">2.33</span>
-        <span>5-其他优化</span>
-        </a></li><li>
-        <a class="is-flex" href="#6-用户体验">
-        <span class="has-mr-6">2.34</span>
-        <span>6-用户体验</span>
-        </a></li></ul></li></ul>
-        </div>
-    </div>
-</div>
-
-
-    
-    
-</div>
-
-            </div>
-        </div>
-    </section>
-    <footer class="footer">
-    <div class="container">
-        <div class="level">
-            <div class="level-start has-text-centered-mobile">
-                <p class="footer-logo is-block has-mb-6" href="/">
-                
-                    <img src="/images/logo.svg" alt="纯正后端的vue轮子笔记" height="28">
-                
-                <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
-                </p>
-                <p class="is-size-7">
-                &copy; 2020 JianhuiChen&nbsp;
-                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
-                
-                </p>
-            </div>
-            <div class="level-end">
-            
-                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
-                
-                
-                <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
-                        
-                        <i class="fab fa-creative-commons"></i>&nbsp;<i class="fab fa-creative-commons-by"></i>&nbsp;<i class="fab fa-creative-commons-nc"></i>&nbsp;<i class="fab fa-creative-commons-sa"></i>&nbsp;
-                        
-                    </a>
-                </p>
-                
-                </div>
-            
-            </div>
-        </div>
-    </div>
-</footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
-<script>moment.locale("zh-CN");</script>
-
-
-    
-    
-    
-    <script src="/js/animation.js"></script>
-    
-
-    
-    
-    
-    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
-    <script src="/js/gallery.js" defer></script>
-    
-
-    
-    
-
-<div id="outdated">
-    <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
-            my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        outdatedBrowser({
-            bgColor: '#f25648',
-            color: '#ffffff',
-            lowerThan: 'flex'
-        });
-    });
+  hljs.initHighlightingOnLoad();
+  const gitalk = new Gitalk({
+    clientID: 'bd0cbb30da9c24da8c7c',
+    clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
+    repo: 'blog',
+    owner: 'calebman',
+    admin: ['calebman']
+  })
+  gitalk.render('gitalk-container')
 </script>
+  </main>
 
+  <footer class="footer">
+    <ul class="footer-links">
+      <section class="copyright">
+        <a href="https://chenjianhui.site">JianhuiChen</a> © 2017 - 2020 | 
+        <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
+      </section>
+    </ul>
+  </footer>
 
-    
-    
-<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    MathJax.Hub.Config({
-        'HTML-CSS': {
-            matchFontHeight: false
-        },
-        SVG: {
-            matchFontHeight: false
-        },
-        CommonHTML: {
-            matchFontHeight: false
-        },
-        tex2jax: {
-            inlineMath: [
-                ['$','$'],
-                ['\\(','\\)']
-            ]
-        }
-    });
-});
-</script>
+  
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/simple.js"></script>
+  
+  
 
-    
-    
-
-<a id="back-to-top" title="回到顶端" href="javascript:;">
-    <i class="fas fa-chevron-up"></i>
-</a>
-<script src="/js/back-to-top.js" defer></script>
-
-
-    
-    
-
-    
-    
-    
-    
-
-    
-    
-    
-    
-    
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
-    <script src="/js/clipboard.js" defer></script>
-    
-
-    
-    
-    
-
-
-<script src="/js/main.js" defer></script>
-
-    
-    <div class="searchbox ins-search">
-    <div class="searchbox-container ins-search-container">
-        <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
-            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
-        </div>
-        <div class="searchbox-result-wrapper ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
-</div>
-<script>
-    (function (window) {
-        var INSIGHT_CONFIG = {
-            TRANSLATION: {
-                POSTS: '文章',
-                PAGES: '页面',
-                CATEGORIES: '分类',
-                TAGS: '标签',
-                UNTITLED: '(无标题)',
-            },
-            CONTENT_URL: '/content.json',
-        };
-        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-    })(window);
-</script>
-<script src="/js/insight.js" defer></script>
-<link rel="stylesheet" href="/css/search.css">
-<link rel="stylesheet" href="/css/insight.css">
-    
 </body>
+
 </html>

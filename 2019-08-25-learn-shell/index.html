@@ -1,208 +1,65 @@
+
+
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
+
 <head><meta name="generator" content="Hexo 3.9.0">
-    <meta charset="utf-8">
-<title>Shell学习与归纳 - Sincerity</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-
-
-    <meta name="description" content="&amp;emsp;&amp;emsp;作为一个后端开发工程师在工作中不可能不与Linux服务器打交道，应用的部署测试，中间件的环境搭建，搭建个人的博客，甚至玩玩树莓派这些比较冷门的单片机计算机都离不开Linux指令与Shell编程，本文就来学习与归纳一些我个人用到的Linux指令与Shell语法并给出示例，本文只讲基础，细枝末节将另起博文详细分析。">
-<meta name="keywords" content="Shell,Linux">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Shell学习与归纳">
-<meta property="og:url" content="https://chenjianhui.site/2019-08-25-learn-shell/index.html">
-<meta property="og:site_name" content="Sincerity">
-<meta property="og:description" content="&amp;emsp;&amp;emsp;作为一个后端开发工程师在工作中不可能不与Linux服务器打交道，应用的部署测试，中间件的环境搭建，搭建个人的博客，甚至玩玩树莓派这些比较冷门的单片机计算机都离不开Linux指令与Shell编程，本文就来学习与归纳一些我个人用到的Linux指令与Shell语法并给出示例，本文只讲基础，细枝末节将另起博文详细分析。">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://resources.chenjianhui.site/2019-08-25-home-pic.jpg">
-<meta property="og:updated_time" content="2020-07-08T02:46:41.183Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Shell学习与归纳">
-<meta name="twitter:description" content="&amp;emsp;&amp;emsp;作为一个后端开发工程师在工作中不可能不与Linux服务器打交道，应用的部署测试，中间件的环境搭建，搭建个人的博客，甚至玩玩树莓派这些比较冷门的单片机计算机都离不开Linux指令与Shell编程，本文就来学习与归纳一些我个人用到的Linux指令与Shell语法并给出示例，本文只讲基础，细枝末节将另起博文详细分析。">
-<meta name="twitter:image" content="https://resources.chenjianhui.site/2019-08-25-home-pic.jpg">
-
-
-
-
-
-<link rel="alternative" href="/atom.xml" title="Shell学习与归纳" type="application/atom+xml">
-
-
-
-<link rel="icon" href="/images/favicon-32x32.png">
-
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
-
-
-    
-    
-    
-    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
-    
-
-    
-    
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
-    
-
-    
-    
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
-
-
-    
-    
-    
-    
-
-<link rel="stylesheet" href="/css/back-to-top.css">
-
-
-    
-    
-
-    
-    
-    
-    
-<script>
-    (function(h,o,t,j,a,r){
-        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-        h._hjSettings={hjid:19960428,hjsv:6};
-        a=o.getElementsByTagName('head')[0];
-        r=o.createElement('script');r.async=1;
-        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-        a.appendChild(r);
-    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-</script>
-
-
-    
-    
-<link rel="stylesheet" href="/css/progressbar.css">
-<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
-
-    
-    
-    
-
-    
-    
-    
-
-
-<link rel="stylesheet" href="/css/style.css">
+  <meta charset="UTF-8">
+  <title>Shell学习与归纳 [ Sincerity ]</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="icon" href="/images/favicon-32x32.png">
+  
+  <!-- stylesheets list from _config.yml -->
+  
+  <link rel="stylesheet" href="/css/simple.css">
+  
+  <link rel="stylesheet" href="/css/font.css">
+  
+  
 </head>
-<body class="is-3-column">
-    <nav class="navbar navbar-main">
-    <div class="container">
-        <div class="navbar-brand is-flex-center">
-            <a class="navbar-item navbar-logo" href="/">
-            
-                <img src="/images/logo.svg" alt="Shell学习与归纳" height="28">
-            
-            </a>
-        </div>
-        <div class="navbar-menu">
-            
-            <div class="navbar-start">
-                
-                <a class="navbar-item" href="/">Home</a>
-                
-                <a class="navbar-item" href="/archives">Archives</a>
-                
-                <a class="navbar-item" href="/categories">Categories</a>
-                
-                <a class="navbar-item" href="/tags">Tags</a>
-                
-                <a class="navbar-item" href="/leetcode">LeetCode</a>
-                
-                <a class="navbar-item" href="/projects">Projects</a>
-                
-                <a class="navbar-item" href="/about">About</a>
-                
-            </div>
-            
-            <div class="navbar-end">
-                
-                    
-                    
-                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://github.com/calebman">
-                        
-                        <i class="fab fa-github"></i>
-                        
-                    </a>
-                    
-                
-                
-                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
-                    <i class="fas fa-list-ul"></i>
-                </a>
-                
-                
-                <a class="navbar-item search" title="搜索" href="javascript:;">
-                    <i class="fas fa-search"></i>
-                </a>
-                
-            </div>
-        </div>
-    </div>
-</nav>
-    
-    <section class="section">
-        <div class="container">
-            <div class="columns">
-                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
-    
-    <div class="card-image">
-        <span class="image is-7by1">
-            <img class="thumbnail" src="https://resources.chenjianhui.site/2019-08-25-home-pic.jpg" alt="Shell学习与归纳">
-        </span>
-    </div>
-    
-    <div class="card-content article ">
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <i class="fas fa-angle-double-right"></i>Shell学习与归纳
-            
-        </h1>
+
+<body>
+
+  <header class="header">
+    <nav class="nav">
+      <a href="/" class="nav-logo"><img src="/images/avatar.png" width="50" height="50" alt="Logo"></a>
+      <ul class="nav-links">
         
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-08-25T19:32:46.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-08-25</time>
-                
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-07-08T02:46:41.183Z"><i class="far fa-calendar-check">&nbsp;</i>2020-07-08</time>
-                
-                
-                <div class="level-item">
-                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
-                <a class="has-link-grey -link" href="/categories/Linux/">Linux</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    <i class="far fa-clock"></i>&nbsp;
-                    
-                    
-                    11 分钟 读完 (大约 1647 个字)
-                </span>
-                
-                
-            </div>
-        </div>
+        <li><a href="/">文章列表</a></li>
         
-        <div id="article-content" class="content">
-            <p>&emsp;&emsp;作为一个后端开发工程师在工作中不可能不与<code>Linux</code>服务器打交道，应用的部署测试，中间件的环境搭建，搭建个人的博客，甚至玩玩树莓派这些比较冷门的单片机计算机都离不开<code>Linux</code>指令与<code>Shell</code>编程，本文就来学习与归纳一些我个人用到的<code>Linux</code>指令与<code>Shell</code>语法并给出示例，本文只讲基础，细枝末节将另起博文详细分析。</p>
+        <li><a href="/archives">归档</a></li>
+        
+        <li><a href="/leetcode">力扣</a></li>
+        
+        <li><a href="/about">关于我</a></li>
+        
+        <li><a href="https://github.com/calebman">Github</a></li>
+        
+      </ul>
+    </nav>
+  </header>
+
+  <main class="content">
+    <article class="article">
+  <h1 class="article-title">Shell学习与归纳</h1>
+  <span class="article-date">2019-08-25</span>
+  
+  
+  <a class="article-tag" href="/tags/Shell">
+    Shell
+  </a>
+  
+  <a class="article-tag" href="/tags/Linux">
+    Linux
+  </a>
+  
+  
+
+  <div class="article-content">
+    <p>&emsp;&emsp;作为一个后端开发工程师在工作中不可能不与<code>Linux</code>服务器打交道，应用的部署测试，中间件的环境搭建，搭建个人的博客，甚至玩玩树莓派这些比较冷门的单片机计算机都离不开<code>Linux</code>指令与<code>Shell</code>编程，本文就来学习与归纳一些我个人用到的<code>Linux</code>指令与<code>Shell</code>语法并给出示例，本文只讲基础，细枝末节将另起博文详细分析。</p>
 <a id="more"></a>
 
-<h1 id="Shell语法归纳"><a href="#Shell语法归纳" class="headerlink" title="Shell语法归纳"></a><span>Shell语法归纳</span></h1><h2 id="变量与参数"><a href="#变量与参数" class="headerlink" title="变量与参数"></a><span>变量与参数</span></h2><h3 id="变量定义与引用"><a href="#变量定义与引用" class="headerlink" title="变量定义与引用"></a><span>变量定义与引用</span></h3><pre><code class="bash">#!/bin/sh
+<h1 id="Shell语法归纳"><a href="#Shell语法归纳" class="headerlink" title="Shell语法归纳"></a>Shell语法归纳</h1><h2 id="变量与参数"><a href="#变量与参数" class="headerlink" title="变量与参数"></a>变量与参数</h2><h3 id="变量定义与引用"><a href="#变量定义与引用" class="headerlink" title="变量定义与引用"></a>变量定义与引用</h3><pre><code class="bash">#!/bin/sh
 str=&quot;My name is JianhuiChen.&quot;
 echo ${str}
 str=&quot;Reset my name&quot;
@@ -210,7 +67,7 @@ echo ${str}
 unset str
 echo ${str}</code></pre>
 <p><img src="https://resources.chenjianhui.site/2019-08-25-shell-exec-result-0.png" alt></p>
-<h3 id="参数引用"><a href="#参数引用" class="headerlink" title="参数引用"></a><span>参数引用</span></h3><pre><code class="bash">#!/bin/sh
+<h3 id="参数引用"><a href="#参数引用" class="headerlink" title="参数引用"></a>参数引用</h3><pre><code class="bash">#!/bin/sh
 echo &quot;第一个参数为：$1&quot;
 echo &quot;第二个参数为：$2&quot;
 echo &quot;传递到脚本的参数个数为：$#&quot;
@@ -221,7 +78,7 @@ echo &quot;所有向脚本传递的参数为：$@&quot;
 echo &quot;Shell使用的当前选项为：$-&quot;
 echo &quot;最后命令的退出状态为：$?&quot;</code></pre>
 <p><img src="https://resources.chenjianhui.site/2019-08-25-shell-exec-result-1.png" alt></p>
-<h2 id="逻辑判断、循环与分支选择"><a href="#逻辑判断、循环与分支选择" class="headerlink" title="逻辑判断、循环与分支选择"></a><span>逻辑判断、循环与分支选择</span></h2><h3 id="逻辑判断"><a href="#逻辑判断" class="headerlink" title="逻辑判断"></a><span>逻辑判断</span></h3><pre><code class="bash">#!/bin/sh
+<h2 id="逻辑判断、循环与分支选择"><a href="#逻辑判断、循环与分支选择" class="headerlink" title="逻辑判断、循环与分支选择"></a>逻辑判断、循环与分支选择</h2><h3 id="逻辑判断"><a href="#逻辑判断" class="headerlink" title="逻辑判断"></a>逻辑判断</h3><pre><code class="bash">#!/bin/sh
 x=5
 y=10
 z=20
@@ -253,7 +110,7 @@ else
   echo &quot;$x != $y and $y != $z&quot;
 fi</code></pre>
 <p><img src="https://resources.chenjianhui.site/2019-08-25-shell-exec-result-2.png" alt></p>
-<h3 id="循环"><a href="#循环" class="headerlink" title="循环"></a><span>循环</span></h3><pre><code class="bash">#!/bin/sh
+<h3 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h3><pre><code class="bash">#!/bin/sh
 # Define array
 arr=(1 2 3 4 5)
 # For loop
@@ -290,7 +147,7 @@ do
   let j++
 done</code></pre>
 <p><img src="https://resources.chenjianhui.site/2019-08-25-shell-exec-result-3.png" alt></p>
-<h3 id="分支选择"><a href="#分支选择" class="headerlink" title="分支选择"></a><span>分支选择</span></h3><pre><code class="bash">#!/bin/sh
+<h3 id="分支选择"><a href="#分支选择" class="headerlink" title="分支选择"></a>分支选择</h3><pre><code class="bash">#!/bin/sh
 x=3
 case $x in
     1)  echo &#39;Case 1&#39;
@@ -304,7 +161,7 @@ case $x in
     *)  echo &#39;Default&#39;
     ;;
 esac</code></pre>
-<h2 id="输出重定向"><a href="#输出重定向" class="headerlink" title="输出重定向"></a><span>输出重定向</span></h2><pre><code class="bash">#!/bin/sh
+<h2 id="输出重定向"><a href="#输出重定向" class="headerlink" title="输出重定向"></a>输出重定向</h2><pre><code class="bash">#!/bin/sh
 export BIN_PATH=$(cd `dirname $0`;pwd)
 echo BIN_PATH:[$BIN_PATH]
 # 输出重定向到文件 &gt;&gt; 代表追加
@@ -325,7 +182,7 @@ echo [if you want search logs, can run] tail -f $BIN_PATH/exec.log</code></pre>
 </li>
 <li>最后一个<code>&amp;</code>：这个是配合<code>nohub</code>使用的，意思是在脚本的结尾让程序自动运行，没有此指令脚本运行会卡在<code>nohub</code>处需要按一下任意键才可继续执行</li>
 </ul>
-<h1 id="Linux指令与常用库归纳"><a href="#Linux指令与常用库归纳" class="headerlink" title="Linux指令与常用库归纳"></a><span>Linux指令与常用库归纳</span></h1><h2 id="文件与目录"><a href="#文件与目录" class="headerlink" title="文件与目录"></a><span>文件与目录</span></h2><ul>
+<h1 id="Linux指令与常用库归纳"><a href="#Linux指令与常用库归纳" class="headerlink" title="Linux指令与常用库归纳"></a>Linux指令与常用库归纳</h1><h2 id="文件与目录"><a href="#文件与目录" class="headerlink" title="文件与目录"></a>文件与目录</h2><ul>
 <li><code>ls</code>：列表显示文件与目录信息</li>
 <li><code>tree</code>：树形显示文件与目录信息</li>
 <li><code>cd</code>：切换目录</li>
@@ -394,7 +251,7 @@ tar -czvf test-dir.tar.gz test-dir
 rm -rf test-dir
 # 解压 test-dir.tar.gz
 tar -xzvf test-dir.tar.gz</code></pre>
-<h2 id="网络与常用库"><a href="#网络与常用库" class="headerlink" title="网络与常用库"></a><span>网络与常用库</span></h2><ul>
+<h2 id="网络与常用库"><a href="#网络与常用库" class="headerlink" title="网络与常用库"></a>网络与常用库</h2><ul>
 <li><code>ifconfig</code>：查看网络网卡信息</li>
 <li><code>netstat</code>：显示网络状态，查看网络端口或者路由信息</li>
 <li><code>lsof</code>：用于查看你进程开打的文件，打开文件的进程，进程打开的端口(TCP、UDP)</li>
@@ -406,7 +263,7 @@ tar -xzvf test-dir.tar.gz</code></pre>
 <li><code>wget</code>：网络下载器</li>
 <li><code>curl</code>：<code>http</code>命令行工具</li>
 </ul>
-<h2 id="系统"><a href="#系统" class="headerlink" title="系统"></a><span>系统</span></h2><ul>
+<h2 id="系统"><a href="#系统" class="headerlink" title="系统"></a>系统</h2><ul>
 <li><code>shutdown</code>：关机</li>
 <li><code>reboot</code>：重启</li>
 <li><code>mount</code>：挂在次盘/文件系统</li>
@@ -425,332 +282,53 @@ tar -xzvf test-dir.tar.gz</code></pre>
 <li><code>su</code>：切换身份</li>
 </ul>
 
-        </div>
-        
-            <ul class="post-copyright">
-            <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2019-08-25-learn-shell/">Shell学习与归纳</a></li>
-            <li><strong>本文作者：</strong><a href="https://chenjianhui.site">JianhuiChen</a></li>
-            <li><strong>本文链接：</strong><a href="https://chenjianhui.site/2019-08-25-learn-shell/">https://chenjianhui.site/2019-08-25-learn-shell/</a></li>
-            <li><strong>发布时间：</strong>2019-08-25</li>
-            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
-            </li>
-            </ul>
-        
-        
-        <hr style="height:1px;margin:1rem 0">
-        <div class="level is-size-7 is-uppercase">
-            <div class="level-start">
-                <div class="level-item">
-                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
-                    <a class="has-link-grey -link" href="/tags/Linux/">Linux</a>,&nbsp;<a class="has-link-grey -link" href="/tags/Shell/">Shell</a>
-                </div>
-            </div>
-        </div>
-        
-        
-        
-    </div>
-</div>
+  </div>
+</article>
+<ul class="post-copyright">
+  <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2019-08-25-learn-shell/">Shell学习与归纳</a></li>
+  <li><strong>本文作者：</strong><a href="https://chenjianhui.site">JianhuiChen</a></li>
+  <li><strong>本文链接：</strong><a href="https://chenjianhui.site/2019-08-25-learn-shell/">https://chenjianhui.site/2019-08-25-learn-shell/</a></li>
+  <li><strong>发布时间：</strong>2019-08-25</li>
+  <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+<div id="gitalk-container"></div>
 
-
-
-
-
-<div class="card card-transparent">
-    <div class="level post-navigation is-flex-wrap is-mobile">
-        
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2019-08-29-essay/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">随笔——如何优雅的遍历树结构</span>
-            </a>
-        </div>
-        
-        
-        <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2019-08-15-server-front-separate-package/">
-                <span class="level-item">Vue+SpringBoot单jar部署</span>
-                <i class="level-item fas fa-chevron-right"></i>
-            </a>
-        </div>
-        
-    </div>
-</div>
-
-
-
-<div class="card">
-    <div class="card-content">
-        <h3 class="title is-5 has-text-weight-normal">评论</h3>
-        
-<div id="comment-container"></div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
-<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
-<script>
-    var gitalk = new Gitalk({
-        clientID: 'bd0cbb30da9c24da8c7c',
-        clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
-        id: '66727d2518c88f01ad8713e9bb6005b4',
-        repo: 'blog',
-        owner: 'calebman',
-        admin: "calebman"
-    })
-    gitalk.render('comment-container')
-</script>
-
-    </div>
-</div>
-
-<link rel="stylesheet" href="/css/article-nice.css">
+<!-- Gittalk.js -->
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
 <!-- Highlight.js -->
-<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<link rel="stylesheet" href="/css/hljs.css">
+<script src="/js/highlight.min.js"></script>
 <script>
-    hljs.initHighlightingOnLoad();
-</script></div>
-                
-                
-
-
-
-
-<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right is-sticky">
-    
-        
-<div class="card widget column-left is-sticky" id="toc">
-    <div class="card-content">
-        <div class="menu">
-            <h3 class="menu-label">
-                目录
-            </h3>
-            <ul class="menu-list"><li>
-        <a class="is-flex" href="#Shell语法归纳">
-        <span class="has-mr-6">1</span>
-        <span>Shell语法归纳</span>
-        </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#变量与参数">
-        <span class="has-mr-6">1.1</span>
-        <span>变量与参数</span>
-        </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#变量定义与引用">
-        <span class="has-mr-6">1.1.1</span>
-        <span>变量定义与引用</span>
-        </a></li><li>
-        <a class="is-flex" href="#参数引用">
-        <span class="has-mr-6">1.1.2</span>
-        <span>参数引用</span>
-        </a></li></ul></li><li>
-        <a class="is-flex" href="#逻辑判断、循环与分支选择">
-        <span class="has-mr-6">1.2</span>
-        <span>逻辑判断、循环与分支选择</span>
-        </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#逻辑判断">
-        <span class="has-mr-6">1.2.1</span>
-        <span>逻辑判断</span>
-        </a></li><li>
-        <a class="is-flex" href="#循环">
-        <span class="has-mr-6">1.2.2</span>
-        <span>循环</span>
-        </a></li><li>
-        <a class="is-flex" href="#分支选择">
-        <span class="has-mr-6">1.2.3</span>
-        <span>分支选择</span>
-        </a></li></ul></li><li>
-        <a class="is-flex" href="#输出重定向">
-        <span class="has-mr-6">1.3</span>
-        <span>输出重定向</span>
-        </a></li></ul></li><li>
-        <a class="is-flex" href="#Linux指令与常用库归纳">
-        <span class="has-mr-6">2</span>
-        <span>Linux指令与常用库归纳</span>
-        </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#文件与目录">
-        <span class="has-mr-6">2.1</span>
-        <span>文件与目录</span>
-        </a></li><li>
-        <a class="is-flex" href="#网络与常用库">
-        <span class="has-mr-6">2.2</span>
-        <span>网络与常用库</span>
-        </a></li><li>
-        <a class="is-flex" href="#系统">
-        <span class="has-mr-6">2.3</span>
-        <span>系统</span>
-        </a></li></ul></li></ul>
-        </div>
-    </div>
-</div>
-
-
-    
-    
-</div>
-
-            </div>
-        </div>
-    </section>
-    <footer class="footer">
-    <div class="container">
-        <div class="level">
-            <div class="level-start has-text-centered-mobile">
-                <p class="footer-logo is-block has-mb-6" href="/">
-                
-                    <img src="/images/logo.svg" alt="Shell学习与归纳" height="28">
-                
-                <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
-                </p>
-                <p class="is-size-7">
-                &copy; 2020 JianhuiChen&nbsp;
-                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
-                
-                </p>
-            </div>
-            <div class="level-end">
-            
-                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
-                
-                
-                <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
-                        
-                        <i class="fab fa-creative-commons"></i>&nbsp;<i class="fab fa-creative-commons-by"></i>&nbsp;<i class="fab fa-creative-commons-nc"></i>&nbsp;<i class="fab fa-creative-commons-sa"></i>&nbsp;
-                        
-                    </a>
-                </p>
-                
-                </div>
-            
-            </div>
-        </div>
-    </div>
-</footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
-<script>moment.locale("zh-CN");</script>
-
-
-    
-    
-    
-    <script src="/js/animation.js"></script>
-    
-
-    
-    
-    
-    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
-    <script src="/js/gallery.js" defer></script>
-    
-
-    
-    
-
-<div id="outdated">
-    <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
-            my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        outdatedBrowser({
-            bgColor: '#f25648',
-            color: '#ffffff',
-            lowerThan: 'flex'
-        });
-    });
+  hljs.initHighlightingOnLoad();
+  const gitalk = new Gitalk({
+    clientID: 'bd0cbb30da9c24da8c7c',
+    clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
+    repo: 'blog',
+    owner: 'calebman',
+    admin: ['calebman']
+  })
+  gitalk.render('gitalk-container')
 </script>
+  </main>
 
+  <footer class="footer">
+    <ul class="footer-links">
+      <section class="copyright">
+        <a href="https://chenjianhui.site">JianhuiChen</a> © 2017 - 2020 | 
+        <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
+      </section>
+    </ul>
+  </footer>
 
-    
-    
-<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    MathJax.Hub.Config({
-        'HTML-CSS': {
-            matchFontHeight: false
-        },
-        SVG: {
-            matchFontHeight: false
-        },
-        CommonHTML: {
-            matchFontHeight: false
-        },
-        tex2jax: {
-            inlineMath: [
-                ['$','$'],
-                ['\\(','\\)']
-            ]
-        }
-    });
-});
-</script>
+  
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/simple.js"></script>
+  
+  
 
-    
-    
-
-<a id="back-to-top" title="回到顶端" href="javascript:;">
-    <i class="fas fa-chevron-up"></i>
-</a>
-<script src="/js/back-to-top.js" defer></script>
-
-
-    
-    
-
-    
-    
-    
-    
-
-    
-    
-    
-    
-    
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
-    <script src="/js/clipboard.js" defer></script>
-    
-
-    
-    
-    
-
-
-<script src="/js/main.js" defer></script>
-
-    
-    <div class="searchbox ins-search">
-    <div class="searchbox-container ins-search-container">
-        <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
-            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
-        </div>
-        <div class="searchbox-result-wrapper ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
-</div>
-<script>
-    (function (window) {
-        var INSIGHT_CONFIG = {
-            TRANSLATION: {
-                POSTS: '文章',
-                PAGES: '页面',
-                CATEGORIES: '分类',
-                TAGS: '标签',
-                UNTITLED: '(无标题)',
-            },
-            CONTENT_URL: '/content.json',
-        };
-        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-    })(window);
-</script>
-<script src="/js/insight.js" defer></script>
-<link rel="stylesheet" href="/css/search.css">
-<link rel="stylesheet" href="/css/insight.css">
-    
 </body>
+
 </html>

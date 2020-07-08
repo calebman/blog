@@ -1,217 +1,70 @@
+
+
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
+
 <head><meta name="generator" content="Hexo 3.9.0">
-    <meta charset="utf-8">
-<title>用机器学习玩转FlappyBird - Sincerity</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-
-
-    <meta name="description" content="&amp;emsp;&amp;emsp;两年前刚毕业的时候由于兴趣爱好就接触到了一些机器学习的内容，今天想到写这么一篇文章的主要原因是由于公司安排昨天去接送了一位做数据挖掘方向的教授，在接送途中跟她聊了一些有关数据挖掘与机器学习方面的内容并且从中受益，加上自己的部分兴趣于是就想产出一篇文章来说一下自己对于这块内容的理解，由于专业性的问题其中说法如果有误还请指出。">
-<meta name="keywords" content="Machine Learning">
-<meta property="og:type" content="article">
-<meta property="og:title" content="用机器学习玩转FlappyBird">
-<meta property="og:url" content="https://chenjianhui.site/2019-09-06-machine-learning/index.html">
-<meta property="og:site_name" content="Sincerity">
-<meta property="og:description" content="&amp;emsp;&amp;emsp;两年前刚毕业的时候由于兴趣爱好就接触到了一些机器学习的内容，今天想到写这么一篇文章的主要原因是由于公司安排昨天去接送了一位做数据挖掘方向的教授，在接送途中跟她聊了一些有关数据挖掘与机器学习方面的内容并且从中受益，加上自己的部分兴趣于是就想产出一篇文章来说一下自己对于这块内容的理解，由于专业性的问题其中说法如果有误还请指出。">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://resources.chenjianhui.site/2019-09-06-home-pic.jpg">
-<meta property="og:updated_time" content="2020-07-08T02:46:41.183Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="用机器学习玩转FlappyBird">
-<meta name="twitter:description" content="&amp;emsp;&amp;emsp;两年前刚毕业的时候由于兴趣爱好就接触到了一些机器学习的内容，今天想到写这么一篇文章的主要原因是由于公司安排昨天去接送了一位做数据挖掘方向的教授，在接送途中跟她聊了一些有关数据挖掘与机器学习方面的内容并且从中受益，加上自己的部分兴趣于是就想产出一篇文章来说一下自己对于这块内容的理解，由于专业性的问题其中说法如果有误还请指出。">
-<meta name="twitter:image" content="https://resources.chenjianhui.site/2019-09-06-home-pic.jpg">
-
-
-
-
-
-<link rel="alternative" href="/atom.xml" title="用机器学习玩转FlappyBird" type="application/atom+xml">
-
-
-
-<link rel="icon" href="/images/favicon-32x32.png">
-
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
-
-
-    
-    
-    
-    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
-    
-
-    
-    
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
-    
-
-    
-    
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
-
-
-    
-    
-    
-    
-
-<link rel="stylesheet" href="/css/back-to-top.css">
-
-
-    
-    
-
-    
-    
-    
-    
-<script>
-    (function(h,o,t,j,a,r){
-        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-        h._hjSettings={hjid:19960428,hjsv:6};
-        a=o.getElementsByTagName('head')[0];
-        r=o.createElement('script');r.async=1;
-        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-        a.appendChild(r);
-    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-</script>
-
-
-    
-    
-<link rel="stylesheet" href="/css/progressbar.css">
-<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
-
-    
-    
-    
-
-    
-    
-    
-
-
-<link rel="stylesheet" href="/css/style.css">
+  <meta charset="UTF-8">
+  <title>用机器学习玩转FlappyBird [ Sincerity ]</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="icon" href="/images/favicon-32x32.png">
+  
+  <!-- stylesheets list from _config.yml -->
+  
+  <link rel="stylesheet" href="/css/simple.css">
+  
+  <link rel="stylesheet" href="/css/font.css">
+  
+  
 </head>
-<body class="is-3-column">
-    <nav class="navbar navbar-main">
-    <div class="container">
-        <div class="navbar-brand is-flex-center">
-            <a class="navbar-item navbar-logo" href="/">
-            
-                <img src="/images/logo.svg" alt="用机器学习玩转FlappyBird" height="28">
-            
-            </a>
-        </div>
-        <div class="navbar-menu">
-            
-            <div class="navbar-start">
-                
-                <a class="navbar-item" href="/">Home</a>
-                
-                <a class="navbar-item" href="/archives">Archives</a>
-                
-                <a class="navbar-item" href="/categories">Categories</a>
-                
-                <a class="navbar-item" href="/tags">Tags</a>
-                
-                <a class="navbar-item" href="/leetcode">LeetCode</a>
-                
-                <a class="navbar-item" href="/projects">Projects</a>
-                
-                <a class="navbar-item" href="/about">About</a>
-                
-            </div>
-            
-            <div class="navbar-end">
-                
-                    
-                    
-                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://github.com/calebman">
-                        
-                        <i class="fab fa-github"></i>
-                        
-                    </a>
-                    
-                
-                
-                <a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;">
-                    <i class="fas fa-list-ul"></i>
-                </a>
-                
-                
-                <a class="navbar-item search" title="搜索" href="javascript:;">
-                    <i class="fas fa-search"></i>
-                </a>
-                
-            </div>
-        </div>
-    </div>
-</nav>
-    
-    <section class="section">
-        <div class="container">
-            <div class="columns">
-                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
-    
-    <div class="card-image">
-        <span class="image is-7by1">
-            <img class="thumbnail" src="https://resources.chenjianhui.site/2019-09-06-home-pic.jpg" alt="用机器学习玩转FlappyBird">
-        </span>
-    </div>
-    
-    <div class="card-content article ">
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <i class="fas fa-angle-double-right"></i>用机器学习玩转FlappyBird
-            
-        </h1>
+
+<body>
+
+  <header class="header">
+    <nav class="nav">
+      <a href="/" class="nav-logo"><img src="/images/avatar.png" width="50" height="50" alt="Logo"></a>
+      <ul class="nav-links">
         
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-09-06T18:56:12.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2019-09-06</time>
-                
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-07-08T02:46:41.183Z"><i class="far fa-calendar-check">&nbsp;</i>2020-07-08</time>
-                
-                
-                <div class="level-item">
-                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
-                <a class="has-link-grey -link" href="/categories/随笔/">随笔</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    <i class="far fa-clock"></i>&nbsp;
-                    
-                    
-                    34 分钟 读完 (大约 5146 个字)
-                </span>
-                
-                
-            </div>
-        </div>
+        <li><a href="/">文章列表</a></li>
         
-        <div id="article-content" class="content">
-            <p>&emsp;&emsp;两年前刚毕业的时候由于兴趣爱好就接触到了一些机器学习的内容，今天想到写这么一篇文章的主要原因是由于公司安排昨天去接送了一位做数据挖掘方向的教授，在接送途中跟她聊了一些有关数据挖掘与机器学习方面的内容并且从中受益，加上自己的部分兴趣于是就想产出一篇文章来说一下自己对于这块内容的理解，由于专业性的问题其中说法如果有误还请指出。</p>
+        <li><a href="/archives">归档</a></li>
+        
+        <li><a href="/leetcode">力扣</a></li>
+        
+        <li><a href="/about">关于我</a></li>
+        
+        <li><a href="https://github.com/calebman">Github</a></li>
+        
+      </ul>
+    </nav>
+  </header>
+
+  <main class="content">
+    <article class="article">
+  <h1 class="article-title">用机器学习玩转FlappyBird</h1>
+  <span class="article-date">2019-09-06</span>
+  
+  
+  <a class="article-tag" href="/tags/Machine Learning">
+    Machine Learning
+  </a>
+  
+  
+
+  <div class="article-content">
+    <p>&emsp;&emsp;两年前刚毕业的时候由于兴趣爱好就接触到了一些机器学习的内容，今天想到写这么一篇文章的主要原因是由于公司安排昨天去接送了一位做数据挖掘方向的教授，在接送途中跟她聊了一些有关数据挖掘与机器学习方面的内容并且从中受益，加上自己的部分兴趣于是就想产出一篇文章来说一下自己对于这块内容的理解，由于专业性的问题其中说法如果有误还请指出。</p>
 <a id="more"></a>
 
 <blockquote>
 <p>本篇博客相关代码托管于<strong><a href="https://github.com/calebman/flappy-learning" target="_blank" rel="noopener">github</a></strong><br>游戏引擎与AI基于<strong>Vuejs</strong>+<strong>TypeScript</strong>+<strong>Tensorflow.js</strong>实现，<strong><a href="https://calebman.github.io/flappy-learning/" target="_blank" rel="noopener">点此在线预览</a></strong><br><strong><a href="https://github.com/calebman/flappy-learning" target="_blank" rel="noopener">如果这个项目激起了你的兴趣，欢迎分享与Star</a></strong></p>
 </blockquote>
-<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a><span>概述</span></h2><p>本篇文章我将从三个方面去阐述我个人的机器学习经历及理解，也算是我这部分知识的一个成长经历。</p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>本篇文章我将从三个方面去阐述我个人的机器学习经历及理解，也算是我这部分知识的一个成长经历。</p>
 <ol>
 <li>初探机器学习：这里主要是描述一下我毕业不久后接触的一个Github仓库<a href="https://github.com/xviniette/FlappyLearning" target="_blank" rel="noopener">FlappyLearning</a>，这个仓库用了一个很形象的例子来描述机器学习的作用，这个例子解决了我的一个疑惑，<strong>机器如何针对一个问题做出决策？</strong></li>
 <li>反向传播与遗传算法：这两个算法很具有代表性，机器决策的核心是一个函数模型，问题的决策和模型的出参与阈值有关，所以机器学习的目的就是构造一个适用于问题的函数以及合适的分类阈值，而构造的过程可以用这两个算法来实现</li>
 <li>基于Tensorflow玩转FlappyBird：Tensorflow是谷歌的一个机器学习开源库，能够很方便的构造一个神经网络，现在在js中也有实现版本，学习的途径也很多，这次我将基于Tensorflow来改造FlappyLearning这个仓库，顺便让自己学习Tensorflow的途中不那么枯燥</li>
 </ol>
-<h2 id="初探机器学习"><a href="#初探机器学习" class="headerlink" title="初探机器学习"></a><span>初探机器学习</span></h2><p>对于机器学习的概念解释我本人不是解释的很清楚，但是我可以从应用场景方面来分析一下机器学习在什么场景下会适用，机器学习现有的应用场景主要包括各种识别、推荐、广告、客服，这些场景我认为有以下几个<strong>共性</strong></p>
+<h2 id="初探机器学习"><a href="#初探机器学习" class="headerlink" title="初探机器学习"></a>初探机器学习</h2><p>对于机器学习的概念解释我本人不是解释的很清楚，但是我可以从应用场景方面来分析一下机器学习在什么场景下会适用，机器学习现有的应用场景主要包括各种识别、推荐、广告、客服，这些场景我认为有以下几个<strong>共性</strong></p>
 <ol>
 <li><strong>不容易用统一的逻辑归纳</strong>：比如人脸的特征值比对，我们很难编写统一的逻辑代码来确定怎样的两组特征值才算是比对成功</li>
 <li><strong>根据历史数据给出预测</strong>：比如网易云音乐的每日推荐，当你用得越久收藏/喜欢点击的越多，它推荐给和你口味歌曲的占比就越大，但是没有历史数据就会不准确。</li>
@@ -242,7 +95,7 @@
 <li>机器是如何来决策游戏走向的？</li>
 <li>如何获得一个合适的决策函数？</li>
 </ol>
-<h3 id="机器是如何来决策游戏走向的"><a href="#机器是如何来决策游戏走向的" class="headerlink" title="机器是如何来决策游戏走向的"></a><span>机器是如何来决策游戏走向的</span></h3><p>我们上面讲到机器学习大部分可以分为<strong>分类与聚类</strong>两类问题，我们先来了解一下FlappyBird这个游戏的玩法，玩家需要根据小鸟所处的当前位置来控制小鸟的飞行（跳跃），从而使得小鸟不会撞到障碍物。</p>
+<h3 id="机器是如何来决策游戏走向的"><a href="#机器是如何来决策游戏走向的" class="headerlink" title="机器是如何来决策游戏走向的"></a>机器是如何来决策游戏走向的</h3><p>我们上面讲到机器学习大部分可以分为<strong>分类与聚类</strong>两类问题，我们先来了解一下FlappyBird这个游戏的玩法，玩家需要根据小鸟所处的当前位置来控制小鸟的飞行（跳跃），从而使得小鸟不会撞到障碍物。</p>
 <p>现在我们来换个更接机器地气的说法，假设每个小鸟都有一个飞行判断函数<strong>y=f(x1,x2…)</strong>，其中x1,x2…都是函数的输入参数，y是函数的输出参数，我们要根据结果y来决策当前环境是否需要跳跃，如果<strong>f(x1,x2…)</strong>这个函数适合于这个问题，那么小鸟就能根据这个函数完美的通关游戏。</p>
 <p>如果按照上述方式去理解的话，机器学习的目的是什么就显而易见了，就是为了寻找一个适合于特定场景的决策函数，起到<strong>高准确率的预测</strong>效果，拿FlappyBird这个游戏举例，这个游戏的输入可以是以下很多种并且不限于此</p>
 <ul>
@@ -253,7 +106,7 @@
 <p>为什么要专门拿输入这个概念来说？我们来<strong>模拟人类</strong>玩这个游戏，人类通过眼睛来获取小鸟的<strong>位置信息</strong>（其实在关注小鸟和障碍物的相对距离），来决策小鸟<strong>是否需要跳跃</strong>，我们把这个过程抽象成一个<strong>函数</strong>，那么你眼睛获取的位置信息就是<strong>输入</strong>，你的决策即是<strong>输出</strong>，而我要在这里说的是你获取的这个位置信息并不是最好的输入，设想一下，如果屏幕上打印了你现在距离障碍物的水平和垂直距离并且告诉了你每次跳跃将会相对移动多少距离，你是不是能更加容易的掌握这个游戏。</p>
 <p>同理，一个<strong>更好更合理更有关联性的输入</strong>对于机器来说也能降低它的<strong>学习成本</strong>，假如你只给机器一个小鸟无关与障碍物的垂直距离作为输入参数，那么无论你用什么算法，他都永远无法学会玩这个游戏。在FlappyLearning这个仓库中，作者给予机器的输入信息为小鸟距离的障碍物的垂直距离与小鸟距离障碍物的水平距离。</p>
 <p>讲到这里其实已经能够解答第一个问题了，机器其实是通过一个<strong>决策函数</strong>来代入<strong>一组输入</strong>然后根据输出结果关联到游戏的具体操作。如果你已经看到了这里你可以发现我的文章中将部分机器行为类比了人类行为，同样在后文中我也会使用类比这个思想去更通俗易懂的讲述其他问题。</p>
-<h3 id="如何获得一个合适的决策函数"><a href="#如何获得一个合适的决策函数" class="headerlink" title="如何获得一个合适的决策函数"></a><span>如何获得一个合适的决策函数</span></h3><p>在FlappyLearning这个仓库中作者是使用了<strong>遗传算法</strong>去解决决策函数的构造问题，那么我们就要思考作者为什么选择遗传算法？遗传算法适用的场景有什么？如何在程序中使用遗传算法？在这部分我将围绕着这三个问题来解释。</p>
+<h3 id="如何获得一个合适的决策函数"><a href="#如何获得一个合适的决策函数" class="headerlink" title="如何获得一个合适的决策函数"></a>如何获得一个合适的决策函数</h3><p>在FlappyLearning这个仓库中作者是使用了<strong>遗传算法</strong>去解决决策函数的构造问题，那么我们就要思考作者为什么选择遗传算法？遗传算法适用的场景有什么？如何在程序中使用遗传算法？在这部分我将围绕着这三个问题来解释。</p>
 <ol>
 <li>为什么选择遗传算法</li>
 </ol>
@@ -278,23 +131,23 @@
 </ul>
 </li>
 </ul>
-<h2 id="反向传播算法"><a href="#反向传播算法" class="headerlink" title="反向传播算法"></a><span>反向传播算法</span></h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a><span>简介</span></h3><p>反向传播要求有对<strong>每个输入值期望得到的已知输出</strong>，来计算损失函数的梯度，通常被认为是一种<strong>监督式</strong>学习方法，主要用于以下几个方面</p>
+<h2 id="反向传播算法"><a href="#反向传播算法" class="headerlink" title="反向传播算法"></a>反向传播算法</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>反向传播要求有对<strong>每个输入值期望得到的已知输出</strong>，来计算损失函数的梯度，通常被认为是一种<strong>监督式</strong>学习方法，主要用于以下几个方面</p>
 <ol>
 <li>函数逼近：用输入向量和相应的输出向量训练一个网络逼近一个函数</li>
 <li>模式识别：用一个待定的输出向量将它与输入向量联系起来</li>
 <li>分类：把输入向量所定义的合适方式进行分类</li>
 </ol>
-<h3 id="如何运用于FlappyBirdAI"><a href="#如何运用于FlappyBirdAI" class="headerlink" title="如何运用于FlappyBirdAI"></a><span>如何运用于FlappyBirdAI</span></h3><p>反向传播算法有一大特性就是<strong>需要有预期的输入输出集合</strong>，那我们就要思考如何给FlappyBirdAI提供一个训练数据集合，最简单的方式就是让<strong>玩家</strong>玩游戏从而<strong>生产训练数据</strong>，大体思路如下</p>
+<h3 id="如何运用于FlappyBirdAI"><a href="#如何运用于FlappyBirdAI" class="headerlink" title="如何运用于FlappyBirdAI"></a>如何运用于FlappyBirdAI</h3><p>反向传播算法有一大特性就是<strong>需要有预期的输入输出集合</strong>，那我们就要思考如何给FlappyBirdAI提供一个训练数据集合，最简单的方式就是让<strong>玩家</strong>玩游戏从而<strong>生产训练数据</strong>，大体思路如下</p>
 <p><img src="https://resources.chenjianhui.site/flappy-learning-game-flow.png" alt></p>
 <p>这里有一个需要注意的问题，数据数据即函数模型的<strong>输入及预测项</strong>定义成什么？</p>
-<h4 id="模型输入项"><a href="#模型输入项" class="headerlink" title="模型输入项"></a><span>模型输入项</span></h4><p><strong>首先我们要明白输入项需要有什么样的特性？</strong></p>
+<h4 id="模型输入项"><a href="#模型输入项" class="headerlink" title="模型输入项"></a>模型输入项</h4><p><strong>首先我们要明白输入项需要有什么样的特性？</strong></p>
 <p>前面我们讲到，与决策结果关联性越强的输入训练效果越好，还类比了人去玩游戏会注意哪些数据，所以在这里我们就采用<strong>人类玩游戏所观测的数据</strong>作为AI的训练数据，这里我设计了以下几个输入</p>
 <ul>
 <li>小鸟当前的高度值</li>
 <li>下一个障碍物的高度值</li>
 <li>小鸟距离下一个障碍物的水平距离</li>
 </ul>
-<h4 id="模型预测项"><a href="#模型预测项" class="headerlink" title="模型预测项"></a><span>模型预测项</span></h4><p><strong>模型的预测输出项将作为小鸟的决策依据</strong>，我们需要设计一个可以<strong>较好判断决策</strong>的输出，举个两种输出设计作为例子</p>
+<h4 id="模型预测项"><a href="#模型预测项" class="headerlink" title="模型预测项"></a>模型预测项</h4><p><strong>模型的预测输出项将作为小鸟的决策依据</strong>，我们需要设计一个可以<strong>较好判断决策</strong>的输出，举个两种输出设计作为例子</p>
 <ul>
 <li><strong>方案1：</strong>使用<strong>单项数字</strong>作为输出，并定义1代表跳跃，0代表保持不变（即下降）</li>
 <li><strong>方案2：</strong>使用<strong>数组</strong>作为输出，数组第一项代表跳跃概率，第二项代表保持不变概率</li>
@@ -302,14 +155,14 @@
 <p>我们来分析以下这两项输出的优劣，首先我们知道训练出来的函数模型只能给出一个估计值（即不会绝对是0/1）</p>
 <p>假设我们使用方案1作为输出结构，那根据这个结果我们怎么判断现在小鸟是否需要跳跃呢？&lt; 0.5？那么0.5这个数字又是怎么来的，没有任何依据</p>
 <p>假设我们使用方案2作为输出结构，那么小鸟如何判断是否需要跳跃呢？result[0] &gt; result[1]即可，因此在这里我使用方案2作为输出结构</p>
-<h2 id="基于反向传播算法设计FlappyBirdAI"><a href="#基于反向传播算法设计FlappyBirdAI" class="headerlink" title="基于反向传播算法设计FlappyBirdAI"></a><span>基于反向传播算法设计FlappyBirdAI</span></h2><h3 id="流程设计"><a href="#流程设计" class="headerlink" title="流程设计"></a><span>流程设计</span></h3><p><img src="https://resources.chenjianhui.site/2019-09-06-run-flow.png" alt></p>
+<h2 id="基于反向传播算法设计FlappyBirdAI"><a href="#基于反向传播算法设计FlappyBirdAI" class="headerlink" title="基于反向传播算法设计FlappyBirdAI"></a>基于反向传播算法设计FlappyBirdAI</h2><h3 id="流程设计"><a href="#流程设计" class="headerlink" title="流程设计"></a>流程设计</h3><p><img src="https://resources.chenjianhui.site/2019-09-06-run-flow.png" alt></p>
 <ol>
 <li>玩家通过玩游戏生成游戏数据，这里将采集游戏在每个时间点的<strong>小鸟高度、障碍物高度、小鸟距下一个障碍物的水平距离</strong>作为输入，以这个时间点<strong>玩家的操作</strong>作为输出</li>
 <li>将游戏数据统一存储到浏览器的LocalStorage统一管理</li>
 <li>AI利用玩家产生的游戏数据基于反向传播算法建立决策模型</li>
 <li>AI进行游戏测试</li>
 </ol>
-<h3 id="界面设计"><a href="#界面设计" class="headerlink" title="界面设计"></a><span>界面设计</span></h3><p>界面左右分成两块内容，左侧为游戏界面，右侧为控制台界面，训练模型列表右侧有一个❓图标，点击可打开教学提示，下面描述一下如何训练一个FlappyBirdAI参与游戏</p>
+<h3 id="界面设计"><a href="#界面设计" class="headerlink" title="界面设计"></a>界面设计</h3><p>界面左右分成两块内容，左侧为游戏界面，右侧为控制台界面，训练模型列表右侧有一个❓图标，点击可打开教学提示，下面描述一下如何训练一个FlappyBirdAI参与游戏</p>
 <p><img src="https://resources.chenjianhui.site/flappy-learning-web-page.png" alt></p>
 <ol>
 <li>点击<strong>创建一个新的模型</strong>完成必要信息填写，这里主要是关联神经网络以及训练迭代次数的一些配置</li>
@@ -318,21 +171,21 @@
 <li>训练完成后游戏将由AI接手自动开始，右侧行会记录AI的最高得分</li>
 <li>模型训练完成，玩家可以点击数据预测使用玩家生成的游戏数据样本交与AI进行<strong>预测分析</strong>，预测完成后将给出AI预测结果与玩家输入预期不符的数据列表</li>
 </ol>
-<h3 id="模型训练效果展示"><a href="#模型训练效果展示" class="headerlink" title="模型训练效果展示"></a><span>模型训练效果展示</span></h3><p>这里我人工玩了3万左右的数据量，相当于过了2500个障碍物，小鸟的最高得分是2400，具体运行效果如下</p>
+<h3 id="模型训练效果展示"><a href="#模型训练效果展示" class="headerlink" title="模型训练效果展示"></a>模型训练效果展示</h3><p>这里我人工玩了3万左右的数据量，相当于过了2500个障碍物，小鸟的最高得分是2400，具体运行效果如下</p>
 <p><img src="https://resources.chenjianhui.site/2019-09-06-flappy-bird-learning-example.gif" alt></p>
-<h3 id="开发计划"><a href="#开发计划" class="headerlink" title="开发计划"></a><span>开发计划</span></h3><ul>
+<h3 id="开发计划"><a href="#开发计划" class="headerlink" title="开发计划"></a>开发计划</h3><ul>
 <li><input checked disabled type="checkbox"> 参照<a href="https://github.com/xviniette/FlappyLearning" target="_blank" rel="noopener">FlappyLearning</a>完成游戏引擎开发</li>
 <li><input checked disabled type="checkbox"> 完成用户游戏数据采集器与其持久化模块 </li>
 <li><input checked disabled type="checkbox"> 引入<a href="https://www.tensorflow.org/js" target="_blank" rel="noopener">Tensorflow.js</a>基于游戏数据训练决策模型并使用其参与游戏</li>
 <li><input checked disabled type="checkbox"> 完成数据预测模块，便于对模型预测结果进行分析</li>
 <li><input disabled type="checkbox"> 分析AI参与游戏的能力，优化AI使其能够更好的适应游戏</li>
 </ul>
-<h2 id="机器训练过程中遇到的问题"><a href="#机器训练过程中遇到的问题" class="headerlink" title="机器训练过程中遇到的问题"></a><span>机器训练过程中遇到的问题</span></h2><h3 id="可能采集到错误数据"><a href="#可能采集到错误数据" class="headerlink" title="可能采集到错误数据"></a><span>可能采集到错误数据</span></h3><p>游戏中机器训练的数据由玩家不断产生，也就是由玩家重复一局又一局的游戏来产生，那么玩家在游戏终止（小鸟死亡）前的一部分数据其实是属于错误操作数据，这类数据不应该交与机器去学习</p>
+<h2 id="机器训练过程中遇到的问题"><a href="#机器训练过程中遇到的问题" class="headerlink" title="机器训练过程中遇到的问题"></a>机器训练过程中遇到的问题</h2><h3 id="可能采集到错误数据"><a href="#可能采集到错误数据" class="headerlink" title="可能采集到错误数据"></a>可能采集到错误数据</h3><p>游戏中机器训练的数据由玩家不断产生，也就是由玩家重复一局又一局的游戏来产生，那么玩家在游戏终止（小鸟死亡）前的一部分数据其实是属于错误操作数据，这类数据不应该交与机器去学习</p>
 <blockquote>
 <p>解决方案 <strong>丢弃游戏结束前的部分数据</strong><br>在这里我维护了一个指定了大小的队列，负责缓存游戏最新的部分数据，脱离缓存的数据直接进入持久化模块，当游戏结束时还在缓存队列中的数据将被丢弃</p>
 </blockquote>
 <p><img src="https://resources.chenjianhui.site/2019-09-06-train-data-flow.png" alt></p>
-<h3 id="数据样本分布不均匀"><a href="#数据样本分布不均匀" class="headerlink" title="数据样本分布不均匀"></a><span>数据样本分布不均匀</span></h3><p>在上述设计中游戏数据会基于运行的每一个<strong>时刻点来采集</strong>，这将导致数据集中<strong>操纵跳跃的数据</strong>会远小于<strong>无操作的数据</strong>，实际运行中也证明了这一点，跳跃操作数据大概<strong>占总数据集的3%</strong>，如此不均匀的数据集加入训练将使得决策模型出现<strong>一边倒</strong>的情况，即小鸟一直不跳跃，处理样本不平衡问题，主要有3种策略：从数据角度、从算法层面和模型评价层面，这边给出以下几种处理方案</p>
+<h3 id="数据样本分布不均匀"><a href="#数据样本分布不均匀" class="headerlink" title="数据样本分布不均匀"></a>数据样本分布不均匀</h3><p>在上述设计中游戏数据会基于运行的每一个<strong>时刻点来采集</strong>，这将导致数据集中<strong>操纵跳跃的数据</strong>会远小于<strong>无操作的数据</strong>，实际运行中也证明了这一点，跳跃操作数据大概<strong>占总数据集的3%</strong>，如此不均匀的数据集加入训练将使得决策模型出现<strong>一边倒</strong>的情况，即小鸟一直不跳跃，处理样本不平衡问题，主要有3种策略：从数据角度、从算法层面和模型评价层面，这边给出以下几种处理方案</p>
 <blockquote>
 <p>方案一 <strong>扩大数据集</strong><br>当遇到类别不均衡问题时，首先应该想到，是否可能再增加数据，使得样本平衡，显然在我们这个场景中是不可能扩大了</p>
 </blockquote>
@@ -347,7 +200,7 @@
 <p>方案三 <strong>使用Focal loss损失器</strong><br>焦点损失函数Focal Loss被提出用于密集物体检测任务。它可以训练高精度的密集物体探测器，哪怕前景和背景之间比例为1:1000，在我们这个游戏中样本类别的数量比例大概是3:97，此损失函数是适用的<br>但是现有的资料中Focal Loss损失函数基于<code>Python</code>的实现代码较多，而基于<code>JS</code>的几乎没有（也许是我没找到），经过一段努力的理解后，我放弃了此方案</p>
 </blockquote>
 <p>最终我采用了上采样的方案，因为下采样方案丢弃掉大部分样本后会导致小鸟训练结果非常不理想，于是我选择牺牲计算资源的方式来保证小鸟的训练智能性，当然如果能写出Focal loss损失器的js版本也许会是个更好的解决方案</p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a><span>参考资料</span></h2><ul>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
 <li><a href="https://github.com/xviniette/FlappyLearning" target="_blank" rel="noopener">FlappyLearning Github</a></li>
 <li><a href="https://cn.vuejs.org/v2/guide/typescript.html" target="_blank" rel="noopener">TypeScript 支持 — Vue.js</a></li>
 <li><a href="https://www.tensorflow.org/js" target="_blank" rel="noopener">Tensorflow.js 官方文档</a></li>
@@ -358,352 +211,53 @@
 <li><a href="http://dingby.site/2018/03/19/%E6%95%B0%E6%8D%AE%E4%B8%8D%E5%B9%B3%E8%A1%A1%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98/" target="_blank" rel="noopener">数据不平衡分类问题 | beatrice’s blogs</a></li>
 </ul>
 
-        </div>
-        
-            <ul class="post-copyright">
-            <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2019-09-06-machine-learning/">用机器学习玩转FlappyBird</a></li>
-            <li><strong>本文作者：</strong><a href="https://chenjianhui.site">JianhuiChen</a></li>
-            <li><strong>本文链接：</strong><a href="https://chenjianhui.site/2019-09-06-machine-learning/">https://chenjianhui.site/2019-09-06-machine-learning/</a></li>
-            <li><strong>发布时间：</strong>2019-09-06</li>
-            <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
-            </li>
-            </ul>
-        
-        
-        <hr style="height:1px;margin:1rem 0">
-        <div class="level is-size-7 is-uppercase">
-            <div class="level-start">
-                <div class="level-item">
-                    <i class="fas fa-tags has-text-grey"></i>&nbsp;
-                    <a class="has-link-grey -link" href="/tags/Machine-Learning/">Machine Learning</a>
-                </div>
-            </div>
-        </div>
-        
-        
-        
-    </div>
-</div>
+  </div>
+</article>
+<ul class="post-copyright">
+  <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2019-09-06-machine-learning/">用机器学习玩转FlappyBird</a></li>
+  <li><strong>本文作者：</strong><a href="https://chenjianhui.site">JianhuiChen</a></li>
+  <li><strong>本文链接：</strong><a href="https://chenjianhui.site/2019-09-06-machine-learning/">https://chenjianhui.site/2019-09-06-machine-learning/</a></li>
+  <li><strong>发布时间：</strong>2019-09-06</li>
+  <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+<div id="gitalk-container"></div>
 
-
-
-
-
-<div class="card card-transparent">
-    <div class="level post-navigation is-flex-wrap is-mobile">
-        
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2019-11-20-null-for-java/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">随笔——如何防止空指针</span>
-            </a>
-        </div>
-        
-        
-        <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2019-09-01-spi-spring-dubbo/">
-                <span class="level-item">随笔——Java SPI、Dubbo与SpringBoot</span>
-                <i class="level-item fas fa-chevron-right"></i>
-            </a>
-        </div>
-        
-    </div>
-</div>
-
-
-
-<div class="card">
-    <div class="card-content">
-        <h3 class="title is-5 has-text-weight-normal">评论</h3>
-        
-<div id="comment-container"></div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.css">
-<script src="https://cdn.jsdelivr.net/npm/gitalk@1.4.1/dist/gitalk.min.js"></script>
-<script>
-    var gitalk = new Gitalk({
-        clientID: 'bd0cbb30da9c24da8c7c',
-        clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
-        id: 'eeeb6b7472afcb304b3072bf7b12df92',
-        repo: 'blog',
-        owner: 'calebman',
-        admin: "calebman"
-    })
-    gitalk.render('comment-container')
-</script>
-
-    </div>
-</div>
-
-<link rel="stylesheet" href="/css/article-nice.css">
+<!-- Gittalk.js -->
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
 <!-- Highlight.js -->
-<script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script>
+<link rel="stylesheet" href="/css/hljs.css">
+<script src="/js/highlight.min.js"></script>
 <script>
-    hljs.initHighlightingOnLoad();
-</script></div>
-                
-                
-
-
-
-
-<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-3 column-right is-sticky">
-    
-        
-<div class="card widget column-left is-sticky" id="toc">
-    <div class="card-content">
-        <div class="menu">
-            <h3 class="menu-label">
-                目录
-            </h3>
-            <ul class="menu-list"><li>
-        <a class="is-flex" href="#概述">
-        <span class="has-mr-6">1</span>
-        <span>概述</span>
-        </a></li><li>
-        <a class="is-flex" href="#初探机器学习">
-        <span class="has-mr-6">2</span>
-        <span>初探机器学习</span>
-        </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#机器是如何来决策游戏走向的">
-        <span class="has-mr-6">2.1</span>
-        <span>机器是如何来决策游戏走向的</span>
-        </a></li><li>
-        <a class="is-flex" href="#如何获得一个合适的决策函数">
-        <span class="has-mr-6">2.2</span>
-        <span>如何获得一个合适的决策函数</span>
-        </a></li></ul></li><li>
-        <a class="is-flex" href="#反向传播算法">
-        <span class="has-mr-6">3</span>
-        <span>反向传播算法</span>
-        </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#简介">
-        <span class="has-mr-6">3.1</span>
-        <span>简介</span>
-        </a></li><li>
-        <a class="is-flex" href="#如何运用于FlappyBirdAI">
-        <span class="has-mr-6">3.2</span>
-        <span>如何运用于FlappyBirdAI</span>
-        </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#模型输入项">
-        <span class="has-mr-6">3.2.1</span>
-        <span>模型输入项</span>
-        </a></li><li>
-        <a class="is-flex" href="#模型预测项">
-        <span class="has-mr-6">3.2.2</span>
-        <span>模型预测项</span>
-        </a></li></ul></li></ul></li><li>
-        <a class="is-flex" href="#基于反向传播算法设计FlappyBirdAI">
-        <span class="has-mr-6">4</span>
-        <span>基于反向传播算法设计FlappyBirdAI</span>
-        </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#流程设计">
-        <span class="has-mr-6">4.1</span>
-        <span>流程设计</span>
-        </a></li><li>
-        <a class="is-flex" href="#界面设计">
-        <span class="has-mr-6">4.2</span>
-        <span>界面设计</span>
-        </a></li><li>
-        <a class="is-flex" href="#模型训练效果展示">
-        <span class="has-mr-6">4.3</span>
-        <span>模型训练效果展示</span>
-        </a></li><li>
-        <a class="is-flex" href="#开发计划">
-        <span class="has-mr-6">4.4</span>
-        <span>开发计划</span>
-        </a></li></ul></li><li>
-        <a class="is-flex" href="#机器训练过程中遇到的问题">
-        <span class="has-mr-6">5</span>
-        <span>机器训练过程中遇到的问题</span>
-        </a><ul class="menu-list"><li>
-        <a class="is-flex" href="#可能采集到错误数据">
-        <span class="has-mr-6">5.1</span>
-        <span>可能采集到错误数据</span>
-        </a></li><li>
-        <a class="is-flex" href="#数据样本分布不均匀">
-        <span class="has-mr-6">5.2</span>
-        <span>数据样本分布不均匀</span>
-        </a></li></ul></li><li>
-        <a class="is-flex" href="#参考资料">
-        <span class="has-mr-6">6</span>
-        <span>参考资料</span>
-        </a></li></ul>
-        </div>
-    </div>
-</div>
-
-
-    
-    
-</div>
-
-            </div>
-        </div>
-    </section>
-    <footer class="footer">
-    <div class="container">
-        <div class="level">
-            <div class="level-start has-text-centered-mobile">
-                <p class="footer-logo is-block has-mb-6" href="/">
-                
-                    <img src="/images/logo.svg" alt="用机器学习玩转FlappyBird" height="28">
-                
-                <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
-                </p>
-                <p class="is-size-7">
-                &copy; 2020 JianhuiChen&nbsp;
-                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
-                
-                </p>
-            </div>
-            <div class="level-end">
-            
-                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
-                
-                
-                <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="CC BY-NC-SA 4.0" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
-                        
-                        <i class="fab fa-creative-commons"></i>&nbsp;<i class="fab fa-creative-commons-by"></i>&nbsp;<i class="fab fa-creative-commons-nc"></i>&nbsp;<i class="fab fa-creative-commons-sa"></i>&nbsp;
-                        
-                    </a>
-                </p>
-                
-                </div>
-            
-            </div>
-        </div>
-    </div>
-</footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
-<script>moment.locale("zh-CN");</script>
-
-
-    
-    
-    
-    <script src="/js/animation.js"></script>
-    
-
-    
-    
-    
-    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
-    <script src="/js/gallery.js" defer></script>
-    
-
-    
-    
-
-<div id="outdated">
-    <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
-            my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        outdatedBrowser({
-            bgColor: '#f25648',
-            color: '#ffffff',
-            lowerThan: 'flex'
-        });
-    });
+  hljs.initHighlightingOnLoad();
+  const gitalk = new Gitalk({
+    clientID: 'bd0cbb30da9c24da8c7c',
+    clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
+    repo: 'blog',
+    owner: 'calebman',
+    admin: ['calebman']
+  })
+  gitalk.render('gitalk-container')
 </script>
+  </main>
 
+  <footer class="footer">
+    <ul class="footer-links">
+      <section class="copyright">
+        <a href="https://chenjianhui.site">JianhuiChen</a> © 2017 - 2020 | 
+        <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
+      </section>
+    </ul>
+  </footer>
 
-    
-    
-<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    MathJax.Hub.Config({
-        'HTML-CSS': {
-            matchFontHeight: false
-        },
-        SVG: {
-            matchFontHeight: false
-        },
-        CommonHTML: {
-            matchFontHeight: false
-        },
-        tex2jax: {
-            inlineMath: [
-                ['$','$'],
-                ['\\(','\\)']
-            ]
-        }
-    });
-});
-</script>
+  
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/simple.js"></script>
+  
+  
 
-    
-    
-
-<a id="back-to-top" title="回到顶端" href="javascript:;">
-    <i class="fas fa-chevron-up"></i>
-</a>
-<script src="/js/back-to-top.js" defer></script>
-
-
-    
-    
-
-    
-    
-    
-    
-
-    
-    
-    
-    
-    
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
-    <script src="/js/clipboard.js" defer></script>
-    
-
-    
-    
-    
-
-
-<script src="/js/main.js" defer></script>
-
-    
-    <div class="searchbox ins-search">
-    <div class="searchbox-container ins-search-container">
-        <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
-            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
-        </div>
-        <div class="searchbox-result-wrapper ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
-</div>
-<script>
-    (function (window) {
-        var INSIGHT_CONFIG = {
-            TRANSLATION: {
-                POSTS: '文章',
-                PAGES: '页面',
-                CATEGORIES: '分类',
-                TAGS: '标签',
-                UNTITLED: '(无标题)',
-            },
-            CONTENT_URL: '/content.json',
-        };
-        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-    })(window);
-</script>
-<script src="/js/insight.js" defer></script>
-<link rel="stylesheet" href="/css/search.css">
-<link rel="stylesheet" href="/css/insight.css">
-    
 </body>
+
 </html>

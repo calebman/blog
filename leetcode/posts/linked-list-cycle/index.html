@@ -1,0 +1,184 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <title>循环链表 [ Sincerity ]</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="icon" href="/images/favicon-32x32.png">
+  
+  <!-- stylesheets list from _config.yml -->
+  
+  <link rel="stylesheet" href="/css/simple.css">
+  
+  <link rel="stylesheet" href="/css/font.css">
+  
+  
+</head>
+
+<body>
+
+  <header class="header">
+    <nav class="nav">
+      <a href="/" class="nav-logo"><img src="/images/avatar.png" width="50" height="50" alt="Logo"></a>
+      <ul class="nav-links">
+        
+        <li><a href="/">文章</a></li>
+        
+        <li><a href="/archives">归档</a></li>
+        
+        <li><a href="/leetcode">力扣</a></li>
+        
+        <li><a href="/about">关于我</a></li>
+        
+        <li><a href="https://github.com/calebman">Github</a></li>
+        
+      </ul>
+    </nav>
+  </header>
+
+  <main class="content">
+    <article class="article">
+    <h1 class="article-title">循环链表</h1>
+    <div class="article-content">
+        <h1>前言</h1>
+<p>循环链表题型可用 Floyd、Brent 判圈算法解决，算法介绍可参考文章 <a href="/2020-06-24-floyd-cycle-detection-algorithm">Floyd、Brent 判圈算法</a>，该文章图解了算法的运行流程。</p>
+<h1>循环链表I</h1>
+<blockquote>
+<p>给定一个链表，判断链表中是否有环。</p>
+</blockquote>
+<ol>
+<li>使用 Brent 算法，时间复杂度 O(n)，空间复杂度 O(1)。</li>
+</ol>
+<pre><code class="language-js">/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+
+/**
+ * @param {ListNode} head
+ * @return {boolean}
+ */
+var hasCycle = function(head) {
+    let slow, fast = head
+    let step, stepLimit = 1
+    for(;;) {
+        step = 0
+        while (step &lt; stepLimit) {
+            if (!fast) return false
+            fast = fast.next
+            if (fast === slow) return true
+            step++
+        }
+        slow = fast
+        stepLimit *= 2
+    }
+    return false
+};
+</code></pre>
+<h1>循环链表II</h1>
+<blockquote>
+<p>给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回 null。</p>
+</blockquote>
+<ol>
+<li>通过缓存的思路，时间复杂度 O(n)，空间复杂度 O(n)。</li>
+</ol>
+<pre><code class="language-js">/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+var detectCycle = function(head) {
+  let node = head, cache = new Set()
+  let i = 0
+  while (node) {
+      if (cache.has(node)) return node
+      cache.add(node)
+      node = node.next
+  }
+  return null
+};
+</code></pre>
+<ol start="2">
+<li>通过修改链表的思路，时间复杂度 O(n)，空间复杂度 O(1)。</li>
+</ol>
+<pre><code class="language-js">var detectCycle = function(head) {
+    let node = head, cache = {}
+    while (node) {
+        if (cache[node]) {
+            return node
+        }
+        cache[node] = true
+        node = node.next
+    }
+    return null
+};
+</code></pre>
+<ol start="3">
+<li>使用 Floyd 算法，不修改链表且不用额外空间的思路，时间复杂度近似于 O(n)，空间复杂度 O(1)。</li>
+</ol>
+<pre><code class="language-js">var detectCycle = function(head) {
+    if (!head) return null
+    let slow = head, fast = head
+    // 第一步，找相遇点
+    for(;;) {
+        slow = slow.next
+        fast = fast.next ? fast.next.next : null
+        if (!fast || !slow) return null
+        if (slow === fast) {
+            slow = head
+            break
+        }
+    }
+    // 第二步，等速移动，相遇点即环入口
+    for(;;) {
+        if (slow === fast) {
+            return slow
+        }
+        slow = slow.next
+        fast = fast.next
+    }
+};
+</code></pre>
+
+    </div>
+</article>
+<!-- Highlight.js -->
+<link rel="stylesheet" href="/css/hljs.css">
+<script src="/js/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+  </main>
+
+  <footer class="footer">
+    <ul class="footer-links">
+      <section class="copyright">
+        <a href="https://chenjianhui.site">JianhuiChen</a> © 2017 - 2020 | 
+        <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
+      </section>
+    </ul>
+  </footer>
+
+  
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/simple.js"></script>
+  
+  
+
+</body>
+
+</html>

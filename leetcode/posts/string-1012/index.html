@@ -1,0 +1,188 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <title>无重复字符的最长子串 [ Sincerity ]</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="icon" href="/images/favicon-32x32.png">
+  
+  <!-- stylesheets list from _config.yml -->
+  
+  <link rel="stylesheet" href="/css/simple.css">
+  
+  <link rel="stylesheet" href="/css/font.css">
+  
+  
+</head>
+
+<body>
+
+  <header class="header">
+    <nav class="nav">
+      <a href="/" class="nav-logo"><img src="/images/avatar.png" width="50" height="50" alt="Logo"></a>
+      <ul class="nav-links">
+        
+        <li><a href="/">文章</a></li>
+        
+        <li><a href="/archives">归档</a></li>
+        
+        <li><a href="/leetcode">力扣</a></li>
+        
+        <li><a href="/about">关于我</a></li>
+        
+        <li><a href="https://github.com/calebman">Github</a></li>
+        
+      </ul>
+    </nav>
+  </header>
+
+  <main class="content">
+    <article class="article">
+    <h1 class="article-title">无重复字符的最长子串</h1>
+    <div class="article-content">
+        <h1>题干</h1>
+<blockquote>
+<p>给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度</p>
+</blockquote>
+<pre><code class="language-sh">示例一：
+输入: &quot;abcabcbb&quot;
+输出: 3 
+解释: 因为无重复字符的最长子串是 &quot;abc&quot;，所以其长度为 3。
+示例二：
+输入: &quot;bbbbb&quot;
+输出: 1
+解释: 因为无重复字符的最长子串是 &quot;b&quot;，所以其长度为 1。
+示例三：
+输入: &quot;pwwkew&quot;
+输出: 3
+解释: 因为无重复字符的最长子串是 &quot;wke&quot;，所以其长度为 3。
+     请注意，你的答案必须是 子串 的长度，&quot;pwke&quot; 是一个子序列，不是子串。
+</code></pre>
+<h1>题解</h1>
+<h2 id="解题思路">解题思路</h2>
+<ol>
+<li>通过一个数组维护无重复字符列表</li>
+<li>循环目标字符串，当字符存在于数组时，记录数组当前长度与历史长度的较大值，并根据匹配位切割数组 <code>'dvcdf'</code> 匹配到第四位时的数组变换 <code>[d, v, c]</code> =&gt; <code>[v, c, d]</code></li>
+<li>最后取数组与历史记录值的较大值</li>
+</ol>
+<pre><code class="language-js">function lengthOfLongestSubstring(s) {
+  let arr = []
+  let len = 0
+  s.split('').forEach(s =&gt; {
+    const i = arr.indexOf(s)
+    if(i &gt; -1) {
+      arr = arr.slice(i + 1, arr.length)
+    }
+    arr.push(s)
+    len = Math.max(arr.length, len)
+  })
+  return len
+}
+</code></pre>
+<p>该方法通过了 Leetcode 的检测，但是执行耗时过长，排名在 75%</p>
+<p><img src="https://resources.chenjianhui.site/20200604202543.png" alt></p>
+<h2 id="优化方案">优化方案</h2>
+<ol>
+<li>原先用于存储无重复字符列表的数组空间可以节省，因为字符列表是连续的，所以可以通过一个下标标记实现</li>
+<li>匹配的时间复杂度和原来是一样的，数组切割的部分可以移除，节省这部分性能</li>
+</ol>
+<pre><code class="language-js">function lengthOfLongestSubstring(s) {
+  let len = 0
+  let q = 0
+  const arr = s.split('')
+  for (let i = 0; i &lt; arr.length; i++) {
+    for (let j = q; j &lt; i; j++) {
+      if(arr[j] === arr[i]) {
+        q = j + 1
+        break
+      }
+    }
+    len = Math.max(i - q + 1, len)
+  }
+  return len
+}
+</code></pre>
+<p>该方法执行耗时和内存都有提升</p>
+<p><img src="https://resources.chenjianhui.site/20200604204730.png" alt></p>
+<h2 id="后续">后续</h2>
+<p>后续我又想了两种基于缓存的方案，能将时间复杂度降低到 <code>O(2N)</code></p>
+<h3 id="基于对象的缓存方案">基于对象的缓存方案</h3>
+<p>通过一个对象缓存匹配值列表的下标</p>
+<pre><code class="language-js">function lengthOfLongestSubstring(s) {
+  let len = 0
+  let q = 0
+  let matchIndex = 0
+  const cache = {}
+  const arr = s.split('')
+  for (let i = 0; i &lt; arr.length; i++) {
+    matchIndex = cache[arr[i]]
+    if (matchIndex !== undefined) {
+      for (let j = q; j &lt; matchIndex + 1; j++) {
+        delete cache[arr[j]]
+      }
+      q = matchIndex + 1
+    }
+    cache[arr[i]] = i
+    len = Math.max(i - q + 1, len)
+  }
+  return len
+}
+</code></pre>
+<h3 id="基于数组的缓存方案">基于数组的缓存方案</h3>
+<p>利用字符可以通过 <code>charCodeAt</code> 方法转换为数字，然后通过数组下标的方式缓存</p>
+<pre><code class="language-js">function lengthOfLongestSubstring(s) {
+  let len = 0
+  let q = 0
+  let matchIndex = 0
+  let item = null
+  const cache = []
+  const arr = s.split('')
+  for (let i = 0; i &lt; arr.length; i++) {
+    item = arr[i].charCodeAt()
+    matchIndex = cache[item]
+    if (matchIndex !== undefined) {
+      for (let j = q; j &lt; matchIndex + 1; j++) {
+        cache[arr[j].charCodeAt()] = undefined
+      }
+      q = matchIndex + 1
+    }
+    cache[item] = i
+    len = Math.max(i - q + 1, len)
+  }
+  return len
+}
+</code></pre>
+<p>总结：这两种方案使用了空间来换时间，比较依赖缓存的实现，<code>js</code> 的数组与对象访问的时间复杂度我没过多了解，对标 <code>Java</code> 的数组与 <code>HashMap</code>，此场景不存在 Hash 冲突，其访问的时间复杂度为 O(1)</p>
+
+    </div>
+</article>
+<!-- Highlight.js -->
+<link rel="stylesheet" href="/css/hljs.css">
+<script src="/js/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+  </main>
+
+  <footer class="footer">
+    <ul class="footer-links">
+      <section class="copyright">
+        <a href="https://chenjianhui.site">JianhuiChen</a> © 2017 - 2020 | 
+        <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
+      </section>
+    </ul>
+  </footer>
+
+  
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/simple.js"></script>
+  
+  
+
+</body>
+
+</html>

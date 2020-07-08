@@ -1,0 +1,205 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <title>字符串相乘 [ Sincerity ]</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="icon" href="/images/favicon-32x32.png">
+  
+  <!-- stylesheets list from _config.yml -->
+  
+  <link rel="stylesheet" href="/css/simple.css">
+  
+  <link rel="stylesheet" href="/css/font.css">
+  
+  
+</head>
+
+<body>
+
+  <header class="header">
+    <nav class="nav">
+      <a href="/" class="nav-logo"><img src="/images/avatar.png" width="50" height="50" alt="Logo"></a>
+      <ul class="nav-links">
+        
+        <li><a href="/">文章</a></li>
+        
+        <li><a href="/archives">归档</a></li>
+        
+        <li><a href="/leetcode">力扣</a></li>
+        
+        <li><a href="/about">关于我</a></li>
+        
+        <li><a href="https://github.com/calebman">Github</a></li>
+        
+      </ul>
+    </nav>
+  </header>
+
+  <main class="content">
+    <article class="article">
+    <h1 class="article-title">字符串相乘</h1>
+    <div class="article-content">
+        <h1>题干</h1>
+<blockquote>
+<p>给定两个以字符串形式表示的非负整数 num1 和 num2，返回 num1 和 num2 的乘积，它们的乘积也表示为字符串形式。</p>
+</blockquote>
+<pre><code class="language-sh">示例一：
+输入: num1 = &quot;2&quot;, num2 = &quot;3&quot;
+输出: &quot;6&quot;
+示例二：
+输入: num1 = &quot;123&quot;, num2 = &quot;456&quot;
+输出: &quot;56088&quot;
+说明：
+1. num1 和 num2 的长度小于110。
+2. num1 和 num2 只包含数字 0-9。
+3. num1 和 num2 均不以零开头，除非是数字 0 本身。
+4. 不能使用任何标准库的大数类型（比如 BigInteger）或直接将输入转换为整数来处理。
+</code></pre>
+<h1>题解</h1>
+<h2 id="解题思路">解题思路</h2>
+<p>采用竖式相乘法，和平时竖式相乘不一样的地方是，延后处理进位，举个例子：</p>
+<pre><code class="language-js">------------------- 传统方式立即进位 -------------------
+    15
+x   55
+------
+    75
+   75
+------
+=  825
+
+------------------- 当前算法延后进位 -------------------
+    15 // num1
+x   55 // num2
+------
+[0, 0, 0, 0]         // 初始化数组
+[0, 1 * 5, 0, 0]     // num1[0] * num2[0]
+[0, 5, 1 * 5, 0]     // num1[0] * num2[1]
+[0, 5, 5 + 5 * 5, 0] // num1[1] * num2[0]
+[0, 5, 30, 5 * 5]    // num1[1] * num2[1]
+[0, 5, 30, 25]       // 竖式相乘结果集合
+[0, 5, 32, 5]        // 从后往前进位
+[0, 8, 2, 5]
+[8, 2, 5]            // 去除前位 0 值，得到结果 825
+</code></pre>
+<pre><code class="language-js">function multiply(num1, num2) {
+  let cn = num1.length + num2.length;
+  let c = new Array(cn).fill(0);
+  // 竖式相乘但不进位
+  for (let i = 0; i &lt; num1.length; i++) {
+    for (let j = 0; j &lt; num2.length; j++) {
+      c[i + j + 1] += Number(num1[i]) * Number(num2[j])
+    }
+  }
+  // 从后往前处理进位   
+  for (let i = cn - 1; i &gt;= 0; i--) {
+    let carry = Math.trunc(c[i] / 10);
+    if (carry) {
+      c[i - 1] += carry
+    }
+    c[i] = c[i] % 10
+  }
+  // 处理前面的 0
+  while (c[0] === 0) {
+    c.shift()
+  }
+  return c.join('') || '0'
+}
+</code></pre>
+<h2 id="如何优化">如何优化</h2>
+<p>Karatsuba 算法能够将 O(n^2) 复杂度变成 O(n^1.5) 左右，具体实现见最下方的参考文献，在此给出个人的实现代码：</p>
+<pre><code class="language-js">function multiply(num1, num2) {
+  if (num1.length === 1 &amp;&amp; num2.length === 1) {
+    return String(Number(num1) * Number(num2))
+  }
+  // 拆分
+  const m = num1.length
+  const n = num2.length
+  const halfN = Math.floor(Math.max(m, n) / 2)
+  const a = m &gt; halfN ? num1.substring(0, m - halfN) : '0'
+  const b = m &gt; halfN ? num1.substring(m - halfN, m) : num1
+  const c = n &gt; halfN ? num2.substring(0, n - halfN) : '0'
+  const d = n &gt; halfN ? num2.substring(n - halfN, n) : num2
+  // ab*cd = ac ad+bc bd
+  const ac = multiply(a, c)
+  const bd = multiply(b, d)
+  // ad+bc = AC+AD+BC+BD-AC-BD = (A+B)(C+D)-AC-BD
+  const adbc = sub(multiply(sum(a, b), sum(c, d)), ac, bd)
+  // 进位
+  const result = sum(carry(ac, 2 * halfN), carry(adbc, halfN), bd)
+  return result
+}
+
+/**
+ * 大数相加
+ */
+function sum() {
+  const args = Array.from(arguments)
+  let carry = 0
+  let result = []
+  let len = Math.max(...args.map(o =&gt; o.length))
+  let i = len;
+  while (i--) {
+    let sum = args.map(s =&gt; (+s[i - len + s.length] || 0)).reduce((a, b) =&gt; a + b) + carry
+    carry = parseInt(sum / 10)
+    result.unshift(sum % 10)
+  }
+  if (carry) result.unshift(carry)
+  return result.join('')
+}
+/**
+ * 大数相减
+ * TODO
+ */
+function sub() {
+  const args = Array.from(arguments)
+  return args.map(s =&gt; parseInt(s)).reduce((a, b) =&gt; a - b)
+}
+/**
+ * 大数进位
+ */
+function carry(numStr, digits) {
+  for (let i = 0; i &lt; digits; i++) {
+    numStr += '0'
+  }
+  return numStr
+}
+</code></pre>
+<h1>参考资料</h1>
+<ul>
+<li><a href="https://zhuanlan.zhihu.com/p/42350768">知乎 Karatsuba乘法</a></li>
+<li><a href="https://mp.weixin.qq.com/s/GCCEJWbNscJyf4K5nleOnA">2名数学家或发现史上最快超大乘法运算法，欲破解困扰人类近半个世纪的问题</a></li>
+</ul>
+
+    </div>
+</article>
+<!-- Highlight.js -->
+<link rel="stylesheet" href="/css/hljs.css">
+<script src="/js/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+  </main>
+
+  <footer class="footer">
+    <ul class="footer-links">
+      <section class="copyright">
+        <a href="https://chenjianhui.site">JianhuiChen</a> © 2017 - 2020 | 
+        <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
+      </section>
+    </ul>
+  </footer>
+
+  
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/simple.js"></script>
+  
+  
+
+</body>
+
+</html>

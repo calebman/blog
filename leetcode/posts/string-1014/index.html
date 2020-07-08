@@ -1,0 +1,120 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <title>最长公共前缀 [ Sincerity ]</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="icon" href="/images/favicon-32x32.png">
+  
+  <!-- stylesheets list from _config.yml -->
+  
+  <link rel="stylesheet" href="/css/simple.css">
+  
+  <link rel="stylesheet" href="/css/font.css">
+  
+  
+</head>
+
+<body>
+
+  <header class="header">
+    <nav class="nav">
+      <a href="/" class="nav-logo"><img src="/images/avatar.png" width="50" height="50" alt="Logo"></a>
+      <ul class="nav-links">
+        
+        <li><a href="/">文章</a></li>
+        
+        <li><a href="/archives">归档</a></li>
+        
+        <li><a href="/leetcode">力扣</a></li>
+        
+        <li><a href="/about">关于我</a></li>
+        
+        <li><a href="https://github.com/calebman">Github</a></li>
+        
+      </ul>
+    </nav>
+  </header>
+
+  <main class="content">
+    <article class="article">
+    <h1 class="article-title">最长公共前缀</h1>
+    <div class="article-content">
+        <h1>题干</h1>
+<blockquote>
+<p>编写一个函数来查找字符串数组中的最长公共前缀。<br>
+如果不存在公共前缀，返回空字符串 “”。</p>
+</blockquote>
+<pre><code class="language-sh">示例一：
+输入: [&quot;flower&quot;,&quot;flow&quot;,&quot;flight&quot;]
+输出: &quot;fl&quot;
+示例二：
+输入: [&quot;dog&quot;,&quot;racecar&quot;,&quot;car&quot;]
+输出: &quot;&quot;
+解释: 输入不存在公共前缀
+说明: 
+所有输入只包含小写字母 a-z 
+</code></pre>
+<h1>题解</h1>
+<h2 id="解题思路">解题思路</h2>
+<ol>
+<li>取出字符串列表中最短的字符长度</li>
+<li>利用双循环匹配列表中的相应位置的每一个字符</li>
+</ol>
+<pre><code class="language-js">function longestCommonPrefix(strs) {
+  if (!strs || strs.length === 0) {
+    return ''
+  }
+  let same = '', match, endFlag
+  const len = Math.min.apply(null, strs.map(o =&gt; o.length))
+  for (let i = 0; i &lt; len; i++) {
+    endFlag = false
+    match = strs[0].charAt(i)
+    for (let j = 1; j &lt; strs.length; j++) {
+      if (match !== strs[j].charAt(i)) {
+        endFlag = true
+      }
+    }
+    if (endFlag) {
+      break
+    }
+    same += match
+  }
+  return same
+}
+</code></pre>
+<p>代码通过了检测，排名参考值为 95%</p>
+<p><img src="https://resources.chenjianhui.site/20200605134813.png" alt></p>
+
+    </div>
+</article>
+<!-- Highlight.js -->
+<link rel="stylesheet" href="/css/hljs.css">
+<script src="/js/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+  </main>
+
+  <footer class="footer">
+    <ul class="footer-links">
+      <section class="copyright">
+        <a href="https://chenjianhui.site">JianhuiChen</a> © 2017 - 2020 | 
+        <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
+      </section>
+    </ul>
+  </footer>
+
+  
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/simple.js"></script>
+  
+  
+
+</body>
+
+</html>

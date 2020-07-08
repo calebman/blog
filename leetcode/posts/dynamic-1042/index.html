@@ -1,0 +1,141 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <title>买卖股票的最佳时机 [ Sincerity ]</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="icon" href="/images/favicon-32x32.png">
+  
+  <!-- stylesheets list from _config.yml -->
+  
+  <link rel="stylesheet" href="/css/simple.css">
+  
+  <link rel="stylesheet" href="/css/font.css">
+  
+  
+</head>
+
+<body>
+
+  <header class="header">
+    <nav class="nav">
+      <a href="/" class="nav-logo"><img src="/images/avatar.png" width="50" height="50" alt="Logo"></a>
+      <ul class="nav-links">
+        
+        <li><a href="/">文章</a></li>
+        
+        <li><a href="/archives">归档</a></li>
+        
+        <li><a href="/leetcode">力扣</a></li>
+        
+        <li><a href="/about">关于我</a></li>
+        
+        <li><a href="https://github.com/calebman">Github</a></li>
+        
+      </ul>
+    </nav>
+  </header>
+
+  <main class="content">
+    <article class="article">
+    <h1 class="article-title">买卖股票的最佳时机</h1>
+    <div class="article-content">
+        <h1>题干</h1>
+<blockquote>
+<p>给定一个数组，它的第 i 个元素是一支给定股票第 i 天的价格。<br>
+如果你最多只允许完成一笔交易（即买入和卖出一支股票一次），设计一个算法来计算你所能获取的最大利润。<br>
+注意：你不能在买入股票前卖出股票。</p>
+</blockquote>
+<pre><code class="language-sh">示例一：
+输入: [7,1,5,3,6,4]
+输出: 5
+解释: 在第 2 天（股票价格 = 1）的时候买入，在第 5 天（股票价格 = 6）的时候卖出，最大利润 = 6-1 = 5 。
+注意：利润不能是 7-1 = 6, 因为卖出价格需要大于买入价格；同时，你不能在买入前卖出股票。
+示例二：
+输入: [7,6,4,3,1]
+输出: 0
+解释: 在这种情况下, 没有交易完成, 所以最大利润为 0。
+</code></pre>
+<h1>题解</h1>
+<h2 id="解题思路">解题思路</h2>
+<p>本题是典型的动态规划问题，先考虑拆分成子问题</p>
+<blockquote>
+<p>举 [7,1,5,3,6,4] 这个例子，可以拆分成以下两种情况<br>
+(1) 第一天买入，最大价值为：[1,5,3,6,4] 的最大值 - 7，如果小于 0 则取 0<br>
+(2) 第一天不买入，最大价值为：基于这个 [1,5,3,6,4] 剩余 5 天的情况，所能获取的最大利润<br>
+最终结果取情况1、2的较大值</p>
+</blockquote>
+<p>不难得出下方两个要素：<br>
+<strong>1. 状态转移方程</strong><br>
+$$f(x) = max(max(p[n - x + 1]…p[n - 1]) - p[n - x], f(x - 1))$$<br>
+<strong>2. 边界</strong><br>
+$$f(2) = max(p[1] - p[0], 0)$$ $$f(1) = 0$$ $$f(0) = 0$$<br>
+其中 p：股票数组、n：数组总长度、x：剩余数组长度</p>
+<p>利用递归很容易做出如下代码实现：</p>
+<pre><code class="language-js">function maxProfit(prices) {
+  if (prices.length &lt; 2) {
+    return 0
+  }
+  if (prices.length === 2) {
+    // f(2) = max(p[1] - p[0], 0)
+    return Math.max(prices[1] - prices[0], 0)
+  }
+  const price = prices.shift()
+  // f(x) = max(max(p[n - x + 1]...p[n - 1]) - p[n - x], f(x - 1))
+  return Math.max(Math.max(...prices) - price, maxProfit(prices))
+}
+</code></pre>
+<h2 id="优化方案">优化方案</h2>
+<p>由于 f(x) 的值仅依赖 f(x - 1)，所以我们可以考虑从后往前递推值，具体实现如下：</p>
+<pre><code class="language-js">function maxProfit(prices) {
+  let tmp = 0
+  for (let i = prices.length - 2; i &gt;= 0; i--) {
+    tmp = Math.max(Math.max(...prices.slice(i)) - prices[i], tmp)
+  }
+  return tmp
+}
+</code></pre>
+<p>而 <code>Math.max(...prices.slice(i))</code> 的计算可以通过存储一个临时变量 <code>max</code>，然后跟随数组遍历时比较获得，从而节省了数组的切割与比较操作，最终优化后的实现如下：</p>
+<pre><code class="language-js">function maxProfit(prices) {
+  let tmp = 0
+  let max = 0
+  for (let i = prices.length - 2; i &gt;= 0; i--) {
+    max = Math.max(prices[i + 1], max)
+    tmp = Math.max(max - prices[i], tmp)
+  }
+  return tmp
+}
+</code></pre>
+
+    </div>
+</article>
+<!-- Highlight.js -->
+<link rel="stylesheet" href="/css/hljs.css">
+<script src="/js/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+  </main>
+
+  <footer class="footer">
+    <ul class="footer-links">
+      <section class="copyright">
+        <a href="https://chenjianhui.site">JianhuiChen</a> © 2017 - 2020 | 
+        <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
+      </section>
+    </ul>
+  </footer>
+
+  
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/simple.js"></script>
+  
+  
+
+</body>
+
+</html>

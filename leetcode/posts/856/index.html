@@ -1,0 +1,160 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <title>括号的分数 [ Sincerity ]</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="icon" href="/images/favicon-32x32.png">
+  
+  <!-- stylesheets list from _config.yml -->
+  
+  <link rel="stylesheet" href="/css/simple.css">
+  
+  <link rel="stylesheet" href="/css/font.css">
+  
+  
+</head>
+
+<body>
+
+  <header class="header">
+    <nav class="nav">
+      <a href="/" class="nav-logo"><img src="/images/avatar.png" width="50" height="50" alt="Logo"></a>
+      <ul class="nav-links">
+        
+        <li><a href="/">文章</a></li>
+        
+        <li><a href="/archives">归档</a></li>
+        
+        <li><a href="/leetcode">力扣</a></li>
+        
+        <li><a href="/about">关于我</a></li>
+        
+        <li><a href="https://github.com/calebman">Github</a></li>
+        
+      </ul>
+    </nav>
+  </header>
+
+  <main class="content">
+    <article class="article">
+    <h1 class="article-title">括号的分数</h1>
+    <div class="article-content">
+        <h1>题干</h1>
+<blockquote>
+<p>给定一个平衡括号字符串 S，按下述规则计算该字符串的分数：</p>
+</blockquote>
+<ul>
+<li>() 得 1 分。</li>
+<li>AB 得 A + B 分，其中 A 和 B 是平衡括号字符串。</li>
+<li>(A) 得 2 * A 分，其中 A 是平衡括号字符串。</li>
+</ul>
+<pre><code class="language-sh">示例一：
+输入： &quot;()&quot;
+输出： 1
+示例二：
+输入： &quot;(())&quot;
+输出： 2
+示例三：
+输入： &quot;()()&quot;
+输出： 2
+示例四：
+输入： &quot;(()(()))&quot;
+输出： 6
+</code></pre>
+<h1>题解</h1>
+<h2 id="解题思路">解题思路</h2>
+<ol>
+<li>将字符串转换为 <code>[1, [1]]</code> 这种数组嵌套型的数据结构，然后深度遍历计算值</li>
+</ol>
+<pre><code class="language-js">/**
+ * 将平衡括号字符串转换为 数组数据结构
+ * @param {*} str 字符串
+ * @returns {Array} 数组
+ * @example (()(())((())())) =&gt; [ 1, [ 1 ], [ [ 1 ], 1 ] ]
+ */
+function transfer(str) {
+  let cur = {
+    value: []
+  }
+  let deep = 0
+  str.split('').forEach(s =&gt; {
+    switch (s) {
+      case '(':
+        deep++
+        if(deep &gt;= 1) {
+          cur = {
+            parent: cur,
+            value: []
+          }
+        }
+        break
+      case ')':
+        deep--
+        if(deep &gt;= 0) {
+          const tmp = cur.parent
+          tmp.value.push(cur.value.length &gt; 0 ? cur.value : 1)
+          cur = tmp
+        }
+        break
+    }
+  })
+  return cur.value
+}
+</code></pre>
+<ol start="2">
+<li>递归遍历计算求值</li>
+</ol>
+<pre><code class="language-js">/**
+ * 计算 平衡括号字符串 对应数组数据结构的值
+ * @param {*} arr 平衡字符串转换数组
+ * @returns {Number} 计算结果
+ * @example [ 1, [ 1 ], [ [ 1 ], 1 ] ] =&gt; 9
+ */
+function computed(arr) {
+  let total = 0
+  arr.forEach(o =&gt; {
+    if(Array.isArray(o)) {
+      total += 2 * computed(o)
+    } else {
+      total += o
+    }
+  })
+  return total
+}
+</code></pre>
+<p>本方法通过了 Leetcode 的测试用例，但是执行性能上还可以继续想想优化的方案</p>
+<p><img src="https://resources.chenjianhui.site/20200603233725.png" alt></p>
+
+    </div>
+</article>
+<!-- Highlight.js -->
+<link rel="stylesheet" href="/css/hljs.css">
+<script src="/js/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+  </main>
+
+  <footer class="footer">
+    <ul class="footer-links">
+      <section class="copyright">
+        <a href="https://chenjianhui.site">JianhuiChen</a> © 2017 - 2020 | 
+        <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
+      </section>
+    </ul>
+  </footer>
+
+  
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/simple.js"></script>
+  
+  
+
+</body>
+
+</html>

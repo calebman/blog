@@ -2,23 +2,23 @@
 <html lang="zh">
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-<title>随笔——缓存系列开篇 - Sincerity</title>
+<title>缓存系列——开篇 - Sincerity</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
     <meta name="description" content="&amp;emsp;&amp;emsp;跨过了2019来到了2020年，新年新气象，准备写一些系列性质的文章，旨在更好的对知识归纳总结，更系统的理解一块知识面。好的废话不多说，2020年开篇的主题是缓存系列，是个程序员或多或少都跟缓存打过交道，作为一个Java程序员大部分时候还是在应用层使用缓存，接触的缓存框架和中间件会比较多，但是本系列并不想仅限于应用层讲述缓存，我将从底层到CPU、操作系统，中层到浏览器、CD">
-<meta name="keywords" content="Cache">
+<meta name="keywords" content="Cache,Http">
 <meta property="og:type" content="article">
-<meta property="og:title" content="随笔——缓存系列开篇">
+<meta property="og:title" content="缓存系列——开篇">
 <meta property="og:url" content="https://chenjianhui.site/2020-01-07-cache-opening/index.html">
 <meta property="og:site_name" content="Sincerity">
 <meta property="og:description" content="&amp;emsp;&amp;emsp;跨过了2019来到了2020年，新年新气象，准备写一些系列性质的文章，旨在更好的对知识归纳总结，更系统的理解一块知识面。好的废话不多说，2020年开篇的主题是缓存系列，是个程序员或多或少都跟缓存打过交道，作为一个Java程序员大部分时候还是在应用层使用缓存，接触的缓存框架和中间件会比较多，但是本系列并不想仅限于应用层讲述缓存，我将从底层到CPU、操作系统，中层到浏览器、CD">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://resources.chenjianhui.site/2020-01-07-home-pic.jpeg">
-<meta property="og:updated_time" content="2020-07-07T14:14:02.204Z">
+<meta property="og:updated_time" content="2020-07-08T02:46:41.183Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="随笔——缓存系列开篇">
+<meta name="twitter:title" content="缓存系列——开篇">
 <meta name="twitter:description" content="&amp;emsp;&amp;emsp;跨过了2019来到了2020年，新年新气象，准备写一些系列性质的文章，旨在更好的对知识归纳总结，更系统的理解一块知识面。好的废话不多说，2020年开篇的主题是缓存系列，是个程序员或多或少都跟缓存打过交道，作为一个Java程序员大部分时候还是在应用层使用缓存，接触的缓存框架和中间件会比较多，但是本系列并不想仅限于应用层讲述缓存，我将从底层到CPU、操作系统，中层到浏览器、CD">
 <meta name="twitter:image" content="https://resources.chenjianhui.site/2020-01-07-home-pic.jpeg">
 
@@ -26,7 +26,7 @@
 
 
 
-<link rel="alternative" href="/atom.xml" title="随笔——缓存系列开篇" type="application/atom+xml">
+<link rel="alternative" href="/atom.xml" title="缓存系列——开篇" type="application/atom+xml">
 
 
 
@@ -106,7 +106,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/logo.svg" alt="随笔——缓存系列开篇" height="28">
+                <img src="/images/logo.svg" alt="缓存系列——开篇" height="28">
             
             </a>
         </div>
@@ -163,14 +163,14 @@
     
     <div class="card-image">
         <span class="image is-7by1">
-            <img class="thumbnail" src="https://resources.chenjianhui.site/2020-01-07-home-pic.jpeg" alt="随笔——缓存系列开篇">
+            <img class="thumbnail" src="https://resources.chenjianhui.site/2020-01-07-home-pic.jpeg" alt="缓存系列——开篇">
         </span>
     </div>
     
     <div class="card-content article ">
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <i class="fas fa-angle-double-right"></i>随笔——缓存系列开篇
+                <i class="fas fa-angle-double-right"></i>缓存系列——开篇
             
         </h1>
         
@@ -178,12 +178,12 @@
             <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2020-01-07T19:20:21.000Z"><i class="far fa-calendar-alt">&nbsp;</i>2020-01-07</time>
                 
-                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-07-07T14:14:02.204Z"><i class="far fa-calendar-check">&nbsp;</i>2020-07-07</time>
+                <time class="level-item has-text-grey is-hidden-mobile" datetime="2020-07-08T02:46:41.183Z"><i class="far fa-calendar-check">&nbsp;</i>2020-07-08</time>
                 
                 
                 <div class="level-item">
                 <i class="far fa-folder-open has-text-grey"></i>&nbsp;
-                <a class="has-link-grey -link" href="/categories/随笔/">随笔</a>
+                <a class="has-link-grey -link" href="/categories/缓存/">缓存</a>
                 </div>
                 
                 
@@ -191,7 +191,7 @@
                     <i class="far fa-clock"></i>&nbsp;
                     
                     
-                    21 分钟 读完 (大约 3154 个字)
+                    21 分钟 读完 (大约 3139 个字)
                 </span>
                 
                 
@@ -205,10 +205,9 @@
 <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a><span>前言</span></h1><p>新的一年我将稍微改变一下自己的文章排布，将复杂的问题作为一个系列分块讲述，提取模块的重点并减少单篇文章的篇幅，降低阅读时间。本篇文章作为缓存系列的开篇之作第一步自然是挖坑，本系列将从以下几个方面分多篇文章来讲述缓存。</p>
 <ol>
 <li>缓存系列开篇——缓存定义、浏览器、CDN中的缓存</li>
-<li>缓存系列二——操作系统、CPU中的缓存</li>
-<li>缓存系列三——应用程序中的缓存</li>
-<li>缓存系列四——常见的缓存中间件</li>
-<li>缓存系列五——缓存常见问题与总结</li>
+<li>缓存系列二——应用程序中的缓存与常用中间件</li>
+<li>缓存系列三——Redis专题</li>
+<li>缓存系列四——操作系统、CPU中的缓存</li>
 </ol>
 <h1 id="什么是缓存"><a href="#什么是缓存" class="headerlink" title="什么是缓存"></a><span>什么是缓存</span></h1><p>关于定义你去搜索wiki、百度百科就会发现给出来的都是跟存储器相关的，这其实不是我想要的答案。</p>
 <p><strong>我认为的缓存是一个抽象的概念，它可以是一个存储器、一个应用程序或者一个服务器，但不管它是什么东西，它的行为永远都是保存一份原始资源的副本并提供一个高速的访问途径，而有这个行为的任意东西都可以称之为缓存。</strong></p>
@@ -334,7 +333,7 @@ console.log(`Listening in http://localhost:${PORT}`)</code></pre>
         </div>
         
             <ul class="post-copyright">
-            <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2020-01-07-cache-opening/">随笔——缓存系列开篇</a></li>
+            <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2020-01-07-cache-opening/">缓存系列——开篇</a></li>
             <li><strong>本文作者：</strong><a href="https://chenjianhui.site">JianhuiChen</a></li>
             <li><strong>本文链接：</strong><a href="https://chenjianhui.site/2020-01-07-cache-opening/">https://chenjianhui.site/2020-01-07-cache-opening/</a></li>
             <li><strong>发布时间：</strong>2020-01-07</li>
@@ -348,7 +347,7 @@ console.log(`Listening in http://localhost:${PORT}`)</code></pre>
             <div class="level-start">
                 <div class="level-item">
                     <i class="fas fa-tags has-text-grey"></i>&nbsp;
-                    <a class="has-link-grey -link" href="/tags/Cache/">Cache</a>
+                    <a class="has-link-grey -link" href="/tags/Cache/">Cache</a>,&nbsp;<a class="has-link-grey -link" href="/tags/Http/">Http</a>
                 </div>
             </div>
         </div>
@@ -491,7 +490,7 @@ console.log(`Listening in http://localhost:${PORT}`)</code></pre>
             <div class="level-start has-text-centered-mobile">
                 <p class="footer-logo is-block has-mb-6" href="/">
                 
-                    <img src="/images/logo.svg" alt="随笔——缓存系列开篇" height="28">
+                    <img src="/images/logo.svg" alt="缓存系列——开篇" height="28">
                 
                 <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
                 </p>

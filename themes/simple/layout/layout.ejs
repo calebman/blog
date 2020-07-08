@@ -1,0 +1,62 @@
+<%
+var pageTitle = page.title || config.subtitle || '';
+if (is_archive()) pageTitle = 'Archives';
+if (is_tag()) pageTitle = 'Tag: ' + page.tag;
+if (is_category()) pageTitle = 'Category: ' + page.category;
+if (is_month()) pageTitle += ': ' + page.month + '/' + page.year;
+if (is_year()) pageTitle += ': ' + page.year;
+pageTitle += ' [ ' + config.title + ' ]';
+%>
+
+<!DOCTYPE html>
+<html lang="<%=config.language%>">
+
+<head>
+  <meta charset="UTF-8">
+  <title><%=pageTitle%></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <link rel="icon" href="/images/favicon-32x32.png">
+  <% if (theme.stylesheets !== undefined && theme.stylesheets.length > 0) { %>
+  <!-- stylesheets list from _config.yml -->
+  <% theme.stylesheets.forEach(url => { %>
+  <link rel="stylesheet" href="<%=url%>">
+  <% }); %>
+  <% } %>
+</head>
+
+<body>
+
+  <header class="header">
+    <nav class="nav">
+      <a href="/" class="nav-logo"><img src="/images/avatar.png" width="50" height="50" alt="Logo"></a>
+      <ul class="nav-links">
+        <% Object.keys(theme.menu).forEach(key => { %>
+        <li><a href="<%=theme.menu[key]%>"><%=key%></a></li>
+        <% }); %>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="content">
+    <%- body %>
+  </main>
+
+  <footer class="footer">
+    <ul class="footer-links">
+      <section class="copyright">
+        <a href="https://chenjianhui.site">JianhuiChen</a> © 2017 - 2020 | 
+        <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
+      </section>
+    </ul>
+  </footer>
+
+  <% if (theme.scripts !== undefined && theme.scripts.length > 0) { %>
+  <!-- scripts list from theme config.yml -->
+  <% theme.scripts.forEach(url => { %>
+  <script src="<%=url%>"></script>
+  <% }); %>
+  <% } %>
+
+</body>
+
+</html>

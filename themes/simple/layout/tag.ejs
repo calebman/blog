@@ -1,0 +1,11 @@
+<div id="tag">
+  <h1 class="archive-title"><%=page.tag%></h1>
+  <% page.posts.each(post => { %>
+  <div class="archive-item">
+    <a class="archive-item-link" href="<%=url_for(post.path)%>"><%=post.title%></a>
+    <time class="archive-item-date" datetime="<%=post.date.toJSON()%>">
+      <%=date(post.date)%>
+    </time>
+  </div>
+  <% }); %>
+</div>

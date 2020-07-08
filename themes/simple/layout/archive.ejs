@@ -1,0 +1,24 @@
+
+<%
+const categoriesList = list_categories({ show_count: false });
+const tagsList = list_tags({ show_count: false });
+%>
+
+<div id="archive">
+
+  <aside>
+    <h2 class="archive-title">分类</h2>
+    <% if (categoriesList !== "") { %>
+      <%-categoriesList%>
+    <% }%>
+  </aside>
+  <br>
+
+  <aside>
+    <h2 class="archive-title">标签</h2>
+    <% if (tagsList !== "") { %>
+      <%-tagsList%>
+    <% } %>
+  </aside>
+
+</div>

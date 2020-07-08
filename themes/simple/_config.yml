@@ -1,0 +1,20 @@
+
+# html lang
+language: en
+
+# main menu navigation
+menu:
+  文章列表: /
+  归档: /archives
+  力扣: /leetcode
+  关于我: /about
+  Github: https://github.com/calebman
+
+# stylesheets loaded in the <head>
+stylesheets:
+- /css/simple.css
+- /css/font.css
+
+# scripts loaded in the end of the body
+scripts:
+- /js/simple.js

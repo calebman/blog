@@ -1,0 +1,42 @@
+<article class="article">
+  <h1 class="article-title"><%=page.title%></h1>
+  <span class="article-date"><%=date(page.date)%></span>
+  <% if (page.tags && page.tags.length) { %>
+  <% page.tags.each(tag => { %>
+  <a class="article-tag" href="/tags/<%= tag.name %>">
+    <%= tag.name %>
+  </a>
+  <% })%>
+  <% } %>
+
+  <div class="article-content">
+    <%-page.content%>
+  </div>
+</article>
+<ul class="post-copyright">
+  <li><strong>本文标题：</strong><a href="<%= page.permalink %>"><%= page.title %></a></li>
+  <li><strong>本文作者：</strong><a href="<%= theme.url %>"><%= theme.author %></a></li>
+  <li><strong>本文链接：</strong><a href="<%= page.permalink %>"><%= page.permalink %></a></li>
+  <li><strong>发布时间：</strong><%= page.date.format("YYYY-MM-DD") %></li>
+  <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+<div id="gitalk-container"></div>
+
+<!-- Gittalk.js -->
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<!-- Highlight.js -->
+<link rel="stylesheet" href="/css/hljs.css">
+<script src="/js/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+  const gitalk = new Gitalk({
+    clientID: 'bd0cbb30da9c24da8c7c',
+    clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
+    repo: 'blog',
+    owner: 'calebman',
+    admin: ['calebman']
+  })
+  gitalk.render('gitalk-container')
+</script>

@@ -1,24 +1,28 @@
-
 <%
-const categoriesList = list_categories({ show_count: false });
-const tagsList = list_tags({ show_count: false });
+let categories = new Set()
+site.posts.sort('date', -1).forEach(p => {
+  p.categories.forEach(c => {
+    categories.add(c.name)
+  })
+})
 %>
+<div class="article-content">
+  <div id="archive">
 
-<div id="archive">
+    <h2>按归档组织</h2>
 
-  <aside>
-    <h2 class="archive-title">分类</h2>
-    <% if (categoriesList !== "") { %>
-      <%-categoriesList%>
-    <% }%>
-  </aside>
-  <br>
-
-  <aside>
-    <h2 class="archive-title">标签</h2>
-    <% if (tagsList !== "") { %>
-      <%-tagsList%>
+    <% if (categories.size > 0) { %>
+    <% categories.forEach(cName => { %>
+    <h3><%= cName %></h3>
+    <ul>
+      <% site.posts.filter(p => p.categories.some(c => c.name === cName)).forEach(post => { %>
+      <li>
+        <a href="<%=url_for(post.path)%>"> <%=post.title%></a>
+      </li>
+      <% }); %>
+    </ul>
+    <% }); %>
     <% } %>
-  </aside>
 
+  </div>
 </div>

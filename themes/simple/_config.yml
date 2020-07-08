@@ -4,7 +4,7 @@ language: en
 
 # main menu navigation
 menu:
-  文章列表: /
+  文章: /
   归档: /archives
   力扣: /leetcode
   关于我: /about

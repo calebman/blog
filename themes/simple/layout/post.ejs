@@ -3,7 +3,7 @@
   <span class="article-date"><%=date(page.date)%></span>
   <% if (page.tags && page.tags.length) { %>
   <% page.tags.each(tag => { %>
-  <a class="article-tag" href="/tags/<%= tag.name %>">
+  <a class="article-tag" href="<%= url_for('/tags/' + tag.name) %>">
     <%= tag.name %>
   </a>
   <% })%>

@@ -1,13 +1,14 @@
-<% page.groups.forEach(group => { %>
-<div class="archive">
-  <h1 class="archive-title"><%= group.name %></h1>
-  <% group.posts.forEach(post => { %>
-  <div class="archive-item">
-    <a class="archive-item-link" href="<%=url_for(post.path)%>"><%=post.title%></a>
-    <time class="archive-item-level">
-      <%=post.level%>
-    </time>
-  </div>
-  <% }); %>
+<div class="article-content">
+  <% let index = 1 %>
+  <% page.groups.sort((a, b) => (b.name.length - a.name.length)).forEach(group => { %>
+  <h3><%= group.name %></h3>
+  <ul>
+    <% group.posts.forEach(post => { %>
+    <li>
+      <%=String(index++).padStart(3, 0)%>
+      <a href="<%=url_for(post.path)%>"> <%=post.title%></a>
+    </li>
+    <% }); %>
+  </ul>
+  <% }) %>
 </div>
-<% }) %>

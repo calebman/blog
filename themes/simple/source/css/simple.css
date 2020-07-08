@@ -392,7 +392,12 @@ code {
   border-collapse: collapse;
 }
 
+.article-content th {
+  border: 1px solid #dfe2e5;
+}
+
 .article-content td {
   padding: 6px 13px;
   border: 1px solid #dfe2e5;
+  text-align: center;
 }

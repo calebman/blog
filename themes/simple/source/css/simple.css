@@ -102,11 +102,10 @@ code {
 
 .content img {
   max-width: 100%;
-  border-radius:4px;
-  margin-bottom:25px;
-  display: block;
-  margin:0 auto;
-  max-width:100%;
+  border-radius: 4px;
+  margin-bottom: 25px;
+  margin: 0 auto;
+  max-width: 100%;
 }
 
 .article-title {
@@ -382,4 +381,18 @@ code {
 
 .post-copyright li {
   display: block;
+}
+
+.article-content table {
+  width: 100%;
+  overflow: auto;
+  margin-top: 0;
+  margin-bottom: 16px;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+.article-content td {
+  padding: 6px 13px;
+  border: 1px solid #dfe2e5;
 }

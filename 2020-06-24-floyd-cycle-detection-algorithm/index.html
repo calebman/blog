@@ -52,10 +52,10 @@
   
 
   <div class="article-content">
-    <p>&emsp;&emsp;本文主要介绍 Floyd 与 Brent 判圈算法及其使用场景，以图解的方式详细描述算法的运行流程，并在文末给出算法的部分应用场景与对应 Leetcode 的题型。</p>
+    <p>  本文主要介绍 Floyd 与 Brent 判圈算法及其使用场景，以图解的方式详细描述算法的运行流程，并在文末给出算法的部分应用场景与对应 Leetcode 的题型。</p>
 <a id="more"></a>
-
-<h1 id="何为判圈算法"><a href="#何为判圈算法" class="headerlink" title="何为判圈算法"></a>何为判圈算法</h1><blockquote>
+<h1>何为判圈算法</h1>
+<blockquote>
 <p>根据维基百科的定义，判圈算法是可以在有限状态机、迭代函数或者链表上判断是否存在环，以及求出该环的起点与长度的算法。</p>
 </blockquote>
 <p>也就是说判圈算法能够为我们解决以下三个问题：</p>
@@ -65,7 +65,9 @@
 <li>确定环的入口</li>
 </ol>
 <p><strong>那么它是如何来解决这些问题的？下面通过算法概述这一章节，讲述一下算法的实现原理。</strong></p>
-<h1 id="算法概述"><a href="#算法概述" class="headerlink" title="算法概述"></a>算法概述</h1><h2 id="Floyd-判圈算法"><a href="#Floyd-判圈算法" class="headerlink" title="Floyd 判圈算法"></a>Floyd 判圈算法</h2><blockquote>
+<h1>算法概述</h1>
+<h2 id="Floyd-判圈算法">Floyd 判圈算法</h2>
+<blockquote>
 <p>Floyd 判圈算法的核心原理是，如果存在环，那么从同一个起点(即使这个起点不在某个环上)处，同时开始以不同速度前进的2个指针必定会在某个时刻相遇。</p>
 </blockquote>
 <p>举个简单的例子，下方示例展示了一个不规则的环形链表，。我们给下方示例的运行分为两个阶段：</p>
@@ -80,27 +82,33 @@
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
 <div id="demo1"></div>
 
-
 <p><strong>接下来同学可能会有疑问，为什么这两个阶段结合起来能够找到环状入口？下方我们通过一张图以数学的方式来证明一下该算法，下图来源于<a href="https://leetcode-cn.com/problems/linked-list-cycle-ii/solution/huan-xing-lian-biao-ii-by-leetcode/" target="_blank" rel="noopener">环形链表 II - 环形链表 II - 力扣（LeetCode）</a></strong></p>
 <p><img src="https://resources.chenjianhui.site/20200628141710.png" alt></p>
 <blockquote>
-<p>我们利用已知的条件：慢指针移动 1 步，快指针移动 2 步，来说明它们相遇在环的入口处。<br>$$2 * distance(slow) = distance(fast)$$<br>$$2(F + a) = F + a + b + a$$<br>$$F = b$$<br>所以在第一阶段末，只需要归位一个节点并以同样的速度运行，即可在环入口相遇。</p>
+<p>我们利用已知的条件：慢指针移动 1 步，快指针移动 2 步，来说明它们相遇在环的入口处。<br>
+$$2 * distance(slow) = distance(fast)$$<br>
+$$2(F + a) = F + a + b + a$$<br>
+$$F = b$$<br>
+所以在第一阶段末，只需要归位一个节点并以同样的速度运行，即可在环入口相遇。</p>
 </blockquote>
-<h2 id="Brent-判圈算法"><a href="#Brent-判圈算法" class="headerlink" title="Brent 判圈算法"></a>Brent 判圈算法</h2><p>Brent 判圈算法在判断链表是否有环的场景中可以比Floyd更快一点，他的算法原理如下：</p>
+<h2 id="Brent-判圈算法">Brent 判圈算法</h2>
+<p>Brent 判圈算法在判断链表是否有环的场景中可以比Floyd更快一点，他的算法原理如下：</p>
 <blockquote>
-<p>该示例展示了 Brent 算法判断链表是否有环的过程，可通过 Next 按钮单步执行，观测算法运行流程。<br>值得注意的是，Brent 算法无法找到环的入口节点。</p>
+<p>该示例展示了 Brent 算法判断链表是否有环的过程，可通过 Next 按钮单步执行，观测算法运行流程。<br>
+值得注意的是，Brent 算法无法找到环的入口节点。</p>
 </blockquote>
 
 <div id="demo2"></div>
 
-
-<h1 id="应用题"><a href="#应用题" class="headerlink" title="应用题"></a>应用题</h1><ul>
+<h1>应用题</h1>
+<ul>
 <li><a href="https://leetcode-cn.com/problems/linked-list-cycle/" target="_blank" rel="noopener">141. 环形链表 - 力扣（LeetCode）</a></li>
 <li><a href="https://leetcode-cn.com/problems/linked-list-cycle-ii/" target="_blank" rel="noopener">142. 环形链表 II - 力扣（LeetCode）</a></li>
 <li><a href="https://leetcode-cn.com/problems/find-the-duplicate-number/" target="_blank" rel="noopener">287. 寻找重复数 - 力扣（LeetCode）</a></li>
 <li><a href="https://leetcode-cn.com/problems/intersection-of-two-linked-lists/" target="_blank" rel="noopener">160. 相交链表 - 力扣（LeetCode）</a></li>
 </ul>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<h1>参考资料</h1>
+<ul>
 <li><a href="https://iznauy.github.io/2019/04/18/Floyd-%E5%88%A4%E5%9C%88%E7%AE%97%E6%B3%95/" target="_blank" rel="noopener">Floyd 判圈算法 | Hexo</a></li>
 <li><a href="http://zhengyhn.github.io/post/algorithm/brent.loop/" target="_blank" rel="noopener">Brent 判圈算法学习</a></li>
 <li><a href="https://leetcode-cn.com/problems/linked-list-cycle-ii/solution/huan-xing-lian-biao-ii-by-leetcode/" target="_blank" rel="noopener">环形链表 II - 环形链表 II - 力扣（LeetCode）</a></li>

@@ -58,18 +58,22 @@
   <div class="article-content">
     <p>基于Element的render函数封装一个可以增、删、改的树形组件</p>
 <a id="more"></a>
-
-<h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><hr>
+<h1>说明</h1>
+<hr>
 <p>做项目的时候要使用到一个自定义的树形控件来构建表格树，在github上搜了一下没有搜索到合适的（好看的）可以直接用的，查看Element的组件说明时发现它的<a href="http://element.eleme.io/#/zh-CN/component/tree" target="_blank" rel="noopener">Tree控件</a>可以使用render来自定义节点样式，于是基于它封装了一个可以增、删、改的树形组件，现在分享一下它的使用与实现。</p>
-<h2 id="控件演示"><a href="#控件演示" class="headerlink" title="控件演示"></a>控件演示</h2><p><img src="https://resources.chenjianhui.site/2017-09-19-effect.gif" alt></p>
-<h2 id="控件使用"><a href="#控件使用" class="headerlink" title="控件使用"></a>控件使用</h2><hr>
-<h4 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h4><ul>
+<h2 id="控件演示">控件演示</h2>
+<p><img src="https://resources.chenjianhui.site/2017-09-19-effect.gif" alt></p>
+<h2 id="控件使用">控件使用</h2>
+<hr>
+<h4 id="概要">概要</h4>
+<ul>
 <li>基于element-ui树形控件的二次封装</li>
 <li>提供编辑、删除节点的接口</li>
 <li>提供一个next钩子，在业务处理失败时可使用next(false)回滚操作</li>
 <li>控件源码见 <a href="https://github.com/calebman/vue-DBM" target="_blank" rel="noopener">github</a></li>
 </ul>
-<h4 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h4><ul>
+<h4 id="文档">文档</h4>
+<ul>
 <li>props</li>
 </ul>
 <table>
@@ -80,12 +84,14 @@
 <th>类型</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>value</td>
 <td>源数据，可使用v-model双向绑定</td>
 <td>Array</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <ul>
 <li>events</li>
 </ul>
@@ -97,7 +103,8 @@
 <th>参数</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>SaveEdit</td>
 <td>点击编辑或者添加树节点后的保存事件</td>
 <td>(父节点数据、当前节点数据、next)</td>
@@ -112,7 +119,8 @@
 <td>节点点击事件</td>
 <td>(当前节点数据)</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <ul>
 <li>源数据描述</li>
 </ul>
@@ -123,7 +131,8 @@
 <th>说明</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>value</td>
 <td>树节点的唯一标识</td>
 </tr>
@@ -139,11 +148,12 @@
 <td>children</td>
 <td>子节点数据</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <ul>
 <li>调用示例</li>
 </ul>
-<pre><code class="javascript"> &lt;m-tree
+<pre><code class="language-javascript"> &lt;m-tree
     v-model=&quot;tableTree&quot;
     @SaveEdit=&quot;SaveEdit&quot;
     @DelNode=&quot;DelNode&quot;
@@ -161,100 +171,112 @@ SaveEdit(parentNode,data,next){
         next(false)
       }
     })
-}</code></pre>
-<h2 id="实现方式"><a href="#实现方式" class="headerlink" title="实现方式"></a>实现方式</h2><hr>
+}
+</code></pre>
+<h2 id="实现方式">实现方式</h2>
+<hr>
 <ul>
-<li>构建子节点的模板<pre><code class="javascript">&lt;span class=&quot;span_item&quot;&gt;
-  &lt;span @click=&quot;Expanded&quot;&gt;
-    &lt;Input v-if=&quot;node.status == 1&quot; style=&quot;width: 100px;&quot; v-model=&quot;node.label&quot; size=&quot;small&quot; &gt;&lt;/Input&gt;
-    &lt;Icon  v-if=&quot;node.status == 0&quot; type=&quot;asterisk&quot;&gt;&lt;/Icon&gt;
-    &lt;Icon v-if=&quot;node.status == -1&quot; type=&quot;ios-keypad-outline&quot;&gt;&lt;/Icon&gt;
-    &lt;span v-if=&quot;node.status != 1&quot;&gt;{{node.label}}&lt;/span&gt;
+<li>构建子节点的模板</li>
+</ul>
+<pre><code class="language-javascript">  &lt;span class=&quot;span_item&quot;&gt;
+    &lt;span @click=&quot;Expanded&quot;&gt;
+      &lt;Input v-if=&quot;node.status == 1&quot; style=&quot;width: 100px;&quot; v-model=&quot;node.label&quot; size=&quot;small&quot; &gt;&lt;/Input&gt;
+      &lt;Icon  v-if=&quot;node.status == 0&quot; type=&quot;asterisk&quot;&gt;&lt;/Icon&gt;
+      &lt;Icon v-if=&quot;node.status == -1&quot; type=&quot;ios-keypad-outline&quot;&gt;&lt;/Icon&gt;
+      &lt;span v-if=&quot;node.status != 1&quot;&gt;{{node.label}}&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span v-if=&quot;node.status == 1&quot;&gt;
+      &lt;Button  style=&quot;margin-left: 8px;&quot; size=&quot;small&quot; type=&quot;success&quot; icon=&quot;checkmark-circled&quot; @click=&quot;SaveEdit&quot;&gt;确认&lt;/Button&gt;
+      &lt;Button style=&quot;margin-left: 8px;&quot; size=&quot;small&quot; type=&quot;ghost&quot; icon=&quot;checkmark-circled&quot; @click=&quot;CancelEdit&quot;&gt;取消&lt;/Button&gt;
+    &lt;/span&gt;
+    &lt;span class=&quot;span_icon&quot;&gt;
+       &lt;Icon v-if=&quot;node.status == 0&quot; style=&quot;margin-left: 8px&quot; color=&quot;gray&quot; type=&quot;edit&quot; size=&quot;16&quot; @click.native=&quot;OpenEdit&quot;&gt;&lt;/Icon&gt;
+       &lt;Icon v-if=&quot;node.status == 0&quot; style=&quot;margin-left: 8px&quot; type=&quot;plus-round&quot; color=&quot;gray&quot; size=&quot;16&quot; @click.native=&quot;Append&quot;&gt;&lt;/Icon&gt;
+       &lt;Icon v-if=&quot;node.status == 0&amp;&amp;node.children.length &lt; 1&quot; style=&quot;margin-left: 8px&quot; type=&quot;ios-trash&quot; color=&quot;red&quot; size=&quot;18&quot; @click.native=&quot;Delete&quot;&gt;&lt;/Icon&gt;
+    &lt;/span&gt;
   &lt;/span&gt;
-  &lt;span v-if=&quot;node.status == 1&quot;&gt;
-    &lt;Button  style=&quot;margin-left: 8px;&quot; size=&quot;small&quot; type=&quot;success&quot; icon=&quot;checkmark-circled&quot; @click=&quot;SaveEdit&quot;&gt;确认&lt;/Button&gt;
-    &lt;Button style=&quot;margin-left: 8px;&quot; size=&quot;small&quot; type=&quot;ghost&quot; icon=&quot;checkmark-circled&quot; @click=&quot;CancelEdit&quot;&gt;取消&lt;/Button&gt;
-  &lt;/span&gt;
-  &lt;span class=&quot;span_icon&quot;&gt;
-     &lt;Icon v-if=&quot;node.status == 0&quot; style=&quot;margin-left: 8px&quot; color=&quot;gray&quot; type=&quot;edit&quot; size=&quot;16&quot; @click.native=&quot;OpenEdit&quot;&gt;&lt;/Icon&gt;
-     &lt;Icon v-if=&quot;node.status == 0&quot; style=&quot;margin-left: 8px&quot; type=&quot;plus-round&quot; color=&quot;gray&quot; size=&quot;16&quot; @click.native=&quot;Append&quot;&gt;&lt;/Icon&gt;
-     &lt;Icon v-if=&quot;node.status == 0&amp;&amp;node.children.length &lt; 1&quot; style=&quot;margin-left: 8px&quot; type=&quot;ios-trash&quot; color=&quot;red&quot; size=&quot;18&quot; @click.native=&quot;Delete&quot;&gt;&lt;/Icon&gt;
-  &lt;/span&gt;
-&lt;/span&gt;</code></pre>
-</li>
-<li>子节点通过$emit通知父节点事件<pre><code class="javascript">SaveEdit(){
-  //保存节点事件
-  this.$emit(&#39;SaveEdit&#39;,this.nodeData)
-},</code></pre>
-</li>
-<li>父节点核心实现，使用renderContent函数加载子节点模板，点击保存节点时将业务参数保存在runParam中用于在业务操作失败（网络请求失败、服务端异常等情况）的数据回滚<pre><code class="javascript">  &lt;el-tree
-    class=&quot;filter-tree&quot;
-    style=&quot;overflow:auto;&quot;
-    :data=&quot;treeData&quot;
-    :filter-node-method=&quot;filterNode&quot;
-    @node-click=&quot;handleNodeClick&quot;
-    ref=&quot;tree&quot;
-    node-key=&quot;value&quot;
-    :expand-on-click-node=&quot;false&quot;
-    :render-content=&quot;renderContent&quot;
-    default-expand-all&gt;
-  &lt;/el-tree&gt;
-  //子节点模板
-  renderContent(h, { node, data, store }) {
-      return h(TreeItem,{
-        props:{
-          value:data,
-          treeNode:node
-        },
-        on:{
-          input:(node)=&gt;{
-            data = node
+</code></pre>
+<ul>
+<li>子节点通过$emit通知父节点事件</li>
+</ul>
+<pre><code class="language-javascript">SaveEdit(){
+    //保存节点事件
+    this.$emit('SaveEdit',this.nodeData)
+},
+</code></pre>
+<ul>
+<li>父节点核心实现，使用renderContent函数加载子节点模板，点击保存节点时将业务参数保存在runParam中用于在业务操作失败（网络请求失败、服务端异常等情况）的数据回滚</li>
+</ul>
+<pre><code class="language-javascript">    &lt;el-tree
+      class=&quot;filter-tree&quot;
+      style=&quot;overflow:auto;&quot;
+      :data=&quot;treeData&quot;
+      :filter-node-method=&quot;filterNode&quot;
+      @node-click=&quot;handleNodeClick&quot;
+      ref=&quot;tree&quot;
+      node-key=&quot;value&quot;
+      :expand-on-click-node=&quot;false&quot;
+      :render-content=&quot;renderContent&quot;
+      default-expand-all&gt;
+    &lt;/el-tree&gt;
+    //子节点模板
+    renderContent(h, { node, data, store }) {
+        return h(TreeItem,{
+          props:{
+            value:data,
+            treeNode:node
           },
-          Append: () =&gt; {
-            node.expanded = true
-            data.children.push({ value: this.$utilHelper.generateUUID(), label: &#39;请输入模块名称&#39;, children: [],status:1,isAdd:true })
-          },
-          //保存节点
-          SaveEdit:(nodeData)=&gt; {
-            //递归查找父节点
-            var parentNode = this.$utilHelper.getNode(this.treeData,data.value).parentNode
-            this.runParam.parentNode = parentNode
-            this.runParam.data = data
-            this.runParam.nodeData = nodeData
-            this.$emit(&#39;SaveEdit&#39;,parentNode,data,this.CanSaveNext)
-          }
-        }
-      })
-    }</code></pre>
-</li>
-<li>操作结果钩子，如果next函数传入false则判定操作失败，使用runParam中的参数进行回滚，该节点的编辑保存操作将无效<pre><code class="javascript">    CanSaveNext(isNext,nodeId){
-      let parentNode = this.runParam.parentNode
-      let nodeData = this.runParam.nodeData
-      let data = this.runParam.data
-      if(isNext){
-        parentNode.children.forEach((v,i)=&gt;{
-          if(v.value == data.value){
-            if(this.HOST != &quot;static&quot;&amp;&amp;data.isAdd){
-              data.value = nodeId
+          on:{
+            input:(node)=&gt;{
+              data = node
+            },
+            Append: () =&gt; {
+              node.expanded = true
+              data.children.push({ value: this.$utilHelper.generateUUID(), label: '请输入模块名称', children: [],status:1,isAdd:true })
+            },
+            //保存节点
+            SaveEdit:(nodeData)=&gt; {
+              //递归查找父节点
+              var parentNode = this.$utilHelper.getNode(this.treeData,data.value).parentNode
+              this.runParam.parentNode = parentNode
+              this.runParam.data = data
+              this.runParam.nodeData = nodeData
+              this.$emit('SaveEdit',parentNode,data,this.CanSaveNext)
             }
-            data.status = 0
-            parentNode.children.splice(i,1,data)
           }
         })
-      }else{
-        if(!data.isAdd){
+      }
+</code></pre>
+<ul>
+<li>操作结果钩子，如果next函数传入false则判定操作失败，使用runParam中的参数进行回滚，该节点的编辑保存操作将无效</li>
+</ul>
+<pre><code class="language-javascript">      CanSaveNext(isNext,nodeId){
+        let parentNode = this.runParam.parentNode
+        let nodeData = this.runParam.nodeData
+        let data = this.runParam.data
+        if(isNext){
           parentNode.children.forEach((v,i)=&gt;{
-            if(v.value == nodeData.value){
-              data.label = nodeData.label
+            if(v.value == data.value){
+              if(this.HOST != &quot;static&quot;&amp;&amp;data.isAdd){
+                data.value = nodeId
+              }
+              data.status = 0
               parentNode.children.splice(i,1,data)
             }
           })
+        }else{
+          if(!data.isAdd){
+            parentNode.children.forEach((v,i)=&gt;{
+              if(v.value == nodeData.value){
+                data.label = nodeData.label
+                parentNode.children.splice(i,1,data)
+              }
+            })
+          }
         }
+        this.runParam = {}
       }
-      this.runParam = {}
-    }</code></pre>
-</li>
-</ul>
+</code></pre>
 <p>如果觉得有用，欢迎star <a href="https://github.com/calebman/vue-DBM" target="_blank" rel="noopener">calebman/vue-DBM</a></p>
 
   </div>

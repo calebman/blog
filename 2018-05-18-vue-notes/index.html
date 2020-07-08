@@ -62,8 +62,8 @@
   <div class="article-content">
     <p>好记性不如烂笔头，多造轮子多做笔记</p>
 <a id="more"></a>
-
-<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>由于公司需要，<strong>我</strong>作为一个<strong>纯正的</strong>后端工程师，已经自学了半年多的vue了，愣是被逼成了一个小全栈，当然，小全栈这是往好听了说，事实上就是个前后端深度都不足的小菜鸡，在深知自己众多不足以及明白好记性不如<strong>烂</strong>笔头的道理下，多造轮子多做笔记总是不会错的：）</p>
+<h2 id="说明">说明</h2>
+<p>由于公司需要，<strong>我</strong>作为一个<strong>纯正的</strong>后端工程师，已经自学了半年多的vue了，愣是被逼成了一个小全栈，当然，小全栈这是往好听了说，事实上就是个前后端深度都不足的小菜鸡，在深知自己众多不足以及明白好记性不如<strong>烂</strong>笔头的道理下，多造轮子多做笔记总是不会错的：）</p>
 <p>所以最近得空我把我刚学vuejs的时候写的<a href="https://github.com/calebman/vue-DBM" target="_blank" rel="noopener">烂工程</a>重构了一下，重构的时候针对性的分模块做了一些笔记如下</p>
 <ul>
 <li>路由</li>
@@ -75,23 +75,30 @@
 <li>打包优化与用户体验</li>
 </ul>
 <p>如果不想拉这么长可以去 <a href="https://github.com/calebman/vue-DBM#%E5%BC%80%E5%8F%91%E5%89%8D%E5%87%86%E5%A4%87" target="_blank" rel="noopener">全球最大的同性交友网站</a> 查看</p>
-<h2 id="进入烂笔头模式"><a href="#进入烂笔头模式" class="headerlink" title="进入烂笔头模式"></a>进入烂笔头模式</h2><blockquote>
-<h3 id="路由"><a href="#路由" class="headerlink" title="路由"></a>路由</h3></blockquote>
-<h3 id="1-路由加载"><a href="#1-路由加载" class="headerlink" title="1. 路由加载"></a>1. 路由加载</h3><pre><code class="javascript">// 直接加载页面
-import page from &#39;@/views/page&#39;;
+<h2 id="进入烂笔头模式">进入烂笔头模式</h2>
+<blockquote>
+<h3 id="路由">路由</h3>
+</blockquote>
+<h3 id="1-路由加载">1. 路由加载</h3>
+<pre><code class="language-javascript">// 直接加载页面
+import page from '@/views/page';
 // 懒加载页面
-() =&gt; import(&#39;@/views/page&#39;);
+() =&gt; import('@/views/page');
 // 指定打包名称的懒加载，可将多个页面打包成一个js进行加载
-() =&gt; import(/* webpackChunkName: &quot;group-page&quot; */&#39;@/views/page1&#39;);
-() =&gt; import(/* webpackChunkName: &quot;group-page&quot; */&#39;@/views/page2&#39;);
-() =&gt; import(/* webpackChunkName: &quot;group-page&quot; */&#39;@/views/page3&#39;);</code></pre>
-<h3 id="2-404路由"><a href="#2-404路由" class="headerlink" title="2. 404路由"></a>2. 404路由</h3><pre><code class="javascript">// 加载一个404页面
-import page404 from &#39;@/views/page404&#39;;
+() =&gt; import(/* webpackChunkName: &quot;group-page&quot; */'@/views/page1');
+() =&gt; import(/* webpackChunkName: &quot;group-page&quot; */'@/views/page2');
+() =&gt; import(/* webpackChunkName: &quot;group-page&quot; */'@/views/page3');
+</code></pre>
+<h3 id="2-404路由">2. 404路由</h3>
+<pre><code class="language-javascript">// 加载一个404页面
+import page404 from '@/views/page404';
 // 将以下路由配置放置在路由表的最末端，当路径无法匹配前面的所有路由时将会跳转至page404组件页面
-{ path: &#39;*&#39;, component: page404}</code></pre>
-<h3 id="3-路由拦截"><a href="#3-路由拦截" class="headerlink" title="3. 路由拦截"></a>3. 路由拦截</h3><pre><code class="javascript">// 路由跳转前的拦截器
+{ path: '*', component: page404}
+</code></pre>
+<h3 id="3-路由拦截">3. 路由拦截</h3>
+<pre><code class="language-javascript">// 路由跳转前的拦截器
 router.beforeEach((to, from, next) =&gt; {
-
+  
 });
 // 路由跳转后的拦截器
 router.afterEach(to =&gt; {
@@ -100,18 +107,22 @@ router.afterEach(to =&gt; {
 // 路由跳转时出现错误时的拦截器
 router.onError((err) =&gt; {
 
-});</code></pre>
-<h3 id="4-动态路由"><a href="#4-动态路由" class="headerlink" title="4. 动态路由"></a>4. 动态路由</h3><blockquote>
+});
+</code></pre>
+<h3 id="4-动态路由">4. 动态路由</h3>
+<blockquote>
 <p>动态路由一般配合页面级的权限控制使用</p>
 </blockquote>
-<pre><code class="javascript">// 通过router.addRoutes方法动态添加可访问路由
+<pre><code class="language-javascript">// 通过router.addRoutes方法动态添加可访问路由
 router.addRoutes(addRouters)
 // hack方法 确保addRoutes已完成
-next({ ...to, replace: true }) // set the replace: true so the navigation will not leave a history record </code></pre>
-<h3 id="5-路由加载时动画"><a href="#5-路由加载时动画" class="headerlink" title="5. 路由加载时动画"></a>5. 路由加载时动画</h3><blockquote>
+next({ ...to, replace: true }) // set the replace: true so the navigation will not leave a history record 
+</code></pre>
+<h3 id="5-路由加载时动画">5. 路由加载时动画</h3>
+<blockquote>
 <p>路由加载时的loading动画一般配合路由懒加载使用</p>
 </blockquote>
-<pre><code class="javascript">// 在状态管理中定义一个路由loading标志
+<pre><code class="language-javascript">// 在状态管理中定义一个路由loading标志
 const app = {
   state: {
     routerLoading: false, //路由的loading过渡
@@ -126,28 +137,32 @@ const app = {
 
 // 在路由拦截器中修改loading状态
 router.beforeEach((to, from, next) =&gt; {
-  store.commit(&#39;UPDATE_ROUTER_LOADING&#39;, true); // 展示路由加载时动画
+  store.commit('UPDATE_ROUTER_LOADING', true); // 展示路由加载时动画
 });
 router.afterEach(to =&gt; {
-  store.commit(&#39;UPDATE_ROUTER_LOADING&#39;, false);
+  store.commit('UPDATE_ROUTER_LOADING', false);
 });
 router.onError(err =&gt; {
   console.error(err); // for bug
-  store.commit(&#39;UPDATE_ROUTER_LOADING&#39;, false);
+  store.commit('UPDATE_ROUTER_LOADING', false);
 });
 
 // 在router-view定义loading动画
 // element-ui提供了v-loading指令可以直接使用
-&lt;router-view v-loading=&quot;$store.getters.routerLoading&quot;&gt;&lt;/router-view&gt;</code></pre>
+&lt;router-view v-loading=&quot;$store.getters.routerLoading&quot;&gt;&lt;/router-view&gt;
+</code></pre>
 <blockquote>
-<h3 id="状态管理"><a href="#状态管理" class="headerlink" title="状态管理"></a>状态管理</h3></blockquote>
-<h3 id="1-小知识"><a href="#1-小知识" class="headerlink" title="1. 小知识"></a>1. 小知识</h3><ul>
+<h3 id="状态管理">状态管理</h3>
+</blockquote>
+<h3 id="1-小知识">1. 小知识</h3>
+<ul>
 <li>state中的数据修改需要通过mutation或action触发</li>
 <li>mutation中的方法必须是同步函数</li>
 <li>action可包含任意异步操作，可返回一个Promise</li>
 <li>mutation以及action可以重复，调用时将会依次调用，getter必须唯一</li>
 </ul>
-<h3 id="2-多模块"><a href="#2-多模块" class="headerlink" title="2. 多模块"></a>2. 多模块</h3><blockquote>
+<h3 id="2-多模块">2. 多模块</h3>
+<blockquote>
 <p>业务比较复杂时可使用状态管理中的多模块，有以下注意事项</p>
 </blockquote>
 <ul>
@@ -156,59 +171,64 @@ router.onError(err =&gt; {
 <li>action的回调参数为state、rootState、getters、commit、dispatch，如果需要在action中调用其他的action可使用dispatch直接调用</li>
 <li>getter的回调参数为state、rootState、getters</li>
 <li>模块间可以通过回调的rootState进行交互</li>
-<li>出现重名的mutation、action将依次触发<pre><code class="javascript">// 多模块的实现 app以及user为各个子模块
-export default new Vuex.Store({
-  modules: {
-      app,
-      user
-  },
-  getters
-})</code></pre>
-</li>
+<li>出现重名的mutation、action将依次触发</li>
 </ul>
-<h3 id="3-辅助函数"><a href="#3-辅助函数" class="headerlink" title="3. 辅助函数"></a>3. 辅助函数</h3><blockquote>
+<pre><code class="language-javascript">// 多模块的实现 app以及user为各个子模块
+export default new Vuex.Store({
+    modules: {
+        app,
+        user
+    },
+    getters
+})
+</code></pre>
+<h3 id="3-辅助函数">3. 辅助函数</h3>
+<blockquote>
 <p>Vuex除了提供了Store对象以外还对外提供了一些辅助函数</p>
 </blockquote>
 <ul>
 <li>mapState、mapGetters将store中的state、getters属性映射到vue组件局部的计算属性中</li>
 </ul>
-<pre><code class="javascript">import { mapState } from &#39;vuex&#39;
+<pre><code class="language-javascript">import { mapState } from 'vuex'
 computed: mapState([ 
     // 映射 this.name 到 this.$store.state.name 
-    &#39;name&#39;
+    'name'
 ])
 
-import { mapGetters } from &#39;vuex&#39;
+import { mapGetters } from 'vuex'
 computed: {
     // 映射 this.name 到 this.$store.getters.name 
-    ...mapGetters([ &#39;name&#39; ])
-}</code></pre>
+    ...mapGetters([ 'name' ])
+}
+</code></pre>
 <ul>
 <li>mapActions、mapMutations将store中的dispatch、commit方法映射到vue组件局部的方法中</li>
 </ul>
-<pre><code class="javascript">import { mapActions } from &#39;vuex&#39;
+<pre><code class="language-javascript">import { mapActions } from 'vuex'
 
 methods: { 
-    // 映射 this.LoginByUsername() 到 this.$store.dispatch(&#39;LoginByUsername&#39;)
-    ...mapActions([ &#39;LoginByUsername&#39; ]), 
-    // 映射 this.login() to this.$store.dispatch(&#39;LoginByUsername&#39;)
-    ...mapActions({ login: &#39;LoginByUsername&#39;}) 
+    // 映射 this.LoginByUsername() 到 this.$store.dispatch('LoginByUsername')
+    ...mapActions([ 'LoginByUsername' ]), 
+    // 映射 this.login() to this.$store.dispatch('LoginByUsername')
+    ...mapActions({ login: 'LoginByUsername'}) 
 }
 
-import { mapMutations } from &#39;vuex&#39;
+import { mapMutations } from 'vuex'
 
 methods: { 
-    // 映射 this.SET_NAME() 到 this.$store.commit(&#39;SET_NAME&#39;) ])
-    ...mapMutations([ &#39;SET_NAME&#39; ]) , 
-    // 映射 this.setName() 到 this.$store.commit(&#39;SET_NAME&#39;) })
-    ...mapMutations({ setName: &#39;SET_NAME&#39; ])
-}</code></pre>
-<h3 id="4-数据持久化插件"><a href="#4-数据持久化插件" class="headerlink" title="4. 数据持久化插件"></a>4. 数据持久化插件</h3><blockquote>
+    // 映射 this.SET_NAME() 到 this.$store.commit('SET_NAME') ])
+    ...mapMutations([ 'SET_NAME' ]) , 
+    // 映射 this.setName() 到 this.$store.commit('SET_NAME') })
+    ...mapMutations({ setName: 'SET_NAME' ])
+}
+</code></pre>
+<h3 id="4-数据持久化插件">4. 数据持久化插件</h3>
+<blockquote>
 <p>刷新页面时希望状态不被丢失时可用此插件</p>
 </blockquote>
-<pre><code class="javascript">// 摘抄于 https://github.com/robinvdvleuten/vuex-persistedstate
-import createPersistedState from &#39;vuex-persistedstate&#39;
-import * as Cookies from &#39;js-cookie&#39;
+<pre><code class="language-javascript">// 摘抄于 https://github.com/robinvdvleuten/vuex-persistedstate
+import createPersistedState from 'vuex-persistedstate'
+import * as Cookies from 'js-cookie'
 
 const store = new Store({
   // ...
@@ -222,15 +242,17 @@ const store = new Store({
       }
     })
   ]
-})</code></pre>
-<h3 id="5-日志插件"><a href="#5-日志插件" class="headerlink" title="5. 日志插件"></a>5. 日志插件</h3><blockquote>
+})
+</code></pre>
+<h3 id="5-日志插件">5. 日志插件</h3>
+<blockquote>
 <p>开发环境中希望能够跟踪状态变化并输出时可用此插件</p>
 </blockquote>
-<pre><code class="javascript">// createLogger是vuex中的内置插件
-import createLogger from &#39;vuex/dist/logger&#39;
+<pre><code class="language-javascript">// createLogger是vuex中的内置插件
+import createLogger from 'vuex/dist/logger'
 
 let vuexPlugins = [];
-if(process.env.NODE_ENV !== &#39;production&#39;){ // 开发环境加载该插件
+if(process.env.NODE_ENV !== 'production'){ // 开发环境加载该插件
     vuexPlugins.push(createLogger); 
 }
 
@@ -238,102 +260,109 @@ const store = new Store({
   // ...
   plugins: vuexPlugins
 })
+
 </code></pre>
 <blockquote>
-<h3 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h3></blockquote>
-<h3 id="1-需要实现的功能"><a href="#1-需要实现的功能" class="headerlink" title="1. 需要实现的功能"></a>1. 需要实现的功能</h3><ul>
+<h3 id="权限管理">权限管理</h3>
+</blockquote>
+<h3 id="1-需要实现的功能">1. 需要实现的功能</h3>
+<ul>
 <li>根据用户登录后的权限表生成路由</li>
 <li>页面级的权限控制</li>
 <li>dom元素级的权限控制</li>
 <li>登录状态失效的处理</li>
 </ul>
-<h3 id="2-路由设计"><a href="#2-路由设计" class="headerlink" title="2. 路由设计"></a>2. 路由设计</h3><blockquote>
+<h3 id="2-路由设计">2. 路由设计</h3>
+<blockquote>
 <p>首先我们需要设计路由对象需要有哪些必要参数信息</p>
 <p>为了实现权限管理我们必须要有roles参数代表该路由必须拥有哪些权限才能访问</p>
 <p>为了更好的展示路由在这里设计了title、icon两个参数用于侧边栏的菜单展示</p>
 <p>而有些路由不需要在侧边栏展示，这里使用hidden参数来告诉程序哪些路由是不需要展示的</p>
 </blockquote>
-<pre><code class="javascript">// 首先设计路由对象参数
+<pre><code class="language-javascript">// 首先设计路由对象参数
 /**
 * hidden: true                   如果hidden为true则在左侧菜单栏展示，默认为false
-* name:&#39;router-name&#39;             路由名称，路由唯一标识
+* name:'router-name'             路由名称，路由唯一标识
 * meta : {
-    roles: [&#39;admin&#39;,&#39;editor&#39;]    权限列表，用于页面级的权限控制，默认不设置代表任何权限均可访问
-    title: &#39;title&#39;               对应路由在左侧菜单栏的标题名称
-    icon: &#39;icon-class&#39;           对应路由在左侧菜单栏的图标样式
+    roles: ['admin','editor']    权限列表，用于页面级的权限控制，默认不设置代表任何权限均可访问
+    title: 'title'               对应路由在左侧菜单栏的标题名称
+    icon: 'icon-class'           对应路由在左侧菜单栏的图标样式
  }
-**/</code></pre>
+**/
+</code></pre>
 <blockquote>
 <p>接下来我们需要实现路由的动态加载</p>
 <p>系统初始化时加载必要路由，之后根据登录用户的权限加载符合条件的路由</p>
 </blockquote>
-<pre><code class="javascript">// 定义系统初始化时加载的必要路由信息
+<pre><code class="language-javascript">// 定义系统初始化时加载的必要路由信息
 export const constantRouterMap = [
-  { path: &#39;/login&#39;, name: &#39;login&#39;, meta: { title: &quot;系统登录&quot;, hidden: true }, component: login },
+  { path: '/login', name: 'login', meta: { title: &quot;系统登录&quot;, hidden: true }, component: login },
   { path: &quot;/404&quot;, name: &quot;page404&quot;, meta: { title: &quot;页面走丢了&quot;, hidden: true }, component: page404 },
   { path: &quot;/401&quot;, name: &quot;page401&quot;, meta: { title: &quot;权限不足&quot;, hidden: true }, component: page401 }
 ]
 // 定义布局页面
-const layout = () =&gt; import(/* webpackChunkName: &quot;group-index&quot; */ &#39;@/views/layout&#39;);
+const layout = () =&gt; import(/* webpackChunkName: &quot;group-index&quot; */ '@/views/layout');
 // 定义异步加载的路由信息
 export const asyncRouterMap = [
   {
-    path: &#39;/&#39;,
-    name: &#39;main&#39;,
-    redirect: &#39;/dashboard&#39;,
+    path: '/',
+    name: 'main',
+    redirect: '/dashboard',
     hidden: true,
     component: layout,
     children: [
-      { path: &#39;dashboard&#39;, name: &#39;dashboard&#39;, meta: { title: &quot;仪表盘&quot; }, component: () =&gt; import(/* webpackChunkName: &quot;group-index&quot; */&#39;@/views/dashboard&#39;) }
+      { path: 'dashboard', name: 'dashboard', meta: { title: &quot;仪表盘&quot; }, component: () =&gt; import(/* webpackChunkName: &quot;group-index&quot; */'@/views/dashboard') }
     ]
   },
   {
-    path: &#39;/permission&#39;,
-    name: &#39;permission&#39;,
+    path: '/permission',
+    name: 'permission',
     meta: { title: &quot;权限页&quot;, icon: &quot;dbm d-icon-quanxian&quot; },
-    redirect: &#39;/permission/adminpermission&#39;,
+    redirect: '/permission/adminpermission',
     component: layout,
     children: [
-      { path: &quot;adminpermission&quot;, name: &quot;adminPermission&quot;, meta: { title: &quot;管理员权限页&quot;, roles: [&quot;admin&quot;] }, component: () =&gt; import(&#39;@/views/permission/admin&#39;) },
-      { path: &quot;watcherpermission&quot;, name: &quot;watcherPermission&quot;, meta: { title: &quot;游客权限页&quot;, roles: [&quot;admin&quot;, &quot;watcher&quot;] }, component: () =&gt; import(&#39;@/views/permission/watcher&#39;) },
-      { path: &quot;elementpermission&quot;, name: &quot;elementPermission&quot;, meta: { title: &quot;元素级别权限&quot; }, component: () =&gt; import(&#39;@/views/permission/element&#39;) }
+      { path: &quot;adminpermission&quot;, name: &quot;adminPermission&quot;, meta: { title: &quot;管理员权限页&quot;, roles: [&quot;admin&quot;] }, component: () =&gt; import('@/views/permission/admin') },
+      { path: &quot;watcherpermission&quot;, name: &quot;watcherPermission&quot;, meta: { title: &quot;游客权限页&quot;, roles: [&quot;admin&quot;, &quot;watcher&quot;] }, component: () =&gt; import('@/views/permission/watcher') },
+      { path: &quot;elementpermission&quot;, name: &quot;elementPermission&quot;, meta: { title: &quot;元素级别权限&quot; }, component: () =&gt; import('@/views/permission/element') }
     ]
   },
-  { path: &#39;*&#39;, redirect: &#39;/404&#39;, hidden: true }
-]</code></pre>
-<h3 id="3-页面级的权限控制"><a href="#3-页面级的权限控制" class="headerlink" title="3. 页面级的权限控制"></a>3. 页面级的权限控制</h3><blockquote>
+  { path: '*', redirect: '/404', hidden: true }
+]
+</code></pre>
+<h3 id="3-页面级的权限控制">3. 页面级的权限控制</h3>
+<blockquote>
 <p>使用路由拦截来实现页面级的权限控制</p>
 <p>拦截路由跳转判断用户是否登录</p>
 <p>从拉取的用户信息中提取权限表通过addRoutes方法动态加载异步路由表</p>
 <p>每次路由跳转时判断用户是否拥有该路由的访问权限实现动态权限匹配</p>
 </blockquote>
-<pre><code class="javascript">// 定义免登白名单
-const whiteList = [&#39;/login&#39;, &#39;/404&#39;, &#39;/401&#39;];
+<pre><code class="language-javascript">// 定义免登白名单
+const whiteList = ['/login', '/404', '/401'];
 // 拦截路由跳转
 router.beforeEach((to, from, next) =&gt; {
-  store.commit(&#39;UPDATE_ROUTER_LOADING&#39;, true); // 展示路由加载时动画
+  store.commit('UPDATE_ROUTER_LOADING', true); // 展示路由加载时动画
   if (getToken()) {  // 存在token
-    if (to.path === &#39;/login&#39;) {
-      next({ path: &#39;/&#39; })
+    if (to.path === '/login') {
+      next({ path: '/' })
     } else {
       if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完用户信息
-        store.dispatch(&#39;GetUserInfo&#39;).then(data =&gt; { // 拉取用户信息
-          const roles = data.roles // 权限表必须为数组,例如: [&#39;admin&#39;,&#39;editer&#39;]
-          store.dispatch(&#39;GenerateRoutes&#39;, { roles }).then(() =&gt; { // 根据roles权限生成可访问的路由表
+        store.dispatch('GetUserInfo').then(data =&gt; { // 拉取用户信息
+          const roles = data.roles // 权限表必须为数组,例如: ['admin','editer']
+          store.dispatch('GenerateRoutes', { roles }).then(() =&gt; { // 根据roles权限生成可访问的路由表
             router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
             next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
           })
         }).catch(err =&gt; { // 拉取用户信息失败，提示登录状态失效
-          store.dispatch(&#39;FedLogOut&#39;).then(() =&gt; {
-            Message.error(&#39;登录状态失效, 请重新登录&#39;);
-            next({ path: &#39;/login&#39; });
+          store.dispatch('FedLogOut').then(() =&gt; {
+            Message.error('登录状态失效, 请重新登录');
+            next({ path: '/login' });
           })
         })
       } else {
         if (hasPermission(store.getters.roles, to.meta.roles)) { // 动态权限匹配
           next();
         } else {
-          next({ path: &#39;/401&#39;, replace: true, query: { noGoBack: true } });
+          next({ path: '/401', replace: true, query: { noGoBack: true } });
         }
       }
     }
@@ -341,16 +370,18 @@ router.beforeEach((to, from, next) =&gt; {
     if (whiteList.indexOf(to.path) !== -1) { // 在免登录白名单，直接进入
       next();
     } else {
-      next(&#39;/login&#39;); // 否则全部重定向到登录页
+      next('/login'); // 否则全部重定向到登录页
     }
   }
-});</code></pre>
-<h3 id="4-元素级的权限控制"><a href="#4-元素级的权限控制" class="headerlink" title="4. 元素级的权限控制"></a>4. 元素级的权限控制</h3><blockquote>
+});
+</code></pre>
+<h3 id="4-元素级的权限控制">4. 元素级的权限控制</h3>
+<blockquote>
 <p>使用自定义指令来实现元素级的权限控制</p>
 <p>在被绑定元素插入父节点时验证用户是否包含该元素的所需权限</p>
 <p>根据鉴权结果来决定是否移除该元素</p>
 </blockquote>
-<pre><code class="javascript">import store from &#39;@/store&#39;
+<pre><code class="language-javascript">import store from '@/store'
 
 export default {
   inserted(el, binding, vnode) {
@@ -368,7 +399,7 @@ export default {
         el.parentNode &amp;&amp; el.parentNode.removeChild(el); // 移除该dom元素
       }
     } else {
-      throw new Error(`必须要有权限写入，例如[&#39;admin&#39;]`)
+      throw new Error(`必须要有权限写入，例如['admin']`)
     }
   }
 }
@@ -382,17 +413,20 @@ export default {
   }
 }
 // 使用permission指令
-&lt;el-button v-permission=&quot;[&#39;admin&#39;]&quot;&gt;admin 可见&lt;/el-button&gt;
-&lt;el-button v-permission=&quot;[&#39;admin&#39;,&#39;watcher&#39;]&quot;&gt;watcher 可见&lt;/el-button&gt;</code></pre>
+&lt;el-button v-permission=&quot;['admin']&quot;&gt;admin 可见&lt;/el-button&gt;
+&lt;el-button v-permission=&quot;['admin','watcher']&quot;&gt;watcher 可见&lt;/el-button&gt;
+</code></pre>
 <blockquote>
-<h3 id="render函数"><a href="#render函数" class="headerlink" title="render函数"></a>render函数</h3></blockquote>
-<h3 id="1-如何封装一个支持render渲染的组件"><a href="#1-如何封装一个支持render渲染的组件" class="headerlink" title="1. 如何封装一个支持render渲染的组件"></a>1. 如何封装一个支持render渲染的组件</h3><ul>
+<h3 id="render函数">render函数</h3>
+</blockquote>
+<h3 id="1-如何封装一个支持render渲染的组件">1. 如何封装一个支持render渲染的组件</h3>
+<ul>
 <li>首先创建一个函数式组件</li>
 </ul>
-<pre><code class="javascript">// 表格拓展函数式组件的实现
+<pre><code class="language-javascript">// 表格拓展函数式组件的实现
 // see https://github.com/calebman/vue-DBM/blob/master/src/components/table/expand.js
 export default {
-  name: &#39;TableExpand&#39;,
+  name: 'TableExpand',
   functional: true, // 标记组件为 functional，这意味它是无状态 (没有响应式数据)，无实例 (没有 this 上下文)。
   props: {
     row: Object, // 当前行对象
@@ -408,20 +442,22 @@ export default {
     };
     return ctx.props.render(h, params);
   }
-};</code></pre>
+};
+</code></pre>
 <ul>
 <li>在父组件中引入</li>
 </ul>
-<pre><code class="javascript">// see https://github.com/calebman/vue-DBM/blob/master/src/components/table/table.vue
+<pre><code class="language-javascript">// see https://github.com/calebman/vue-DBM/blob/master/src/components/table/table.vue
 import expand from &quot;./expand.js&quot;;
 
-&lt;span v-if=&quot;typeof col.render ===&#39;function&#39;&quot;&gt;
+&lt;span v-if=&quot;typeof col.render ==='function'&quot;&gt;
    &lt;expand :field=&quot;col.field&quot; :row=&quot;item&quot; :render=&quot;col.render&quot; :index=&quot;rowIndex&quot;&gt;&lt;/expand&gt;
-&lt;/span&gt;</code></pre>
+&lt;/span&gt;
+</code></pre>
 <ul>
 <li>使用render函数渲染</li>
 </ul>
-<pre><code class="javascript">// see https://github.com/calebman/vue-DBM/blob/master/src/views/demo/datatable/data-table.vue
+<pre><code class="language-javascript">// see https://github.com/calebman/vue-DBM/blob/master/src/views/demo/datatable/data-table.vue
 // 引入自定义组件
 import IndexColumn from &quot;@/components/business/index-column.vue&quot;;
 // 注册
@@ -444,19 +480,23 @@ render: (h, params) =&gt;
       },
       on: { &quot;on-value-delete&quot;: self.deleteRow }
     })
-  ])</code></pre>
+  ])
+</code></pre>
 <blockquote>
-<h3 id="混入"><a href="#混入" class="headerlink" title="混入"></a>混入</h3></blockquote>
-<h3 id="1-小知识-1"><a href="#1-小知识-1" class="headerlink" title="1. 小知识"></a>1. 小知识</h3><ul>
+<h3 id="混入">混入</h3>
+</blockquote>
+<h3 id="1-小知识-v2">1. 小知识</h3>
+<ul>
 <li>混入对象将享有被混入组件的生命周期</li>
 <li>数据对象混入冲突时将以组件数据优先</li>
 <li>对象选项（如methods、components、directives）混入冲突时取组件对象的键值对</li>
 <li>同名钩子混合为数组，混入对象的钩子将在组件自身钩子之前调用</li>
 </ul>
-<h3 id="2-应用场景"><a href="#2-应用场景" class="headerlink" title="2. 应用场景"></a>2. 应用场景</h3><ul>
+<h3 id="2-应用场景">2. 应用场景</h3>
+<ul>
 <li>希望部分路由页面在离开时销毁但是不希望每个路由页面都定义局部路由时</li>
 </ul>
-<pre><code class="javascript">// 定义混入对象
+<pre><code class="language-javascript">// 定义混入对象
 export default {
   beforeRouteLeave(to, from, next) {
     if (to.meta &amp;&amp; to.meta.destroy) {
@@ -471,11 +511,12 @@ import routeLeaveDestoryMixin from &quot;routeleave-destory-mixin&quot;;
 export default {
   // ...
   mixins: [routeLeaveDestoryMixin]
-}</code></pre>
+}
+</code></pre>
 <ul>
 <li>数据表格自定义了文本、数字、时间以及文件单元格组件，每个组件都有同样的数据修改、焦点选中等方法时，可提取为混入对象，提高组件复用性</li>
 </ul>
-<pre><code class="html">// see https://github.com/calebman/vue-DBM/blob/master/src/components/business/render-column-mixin.js
+<pre><code class="language-html">// see https://github.com/calebman/vue-DBM/blob/master/src/components/business/render-column-mixin.js
 
 // 定义混入对象
 export default {
@@ -536,37 +577,44 @@ export default {
     &lt;el-date-picker v-show=&quot;inSelect&quot; ref=&quot;rendercolumn&quot; v-model=&quot;v&quot; type=&quot;datetime&quot; @change=&quot;changeValue&quot; @blur=&quot;blur&quot;&gt;&lt;/el-date-picker&gt;
     &lt;span v-show=&quot;!inSelect&quot;&gt;{{coverValue}}&lt;/span&gt;
   &lt;/div&gt;
-&lt;/template&gt;</code></pre>
+&lt;/template&gt;
+</code></pre>
 <ul>
 <li>希望降低组件的复杂度的时候可使用多个混入组件来分割核心组件的功能</li>
 </ul>
-<pre><code class="bash"># see https://github.com/calebman/vue-DBM/tree/master/src/components/table
+<pre><code class="language-bash"># see https://github.com/calebman/vue-DBM/tree/master/src/components/table
 ├─table
 │      cell-edit-mixin.js                      # 单元格编辑
 │      classes-mixin.js                        # 表格样式                     
 │      scroll-bar-control-mixin.js             # 表格滚动
 │      table-empty-mixin.js                    # 无数据时的处理
 │      table-resize-mixin.js                   # 表格的自适应
-│      table-row-mouse-events-mixin.js         # 鼠标移动时的样式改变</code></pre>
+│      table-row-mouse-events-mixin.js         # 鼠标移动时的样式改变
+</code></pre>
 <blockquote>
-<h3 id="数据模拟"><a href="#数据模拟" class="headerlink" title="数据模拟"></a>数据模拟</h3></blockquote>
-<h3 id="1-需要实现的功能-1"><a href="#1-需要实现的功能-1" class="headerlink" title="1. 需要实现的功能"></a>1. 需要实现的功能</h3><ul>
+<h3 id="数据模拟">数据模拟</h3>
+</blockquote>
+<h3 id="1-需要实现的功能-v2">1. 需要实现的功能</h3>
+<ul>
 <li>拦截Ajax请求并延时响应</li>
 <li>返回的统一的数据格式</li>
 <li>响应不同的模拟数据</li>
 </ul>
-<h3 id="2-配置Mockjs拦截Ajax请求"><a href="#2-配置Mockjs拦截Ajax请求" class="headerlink" title="2. 配置Mockjs拦截Ajax请求"></a>2. 配置Mockjs拦截Ajax请求</h3><pre><code class="javascript">// see https://github.com/calebman/vue-DBM/blob/master/src/mock/index.js
+<h3 id="2-配置Mockjs拦截Ajax请求">2. 配置Mockjs拦截Ajax请求</h3>
+<pre><code class="language-javascript">// see https://github.com/calebman/vue-DBM/blob/master/src/mock/index.js
 // 引入Mockjs
-import Mock from &#39;mockjs&#39;;
+import Mock from 'mockjs';
 // 配置延时
 Mock.setup({
-  timeout: &#39;300-1000&#39;
+  timeout: '300-1000'
 });
 // 配置拦截
-Mock.mock(/\/user\/login/, &#39;post&#39;, loginAPI.loginByUsername);
-Mock.mock(/\/user\/logout/, &#39;post&#39;, loginAPI.logout);
-Mock.mock(/\/user\/info\.*/, &#39;get&#39;, loginAPI.getUserInfo);</code></pre>
-<h3 id="3-响应的统一数据格式"><a href="#3-响应的统一数据格式" class="headerlink" title="3. 响应的统一数据格式"></a>3. 响应的统一数据格式</h3><pre><code class="javascript">// see https://github.com/calebman/vue-DBM/blob/master/src/mock/response.js
+Mock.mock(/\/user\/login/, 'post', loginAPI.loginByUsername);
+Mock.mock(/\/user\/logout/, 'post', loginAPI.logout);
+Mock.mock(/\/user\/info\.*/, 'get', loginAPI.getUserInfo);
+</code></pre>
+<h3 id="3-响应的统一数据格式">3. 响应的统一数据格式</h3>
+<pre><code class="language-javascript">// see https://github.com/calebman/vue-DBM/blob/master/src/mock/response.js
 /**
  * 统一响应工具类
  * 响应统一格式的数据
@@ -576,54 +624,56 @@ Mock.mock(/\/user\/info\.*/, &#39;get&#39;, loginAPI.getUserInfo);</code></pre>
  *    data: null              具体数据
  * }
  */
-
+ 
 export default {
   // 成功
   success: data =&gt; {
     return {
-      errCode: &#39;00&#39;,
-      errMsg: &#39;0000000（成功）&#39;,
+      errCode: '00',
+      errMsg: '0000000（成功）',
       data: data ? data : null
     }
   },
   // 失败
   fail: (errCode, errMsg) =&gt; {
     return {
-      errCode: errCode ? errCode : &#39;04&#39;,
-      errMsg: errMsg ? errMsg : &#39;0401001（未知错误）&#39;,
+      errCode: errCode ? errCode : '04',
+      errMsg: errMsg ? errMsg : '0401001（未知错误）',
       data: null
     }
   },
   // 权限不足
   unauthorized: () =&gt; {
     return {
-      errCode: &#39;43&#39;,
-      errMsg: &#39;4300001（无权访问）&#39;,
+      errCode: '43',
+      errMsg: '4300001（无权访问）',
       data: null
     }
   }
-}</code></pre>
-<h3 id="4-配置响应逻辑"><a href="#4-配置响应逻辑" class="headerlink" title="4. 配置响应逻辑"></a>4. 配置响应逻辑</h3><pre><code class="javascript">// see https://github.com/calebman/vue-DBM/blob/master/src/mock/login.js
+}
+</code></pre>
+<h3 id="4-配置响应逻辑">4. 配置响应逻辑</h3>
+<pre><code class="language-javascript">// see https://github.com/calebman/vue-DBM/blob/master/src/mock/login.js
 
-import { param2Obj } from &#39;@/utils&#39;;
-import Response from &#39;./response&#39;;
+import { param2Obj } from '@/utils';
+import Response from './response';
 
 const userMap = {
   admin: {
-    password: &#39;admin&#39;,
-    roles: [&#39;admin&#39;],
-    token: &#39;admin&#39;,
-    introduction: &#39;我是超级管理员&#39;,
-    avatar: &#39;https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif&#39;,
-    name: &#39;Super Admin&#39;
+    password: 'admin',
+    roles: ['admin'],
+    token: 'admin',
+    introduction: '我是超级管理员',
+    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+    name: 'Super Admin'
   },
   watcher: {
-    password: &#39;watcher&#39;,
-    roles: [&#39;watcher&#39;],
-    token: &#39;watcher&#39;,
-    introduction: &#39;我是游客&#39;,
-    avatar: &#39;https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif&#39;,
-    name: &#39;Normal Watcher&#39;
+    password: 'watcher',
+    roles: ['watcher'],
+    token: 'watcher',
+    introduction: '我是游客',
+    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+    name: 'Normal Watcher'
   }
 }
 
@@ -648,20 +698,22 @@ export default {
   },
   // 注销
   logout: () =&gt; Response.success()
-}</code></pre>
-<h3 id="5-模拟随机数据"><a href="#5-模拟随机数据" class="headerlink" title="5. 模拟随机数据"></a>5. 模拟随机数据</h3><pre><code class="javascript">// see https://github.com/nuysoft/Mock/wiki
+}
+</code></pre>
+<h3 id="5-模拟随机数据">5. 模拟随机数据</h3>
+<pre><code class="language-javascript">// see https://github.com/nuysoft/Mock/wiki
 
-import Mock from &#39;mockjs&#39;;
+import Mock from 'mockjs';
 
 // 随机字符串
 function mockStr() {
-    let result = Mock.mock({ &#39;str&#39;: &#39;@name&#39; });
+    let result = Mock.mock({ 'str': '@name' });
     return result.str;
 }
 
 // 随机数字
 function mockNumber(min, max) {
-    let key = &#39;num|&#39; + min + &#39;-&#39; + max;
+    let key = 'num|' + min + '-' + max;
     let param = {}
     param[key] = 100;
     return Mock.mock(param).num;
@@ -675,31 +727,35 @@ function mockDecimal() {
 // 随机数组一项
 const arr = [&quot;image2.jpeg&quot;, &quot;image3.jpeg&quot;, &quot;image4.jpeg&quot;, &quot;image5.jpeg&quot;, &quot;image6.jpeg&quot;];
 function mockOneFileAddress() {
-    return Mock.mock({ &#39;oneFile|1&#39;: arr }).oneFile;
+    return Mock.mock({ 'oneFile|1': arr }).oneFile;
 }
 
 // 随机日期
 function mockDate() {
-    let mockDateStr = Mock.Random.datetime(&#39;yyyy-MM-dd HH:mm:ss&#39;);
+    let mockDateStr = Mock.Random.datetime('yyyy-MM-dd HH:mm:ss');
     // 在这里使用了momentjs将其解析为Date类型
-    let mockDate = moment(mockDateStr, &#39;YYYY-MM-DD HH:mm:ss&#39;).toDate();
+    let mockDate = moment(mockDateStr, 'YYYY-MM-DD HH:mm:ss').toDate();
     return mockDate;
-}</code></pre>
+}
+</code></pre>
 <blockquote>
-<h3 id="打包优化"><a href="#打包优化" class="headerlink" title="打包优化"></a>打包优化</h3></blockquote>
-<h3 id="1-做哪部分的优化"><a href="#1-做哪部分的优化" class="headerlink" title="1. 做哪部分的优化"></a>1. 做哪部分的优化</h3><ul>
+<h3 id="打包优化">打包优化</h3>
+</blockquote>
+<h3 id="1-做哪部分的优化">1. 做哪部分的优化</h3>
+<ul>
 <li>cdn优化</li>
 <li>路由懒加载</li>
 <li>其他优化</li>
 <li>用户体验</li>
 </ul>
-<h3 id="2-cdn优化"><a href="#2-cdn优化" class="headerlink" title="2. cdn优化"></a>2. cdn优化</h3><blockquote>
+<h3 id="2-cdn优化">2. cdn优化</h3>
+<blockquote>
 <p>类似于vue、vue-router、moment、element-ui等提供了cdn的架或者工具类可在index.html中直接引入，然后配置webpack的externals使其不加入打包配置，从而减小app.js、vendor.js的体积</p>
 </blockquote>
 <ul>
 <li>在index.html使用cdn引入依赖库</li>
 </ul>
-<pre><code class="html">&lt;!-- 网络请求工具类 --&gt;
+<pre><code class="language-html">&lt;!-- 网络请求工具类 --&gt;
 &lt;script src=&quot;https://cdn.bootcss.com/axios/0.18.0/axios.min.js&quot;&gt;&lt;/script&gt;
 &lt;!-- vue --&gt;
 &lt;script src=&quot;https://cdn.bootcss.com/vue/2.5.16/vue.min.js&quot;&gt;&lt;/script&gt;
@@ -714,38 +770,43 @@ function mockDate() {
 &lt;!-- element-ui样式 --&gt;
 &lt;script src=&quot;https://cdn.bootcss.com/element-ui/2.3.6/theme-default/index.css&quot;&gt;&lt;/script&gt;
 &lt;!-- element-ui --&gt;
-&lt;script src=&quot;https://cdn.bootcss.com/element-ui/2.3.6/index.js&quot;&gt;&lt;/script&gt;</code></pre>
+&lt;script src=&quot;https://cdn.bootcss.com/element-ui/2.3.6/index.js&quot;&gt;&lt;/script&gt;
+</code></pre>
 <ul>
 <li>配置build文件夹下webpack.base.conf.js文件</li>
 </ul>
-<pre><code class="javascript">module.exports = {
+<pre><code class="language-javascript">module.exports = {
   // ...
   externals: {
-    &#39;axios&#39;: &#39;axios&#39;,
-    &#39;vue&#39;: &#39;Vue&#39;,
-    &#39;vue-router&#39;: &#39;VueRouter&#39;,
-    &#39;vuex&#39;: &#39;Vuex&#39;,
-    &#39;moment&#39;: &#39;moment&#39;,
-    &#39;element-ui&#39;: &#39;ELEMENT&#39;
+    'axios': 'axios',
+    'vue': 'Vue',
+    'vue-router': 'VueRouter',
+    'vuex': 'Vuex',
+    'moment': 'moment',
+    'element-ui': 'ELEMENT'
   }
-}</code></pre>
-<h3 id="3-路由懒加载"><a href="#3-路由懒加载" class="headerlink" title="3. 路由懒加载"></a>3. 路由懒加载</h3><blockquote>
+}
+</code></pre>
+<h3 id="3-路由懒加载">3. 路由懒加载</h3>
+<blockquote>
 <p>路由懒加载能够将代码根据路由配置进行分割，加快首屏渲染的速度，在大型的单页应用中是必不可少的</p>
 <p>参见<a href="https://github.com/calebman/vue-DBM/blob/master/docs/router.md" target="_blank" rel="noopener">路由管理</a>的实现</p>
 </blockquote>
-<h3 id="5-其他优化"><a href="#5-其他优化" class="headerlink" title="5. 其他优化"></a>5. 其他优化</h3><ul>
+<h3 id="5-其他优化">5. 其他优化</h3>
+<ul>
 <li>尽量少的注册全局组件，使用UI框架可以参考文档做按需加载</li>
 <li>可以和服务端配合采用gzip压缩，减少传输耗时</li>
 <li>在更新不是很频繁的应用可考虑提高缓存时间</li>
 <li>例如moment、lodash这种庞大的工具库在使用的功能不多的情况下可考虑寻找替代品</li>
 </ul>
-<h3 id="6-用户体验"><a href="#6-用户体验" class="headerlink" title="6. 用户体验"></a>6. 用户体验</h3><blockquote>
+<h3 id="6-用户体验">6. 用户体验</h3>
+<blockquote>
 <p>一个单页应用到了一定规模不管怎么优化首屏渲染还是一个比较慢的过程，此时可以考虑在首屏渲染时使用一个加载动画告诉用户系统正在初始化</p>
 </blockquote>
 <ul>
 <li>首先在index.html中定义一个渲染动画</li>
 </ul>
-<pre><code class="html">&lt;body&gt;
+<pre><code class="language-html">&lt;body&gt;
   &lt;div id=&quot;app&quot;&gt;&lt;/div&gt;
   &lt;!-- 首屏渲染时的加载动画 --&gt;
   &lt;div id=&quot;system-loading&quot; class=&quot;showbox&quot;&gt;
@@ -759,16 +820,18 @@ function mockDate() {
     &lt;/div&gt;
   &lt;/div&gt;
   &lt;!-- built files will be auto injected --&gt;
-&lt;/body&gt;</code></pre>
+&lt;/body&gt;
+</code></pre>
 <ul>
 <li>然后在App.vue组件的mounted钩子中移除这个loading</li>
 </ul>
-<pre><code class="javascript">export default {
+<pre><code class="language-javascript">export default {
   // ...
   mounted() {
     document.body.removeChild(document.getElementById(&quot;system-loading&quot;));
   }
-};</code></pre>
+};
+</code></pre>
 
   </div>
 </article>

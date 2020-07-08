@@ -56,23 +56,28 @@
   
 
   <div class="article-content">
-    <p>&emsp;&emsp;在编程生涯中我们会碰上各式各样的数据结构，简单的如数组、列表、字典，复杂一点的如树结构、图等等，本文将基于<code>Java8</code>讲述如何优雅的实现树的遍历、打印、平铺、聚合操作。</p>
+    <p>  在编程生涯中我们会碰上各式各样的数据结构，简单的如数组、列表、字典，复杂一点的如树结构、图等等，本文将基于<code>Java8</code>讲述如何优雅的实现树的遍历、打印、平铺、聚合操作。</p>
 <a id="more"></a>
-
-<h2 id="树结构描述"><a href="#树结构描述" class="headerlink" title="树结构描述"></a>树结构描述</h2><p>&emsp;&emsp;本文围绕的树结构大体样例如下所示，这种结构常用于我们<code>Web</code>系统的菜单数据结构的存储，在数据库我们一般是平铺存储，但是使用时需要聚合成树状结构，在平时的实体设计中，关于子项的<code>key</code>不一定就叫<code>childrens</code>，所以本文最终设计的工具类也需要设计的更为通用</p>
-<pre><code class="java">private Integer id;
+<h2 id="树结构描述">树结构描述</h2>
+<p>  本文围绕的树结构大体样例如下所示，这种结构常用于我们<code>Web</code>系统的菜单数据结构的存储，在数据库我们一般是平铺存储，但是使用时需要聚合成树状结构，在平时的实体设计中，关于子项的<code>key</code>不一定就叫<code>childrens</code>，所以本文最终设计的工具类也需要设计的更为通用</p>
+<pre><code class="language-java">private Integer id;
 private String name;
 private Integer parentId;
-private List&lt;Node&gt; childrens;</code></pre>
-<h2 id="常用的遍历方式"><a href="#常用的遍历方式" class="headerlink" title="常用的遍历方式"></a>常用的遍历方式</h2><h3 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h3><pre><code class="java">public static void traversing(List&lt;Node&gt; root) {
+private List&lt;Node&gt; childrens;
+</code></pre>
+<h2 id="常用的遍历方式">常用的遍历方式</h2>
+<h3 id="递归">递归</h3>
+<pre><code class="language-java">public static void traversing(List&lt;Node&gt; root) {
     for (Node node : root) {
         List&lt;Node&gt; childres = node.getChildrens();
         if (childres != null &amp;&amp; childres.size() &gt; 0) {
             traversing(childres);
         }
     }
-}</code></pre>
-<h3 id="栈"><a href="#栈" class="headerlink" title="栈"></a>栈</h3><pre><code class="java">public static void traversing(List&lt;Node&gt; root) {
+}
+</code></pre>
+<h3 id="栈">栈</h3>
+<pre><code class="language-java">public static void traversing(List&lt;Node&gt; root) {
     Stack&lt;Node&gt; stack = new Stack&lt;&gt;();
     root.forEach(stack::push);
     while (!stack.isEmpty()) {
@@ -82,8 +87,11 @@ private List&lt;Node&gt; childrens;</code></pre>
             childrens.forEach(stack::push);
         }
     }
-}</code></pre>
-<h2 id="如何通用"><a href="#如何通用" class="headerlink" title="如何通用"></a>如何通用</h2><h3 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h3><p>&emsp;&emsp;要做到工具通用就要考虑哪一块是<strong>变化的部分</strong>，在我们的树结构实体模型中有几个核心的字段，这几个字段每个人在设计自己业务模型中都可能不一样，但却是必然存在的</p>
+}
+</code></pre>
+<h2 id="如何通用">如何通用</h2>
+<h3 id="思考">思考</h3>
+<p>  要做到工具通用就要考虑哪一块是<strong>变化的部分</strong>，在我们的树结构实体模型中有几个核心的字段，这几个字段每个人在设计自己业务模型中都可能不一样，但却是必然存在的</p>
 <ul>
 <li>子节点字段</li>
 <li>节点ID字段</li>
@@ -95,7 +103,8 @@ private List&lt;Node&gt; childrens;</code></pre>
 <li>利用函数式编程的思想将这几个<strong>获取操作</strong>抽象成参数传递，显然，这种办法对用户来说是更加友好的，所以我们这次会基于此方案来实现工具类</li>
 </ol>
 <p>在实现之前我们需要先了解一下<code>Java</code>中的函数式编程接口</p>
-<h2 id="Java8-function-api介绍"><a href="#Java8-function-api介绍" class="headerlink" title="Java8 function api介绍"></a>Java8 function api介绍</h2><p><code>Java8</code>的<code>java.util.function</code>包下提供了很多支持函数式编程的类，可以帮我们很好的<strong>抽象变化的部分</strong>，我们先看一下<code>function api</code>的归纳，<code>Java8</code>主要提供了以下类来支持函数式编程，其中标了重点的是这次编写工具所使用到的类。</p>
+<h2 id="Java8-function-api介绍">Java8 function api介绍</h2>
+<p><code>Java8</code>的<code>java.util.function</code>包下提供了很多支持函数式编程的类，可以帮我们很好的<strong>抽象变化的部分</strong>，我们先看一下<code>function api</code>的归纳，<code>Java8</code>主要提供了以下类来支持函数式编程，其中标了重点的是这次编写工具所使用到的类。</p>
 <table>
 <thead>
 <tr>
@@ -103,7 +112,8 @@ private List&lt;Node&gt; childrens;</code></pre>
 <th>描述</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><strong>BiConsumer&lt;T,U&gt;</strong></td>
 <td>代表了一个接受两个输入参数的操作，并且不返回任何结果</td>
 </tr>
@@ -275,14 +285,16 @@ private List&lt;Node&gt; childrens;</code></pre>
 <td>UnaryOperator<t></t></td>
 <td>接受一个参数为类型T，返回值类型也为T</td>
 </tr>
-</tbody></table>
-<h2 id="工具类设计"><a href="#工具类设计" class="headerlink" title="工具类设计"></a>工具类设计</h2><ol>
+</tbody>
+</table>
+<h2 id="工具类设计">工具类设计</h2>
+<ol>
 <li>利用<code>Function&lt;T,R&gt;</code>来抽象子节点/节点<code>Key</code>/节点父节点<code>Key</code>的获取逻辑</li>
 <li>利用<code>Consumer&lt;T&gt;</code>来抽象遍历到节点后的逻辑操作，比如打印/插入其他数据结构</li>
 <li>利用<code>BiConsumer&lt;T,U&gt;</code>来抽象节点的写入操作，如聚合树时的子节点写入操作</li>
 <li>节点遍历方面使用栈来实现，防止在树结构深度比较大时爆栈</li>
 </ol>
-<pre><code class="java">/**
+<pre><code class="language-java">/**
  * @author JianhuiChen
  * @description 树状结构工具类 提供通用树结构的平铺/聚合方法
  * @date 2019-08-29
@@ -434,11 +446,12 @@ public class TreeUtil {
         public String toString() {
             return &quot;Node{&quot; +
                     &quot;id=&quot; + id +
-                    &quot;, name=&#39;&quot; + name + &#39;\&#39;&#39; +
-                    &#39;}&#39;;
+                    &quot;, name='&quot; + name + '\'' +
+                    '}';
         }
     }
-}</code></pre>
+}
+</code></pre>
 
   </div>
 </article>

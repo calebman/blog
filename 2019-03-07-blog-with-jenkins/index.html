@@ -54,21 +54,21 @@
   <div class="article-content">
     <p>博客你已经长大了，该学会自己部署了</p>
 <a id="more"></a>
-
 <p>我的自动化运维平台已经成功上线啦~</p>
 <p>博客可以自己照顾自己啦~</p>
 <p>本篇博客用于测试自动化运维平台是否正常运行</p>
 <p>在我写完这篇博客执行以下脚本后</p>
-<pre><code class="bash">git add .
+<pre><code class="language-bash">git add .
 git commit -m&quot;自动部署测试&quot;
-git push origin master</code></pre>
+git push origin master
+</code></pre>
 <p>这时候对话开始了</p>
 <blockquote>
 <p>github：jenkins兄弟，快起来，该干活了</p>
 <p>Jenkins看看来的任务，blogs，ok，i know</p>
 <p>jenkins：包在我身上</p>
 </blockquote>
-<pre><code class="bash"># 拉取代码
+<pre><code class="language-bash"># 拉取代码
 git clone https://github.com/calebman/blog.git
 # 打印版本
 node -v
@@ -84,15 +84,17 @@ hexo g
 # 将打包文件移动到服务器的指定目录 nginx配置目录
 cp -rf public/* /home/app/application/blogs/
 # 部署到 github.io
-hexo d</code></pre>
+hexo d
+</code></pre>
 <blockquote>
 <p>jenkins：发封邮件给主人告诉他我干完了</p>
 <p>盯</p>
 <p>看看手机，好的看来博客已经上线了</p>
-<p>访问<strong><a href="http://blog.chenjianhui.site" target="_blank" rel="noopener">http://blog.chenjianhui.site</a></strong>试试</p>
+<p>访问**<a href="http://blog.chenjianhui.site" target="_blank" rel="noopener">http://blog.chenjianhui.site</a>**试试</p>
 <p>有了，jenkins辛苦辣，下次给你换个更好的服务器环境</p>
 </blockquote>
-<p>测试成功<br>Ending~</p>
+<p>测试成功<br>
+Ending~</p>
 
   </div>
 </article>

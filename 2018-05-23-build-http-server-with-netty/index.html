@@ -58,12 +58,12 @@
   <div class="article-content">
     <p>使用Netty构建一个SpringBoot风格的Web框架</p>
 <a id="more"></a>
-
-<h3 id="要实现怎样的效果"><a href="#要实现怎样的效果" class="headerlink" title="要实现怎样的效果"></a>要实现怎样的效果</h3><blockquote>
+<h3 id="要实现怎样的效果">要实现怎样的效果</h3>
+<blockquote>
 <p>一个SpringBoot框架搭建起来的项目发布接口服务是这样的</p>
-<p>SpringBoot搭建教程<strong><a href="/2018-02-21-build-springboot-env/">点击这里</a></strong></p>
+<p>SpringBoot搭建教程**<a href="/2018-02-21-build-springboot-env/">点击这里</a>**</p>
 </blockquote>
-<pre><code class="java">@Controller
+<pre><code class="language-java">@Controller
 @RequestMapping(&quot;/v1/product&quot;)
 public class DocController {
 
@@ -77,15 +77,17 @@ public class DocController {
         }
         return WebResult.success(products.get(id));
     }
-}</code></pre>
+}
+</code></pre>
 <blockquote>
 <p>我希望我使用Netty构建的Web服务器也能使用这样便捷的注解方式去发布我的接口服务</p>
 </blockquote>
-<h3 id="该怎么做"><a href="#该怎么做" class="headerlink" title="该怎么做"></a>该怎么做</h3><p><img src="https://resources.chenjianhui.site/2018-05-23-xmind-brain-map.png" alt="系统流程"></p>
+<h3 id="该怎么做">该怎么做</h3>
+<p><img src="https://resources.chenjianhui.site/2018-05-23-xmind-brain-map.png" alt="系统流程"></p>
 <ul>
 <li>使用Netty自带的编解码、聚合器构建一个带有Http编解码功能的服务器这一点其实非常简单，Netty提供了对应的Http协议的编解码以及聚合器，我们只需要在管道初始化的时候加载它们。</li>
 </ul>
-<pre><code class="java">public class HttpPipelineInitializer extends ChannelInitializer&lt;Channel&gt; {
+<pre><code class="language-java">public class HttpPipelineInitializer extends ChannelInitializer&lt;Channel&gt; {
     //编解码处理器名称
     public final static String CODEC = &quot;codec&quot;;
     //HTTP消息聚合处理器名称
@@ -101,22 +103,24 @@ public class DocController {
         pipeline.addLast(COMPRESSOR,new HttpContentCompressor());
         pipeline.addLast(new AllocHandler());
     }
-}</code></pre>
+}
+</code></pre>
 <ul>
 <li>实现RequestMapping注解，用于标识处理器或者控制器对应匹配的接口地址。</li>
 </ul>
-<pre><code class="java">@Target({ElementType.TYPE, ElementType.METHOD})
+<pre><code class="language-java">@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RequestMapping {
     String[] value() default {};
-}</code></pre>
+}
+</code></pre>
 <ul>
 <li>提供启动入口，程序启动时创建Spring容器，并基于Spring初始化必要组件</li>
 </ul>
 <ol>
 <li>提供程序入口类</li>
 </ol>
-<pre><code class="java">public class CettyBootstrap {
+<pre><code class="language-java">public class CettyBootstrap {
     private static final Logger logger = LoggerFactory.getLogger(CettyBootstrap.class);
     private static final String DEFAULT_SPRING_XMLPATH = &quot;classpath:applicantContext.xml&quot;;
     private static final String DEFAULT_HTTP_SERVER_BEAN_NAME = &quot;defaultHttpServer&quot;;
@@ -144,11 +148,12 @@ public @interface RequestMapping {
             e.printStackTrace();
         }
     }
-}</code></pre>
+}
+</code></pre>
 <ol start="2">
 <li>定义默认实现的HttpServer组件，随Spring容器启动时加载基于Netty的Web容器，并使用HandlerMapping组件初始化HttpPipelineInitializer管道，其中HandlerMapping如果未有用户定义则使用默认的DefaultHandlerMapping实现</li>
 </ol>
-<pre><code class="java">public class DefaultHttpServer extends ApplicationObjectSupport {
+<pre><code class="language-java">public class DefaultHttpServer extends ApplicationObjectSupport {
     private static final Logger logger = LoggerFactory.getLogger(DefaultHttpServer.class);
     private static final String DEFAULT_HTTP_PORT = &quot;8080&quot;;
     private static final String HANDLER_MAPPING_BEAN_NAME = &quot;handlerMapping&quot;;
@@ -211,11 +216,12 @@ public @interface RequestMapping {
 
     }
 
-}</code></pre>
+}
+</code></pre>
 <ol start="3">
 <li>提供默认的HandlerMapping实现类，负责匹配@RequestMapping注解下的处理函数</li>
 </ol>
-<pre><code class="java">public class DefaultHandlerMapping extends ApplicationObjectSupport implements HandlerMapping {
+<pre><code class="language-java">public class DefaultHandlerMapping extends ApplicationObjectSupport implements HandlerMapping {
     Logger logger = LoggerFactory.getLogger(DefaultHandlerMapping.class);
 
     private static Map&lt;String, HttpHandler&gt; httpHandlerMap = new HashMap&lt;String, HttpHandler&gt;();
@@ -260,11 +266,12 @@ public @interface RequestMapping {
     public HttpHandler getHadnler(FullHttpRequest request) {
         return httpHandlerMap.get(request.uri());
     }
-}</code></pre>
+}
+</code></pre>
 <ul>
 <li>当请求进入时通过HandlerMapping组件匹配处理器，如果匹配失败则返回404</li>
 </ul>
-<pre><code class="java">public class AllocHandler extends SimpleChannelInboundHandler&lt;FullHttpRequest&gt; {
+<pre><code class="language-java">public class AllocHandler extends SimpleChannelInboundHandler&lt;FullHttpRequest&gt; {
 
     private HandlerMapping handlerMapping;
 
@@ -307,11 +314,13 @@ public @interface RequestMapping {
         response.headers().set(&quot;Content-Type&quot;, &quot;text/plain&quot;);
         ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
     }
-}</code></pre>
-<h3 id="测试与使用"><a href="#测试与使用" class="headerlink" title="测试与使用"></a>测试与使用</h3><ul>
+}
+</code></pre>
+<h3 id="测试与使用">测试与使用</h3>
+<ul>
 <li>建立一个TestController</li>
 </ul>
-<pre><code class="java">@Controller
+<pre><code class="language-java">@Controller
 public class TestController {
 
     @RequestMapping(&quot;/test&quot;)
@@ -345,21 +354,24 @@ public class TestController {
         json.put(&quot;data&quot;, null);
         return json;
     }
-}</code></pre>
+}
+</code></pre>
 <ul>
 <li>启动Spring容器</li>
 </ul>
-<pre><code class="java">public class HttpServerTest {
+<pre><code class="language-java">public class HttpServerTest {
     public static void main(String[] args) throws Exception {
         CettyBootstrap.create();
         // CettyBootstrap.create(&quot;classpath:applicationContext.xml&quot;);
     }
-}</code></pre>
-<h3 id="未来要做的"><a href="#未来要做的" class="headerlink" title="未来要做的"></a>未来要做的</h3><ul>
-<li><input checked disabled type="checkbox"> 与Spring框架集成，将核心组件托管给Spring容器统一管理</li>
-<li><input disabled type="checkbox"> 提供静态资源映射</li>
-<li><input disabled type="checkbox"> 修改映射策略将请求映射至一个流程（一个处理器多个拦截器）</li>
-<li><input disabled type="checkbox"> 支持使用模板语法进行视图解析</li>
+}
+</code></pre>
+<h3 id="未来要做的">未来要做的</h3>
+<ul>
+<li>[x] 与Spring框架集成，将核心组件托管给Spring容器统一管理</li>
+<li>[ ] 提供静态资源映射</li>
+<li>[ ] 修改映射策略将请求映射至一个流程（一个处理器多个拦截器）</li>
+<li>[ ] 支持使用模板语法进行视图解析</li>
 </ul>
 
   </div>

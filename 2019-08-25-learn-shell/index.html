@@ -56,18 +56,22 @@
   
 
   <div class="article-content">
-    <p>&emsp;&emsp;作为一个后端开发工程师在工作中不可能不与<code>Linux</code>服务器打交道，应用的部署测试，中间件的环境搭建，搭建个人的博客，甚至玩玩树莓派这些比较冷门的单片机计算机都离不开<code>Linux</code>指令与<code>Shell</code>编程，本文就来学习与归纳一些我个人用到的<code>Linux</code>指令与<code>Shell</code>语法并给出示例，本文只讲基础，细枝末节将另起博文详细分析。</p>
+    <p>  作为一个后端开发工程师在工作中不可能不与<code>Linux</code>服务器打交道，应用的部署测试，中间件的环境搭建，搭建个人的博客，甚至玩玩树莓派这些比较冷门的单片机计算机都离不开<code>Linux</code>指令与<code>Shell</code>编程，本文就来学习与归纳一些我个人用到的<code>Linux</code>指令与<code>Shell</code>语法并给出示例，本文只讲基础，细枝末节将另起博文详细分析。</p>
 <a id="more"></a>
-
-<h1 id="Shell语法归纳"><a href="#Shell语法归纳" class="headerlink" title="Shell语法归纳"></a>Shell语法归纳</h1><h2 id="变量与参数"><a href="#变量与参数" class="headerlink" title="变量与参数"></a>变量与参数</h2><h3 id="变量定义与引用"><a href="#变量定义与引用" class="headerlink" title="变量定义与引用"></a>变量定义与引用</h3><pre><code class="bash">#!/bin/sh
+<h1>Shell语法归纳</h1>
+<h2 id="变量与参数">变量与参数</h2>
+<h3 id="变量定义与引用">变量定义与引用</h3>
+<pre><code class="language-bash">#!/bin/sh
 str=&quot;My name is JianhuiChen.&quot;
 echo ${str}
 str=&quot;Reset my name&quot;
 echo ${str}
 unset str
-echo ${str}</code></pre>
+echo ${str}
+</code></pre>
 <p><img src="https://resources.chenjianhui.site/2019-08-25-shell-exec-result-0.png" alt></p>
-<h3 id="参数引用"><a href="#参数引用" class="headerlink" title="参数引用"></a>参数引用</h3><pre><code class="bash">#!/bin/sh
+<h3 id="参数引用">参数引用</h3>
+<pre><code class="language-bash">#!/bin/sh
 echo &quot;第一个参数为：$1&quot;
 echo &quot;第二个参数为：$2&quot;
 echo &quot;传递到脚本的参数个数为：$#&quot;
@@ -76,9 +80,12 @@ echo &quot;脚本运行的当前进程ID号为：$$&quot;
 echo &quot;后台运行的最后一个进程的ID号为：$!&quot;
 echo &quot;所有向脚本传递的参数为：$@&quot;
 echo &quot;Shell使用的当前选项为：$-&quot;
-echo &quot;最后命令的退出状态为：$?&quot;</code></pre>
+echo &quot;最后命令的退出状态为：$?&quot;
+</code></pre>
 <p><img src="https://resources.chenjianhui.site/2019-08-25-shell-exec-result-1.png" alt></p>
-<h2 id="逻辑判断、循环与分支选择"><a href="#逻辑判断、循环与分支选择" class="headerlink" title="逻辑判断、循环与分支选择"></a>逻辑判断、循环与分支选择</h2><h3 id="逻辑判断"><a href="#逻辑判断" class="headerlink" title="逻辑判断"></a>逻辑判断</h3><pre><code class="bash">#!/bin/sh
+<h2 id="逻辑判断、循环与分支选择">逻辑判断、循环与分支选择</h2>
+<h3 id="逻辑判断">逻辑判断</h3>
+<pre><code class="language-bash">#!/bin/sh
 x=5
 y=10
 z=20
@@ -108,9 +115,11 @@ then
   echo &quot;$x != $y and $y == $z&quot;
 else
   echo &quot;$x != $y and $y != $z&quot;
-fi</code></pre>
+fi
+</code></pre>
 <p><img src="https://resources.chenjianhui.site/2019-08-25-shell-exec-result-2.png" alt></p>
-<h3 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h3><pre><code class="bash">#!/bin/sh
+<h3 id="循环">循环</h3>
+<pre><code class="language-bash">#!/bin/sh
 # Define array
 arr=(1 2 3 4 5)
 # For loop
@@ -145,36 +154,42 @@ do
     echo &quot;Print ${arr[$j]}&quot;
   fi
   let j++
-done</code></pre>
+done
+</code></pre>
 <p><img src="https://resources.chenjianhui.site/2019-08-25-shell-exec-result-3.png" alt></p>
-<h3 id="分支选择"><a href="#分支选择" class="headerlink" title="分支选择"></a>分支选择</h3><pre><code class="bash">#!/bin/sh
+<h3 id="分支选择">分支选择</h3>
+<pre><code class="language-bash">#!/bin/sh
 x=3
 case $x in
-    1)  echo &#39;Case 1&#39;
+    1)  echo 'Case 1'
     ;;
-    2)  echo &#39;Case 2&#39;
+    2)  echo 'Case 2'
     ;;
-    3)  echo &#39;Case 3&#39;
+    3)  echo 'Case 3'
     ;;
-    4)  echo &#39;Case 4&#39;
+    4)  echo 'Case 4'
     ;;
-    *)  echo &#39;Default&#39;
+    *)  echo 'Default'
     ;;
-esac</code></pre>
-<h2 id="输出重定向"><a href="#输出重定向" class="headerlink" title="输出重定向"></a>输出重定向</h2><pre><code class="bash">#!/bin/sh
+esac
+</code></pre>
+<h2 id="输出重定向">输出重定向</h2>
+<pre><code class="language-bash">#!/bin/sh
 export BIN_PATH=$(cd `dirname $0`;pwd)
 echo BIN_PATH:[$BIN_PATH]
 # 输出重定向到文件 &gt;&gt; 代表追加
 nohup ping 127.0.0.1 &gt; exec.log 2&gt;&amp;1 &amp;
 echo [if you want stop app, can run] kill -9 $!
-echo [if you want search logs, can run] tail -f $BIN_PATH/exec.log</code></pre>
+echo [if you want search logs, can run] tail -f $BIN_PATH/exec.log
+</code></pre>
 <p><img src="https://resources.chenjianhui.site/2019-08-25-shell-exec-result-4.png" alt></p>
 <p>第一次看到<code>nohup ping 127.0.0.1 &gt; exec.log 2&gt;&amp;1 &amp;</code>这条语句的同学可能会有点懵逼，在这里我们一段一段来理解这条语句</p>
 <ul>
 <li><code>nohub</code>：当前进程退出后运行程序不退出，也就是后台运行</li>
 <li><code>ping 127.0.0.1</code>：具体执行的语句，这句就不过多解释了</li>
 <li><code>&gt; exec.log</code>：将语句执行的结果输出到<code>shell</code>脚本同级目录的exec.log文件，采用覆盖的模式，如果是追加输出可使用<code>&gt;&gt;</code>替换<code>&gt;</code></li>
-<li><code>2&gt;&amp;1</code>：这句可能会复杂点，意思是将标准错误等效于标准输出，其中<code>&amp;</code>起到了等效的作用<ul>
+<li><code>2&gt;&amp;1</code>：这句可能会复杂点，意思是将标准错误等效于标准输出，其中<code>&amp;</code>起到了等效的作用
+<ul>
 <li>0 表示stdin标准输入</li>
 <li>1 表示stdout标准输出</li>
 <li>2 表示stderr标准错误</li>
@@ -182,7 +197,9 @@ echo [if you want search logs, can run] tail -f $BIN_PATH/exec.log</code></pre>
 </li>
 <li>最后一个<code>&amp;</code>：这个是配合<code>nohub</code>使用的，意思是在脚本的结尾让程序自动运行，没有此指令脚本运行会卡在<code>nohub</code>处需要按一下任意键才可继续执行</li>
 </ul>
-<h1 id="Linux指令与常用库归纳"><a href="#Linux指令与常用库归纳" class="headerlink" title="Linux指令与常用库归纳"></a>Linux指令与常用库归纳</h1><h2 id="文件与目录"><a href="#文件与目录" class="headerlink" title="文件与目录"></a>文件与目录</h2><ul>
+<h1>Linux指令与常用库归纳</h1>
+<h2 id="文件与目录">文件与目录</h2>
+<ul>
 <li><code>ls</code>：列表显示文件与目录信息</li>
 <li><code>tree</code>：树形显示文件与目录信息</li>
 <li><code>cd</code>：切换目录</li>
@@ -199,7 +216,8 @@ echo [if you want search logs, can run] tail -f $BIN_PATH/exec.log</code></pre>
 <li><code>touch</code>：创建一个新文件</li>
 <li><code>tar</code>：压缩与解压缩</li>
 <li><code>sed</code>：非交互式文本编辑</li>
-<li><code>vi</code>：交互式文本编辑，按<code>i</code>插入文本编辑文件，按<code>ESC</code>输入指令退出<ul>
+<li><code>vi</code>：交互式文本编辑，按<code>i</code>插入文本编辑文件，按<code>ESC</code>输入指令退出
+<ul>
 <li><code>:w</code>：写入文件</li>
 <li><code>:w!</code>：不询问方式写入文件</li>
 <li><code>:wq</code>：保存并退出</li>
@@ -211,7 +229,7 @@ echo [if you want search logs, can run] tail -f $BIN_PATH/exec.log</code></pre>
 <blockquote>
 <p>完成下面的语句对你记忆这些基础指令会有帮助</p>
 </blockquote>
-<pre><code class="bash">#!/bin/sh
+<pre><code class="language-bash">#!/bin/sh
 # 查看当前工作目录与其结构
 pwd
 ls
@@ -250,8 +268,10 @@ tar -czvf test-dir.tar.gz test-dir
 # 删除 test-dir 目录 建议使用参数 -i 进入询问模式
 rm -rf test-dir
 # 解压 test-dir.tar.gz
-tar -xzvf test-dir.tar.gz</code></pre>
-<h2 id="网络与常用库"><a href="#网络与常用库" class="headerlink" title="网络与常用库"></a>网络与常用库</h2><ul>
+tar -xzvf test-dir.tar.gz
+</code></pre>
+<h2 id="网络与常用库">网络与常用库</h2>
+<ul>
 <li><code>ifconfig</code>：查看网络网卡信息</li>
 <li><code>netstat</code>：显示网络状态，查看网络端口或者路由信息</li>
 <li><code>lsof</code>：用于查看你进程开打的文件，打开文件的进程，进程打开的端口(TCP、UDP)</li>
@@ -263,7 +283,8 @@ tar -xzvf test-dir.tar.gz</code></pre>
 <li><code>wget</code>：网络下载器</li>
 <li><code>curl</code>：<code>http</code>命令行工具</li>
 </ul>
-<h2 id="系统"><a href="#系统" class="headerlink" title="系统"></a>系统</h2><ul>
+<h2 id="系统">系统</h2>
+<ul>
 <li><code>shutdown</code>：关机</li>
 <li><code>reboot</code>：重启</li>
 <li><code>mount</code>：挂在次盘/文件系统</li>

@@ -56,26 +56,27 @@
   
 
   <div class="article-content">
-    <p>&emsp;&emsp;有一座高度是1000级台阶的天梯，从下往上走，每跨一步只能向上1级或者2级台阶。要找出一共有多少种走法？</p>
+    <p>  有一座高度是1000级台阶的天梯，从下往上走，每跨一步只能向上1级或者2级台阶。要找出一共有多少种走法？</p>
 <a id="more"></a>
-
-<h1 id="解题思考"><a href="#解题思考" class="headerlink" title="解题思考"></a>解题思考</h1><p>&emsp;&emsp;如题1000级台阶着实有点多了，我们先来思考6级阶梯的情况，共13种</p>
+<h1>解题思考</h1>
+<p>  如题1000级台阶着实有点多了，我们先来思考6级阶梯的情况，共13种</p>
 <ul>
-<li>:running: 1+1+1+1+1+1</li>
-<li>:running: 1+1+1+1+2</li>
-<li>:running: 1+1+1+2+1</li>
-<li>:running: 1+1+2+1+1</li>
-<li>:running: 1+2+1+1+1</li>
-<li>:running: 2+1+1+1+1</li>
-<li>:running: 1+1+2+2</li>
-<li>:running: 1+2+1+2</li>
-<li>:running: 1+2+2+1</li>
-<li>:running: 2+1+1+2</li>
-<li>:running: 2+1+2+1</li>
-<li>:running: 2+2+1+1</li>
-<li>:running: 2+2+2</li>
+<li>🏃 1+1+1+1+1+1</li>
+<li>🏃 1+1+1+1+2</li>
+<li>🏃 1+1+1+2+1</li>
+<li>🏃 1+1+2+1+1</li>
+<li>🏃 1+2+1+1+1</li>
+<li>🏃 2+1+1+1+1</li>
+<li>🏃 1+1+2+2</li>
+<li>🏃 1+2+1+2</li>
+<li>🏃 1+2+2+1</li>
+<li>🏃 2+1+1+2</li>
+<li>🏃 2+1+2+1</li>
+<li>🏃 2+2+1+1</li>
+<li>🏃 2+2+2</li>
 </ul>
-<p>&emsp;&emsp;在仅有6级阶梯的情况下穷举已经有一些费力了，如果是1000级那几乎不可能穷举了，我们要思考找出其中的微妙之处。<br>&emsp;&emsp;现在我们假设只差最后一步就能达到第6级阶梯了，那么会出现几种情况？无非就是从第5级花费一步或者从第4级花费两步跳到第6级阶梯，我们现在假设0-4级阶梯有X种走法，0-5级阶梯有Y种走法，那么0-6级阶梯的走法有多少种？</p>
+<p>  在仅有6级阶梯的情况下穷举已经有一些费力了，如果是1000级那几乎不可能穷举了，我们要思考找出其中的微妙之处。<br>
+  现在我们假设只差最后一步就能达到第6级阶梯了，那么会出现几种情况？无非就是从第5级花费一步或者从第4级花费两步跳到第6级阶梯，我们现在假设0-4级阶梯有X种走法，0-5级阶梯有Y种走法，那么0-6级阶梯的走法有多少种？</p>
 <table>
 <thead>
 <tr>
@@ -87,35 +88,36 @@
 <th></th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td></td>
 <td></td>
 <td></td>
 <td></td>
-<td>:runner:差一步</td>
+<td>🏃差一步</td>
 <td>==6级==</td>
 </tr>
 <tr>
 <td></td>
 <td></td>
 <td></td>
-<td>:runner:差两步</td>
+<td>🏃差两步</td>
 <td>==5级==</td>
-<td>?种走法:horse:</td>
+<td>?种走法🐴</td>
 </tr>
 <tr>
 <td></td>
 <td></td>
 <td></td>
 <td>==4级==</td>
-<td>Y种走法:horse:</td>
+<td>Y种走法🐴</td>
 <td></td>
 </tr>
 <tr>
 <td></td>
 <td></td>
 <td>==3级==</td>
-<td>X种走法:horse:</td>
+<td>X种走法🐴</td>
 <td></td>
 <td></td>
 </tr>
@@ -143,18 +145,23 @@
 <td></td>
 <td></td>
 </tr>
-</tbody></table>
-<p>&emsp;&emsp;我们来分析一下，要走到第6级阶梯最后一步必然从4或5级阶梯开始的，而4或5级阶梯我们知道它的走法为X与Y，那么显然0-6级阶梯的走法即为X+Y，这个时候我们可以发现，每一级阶梯的走法数目其实都是由它的前两级阶梯来决定的，即可用此函数表示</p>
+</tbody>
+</table>
+<p>  我们来分析一下，要走到第6级阶梯最后一步必然从4或5级阶梯开始的，而4或5级阶梯我们知道它的走法为X与Y，那么显然0-6级阶梯的走法即为X+Y，这个时候我们可以发现，每一级阶梯的走法数目其实都是由它的前两级阶梯来决定的，即可用此函数表示</p>
 <blockquote>
 <p>fun(N) = func(N - 1) + func(N - 2)</p>
 </blockquote>
-<p>&emsp;&emsp;且我们知道第1级的阶梯有一步走法，第二级的阶梯有两步走法，所以函数完整的表示为</p>
+<p>  且我们知道第1级的阶梯有一步走法，第二级的阶梯有两步走法，所以函数完整的表示为</p>
 <blockquote>
-<p>func(1) = 1<br>func(2) = 2<br>fun(N) = func(N - 1) + func(N - 2)</p>
+<p>func(1) = 1<br>
+func(2) = 2<br>
+fun(N) = func(N - 1) + func(N - 2)</p>
 </blockquote>
-<p>&emsp;&emsp;这种解题思路即是动态规划思想，将大事化小，小事化了，转换为简单的问题，其中最后一步必然从4或5级阶梯开始这个称之为<strong>最优子结构</strong>，上述的方程称之为<strong>状态转移方程</strong>，func(1|2)称之为<strong>边界</strong>。</p>
-<h1 id="编码实现"><a href="#编码实现" class="headerlink" title="编码实现"></a>编码实现</h1><h2 id="递归实现"><a href="#递归实现" class="headerlink" title="递归实现"></a>递归实现</h2><p>&emsp;&emsp;上述的方程随眼一看即知道，这是一个递归方程，现在我们使用递归编程来实现此题的解法。</p>
-<pre><code class="java">    public int getStairsWays(int n) {
+<p>  这种解题思路即是动态规划思想，将大事化小，小事化了，转换为简单的问题，其中最后一步必然从4或5级阶梯开始这个称之为<strong>最优子结构</strong>，上述的方程称之为<strong>状态转移方程</strong>，func(1|2)称之为<strong>边界</strong>。</p>
+<h1>编码实现</h1>
+<h2 id="递归实现">递归实现</h2>
+<p>  上述的方程随眼一看即知道，这是一个递归方程，现在我们使用递归编程来实现此题的解法。</p>
+<pre><code class="language-java">    public int getStairsWays(int n) {
         if (n &lt;= 0) {
             return 0;
         }
@@ -162,16 +169,18 @@
             return n;
         }
         return getStairsWays(n - 1) + getStairsWays(n - 2);
-    }</code></pre>
-<p>&emsp;&emsp;其实稍微计算一下这套实现的时间复杂度你就会发现非常恐怖，它的计算量相当于一个二叉树，时间复杂度达到了O(2^N)，空间复杂度为O(1)。这道题目的优化空间是很大的，我们首先思考一下它的计算过程，我们可以发现很多都是重复计算的</p>
+    }
+</code></pre>
+<p>  其实稍微计算一下这套实现的时间复杂度你就会发现非常恐怖，它的计算量相当于一个二叉树，时间复杂度达到了O(2^N)，空间复杂度为O(1)。这道题目的优化空间是很大的，我们首先思考一下它的计算过程，我们可以发现很多都是重复计算的</p>
 <blockquote>
 <p>func(5) = func(4) + <strong>func(3)</strong></p>
 <p>func(4) = <strong>func(3)</strong> + func(2)</p>
 <p>func(3) = func(2) + func(1)</p>
 </blockquote>
-<p>&emsp;&emsp;<strong>func(3)</strong>被重复计算了很多次，为了降低计算次数，我们可以将已经计算过的缓存起来，不去重新计算它。</p>
-<h2 id="备忘录算法"><a href="#备忘录算法" class="headerlink" title="备忘录算法"></a>备忘录算法</h2><p>&emsp;&emsp;备忘录算法是递归实现了一种改良版，使用了一块内存区域来存储已经计算过的阶梯数，防止重复计算，在这里使用的是HashMap对象，其实更优的选择应该是一个长度为阶梯高度的int数组。</p>
-<pre><code class="java">    public int getStairsWays(int n) {
+<p>  **func(3)**被重复计算了很多次，为了降低计算次数，我们可以将已经计算过的缓存起来，不去重新计算它。</p>
+<h2 id="备忘录算法">备忘录算法</h2>
+<p>  备忘录算法是递归实现了一种改良版，使用了一块内存区域来存储已经计算过的阶梯数，防止重复计算，在这里使用的是HashMap对象，其实更优的选择应该是一个长度为阶梯高度的int数组。</p>
+<pre><code class="language-java">    public int getStairsWays(int n) {
         return getStairsWays(n, null);
     }
 
@@ -191,17 +200,20 @@
         int value = getStairsWays(n - 1, cache) + getStairsWays(n - 2, cache);
         cache.put(n, value);
         return value;
-    }</code></pre>
-<p>&emsp;&emsp;我们大概看一下这个算法的时间与空间复杂度，备忘录缓存了各级背包的计算结果因此它真正计算的只有n次，时间复杂度为O(N)，由于需要内存去缓存计算结果，所以它的空间复杂度也为O(N)<br>&emsp;&emsp;我们可以再分析一下，还有没有更优的解法呢？重新观察我们的计算过程</p>
+    }
+</code></pre>
+<p>  我们大概看一下这个算法的时间与空间复杂度，备忘录缓存了各级背包的计算结果因此它真正计算的只有n次，时间复杂度为O(N)，由于需要内存去缓存计算结果，所以它的空间复杂度也为O(N)<br>
+  我们可以再分析一下，还有没有更优的解法呢？重新观察我们的计算过程</p>
 <blockquote>
 <p>func(6) = <strong>func(5)</strong> + <strong>func(4)</strong></p>
 <p>func(5) = func(4) + func(3)</p>
 <p>func(4) = func(3) + func(2)</p>
 <p>func(3) = func(2) + func(1)</p>
 </blockquote>
-<p>&emsp;&emsp;func(6)只依赖于func(5)与func(4)，所以当func(5)与func(4)的结果值出来以后，func(3)这个结果就再没必要缓存了，我们把思维逆转一下，从func(3)开始计算到func(6)。</p>
-<h2 id="动态规划算法"><a href="#动态规划算法" class="headerlink" title="动态规划算法"></a>动态规划算法</h2><p>&emsp;&emsp;这里我们考虑使用自底向上的解法，只需要用两个变量来存储它的两个依赖值，分别是差两步的走法数目(pre)以及差一步的走法数目(next)，最终的走法数目为这两个依赖值的和。</p>
-<pre><code class="java">    public int getStairsWays(int n) {
+<p>  func(6)只依赖于func(5)与func(4)，所以当func(5)与func(4)的结果值出来以后，func(3)这个结果就再没必要缓存了，我们把思维逆转一下，从func(3)开始计算到func(6)。</p>
+<h2 id="动态规划算法">动态规划算法</h2>
+<p>  这里我们考虑使用自底向上的解法，只需要用两个变量来存储它的两个依赖值，分别是差两步的走法数目(pre)以及差一步的走法数目(next)，最终的走法数目为这两个依赖值的和。</p>
+<pre><code class="language-java">    public int getStairsWays(int n) {
         if (n &lt;= 0) {
             return 0;
         }
@@ -216,33 +228,60 @@
             pre = temp;
         }
         return pre + next;
-    }</code></pre>
-<p>&emsp;&emsp;分析一下这个算法的时间与空间复杂度，循环n-2次计算，所以时间复杂度是O(N)，内存上只开辟了两个临时变量没有额外的内存空间使用，所以空间复杂度为O(1)，这就是真正的动态规划算法。<br>&emsp;&emsp;有兴趣的同学可以测试一下以上三个算法在1000个阶梯的量级下运行时间，反正我使用递归运行了一下1000次阶梯，等了十分钟也没结果最终放弃了…</p>
-<h2 id="有没有更优解"><a href="#有没有更优解" class="headerlink" title="有没有更优解"></a>有没有更优解</h2><p>&emsp;&emsp;答案是有的，且时间复杂度为O(logN)，有兴趣的可以搜索数论中的<a href="https://zhuanlan.zhihu.com/p/42639682" target="_blank" rel="noopener">矩阵快速幂</a>，可根据状态转移方程快速计算出结果，与动态规划思想结合使用。<br>&emsp;&emsp;还有就是我们来观察上面讲到的<strong>状态转移方程</strong>，不难看出这表示的是一个<a href="https://baike.baidu.com/item/斐波那契数列" target="_blank" rel="noopener"><strong>斐波那契数列</strong></a>，而斐波那契数列是有通项公式的，在如这种特定问题下可以直接代入通项公式求解。</p>
-<h1 id="题目扩展，-背包问题"><a href="#题目扩展，-背包问题" class="headerlink" title="题目扩展， 背包问题"></a>题目扩展， 背包问题</h1><p>&emsp;&emsp;给定一组多个（n）物品，每种物品都有自己的重量（Wi）和价值（Vi），每种物品至多选择一个，在限定可承受总重量（C）的背包内，要想背包内物品的总价值最高，应该选择那几件物品？</p>
-<h2 id="简化题目"><a href="#简化题目" class="headerlink" title="简化题目"></a>简化题目</h2><p>&emsp;&emsp;我们先假设有5组物品，其中它的价值与重量分别为[4,2,1,3,1]、[4,3,2,1,2]，背包可承受总重量为6，求应该选那几件物品使得背包中的物品价值最大？</p>
-<h2 id="动态规划思路四步解题"><a href="#动态规划思路四步解题" class="headerlink" title="动态规划思路四步解题"></a>动态规划思路四步解题</h2><h3 id="问题是否可拆分？"><a href="#问题是否可拆分？" class="headerlink" title="问题是否可拆分？"></a>问题是否<strong>可拆分</strong>？</h3><p>&emsp;&emsp;如爬楼梯问题可以拆分成剩余一步与剩余两步的走法，此问题该如何拆分？</p>
+    }
+</code></pre>
+<p>  分析一下这个算法的时间与空间复杂度，循环n-2次计算，所以时间复杂度是O(N)，内存上只开辟了两个临时变量没有额外的内存空间使用，所以空间复杂度为O(1)，这就是真正的动态规划算法。<br>
+  有兴趣的同学可以测试一下以上三个算法在1000个阶梯的量级下运行时间，反正我使用递归运行了一下1000次阶梯，等了十分钟也没结果最终放弃了…</p>
+<h2 id="有没有更优解">有没有更优解</h2>
+<p>  答案是有的，且时间复杂度为O(logN)，有兴趣的可以搜索数论中的<a href="https://zhuanlan.zhihu.com/p/42639682" target="_blank" rel="noopener">矩阵快速幂</a>，可根据状态转移方程快速计算出结果，与动态规划思想结合使用。<br>
+  还有就是我们来观察上面讲到的<strong>状态转移方程</strong>，不难看出这表示的是一个<a href="https://baike.baidu.com/item/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97" target="_blank" rel="noopener"><strong>斐波那契数列</strong></a>，而斐波那契数列是有通项公式的，在如这种特定问题下可以直接代入通项公式求解。</p>
+<h1>题目扩展， 背包问题</h1>
+<p>  给定一组多个（n）物品，每种物品都有自己的重量（Wi）和价值（Vi），每种物品至多选择一个，在限定可承受总重量（C）的背包内，要想背包内物品的总价值最高，应该选择那几件物品？</p>
+<h2 id="简化题目">简化题目</h2>
+<p>  我们先假设有5组物品，其中它的价值与重量分别为[4,2,1,3,1]、[4,3,2,1,2]，背包可承受总重量为6，求应该选那几件物品使得背包中的物品价值最大？</p>
+<h2 id="动态规划思路四步解题">动态规划思路四步解题</h2>
+<h3 id="问题是否可拆分？">问题是否<strong>可拆分</strong>？</h3>
+<p>  如爬楼梯问题可以拆分成剩余一步与剩余两步的走法，此问题该如何拆分？</p>
 <ul>
-<li>我们先针对最后一个物品(价值为1，重量为2)做假设<br>(1) <strong>装载</strong>物品进入背包，问题演变成，<strong>有4组物品，背包承重量为4</strong>，应该选那几件物品使得背包中的物品价值最大？<br>(2) 物品<strong>不被装载</strong>，问题演变成，<strong>有4组物品，背包承重量为6</strong>，应该选那几件物品使得背包中的物品价值最大？<br>(3) 接下来我们还可以对子情况(1)、(2)分别做假设，因此该问题是<strong>可拆分的</strong>。</li>
+<li>我们先针对最后一个物品(价值为1，重量为2)做假设<br>
+(1) <strong>装载</strong>物品进入背包，问题演变成，<strong>有4组物品，背包承重量为4</strong>，应该选那几件物品使得背包中的物品价值最大？<br>
+(2) 物品<strong>不被装载</strong>，问题演变成，<strong>有4组物品，背包承重量为6</strong>，应该选那几件物品使得背包中的物品价值最大？<br>
+(3) 接下来我们还可以对子情况(1)、(2)分别做假设，因此该问题是<strong>可拆分的</strong>。</li>
 </ul>
-<h3 id="最优子结构是什么？"><a href="#最优子结构是什么？" class="headerlink" title="最优子结构是什么？"></a><strong>最优子结构</strong>是什么？</h3><p>&emsp;&emsp;如爬楼梯的问题的最优子结构是剩余一步与剩余两步的走法相加，此问题的最优结构是什么？</p>
-<p>&emsp;&emsp;针对我们刚刚的假设(1)、(2)，要想使得背包物品<strong>价值最大</strong>，最优的结构显而易见是<strong>(1)、(2)情况中背包价值更大</strong>的那个方案。</p>
-<h3 id="状态转移方程是什么？"><a href="#状态转移方程是什么？" class="headerlink" title="状态转移方程是什么？"></a><strong>状态转移方程</strong>是什么？</h3><ul>
-<li>问题拆分及找出最优子结构后，状态转移方程就很好推导了，存在两种情况<br>(1) 背包容量<strong>大于等于</strong>下一个物品的重量：物品存在选择与不选两种情况<br>(2) 背包容量<strong>小于</strong>下一个物品重量：物品不可被选择，情况只有一种</li>
-</ul>
-<p>&emsp;&emsp;可得背包问题的状态转移方程为</p>
-<blockquote>
-<p><strong>func(n, c) = max(func(n - 1, c - W[n - 1]) + V[n - 1], func(n - 1, c)) (n &gt; 1,  c &gt;= W[n - 1])<br>func(n, c) = func(n - 1, c) (n &gt; 1, c &lt; W[n - 1])</strong><br>其中<br><strong>n =&gt; 剩余物品数量<br>c =&gt; 背包剩余容量<br>W =&gt; 物品重量数组<br>V =&gt; 物品价值数组</strong></p>
-</blockquote>
-<h3 id="边界是什么？"><a href="#边界是什么？" class="headerlink" title="边界是什么？"></a><strong>边界</strong>是什么？</h3><p>&emsp;&emsp;问题不断的向子问题拆分后一定会有一个头，如爬楼梯是将一阶和二阶楼梯作为边界，针对背包问题，它的边界是什么？</p>
+<h3 id="最优子结构是什么？"><strong>最优子结构</strong>是什么？</h3>
+<p>  如爬楼梯的问题的最优子结构是剩余一步与剩余两步的走法相加，此问题的最优结构是什么？</p>
+<p>  针对我们刚刚的假设(1)、(2)，要想使得背包物品<strong>价值最大</strong>，最优的结构显而易见是**(1)、(2)情况中背包价值更大**的那个方案。</p>
+<h3 id="状态转移方程是什么？"><strong>状态转移方程</strong>是什么？</h3>
 <ul>
-<li>不难想到，当只剩最后一个物品，此时没有多余的物品能够选择了，就只能选择此物品，而选择此问题有两种情况<br>(1) 背包容量<strong>大于等于</strong>物品重量：此时返回物品价值<br>(2) 背包容量<strong>小于</strong>物品重量：此时返回0</li>
+<li>问题拆分及找出最优子结构后，状态转移方程就很好推导了，存在两种情况<br>
+(1) 背包容量<strong>大于等于</strong>下一个物品的重量：物品存在选择与不选两种情况<br>
+(2) 背包容量<strong>小于</strong>下一个物品重量：物品不可被选择，情况只有一种</li>
 </ul>
-<p>&emsp;&emsp;可得背包问题的边界为</p>
+<p>  可得背包问题的状态转移方程为</p>
 <blockquote>
-<p><strong>func(1, c) = V[0] (n = 1, c  &gt;= W[0])<br>func(1, c) = 0 (n = 1, c  &lt; W[0])</strong></p>
+<p><strong>func(n, c) = max(func(n - 1, c - W[n - 1]) + V[n - 1], func(n - 1, c)) (n &gt; 1,  c &gt;= W[n - 1])<br>
+func(n, c) = func(n - 1, c) (n &gt; 1, c &lt; W[n - 1])</strong><br>
+其中<br>
+<strong>n =&gt; 剩余物品数量<br>
+c =&gt; 背包剩余容量<br>
+W =&gt; 物品重量数组<br>
+V =&gt; 物品价值数组</strong></p>
 </blockquote>
-<h2 id="编码实现-1"><a href="#编码实现-1" class="headerlink" title="编码实现"></a>编码实现</h2><h3 id="简单递归"><a href="#简单递归" class="headerlink" title="简单递归"></a>简单递归</h3><pre><code class="java">/**
+<h3 id="边界是什么？"><strong>边界</strong>是什么？</h3>
+<p>  问题不断的向子问题拆分后一定会有一个头，如爬楼梯是将一阶和二阶楼梯作为边界，针对背包问题，它的边界是什么？</p>
+<ul>
+<li>不难想到，当只剩最后一个物品，此时没有多余的物品能够选择了，就只能选择此物品，而选择此问题有两种情况<br>
+(1) 背包容量<strong>大于等于</strong>物品重量：此时返回物品价值<br>
+(2) 背包容量<strong>小于</strong>物品重量：此时返回0</li>
+</ul>
+<p>  可得背包问题的边界为</p>
+<blockquote>
+<p><strong>func(1, c) = V[0] (n = 1, c  &gt;= W[0])<br>
+func(1, c) = 0 (n = 1, c  &lt; W[0])</strong></p>
+</blockquote>
+<h2 id="编码实现">编码实现</h2>
+<h3 id="简单递归">简单递归</h3>
+<pre><code class="language-java">/**
     * 获取最大价值
     *
     * @param n 物品数量
@@ -265,8 +304,10 @@ int getMaxValues(int n, int c, int[] w, int[] v) {
     } else {
         return getMaxValues(n - 1, c, w, v);
     }
-}</code></pre>
-<h3 id="备忘录算法-1"><a href="#备忘录算法-1" class="headerlink" title="备忘录算法"></a>备忘录算法</h3><pre><code class="java">int getMaxValues(int n, int c, int[] w, int[] v) {
+}
+</code></pre>
+<h3 id="备忘录算法-v2">备忘录算法</h3>
+<pre><code class="language-java">int getMaxValues(int n, int c, int[] w, int[] v) {
     return getMaxValues(n, c, w, v, null);
 }
 
@@ -297,9 +338,11 @@ int getMaxValues(int n, int c, int[] w, int[] v, Map&lt;String, Integer&gt; cach
 
 String generatorCacheKey(int n, int c) {
     return String.format(&quot;%s_%s&quot;, n, c);
-}</code></pre>
-<h3 id="动态规划算法-1"><a href="#动态规划算法-1" class="headerlink" title="动态规划算法"></a>动态规划算法</h3><p>&emsp;&emsp;跟爬楼梯问题一样，我们自底向上来思考这个问题，我们不妨基于简化的问题画一个表格来分析这个情况，表格第一列表示5个物品的情况，括号内代表价值与重量，表格的第一行表示给予的背包容量，其余的空白格子代表背的最大价值数。</p>
-<p>&emsp;&emsp;简化的问题：有5组物品，其中它的价值与重量分别为[4,2,1,3,1]、[4,3,2,1,2]，背包可承受总重量为6。</p>
+}
+</code></pre>
+<h3 id="动态规划算法-v2">动态规划算法</h3>
+<p>  跟爬楼梯问题一样，我们自底向上来思考这个问题，我们不妨基于简化的问题画一个表格来分析这个情况，表格第一列表示5个物品的情况，括号内代表价值与重量，表格的第一行表示给予的背包容量，其余的空白格子代表背的最大价值数。</p>
+<p>  简化的问题：有5组物品，其中它的价值与重量分别为[4,2,1,3,1]、[4,3,2,1,2]，背包可承受总重量为6。</p>
 <table>
 <thead>
 <tr>
@@ -312,7 +355,8 @@ String generatorCacheKey(int n, int c) {
 <th>剩余6容量</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>物品1 (4,4)</td>
 <td></td>
 <td></td>
@@ -366,8 +410,9 @@ String generatorCacheKey(int n, int c) {
 <td></td>
 <td></td>
 </tr>
-</tbody></table>
-<p>&emsp;&emsp;第一行非常容易填写，只有一个物品的情况下，背包最大价值要么为0要么为4，各自中箭头前面描述的是选择了那几个物品。</p>
+</tbody>
+</table>
+<p>  第一行非常容易填写，只有一个物品的情况下，背包最大价值要么为0要么为4，各自中箭头前面描述的是选择了那几个物品。</p>
 <table>
 <thead>
 <tr>
@@ -380,7 +425,8 @@ String generatorCacheKey(int n, int c) {
 <th>剩余6容量</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>物品1 (4,4)</td>
 <td>0</td>
 <td>0</td>
@@ -434,8 +480,9 @@ String generatorCacheKey(int n, int c) {
 <td></td>
 <td></td>
 </tr>
-</tbody></table>
-<p>&emsp;&emsp;我们将其余的格子全部填写完成，接下来的这几段<strong>很重要</strong>，理解它就理解了动态规划算法的核心。</p>
+</tbody>
+</table>
+<p>  我们将其余的格子全部填写完成，接下来的这几段<strong>很重要</strong>，理解它就理解了动态规划算法的核心。</p>
 <table>
 <thead>
 <tr>
@@ -448,7 +495,8 @@ String generatorCacheKey(int n, int c) {
 <th>剩余6容量</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>物品1 (4,4)</td>
 <td><strong>0</strong></td>
 <td><strong>0</strong></td>
@@ -462,18 +510,18 @@ String generatorCacheKey(int n, int c) {
 <td><strong>0</strong></td>
 <td><strong>0</strong></td>
 <td>2 =&gt; <strong>2</strong></td>
-<td>1 =&gt; <strong>4</strong>:droplet:</td>
+<td>1 =&gt; <strong>4</strong>💧</td>
 <td>1 =&gt; <strong>4</strong></td>
-<td>1 =&gt; <strong>4</strong>:droplet:</td>
+<td>1 =&gt; <strong>4</strong>💧</td>
 </tr>
 <tr>
 <td>物品3 (1,2)</td>
 <td><strong>0</strong></td>
 <td>3 =&gt; <strong>1</strong></td>
 <td>2 =&gt; <strong>2</strong></td>
-<td>1 =&gt; <strong>4</strong>:crescent_moon:</td>
-<td>1 =&gt; <strong>4</strong>:crescent_moon:</td>
-<td>1,3 =&gt; <strong>5</strong>:cyclone:</td>
+<td>1 =&gt; <strong>4</strong>🌙</td>
+<td>1 =&gt; <strong>4</strong>🌙</td>
+<td>1,3 =&gt; <strong>5</strong>🌀</td>
 </tr>
 <tr>
 <td>物品4 (3,1)</td>
@@ -481,7 +529,7 @@ String generatorCacheKey(int n, int c) {
 <td>4 =&gt; <strong>3</strong></td>
 <td>3,4 =&gt; <strong>4</strong></td>
 <td>1,3 =&gt; <strong>5</strong></td>
-<td>1,4 =&gt; <strong>7</strong>:star:</td>
+<td>1,4 =&gt; <strong>7</strong>⭐️</td>
 <td>1,4 =&gt; <strong>7</strong></td>
 </tr>
 <tr>
@@ -502,30 +550,35 @@ String generatorCacheKey(int n, int c) {
 <td></td>
 <td></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <ul>
-<li><p>我们来找一下规律</p>
+<li>我们来找一下规律
 <ul>
-<li><p>先回顾一下核心的状态转移方程</p>
+<li>先回顾一下核心的状态转移方程</li>
+</ul>
+</li>
+</ul>
 <blockquote>
 <p><strong>func(n, c) = max(func(n - 1, c - W[n - 1]) + V[n - 1], func(n - 1, c))</strong></p>
 </blockquote>
-</li>
-<li><p>我们先看:cyclone:/:droplet:这个图标组合，做一个方程代入</p>
-<blockquote>
-<p>n = 3 , c = 6 , V[2] = 1 , W[2] = 2<br><strong>注意，这里V[2]、W[2]对应的是物品3，因为数组从0开始编号</strong><br>func(3, 6) = max(func(2, 4) + 1 , func(2, 6))</p>
-</blockquote>
-</li>
-<li><p>再看:star:/:crescent_moon:这个图标组合，做一个方程代入</p>
-<blockquote>
-<p>n = 4 , c = 5 , V[3] = 3 , W[3] = 1<br>func(4, 5) = max(func(3, 4) + 3 , func(3, 5))</p>
-</blockquote>
-</li>
+<ul>
+<li>我们先看🌀/💧这个图标组合，做一个方程代入</li>
 </ul>
-</li>
+<blockquote>
+<p>n = 3 , c = 6 , V[2] = 1 , W[2] = 2<br>
+<strong>注意，这里V[2]、W[2]对应的是物品3，因为数组从0开始编号</strong><br>
+func(3, 6) = max(func(2, 4) + 1 , func(2, 6))</p>
+</blockquote>
+<ul>
+<li>再看⭐️/🌙这个图标组合，做一个方程代入</li>
 </ul>
-<p>&emsp;&emsp;规律已经很明显了，<strong>每个格子的数据都只依赖于它的前一行数据</strong>，和爬楼梯中我们最后只存储了前两步数据的思路一样，在这里我们只需要<strong>存储前一行的数据</strong>即可推导出下一行的数据，编码的思路和我们填充表格的思路一致，代码如下：</p>
-<pre><code class="java">int getMaxValues(int n, int c, int[] w, int[] v) {
+<blockquote>
+<p>n = 4 , c = 5 , V[3] = 3 , W[3] = 1<br>
+func(4, 5) = max(func(3, 4) + 3 , func(3, 5))</p>
+</blockquote>
+<p>  规律已经很明显了，<strong>每个格子的数据都只依赖于它的前一行数据</strong>，和爬楼梯中我们最后只存储了前两步数据的思路一样，在这里我们只需要<strong>存储前一行的数据</strong>即可推导出下一行的数据，编码的思路和我们填充表格的思路一致，代码如下：</p>
+<pre><code class="language-java">int getMaxValues(int n, int c, int[] w, int[] v) {
     int[] pre = new int[c + 1]; // 前一行
     int[] current = new int[c + 1]; // 当前行
     for (int i = 1; i &lt;= c; i++) { // 先填充第一行
@@ -548,9 +601,11 @@ String generatorCacheKey(int n, int c) {
         pre = Arrays.copyOf(current, current.length);
     }
     return current[c];
-}</code></pre>
-<h1 id="题目扩展，采金矿"><a href="#题目扩展，采金矿" class="headerlink" title="题目扩展，采金矿"></a>题目扩展，采金矿</h1><p>&emsp;&emsp;有一个国家发现了n座金矿，每座金矿的黄金储量（Vi）不同，需要参与挖掘的工人数（Li）也不同。参与挖矿工人的总数是C人。每座金矿要么全挖，要么不挖，不能派出一半人挖取一半金矿。要想得到尽可能多的黄金，应该选择挖取哪几座金矿？</p>
-<p>&emsp;&emsp;此题是背包问题的变种，解题思路是一样的，有兴趣的同学可以自己思考一下。</p>
+}
+</code></pre>
+<h1>题目扩展，采金矿</h1>
+<p>  有一个国家发现了n座金矿，每座金矿的黄金储量（Vi）不同，需要参与挖掘的工人数（Li）也不同。参与挖矿工人的总数是C人。每座金矿要么全挖，要么不挖，不能派出一半人挖取一半金矿。要想得到尽可能多的黄金，应该选择挖取哪几座金矿？</p>
+<p>  此题是背包问题的变种，解题思路是一样的，有兴趣的同学可以自己思考一下。</p>
 
   </div>
 </article>

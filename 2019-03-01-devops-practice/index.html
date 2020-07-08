@@ -66,26 +66,35 @@
   <div class="article-content">
     <p>Jenkins+Git+Maven+Nodejs实现前后端分离项目的自动化运维</p>
 <a id="more"></a>
-
-<h1 id="背景概述"><a href="#背景概述" class="headerlink" title="背景概述"></a>背景概述</h1><h2 id="理解Devops"><a href="#理解Devops" class="headerlink" title="理解Devops"></a>理解Devops</h2><p>&emsp;&emsp; <a href="https://zh.wikipedia.org/wiki/DevOps" target="_blank" rel="noopener">维基百科</a>对Devops的定义是：一种重视“软件开发人员（Dev）”和“IT运维技术人员（Ops）”之间沟通合作的文化、运动或惯例。透过自动化“软件交付”和“架构变更”的流程，来使得构建、测试、发布软件能够更加地快捷、频繁和可靠。</p>
-<p>&emsp;&emsp;自动化运维以及持续集成部署是Devops的核心思想，当你发现自己每天花费了大量的时间在等待程序<strong>打包/上传至服务器等</strong>过程中时，你就应该思考，是否需要将这些重复性的行为交给机器去做，来解放自己花费在这部分的时间。</p>
-<h2 id="我为何要引入Devops"><a href="#我为何要引入Devops" class="headerlink" title="我为何要引入Devops"></a>我为何要引入Devops</h2><h3 id="背景简介"><a href="#背景简介" class="headerlink" title="背景简介"></a>背景简介</h3><p>&emsp;&emsp;楼主是一个常年在二三线城市小公司漂泊的苦逼程序员，小公司的特性就是一人当三人使，一个人兼做开发测试加运维，公司采用敏捷开发模式，现有平台<strong>4套</strong>，大部分都是前后端分离的系统，由于功能调整的比较快导致部署演示的频次非常高，最多会出现一天部署<strong>10次</strong>左右，再加上ssh文件上传与webpack的打包程序的运行时间较长，最快的<strong>本地打包</strong>+<strong>ssh上传</strong>+<strong>启动远程运行脚本</strong>的流程走下来也得5min左右，所以光部署这一块花费的人力成本已经不可忽略了。</p>
-<h3 id="应用架构简介"><a href="#应用架构简介" class="headerlink" title="应用架构简介"></a>应用架构简介</h3><p>&emsp;&emsp;楼主公司的web应用主要采用SpringBoot+Vuejs前后端分离开发模式，打包后的应用由Nginx来动静内容分发，应用架构的详情可见我的另一篇博客<a href="/2019-02-23-server-front-separate/">前后端分离开发模式的实践总结</a>，源代码获取<a href="https://github.com/calebman/server-front-separate" target="_blank" rel="noopener">点击这里</a>，本文也将围绕着这个结构的工程来做自动化部署。</p>
-<h3 id="冲突与问题"><a href="#冲突与问题" class="headerlink" title="冲突与问题"></a>冲突与问题</h3><ul>
+<h1>背景概述</h1>
+<h2 id="理解Devops">理解Devops</h2>
+<p>   <a href="https://zh.wikipedia.org/wiki/DevOps" target="_blank" rel="noopener">维基百科</a>对Devops的定义是：一种重视“软件开发人员（Dev）”和“IT运维技术人员（Ops）”之间沟通合作的文化、运动或惯例。透过自动化“软件交付”和“架构变更”的流程，来使得构建、测试、发布软件能够更加地快捷、频繁和可靠。</p>
+<p>  自动化运维以及持续集成部署是Devops的核心思想，当你发现自己每天花费了大量的时间在等待程序<strong>打包/上传至服务器等</strong>过程中时，你就应该思考，是否需要将这些重复性的行为交给机器去做，来解放自己花费在这部分的时间。</p>
+<h2 id="我为何要引入Devops">我为何要引入Devops</h2>
+<h3 id="背景简介">背景简介</h3>
+<p>  楼主是一个常年在二三线城市小公司漂泊的苦逼程序员，小公司的特性就是一人当三人使，一个人兼做开发测试加运维，公司采用敏捷开发模式，现有平台<strong>4套</strong>，大部分都是前后端分离的系统，由于功能调整的比较快导致部署演示的频次非常高，最多会出现一天部署<strong>10次</strong>左右，再加上ssh文件上传与webpack的打包程序的运行时间较长，最快的<strong>本地打包</strong>+<strong>ssh上传</strong>+<strong>启动远程运行脚本</strong>的流程走下来也得5min左右，所以光部署这一块花费的人力成本已经不可忽略了。</p>
+<h3 id="应用架构简介">应用架构简介</h3>
+<p>  楼主公司的web应用主要采用SpringBoot+Vuejs前后端分离开发模式，打包后的应用由Nginx来动静内容分发，应用架构的详情可见我的另一篇博客<a href="/2019-02-23-server-front-separate/">前后端分离开发模式的实践总结</a>，源代码获取<a href="https://github.com/calebman/server-front-separate" target="_blank" rel="noopener">点击这里</a>，本文也将围绕着这个结构的工程来做自动化部署。</p>
+<h3 id="冲突与问题">冲突与问题</h3>
+<ul>
 <li>等待程序打包时间过长（特别是webpack的打包），大部分时间在等待，这件事在进行中也不好做别的事情</li>
 <li>重复性劳动过多，每次打包都是运行打包脚本，上传打包后的文件夹，运行远程启动脚本</li>
 <li>容易出错，假设现有的环境是两套（演示与生产），那么远端运行脚本需要根据环境的不同来传递不同的环境变量，人为错误极易发生</li>
 </ul>
-<h3 id="理想环境"><a href="#理想环境" class="headerlink" title="理想环境"></a>理想环境</h3><ul>
+<h3 id="理想环境">理想环境</h3>
+<ul>
 <li><strong>程序员</strong>提交代码至dev分支，此时触发演示环境的打包部署程序</li>
 <li><strong>技术老大</strong>提交代码至master分支，此时触发生产环境的打包部署程序</li>
 <li>打包成功/失败/中断通知到钉钉工作群</li>
 </ul>
-<h1 id="Devops实践"><a href="#Devops实践" class="headerlink" title="Devops实践"></a>Devops实践</h1><h2 id="Windows10环境搭建"><a href="#Windows10环境搭建" class="headerlink" title="Windows10环境搭建"></a>Windows10环境搭建</h2><ul>
+<h1>Devops实践</h1>
+<h2 id="Windows10环境搭建">Windows10环境搭建</h2>
+<ul>
 <li>java：<a href="https://www.cnblogs.com/smyhvae/p/3788534.html" target="_blank" rel="noopener">JDK开发环境搭建及环境变量配置</a></li>
 <li>tomcat：<a href="https://blog.csdn.net/haishu_zheng/article/details/50768272" target="_blank" rel="noopener">Windows安装和配置Tomcat</a></li>
 <li>git：<a href="https://www.jianshu.com/p/414ccd423efc" target="_blank" rel="noopener">Git安装教程</a></li>
-<li>jenkins<ul>
+<li>jenkins
+<ul>
 <li><a href="http://mirrors.jenkins-ci.org/war/latest/jenkins.war" target="_blank" rel="noopener">点此下载jenkins的war包</a></li>
 <li>将jenkins.war复制到tomcat服务器的webapps目录下</li>
 <li>配置jenkins的工作目录，在我的电脑-属性-高级系统设置-环境变量-添加系统变量JENKINS_HOME，内容是一个空的文件夹，作为jenkins的工作目录。<strong>如果不想设置系统环境变量</strong>也可以修改加载有jenkins.war的tomcat目录下的conf\context.xm文件，如下设置JENKINS_HOME</li>
@@ -93,24 +102,29 @@
 </ul>
 </li>
 </ul>
-<pre><code class="xml">&lt;!-- tomcat context.xml 环境变量设置 --&gt;
+<pre><code class="language-xml">&lt;!-- tomcat context.xml 环境变量设置 --&gt;
 &lt;Context&gt;
   &lt;!-- 设置jenkins的工作目录 --&gt;
   &lt;Environment name=&quot;JENKINS_HOME&quot; value=&quot;C:/jenkins/&quot; type=&quot;java.lang.String&quot;/&gt;
-&lt;/Context&gt;</code></pre>
-<h2 id="CentOS7-3环境搭建"><a href="#CentOS7-3环境搭建" class="headerlink" title="CentOS7.3环境搭建"></a>CentOS7.3环境搭建</h2><p>&emsp;&emsp;在CentOS7下搭建jenkins和Windows环境差不多，jenkins是一个依赖于web容易的war包，所以只要有java与tomcat环境即可</p>
-<h3 id="git环境"><a href="#git环境" class="headerlink" title="git环境"></a>git环境</h3><pre><code class="bash"># 判断git是否已存在 打印内容则代表存在
+&lt;/Context&gt;
+</code></pre>
+<h2 id="CentOS7-3环境搭建">CentOS7.3环境搭建</h2>
+<p>  在CentOS7下搭建jenkins和Windows环境差不多，jenkins是一个依赖于web容易的war包，所以只要有java与tomcat环境即可</p>
+<h3 id="git环境">git环境</h3>
+<pre><code class="language-bash"># 判断git是否已存在 打印内容则代表存在
 git --version
 # 不存在则安装 出现complete说明安装成功
-yum install -y git</code></pre>
-<h3 id="jdk环境"><a href="#jdk环境" class="headerlink" title="jdk环境"></a>jdk环境</h3><ol>
+yum install -y git
+</code></pre>
+<h3 id="jdk环境">jdk环境</h3>
+<ol>
 <li>jdk1.8下载：<a href="https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" target="_blank" rel="noopener">点此下载</a></li>
 </ol>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jdk-downloads.png" alt></p>
 <ol start="2">
 <li>解压配置</li>
 </ol>
-<pre><code class="bash">mkdir /usr/java
+<pre><code class="language-bash">mkdir /usr/java
 # 使用Xftp将下载的jdk放到此目录
 cd /usr/java
 # 解压jdk
@@ -128,15 +142,17 @@ export JAVA_HOME JRE_HOME PATH CLASSPATH
 # 使得配置生效
 source /etc/profile
 # 测试配置
-java -version</code></pre>
-<h3 id="tomcat环境"><a href="#tomcat环境" class="headerlink" title="tomcat环境"></a>tomcat环境</h3><ol>
+java -version
+</code></pre>
+<h3 id="tomcat环境">tomcat环境</h3>
+<ol>
 <li>tomcat8下载：<a href="https://tomcat.apache.org/download-80.cgi" target="_blank" rel="noopener">点此下载</a></li>
 </ol>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-tomcat-downloads.png" alt></p>
 <ol start="2">
 <li>解压配置</li>
 </ol>
-<pre><code class="bash"># 使用Xftp将下载的tomcat放到此目录
+<pre><code class="language-bash"># 使用Xftp将下载的tomcat放到此目录
 mkdir /usr/tomcat
 cd /usr/tomcat
 # 解压tomcat
@@ -184,14 +200,18 @@ sh /usr/tomcat/apache-tomcat-8.5.38/bin/shutdown.sh
 service tomcat start
 netstat -nlp|grep 8080
 # 查看所有注册自启的服务
-chkconfig</code></pre>
-<h3 id="jenkins环境"><a href="#jenkins环境" class="headerlink" title="jenkins环境"></a>jenkins环境</h3><ol>
-<li><p>jenkins下载：<a href="http://mirrors.jenkins-ci.org/war/latest/jenkins.war" target="_blank" rel="noopener">点此下载</a></p>
+chkconfig
+</code></pre>
+<h3 id="jenkins环境">jenkins环境</h3>
+<ol>
+<li>
+<p>jenkins下载：<a href="http://mirrors.jenkins-ci.org/war/latest/jenkins.war" target="_blank" rel="noopener">点此下载</a></p>
 </li>
-<li><p>配置</p>
+<li>
+<p>配置</p>
 </li>
 </ol>
-<pre><code class="bash">mkdir /usr/jenkins
+<pre><code class="language-bash">mkdir /usr/jenkins
 # 使用Xftp将下载的tomcat放到此目录
 cd /usr/jenkins
 # 复制jenkins.war至tomcat/webapps目录
@@ -212,8 +232,11 @@ sh bin/startup.sh
 # 检查工作目录切换是否成功 有文件即成功
 cd /home/app/jenkins
 # 清空原先的工作空间 jenkins默认工作空间为 /root/.jenkins
-rm -rf /root/.jenkins</code></pre>
-<h2 id="配置Jenkins"><a href="#配置Jenkins" class="headerlink" title="配置Jenkins"></a>配置Jenkins</h2><h3 id="Jenkins的初始化"><a href="#Jenkins的初始化" class="headerlink" title="Jenkins的初始化"></a>Jenkins的初始化</h3><blockquote>
+rm -rf /root/.jenkins
+</code></pre>
+<h2 id="配置Jenkins">配置Jenkins</h2>
+<h3 id="Jenkins的初始化">Jenkins的初始化</h3>
+<blockquote>
 <p>第一次进入jenkins时会要求使用初始密码解锁，按照提示操作就行了</p>
 </blockquote>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-init-password.png" alt></p>
@@ -238,23 +261,28 @@ rm -rf /root/.jenkins</code></pre>
 <p>所有配置完成后，成功进入系统</p>
 </blockquote>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-config-success.png" alt></p>
-<h3 id="Jenkins的环境配置"><a href="#Jenkins的环境配置" class="headerlink" title="Jenkins的环境配置"></a>Jenkins的环境配置</h3><h4 id="环境需求分析"><a href="#环境需求分析" class="headerlink" title="环境需求分析"></a>环境需求分析</h4><ol>
+<h3 id="Jenkins的环境配置">Jenkins的环境配置</h3>
+<h4 id="环境需求分析">环境需求分析</h4>
+<ol>
 <li>拉取远端master分支代码：<strong>Git插件</strong></li>
 <li>运行前端打包脚本：<strong>Nodejs环境</strong></li>
 <li>运行后端打包脚本：<strong>Java环境+Maven插件</strong></li>
-<li>推送装有构建代码的文件夹：<strong>SSH文件传输插件</strong> </li>
+<li>推送装有构建代码的文件夹：<strong>SSH文件传输插件</strong></li>
 <li>运行远程启动脚本：<strong>SSH脚本运行插件</strong></li>
 </ol>
-<h4 id="配置插件"><a href="#配置插件" class="headerlink" title="配置插件"></a>配置插件</h4><p>&emsp;&emsp;对应<strong>jenkins/系统管理/插件管理</strong>目录，根据上述的打包流程得出插件需求，在<a href="https://www.baidu.com" target="_blank" rel="noopener">baidu</a>/<a href="https://www.google.com" target="_blank" rel="noopener">google</a>搜索得到jenkins上对应的插件名称，选择并安装它们。</p>
+<h4 id="配置插件">配置插件</h4>
+<p>  对应<strong>jenkins/系统管理/插件管理</strong>目录，根据上述的打包流程得出插件需求，在<a href="https://www.baidu.com" target="_blank" rel="noopener">baidu</a>/<a href="https://www.google.com" target="_blank" rel="noopener">google</a>搜索得到jenkins上对应的插件名称，选择并安装它们。</p>
 <ul>
-<li>插件的选择<ul>
+<li>插件的选择
+<ul>
 <li><strong>Publish Over SSH</strong>：基于SSH协议的文件上传插件</li>
 <li><strong>Nodejs</strong>：nodejs运行环境</li>
 <li><strong>Dingding</strong>：钉钉推送通知</li>
 <li><strong>Maven Integration</strong>：Maven插件</li>
 </ul>
 </li>
-<li>插件的安装<ul>
+<li>插件的安装
+<ul>
 <li>进入jenkins-系统管理-插件管理</li>
 <li>选择available（可选插件）标签</li>
 <li>搜索出以上选择的插件，勾选之后点击直接安装</li>
@@ -262,7 +290,8 @@ rm -rf /root/.jenkins</code></pre>
 </li>
 </ul>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-plugin-manager-install.png" alt></p>
-<h4 id="配置全局工具"><a href="#配置全局工具" class="headerlink" title="配置全局工具"></a>配置全局工具</h4><p>&emsp;&emsp;对应<strong>jenkins/系统管理/全局工具配置</strong>目录，主要是配置打包所需的环境，如Java/Git/Maven等等，如果系统自带环境可以填写系统环境，如果没有可以采用jenkins自动安装的方式。</p>
+<h4 id="配置全局工具">配置全局工具</h4>
+<p>  对应<strong>jenkins/系统管理/全局工具配置</strong>目录，主要是配置打包所需的环境，如Java/Git/Maven等等，如果系统自带环境可以填写系统环境，如果没有可以采用jenkins自动安装的方式。</p>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-global-tools-setting.png" alt></p>
 <ol>
 <li>JDK配置</li>
@@ -286,45 +315,56 @@ rm -rf /root/.jenkins</code></pre>
 <li>NodeJS配置</li>
 </ol>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-global-tools-setting-nodejs.png" alt></p>
-<h4 id="配置文件管理"><a href="#配置文件管理" class="headerlink" title="配置文件管理"></a>配置文件管理</h4><p>&emsp;&emsp;对应<strong>jenkins/系统管理/Managed files</strong>目录，主要是管理自定义的配置文件，如Maven的settings.xml，Npm的npmrc.config文件等等，我们在这主要配置一下Maven和Npm的仓库镜像，使其切换到国内的阿里云的Maven镜像和淘宝的Npm镜像。</p>
+<h4 id="配置文件管理">配置文件管理</h4>
+<p>  对应<strong>jenkins/系统管理/Managed files</strong>目录，主要是管理自定义的配置文件，如Maven的settings.xml，Npm的npmrc.config文件等等，我们在这主要配置一下Maven和Npm的仓库镜像，使其切换到国内的阿里云的Maven镜像和淘宝的Npm镜像。</p>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-managed-files.png" alt></p>
 <ol>
 <li>Maven settings.xml</li>
 </ol>
-<p>&emsp;&emsp;新增Maven settings.xml配置文件，在mirrors标签下添加以下配置</p>
-<pre><code class="xml">&lt;mirror&gt;  
+<p>  新增Maven settings.xml配置文件，在mirrors标签下添加以下配置</p>
+<pre><code class="language-xml">&lt;mirror&gt;  
     &lt;id&gt;alimaven&lt;/id&gt;  
     &lt;name&gt;aliyun maven&lt;/name&gt;  
     &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public/&lt;/url&gt;  
     &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;          
-&lt;/mirror&gt;</code></pre>
+&lt;/mirror&gt;
+</code></pre>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-managed-files-maven.png" alt></p>
 <ol start="2">
 <li>Npm config file</li>
 </ol>
-<p>&emsp;&emsp;新增Npm config file配置文件，修改registry的配置</p>
-<pre><code class="properties">registry=https://registry.npm.taobao.org</code></pre>
+<p>  新增Npm config file配置文件，修改registry的配置</p>
+<pre><code class="language-properties">registry=https://registry.npm.taobao.org
+</code></pre>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-managed-files-npm.png" alt></p>
-<h4 id="配置全局凭据"><a href="#配置全局凭据" class="headerlink" title="配置全局凭据"></a>配置全局凭据</h4><p>&emsp;&emsp;对应<strong>jenkins/凭据/系统/全局凭据</strong>目录，主要是用于添加如gitlab/ssh等受限访问应用的信任凭据。</p>
+<h4 id="配置全局凭据">配置全局凭据</h4>
+<p>  对应<strong>jenkins/凭据/系统/全局凭据</strong>目录，主要是用于添加如gitlab/ssh等受限访问应用的信任凭据。</p>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-unrestricted-add.png" alt></p>
-<h4 id="其他配置"><a href="#其他配置" class="headerlink" title="其他配置"></a>其他配置</h4><ol>
+<h4 id="其他配置">其他配置</h4>
+<ol>
 <li><strong>Publish over SSH</strong>插件</li>
 </ol>
-<p>&emsp;&emsp;该插件的配置在<strong>jenkins/系统管理/系统设置</strong>目录，主要的配置如下：</p>
+<p>  该插件的配置在<strong>jenkins/系统管理/系统设置</strong>目录，主要的配置如下：</p>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-publish-over-ssh-config.png" alt></p>
-<p>&emsp;&emsp;高级配置下还可以配置SSH端口，重置默认设置等等，这里不做过多讲解</p>
+<p>  高级配置下还可以配置SSH端口，重置默认设置等等，这里不做过多讲解</p>
 <ol start="2">
 <li><strong>Dingding通知</strong>使用</li>
 </ol>
-<p>&emsp;&emsp;钉钉通知的配置在任务的配置项中，配置起来较为简单（比微信通知简单太多）只需要两步操作。</p>
-<p>（1）获取钉钉通知自定义机器人webhook的access_token，<a href="https://open-doc.dingtalk.com/docs/doc.htm?treeId=257&articleId=105735&docType=1" target="_blank" rel="noopener">点此进入</a>钉钉开放平台获取配置帮助</p>
-<p>（2）在任务中配置通知<br><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-dingding-setting.png" alt></p>
-<p>&emsp;&emsp;通知效果如图，点击即可进入jenkins管理平台查看详情</p>
+<p>  钉钉通知的配置在任务的配置项中，配置起来较为简单（比微信通知简单太多）只需要两步操作。</p>
+<p>（1）获取钉钉通知自定义机器人webhook的access_token，<a href="https://open-doc.dingtalk.com/docs/doc.htm?treeId=257&amp;articleId=105735&amp;docType=1" target="_blank" rel="noopener">点此进入</a>钉钉开放平台获取配置帮助</p>
+<p>（2）在任务中配置通知<br>
+<img src="https://resources.chenjianhui.site/2019-03-01-jenkins-dingding-setting.png" alt></p>
+<p>  通知效果如图，点击即可进入jenkins管理平台查看详情</p>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-dingding-notice.png" alt></p>
-<h3 id="Jenkins的任务配置"><a href="#Jenkins的任务配置" class="headerlink" title="Jenkins的任务配置"></a>Jenkins的任务配置</h3><p>&emsp;&emsp;至此基于一个前后端分离项目的自动打包配置已经基本完成，现在我们使用jenkins构建一个任务来测试配置是否成功，本次构建任务是基于我的一个开源模板项目<a href="https://github.com/calebman/server-front-separate.git" target="_blank" rel="noopener">server-front-separate</a>来进行。</p>
-<h4 id="新建任务"><a href="#新建任务" class="headerlink" title="新建任务"></a>新建任务</h4><p>&emsp;&emsp;进入jenkins根目录点击新建任务<br><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-new-task.png" alt></p>
-<p>&emsp;&emsp;任务新建成功<br><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-task-list.png" alt></p>
-<h4 id="任务基础配置"><a href="#任务基础配置" class="headerlink" title="任务基础配置"></a>任务基础配置</h4><p>&emsp;&emsp;本次的基础配置我们需要达到任务能够自动化打包的效果，为达到此效果我们至少需要配置以下几项内容：</p>
+<h3 id="Jenkins的任务配置">Jenkins的任务配置</h3>
+<p>  至此基于一个前后端分离项目的自动打包配置已经基本完成，现在我们使用jenkins构建一个任务来测试配置是否成功，本次构建任务是基于我的一个开源模板项目<a href="https://github.com/calebman/server-front-separate.git" target="_blank" rel="noopener">server-front-separate</a>来进行。</p>
+<h4 id="新建任务">新建任务</h4>
+<p>  进入jenkins根目录点击新建任务<br>
+<img src="https://resources.chenjianhui.site/2019-03-01-jenkins-new-task.png" alt></p>
+<p>  任务新建成功<br>
+<img src="https://resources.chenjianhui.site/2019-03-01-jenkins-task-list.png" alt></p>
+<h4 id="任务基础配置">任务基础配置</h4>
+<p>  本次的基础配置我们需要达到任务能够自动化打包的效果，为达到此效果我们至少需要配置以下几项内容：</p>
 <ul>
 <li>源码管理</li>
 <li>构建环境</li>
@@ -350,56 +390,67 @@ rm -rf /root/.jenkins</code></pre>
 <p>linux环境下采用Shell脚本构建，换行分割指令</p>
 </blockquote>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-task-build-node-linux.png" alt></p>
-<pre><code class="bash">cd front/
+<pre><code class="language-bash">cd front/
 node -v
 npm -v
 npm i
-npm run build</code></pre>
+npm run build
+</code></pre>
 <blockquote>
 <p>Windows环境下采用批处理脚本构建，使用&amp;与&amp;&amp;来连接指令，&amp;代表下一条指令必定执行，&amp;&amp;代表当上一条指令出现错误下一条指令不执行</p>
 </blockquote>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-task-build-node-windows.png" alt></p>
-<pre><code class="bash">cd front/ &amp; node -v &amp; npm -v &amp; npm i &amp;&amp; npm run build</code></pre>
-<h4 id="构建运行"><a href="#构建运行" class="headerlink" title="构建运行"></a>构建运行</h4><p>&emsp;&emsp;基础配置完成后，我们进入项目主页进行一次构建测试</p>
+<pre><code class="language-bash">cd front/ &amp; node -v &amp; npm -v &amp; npm i &amp;&amp; npm run build
+</code></pre>
+<h4 id="构建运行">构建运行</h4>
+<p>  基础配置完成后，我们进入项目主页进行一次构建测试</p>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-task-building.png" alt></p>
-<p>&emsp;&emsp;构建成功后进入任务的工作空间，可以查看到项目已经打包成功，项目的目录结构描述详见我的另一篇博客<a href="/2019-02-23-server-front-separate/">前后端分离开发模式的实践总结</a></p>
+<p>  构建成功后进入任务的工作空间，可以查看到项目已经打包成功，项目的目录结构描述详见我的另一篇博客<a href="/2019-02-23-server-front-separate/">前后端分离开发模式的实践总结</a></p>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-task-build-success.png" alt></p>
-<h3 id="Jenkins任务自动化"><a href="#Jenkins任务自动化" class="headerlink" title="Jenkins任务自动化"></a>Jenkins任务自动化</h3><p>&emsp;&emsp;至此项目已经能够通过jenkins平台来进行打包操作了，但是这还远远没达到<strong>自动化</strong>的概念，我们的目标是通过<strong>git代码提交操作来触发构建</strong>并且<strong>自动部署</strong>到生产/演示服务器上，所以接下来进行自动化的配置工作</p>
-<h4 id="自动构建"><a href="#自动构建" class="headerlink" title="自动构建"></a>自动构建</h4><p>&emsp;&emsp;自动构建是指通过Git服务器的Webhooks来触发Jenkins的打包构建流程，在这里我们将实现以下流程：</p>
+<h3 id="Jenkins任务自动化">Jenkins任务自动化</h3>
+<p>  至此项目已经能够通过jenkins平台来进行打包操作了，但是这还远远没达到<strong>自动化</strong>的概念，我们的目标是通过<strong>git代码提交操作来触发构建</strong>并且<strong>自动部署</strong>到生产/演示服务器上，所以接下来进行自动化的配置工作</p>
+<h4 id="自动构建">自动构建</h4>
+<p>  自动构建是指通过Git服务器的Webhooks来触发Jenkins的打包构建流程，在这里我们将实现以下流程：</p>
 <ul>
 <li>更新代码至github项目的master分支</li>
 <li>jenkins开始构建代码</li>
 </ul>
-<p>&emsp;&emsp;jenkins默认对github的webhook有支持使得这个流程的配置非常简单，jenkins的webhook触发地址为<strong>${JENKINS_URL}/github-webhook/</strong>，其中JENKINS_URL为jenkins服务在公网的根目录地址，可以在<strong>jenkins/系统管理/系统设置</strong>处修改此默认地址</p>
+<p>  jenkins默认对github的webhook有支持使得这个流程的配置非常简单，jenkins的webhook触发地址为**${JENKINS_URL}/github-webhook/<strong>，其中JENKINS_URL为jenkins服务在公网的根目录地址，可以在</strong>jenkins/系统管理/系统设置**处修改此默认地址</p>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-github-webhook-setting.png" alt></p>
-<p>&emsp;&emsp;得到Webhook地址后我们只需要在github的项目Settings选项卡上添加此地址即可，github默认触发Webhook的逻辑是push代码时即触发</p>
+<p>  得到Webhook地址后我们只需要在github的项目Settings选项卡上添加此地址即可，github默认触发Webhook的逻辑是push代码时即触发</p>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-github-add-webhook.png" alt></p>
-<p>&emsp;&emsp;当然，别忘记了在jenkins的任务中勾选Github hook触发构建</p>
+<p>  当然，别忘记了在jenkins的任务中勾选Github hook触发构建</p>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-task-github-hook-setting.png" alt></p>
-<h4 id="自动部署"><a href="#自动部署" class="headerlink" title="自动部署"></a>自动部署</h4><p>&emsp;&emsp;自动部署是指在代码构建完成后将生成的发布代码推送到远程服务器中并启动它们，流程如下：</p>
+<h4 id="自动部署">自动部署</h4>
+<p>  自动部署是指在代码构建完成后将生成的发布代码推送到远程服务器中并启动它们，流程如下：</p>
 <ul>
 <li>代码构建成功后上传打包目录</li>
 <li>运行远程脚本重启服务</li>
 </ul>
-<p>&emsp;&emsp;上文我们讲到<strong>Publish Over SSH</strong>这个插件能够远程推送代码并运行脚本，自动部署的功能即依赖此插件，配置如下：</p>
+<p>  上文我们讲到<strong>Publish Over SSH</strong>这个插件能够远程推送代码并运行脚本，自动部署的功能即依赖此插件，配置如下：</p>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-task-publish-over-ssh-setting.png" alt></p>
-<pre><code class="bash"># 定义脚本执行地址
+<pre><code class="language-bash"># 定义脚本执行地址
 export COMMAND_PATH=/home/app/application/server-front-separate/bin
 # 将所有脚本文件转换为UNIX格式
-sed -i &#39;s/\r//&#39; $COMMAND_PATH/*.sh
+sed -i 's/\r//' $COMMAND_PATH/*.sh
 # 停止服务
 sh $COMMAND_PATH/stop.sh test
 # 启动服务
-sh $COMMAND_PATH/start.sh test</code></pre>
-<h4 id="构建通知"><a href="#构建通知" class="headerlink" title="构建通知"></a>构建通知</h4><p>&emsp;&emsp;在这里我们使用钉钉来做通知功能，钉钉通知的配置在上文已经介绍过了，通知的的类型有四种，我们需要哪种类型的通知直接勾选即可，四种通知类型正好对应jenkins任务构建的三种状态：</p>
+sh $COMMAND_PATH/start.sh test
+</code></pre>
+<h4 id="构建通知">构建通知</h4>
+<p>  在这里我们使用钉钉来做通知功能，钉钉通知的配置在上文已经介绍过了，通知的的类型有四种，我们需要哪种类型的通知直接勾选即可，四种通知类型正好对应jenkins任务构建的三种状态：</p>
 <ul>
 <li>成功：构建步骤与构建后的操作全部成功，对应<strong>构建成功时通知</strong></li>
 <li>失败：构建步骤失败，对应<strong>构建失败时通知</strong></li>
 <li>不稳定：构建步骤成功但构建后的操作存在失败的情况，对应<strong>构建中断时通知</strong></li>
 </ul>
-<h3 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h3><h4 id="中文乱码"><a href="#中文乱码" class="headerlink" title="中文乱码"></a>中文乱码</h4><p>&emsp;&emsp;在<strong>jenkins/系统管理/系统设置</strong>中添加全局属性：</p>
+<h3 id="常见问题">常见问题</h3>
+<h4 id="中文乱码">中文乱码</h4>
+<p>  在<strong>jenkins/系统管理/系统设置</strong>中添加全局属性：</p>
 <p><img src="https://resources.chenjianhui.site/2019-03-01-jenkins-global-env-config.png" alt></p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<h1>参考资料</h1>
+<ul>
 <li><a href="https://blog.csdn.net/houyefeng/article/details/51027885" target="_blank" rel="noopener">Jenkins——应用篇——插件使用——Publish over SSH</a></li>
 <li><a href="https://blog.csdn.net/workdsz/article/details/77947183" target="_blank" rel="noopener">Jenkins 集成钉钉机器人</a></li>
 <li><a href="https://blog.csdn.net/ZZY1078689276/article/details/77839045" target="_blank" rel="noopener">Jenkins之解决乱码问题</a></li>

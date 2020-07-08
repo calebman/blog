@@ -56,20 +56,23 @@
   
 
   <div class="article-content">
-    <p>&emsp;&emsp;跨过了2019来到了2020年，新年新气象，准备写一些<strong>系列性质</strong>的文章，旨在更好的对知识归纳总结，更系统的理解一块知识面。好的废话不多说，2020年开篇的主题是缓存系列，是个程序员或多或少都跟缓存打过交道，作为一个Java程序员大部分时候还是在应用层使用缓存，接触的缓存框架和中间件会比较多，但是<strong>本系列并不想仅限于应用层讲述缓存</strong>，我将从底层到CPU、操作系统，中层到浏览器、CDN，上层应用程序来讲述缓存的应用，通过这个系列能学习到缓存的应用场景及时机。</p>
+    <p>  跨过了2019来到了2020年，新年新气象，准备写一些<strong>系列性质</strong>的文章，旨在更好的对知识归纳总结，更系统的理解一块知识面。好的废话不多说，2020年开篇的主题是缓存系列，是个程序员或多或少都跟缓存打过交道，作为一个Java程序员大部分时候还是在应用层使用缓存，接触的缓存框架和中间件会比较多，但是<strong>本系列并不想仅限于应用层讲述缓存</strong>，我将从底层到CPU、操作系统，中层到浏览器、CDN，上层应用程序来讲述缓存的应用，通过这个系列能学习到缓存的应用场景及时机。</p>
 <a id="more"></a>
-
-<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>新的一年我将稍微改变一下自己的文章排布，将复杂的问题作为一个系列分块讲述，提取模块的重点并减少单篇文章的篇幅，降低阅读时间。本篇文章作为缓存系列的开篇之作第一步自然是挖坑，本系列将从以下几个方面分多篇文章来讲述缓存。</p>
+<h1>前言</h1>
+<p>新的一年我将稍微改变一下自己的文章排布，将复杂的问题作为一个系列分块讲述，提取模块的重点并减少单篇文章的篇幅，降低阅读时间。本篇文章作为缓存系列的开篇之作第一步自然是挖坑，本系列将从以下几个方面分多篇文章来讲述缓存。</p>
 <ol>
 <li>缓存系列开篇——缓存定义、浏览器、CDN中的缓存</li>
 <li>缓存系列二——应用程序中的缓存与常用中间件</li>
 <li>缓存系列三——Redis专题</li>
 <li>缓存系列四——操作系统、CPU中的缓存</li>
 </ol>
-<h1 id="什么是缓存"><a href="#什么是缓存" class="headerlink" title="什么是缓存"></a>什么是缓存</h1><p>关于定义你去搜索wiki、百度百科就会发现给出来的都是跟存储器相关的，这其实不是我想要的答案。</p>
+<h1>什么是缓存</h1>
+<p>关于定义你去搜索wiki、百度百科就会发现给出来的都是跟存储器相关的，这其实不是我想要的答案。</p>
 <p><strong>我认为的缓存是一个抽象的概念，它可以是一个存储器、一个应用程序或者一个服务器，但不管它是什么东西，它的行为永远都是保存一份原始资源的副本并提供一个高速的访问途径，而有这个行为的任意东西都可以称之为缓存。</strong></p>
 <p>知道缓存的定义后它的应用场景也就很清楚了，<strong>当你有频繁读取的需求，且源数据访问速度远低于本地访问时，可采用缓存的解决方案。</strong></p>
-<h1 id="浏览器中的缓存"><a href="#浏览器中的缓存" class="headerlink" title="浏览器中的缓存"></a>浏览器中的缓存</h1><h3 id="为何使用缓存"><a href="#为何使用缓存" class="headerlink" title="为何使用缓存"></a>为何使用缓存</h3><p>要知道浏览器为何使用缓存我们就得知道我们使用浏览器打开一个网页时，浏览器做了什么？</p>
+<h1>浏览器中的缓存</h1>
+<h3 id="为何使用缓存">为何使用缓存</h3>
+<p>要知道浏览器为何使用缓存我们就得知道我们使用浏览器打开一个网页时，浏览器做了什么？</p>
 <p>一个网页是由<code>HTML+JS+CSS+静态文件</code>组成的，当我们使用浏览器打开一个网页时，浏览器其实是在访问Web服务器的<code>HTML</code>、<code>JS</code>、<code>CSS</code>、静态文件（如图片、gif）等资源，做过Web开发的都知道<code>JS</code>与<code>CSS</code>以及静态文件在网站上线后基本不会改变，<code>HTML</code>作为网页结构如果是服务端渲染那么它是可变的。</p>
 <p>结合这些知道再看看我们上面提到的缓存应用场景</p>
 <ol>
@@ -78,8 +81,9 @@
 </ol>
 <p>于是浏览器就采用了本地缓存服务器资源的方式来减少发往服务器的请求，也提高了页面加载的效率，在用户使用时也会感受到第一次打开页面的时候有点慢，后面就快了很多。</p>
 <p><strong>这里会有一个问题，浏览器不能缓存所有数据，这样会导致你网页重新发布了但是客户浏览器的网页确一直不更新，所以浏览器需要根据服务器的安排来缓存数据。</strong></p>
-<h3 id="如何使用浏览器缓存"><a href="#如何使用浏览器缓存" class="headerlink" title="如何使用浏览器缓存"></a>如何使用浏览器缓存</h3><p>服务器如何控制浏览器的缓存呢？这就得讲讲<code>HTTP协议</code>了，因为浏览器获取服务器资源都是通过此协议进行交互访问。为了更好的讲述浏览器缓存流程我截取了本人博客网站的一个<code>CSS</code>资源的响应体如下</p>
-<pre><code class="http">Request URL: https://chenjianhui.site/css/back-to-top.css
+<h3 id="如何使用浏览器缓存">如何使用浏览器缓存</h3>
+<p>服务器如何控制浏览器的缓存呢？这就得讲讲<code>HTTP协议</code>了，因为浏览器获取服务器资源都是通过此协议进行交互访问。为了更好的讲述浏览器缓存流程我截取了本人博客网站的一个<code>CSS</code>资源的响应体如下</p>
+<pre><code class="language-http">Request URL: https://chenjianhui.site/css/back-to-top.css
 Request Method: GET
 Status Code: 200 OK (from disk cache)
 Remote Address: 120.79.79.226:443
@@ -94,7 +98,8 @@ Server: nginx/1.15.12
 Referer: https://chenjianhui.site/
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36
 
-CSS Content ...</code></pre>
+CSS Content ...
+</code></pre>
 <p><strong>重点关注以下几个响应头部信息</strong>，这部分头部实现了<strong>协商缓存</strong>。</p>
 <ul>
 <li>Status Code：请求响应码，这里200代表成功，后面还有一个括号<code>from disk cache</code>描述了这个资源来自于本地磁盘的缓存。</li>
@@ -112,27 +117,29 @@ CSS Content ...</code></pre>
 <li>Expires： 响应头包含日期/时间，即在此时候之后，响应过期。如果是无效的日期代表资源已经过期。</li>
 <li>Cache-Control：通过指定指令来实现缓存机制，缓存指令是单向的。比如<code>Cache-Control: max-age=30</code>代表该资源可以缓存的30秒，<code>max-age</code>的优先级将高于<code>Expires</code>。</li>
 </ul>
-<h3 id="实践浏览器缓存"><a href="#实践浏览器缓存" class="headerlink" title="实践浏览器缓存"></a>实践浏览器缓存</h3><p>在知道了缓存头部的作用后，我们可以写一些代码来实践一下让浏览器缓存我们的数据。</p>
+<h3 id="实践浏览器缓存">实践浏览器缓存</h3>
+<p>在知道了缓存头部的作用后，我们可以写一些代码来实践一下让浏览器缓存我们的数据。</p>
 <blockquote>
 <p>由于使用Java代码启动一个HTTP服务器还需要经过编译过程太过麻烦，因此这里采用<code>Nodejs</code>来实现缓存示例</p>
 </blockquote>
-<pre><code class="js">const PORT = 3030;
+<pre><code class="language-js">const PORT = 3030;
 const CACHE_SECONDS = 10;
 // 加载http模块
-var http = require(&#39;http&#39;);
+var http = require('http');
 // 创建http服务器
 var server = http.createServer(function (req, res) {
-  if (req.url === &#39;/test.js&#39;) {
+  if (req.url === '/test.js') {
     // 设置缓存响应头部
-    res.setHeader(&#39;Cache-Control&#39;, `max-age=${CACHE_SECONDS}, public`);
-    res.end(`document.body.append(&#39;Load script test.js on ${new Date()}&#39;)`)
+    res.setHeader('Cache-Control', `max-age=${CACHE_SECONDS}, public`);
+    res.end(`document.body.append('Load script test.js on ${new Date()}')`)
   } else {
     // 首页加载 test.js 脚本
     res.end(`&lt;html&gt;&lt;body&gt;&lt;h1&gt;Script will cache ${CACHE_SECONDS} seconds&lt;/h1&gt;&lt;/body&gt;&lt;script src=&quot;http://localhost:${PORT}/test.js&quot;&gt;&lt;/script&gt;&lt;/html&gt;`);
   }
 })
 server.listen(PORT)
-console.log(`Listening in http://localhost:${PORT}`)</code></pre>
+console.log(`Listening in http://localhost:${PORT}`)
+</code></pre>
 <p>这段代码可以拷贝到有<code>Nodejs</code>环境的机器中使用<code>node xxx.js</code>直接运行，它主要做了以下几件事情:</p>
 <ol>
 <li>监听3030端口启动了一个<code>HTTP</code>服务器，默认提供了一个<code>HTML</code>页面，该页面通过<code>script</code>标签加载了<code>test.js</code>脚本。</li>
@@ -146,11 +153,14 @@ console.log(`Listening in http://localhost:${PORT}`)</code></pre>
 <p>这里可以看到显示效果上没有改变，但是网络监控方面显示脚本是从缓存中获取(from memory cache)，现在我们静候一段时间再点击刷新，脚本缓存失效重新从服务器上获取了最新资源，时间变成了<code>14:12:45</code>，运行效果如下图。</p>
 <p><img src="https://resources.chenjianhui.site/2020-01-07-http-cache-exp-3.png" alt></p>
 <p><strong>有关其他的缓存头部可以根据相同的方式进行测试，多动手对自己理解这些<code>HTTP</code>响应头部以及协议会有很大的帮助。</strong></p>
-<h1 id="CDN中的缓存"><a href="#CDN中的缓存" class="headerlink" title="CDN中的缓存"></a>CDN中的缓存</h1><p>为什么<code>CDN</code>缓存要和浏览器缓存放一起说呢？因为它们都是为了<strong>提高网页访问速度</strong>而设计的。浏览器缓存是提高了<strong>频繁请求资源</strong>的速度，CDN缓存提高了<strong>单次请求资源</strong>的速度。</p>
-<h3 id="CDN是什么"><a href="#CDN是什么" class="headerlink" title="CDN是什么"></a>CDN是什么</h3><p>CDN是Content Delivery Network的简称，即“内容分发网络”的意思。一般我们所说的CDN加速，一般是指网站加速或者用户下载资源加速。</p>
+<h1>CDN中的缓存</h1>
+<p>为什么<code>CDN</code>缓存要和浏览器缓存放一起说呢？因为它们都是为了<strong>提高网页访问速度</strong>而设计的。浏览器缓存是提高了<strong>频繁请求资源</strong>的速度，CDN缓存提高了<strong>单次请求资源</strong>的速度。</p>
+<h3 id="CDN是什么">CDN是什么</h3>
+<p>CDN是Content Delivery Network的简称，即“内容分发网络”的意思。一般我们所说的CDN加速，一般是指网站加速或者用户下载资源加速。</p>
 <p><strong>那么它如何做到加速效果呢？</strong></p>
 <p>就近访问原则，就如同你找水电燃气的缴费点，由于各个缴费点提供的服务是一样的，你肯定会选择离你最近的服务点进行缴费。同理在访问网页时我们也可以根据客户机的位置，为它选择一个最近的服务节点提供资源服务，寻找最近服务节点的这个过程就叫做CDN加速。</p>
-<h3 id="CDN工作原理"><a href="#CDN工作原理" class="headerlink" title="CDN工作原理"></a>CDN工作原理</h3><p>了解<code>CDN</code>的工作原理之前我们先来看看传统网站的访问过程</p>
+<h3 id="CDN工作原理">CDN工作原理</h3>
+<p>了解<code>CDN</code>的工作原理之前我们先来看看传统网站的访问过程</p>
 <ol>
 <li>浏览器输入chenjianhui.site</li>
 <li>浏览器请求<code>DNS</code>服务器，查询到chenjianhui.site对应服务器的IP</li>
@@ -158,7 +168,8 @@ console.log(`Listening in http://localhost:${PORT}`)</code></pre>
 </ol>
 <p>这里需要重点讲一下第2步，因为<code>CND</code>就是在这一步做了文章，其具体过程如下所示：</p>
 <ul>
-<li><code>chenjianhui.site</code>解析成IP的具体过程<ol>
+<li><code>chenjianhui.site</code>解析成IP的具体过程
+<ol>
 <li>操作系统查询本地缓存（host文件或者是浏览器的缓存）是否有解析记录，有则直接使用，没有则进入第2步</li>
 <li>操作系统向<code>LocalDNS</code>查询域名的IP地址，一般称运营商的DNS服务器为<code>LocalDNS</code>，这里<code>LocalDNS</code>会先查询本地缓存，没有则进入第3步</li>
 <li><code>LocalDNS</code>向<code>RootDNS</code>查询得到权威服务器，传说中全球只有几台的那些服务器称之为<code>RootDNS</code></li>
@@ -179,13 +190,15 @@ console.log(`Listening in http://localhost:${PORT}`)</code></pre>
 <li><code>LocalDns</code>得到一个<code>CNAME</code>记录，向智能调度DNS查询域名的ip地址</li>
 <li>智能调度DNS 根据一定的算法和策略(比如静态拓扑，容量等)，将最适合的CDN节点IP地址回应给<code>LocalDns</code></li>
 </ol>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<h1>参考资料</h1>
+<ul>
 <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/ETag" target="_blank" rel="noopener">MDN ETag</a></li>
 <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Last-Modified" target="_blank" rel="noopener">MDN Last-Modified</a></li>
 <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Cache-Control" target="_blank" rel="noopener">MDN Cache-Control</a></li>
 <li><a href="https://colobu.com/2016/09/23/CDN-introduction/" target="_blank" rel="noopener">CDN的原理以及其中的一些技术</a></li>
 </ul>
-<h1 id="关于公众号"><a href="#关于公众号" class="headerlink" title="关于公众号"></a>关于公众号</h1><p><img src="https://resources.chenjianhui.site/wechat-qrcode.png" alt></p>
+<h1>关于公众号</h1>
+<p><img src="https://resources.chenjianhui.site/wechat-qrcode.png" alt></p>
 
   </div>
 </article>

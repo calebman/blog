@@ -56,17 +56,17 @@
   
 
   <div class="article-content">
-    <p>&emsp;&emsp;在前后端分离的开发模式中，到项目的打包发布阶段我们一般都是会采用一个支持<code>HTTP</code>动静分离的中间件来部署前后端应用，最常见的就是<code>Nginx</code>，它不仅可以帮我们做动静分离，还可以做后端请求的负载均衡，这一部分的实现教程很多在此就不做过多解释，本文想讲的是如何不依赖中间件，将前端打包的内容嵌入后端，以一个<code>jar</code>发布。</p>
+    <p>  在前后端分离的开发模式中，到项目的打包发布阶段我们一般都是会采用一个支持<code>HTTP</code>动静分离的中间件来部署前后端应用，最常见的就是<code>Nginx</code>，它不仅可以帮我们做动静分离，还可以做后端请求的负载均衡，这一部分的实现教程很多在此就不做过多解释，本文想讲的是如何不依赖中间件，将前端打包的内容嵌入后端，以一个<code>jar</code>发布。</p>
 <a id="more"></a>
-
-<h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><p>&emsp;&emsp;本人是基于<code>SpringBoot</code>+<code>Vuejs</code>来做前后端分离开发的，所以本次也基于这两个技术展来思考如何实现，在想如何不依赖中间件实现部署时我们得先思考<strong>中间件为我们的前后端分离部署带来了什么？</strong></p>
-<p>&emsp;&emsp;以<code>Nginx</code>举例，如下是前后端分离部署模式下的一个配置示例主要干了三件事情</p>
+<h1>思考</h1>
+<p>  本人是基于<code>SpringBoot</code>+<code>Vuejs</code>来做前后端分离开发的，所以本次也基于这两个技术展来思考如何实现，在想如何不依赖中间件实现部署时我们得先思考<strong>中间件为我们的前后端分离部署带来了什么？</strong></p>
+<p>  以<code>Nginx</code>举例，如下是前后端分离部署模式下的一个配置示例主要干了三件事情</p>
 <ul>
 <li>使用<code>alias</code>实现静态资源的分发</li>
-<li>使用<code>try_files</code>实现前端路由的转发，如<strong><a href="http://localhost/home" target="_blank" rel="noopener">http://localhost/home</a></strong>这个地址是对应不到静态资源的，这个时候就会触发404响应，<code>try_files</code>指令在对应不到静态资源时将内容转发到<strong>/index.html</strong>也就是前端首页，以此来实现<code>history</code>模式的前端路由</li>
+<li>使用<code>try_files</code>实现前端路由的转发，如<strong><a href="http://localhost/home" target="_blank" rel="noopener">http://localhost/home</a></strong>这个地址是对应不到静态资源的，这个时候就会触发404响应，<code>try_files</code>指令在对应不到静态资源时将内容转发到**/index.html**也就是前端首页，以此来实现<code>history</code>模式的前端路由</li>
 <li>使用<code>proxy_pass</code>实现后端请求的分发</li>
 </ul>
-<pre><code class="nginx">location /front {
+<pre><code class="language-nginx">location /front {
     alias $application_path/traffic-sso/html;
     try_files $uri $uri/ /index.html last;
     index index.html index.htm;
@@ -77,26 +77,28 @@ location /api/ {
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-}</code></pre>
-<p>&emsp;&emsp;在知道中间件完成的核心功能后，我们需要基于<code>SpringBoot</code>项目也去完成这么一套功能，即可实现集成部署了，我们现在一项一项功能分析一下</p>
+}
+</code></pre>
+<p>  在知道中间件完成的核心功能后，我们需要基于<code>SpringBoot</code>项目也去完成这么一套功能，即可实现集成部署了，我们现在一项一项功能分析一下</p>
 <ul>
 <li>静态资源的分发：可通过配置静态文件映射来实现</li>
 <li>前端路由的转发：可通过拦截器来实现</li>
 <li>后端请求的分发：可通过拦截器来实现</li>
 </ul>
-<p>&emsp;&emsp;总体来说实现上不是什么问题，静态文件映射配置很容易在此不做过多描述，问题主要在拦截器的实现，需要有两个拦截器分别实现以下两个分发</p>
+<p>  总体来说实现上不是什么问题，静态文件映射配置很容易在此不做过多描述，问题主要在拦截器的实现，需要有两个拦截器分别实现以下两个分发</p>
 <ul>
 <li><code>http://localhost:8080/front/**</code>  =&gt; <code>index.html</code></li>
 <li><code>http://localhost:8080/api/**</code> =&gt; <code>http://localhost:8080/**</code></li>
 </ul>
-<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><p>&emsp;&emsp;观察上面拦截器其实主要就是实现一个路径匹配与处理器转发的功能，基于此需求我们定义<code>RewriteFilter.java</code>如下，这里使用<code>Spring Web MVC</code>的<code>AntPathMatcher</code>来做路径匹配器，使用了<code>Java8</code>的<code>Function</code>来做转发逻辑定义，代码比较简单就不做过多描述了</p>
-<pre><code class="java">/**
+<h1>代码实现</h1>
+<p>  观察上面拦截器其实主要就是实现一个路径匹配与处理器转发的功能，基于此需求我们定义<code>RewriteFilter.java</code>如下，这里使用<code>Spring Web MVC</code>的<code>AntPathMatcher</code>来做路径匹配器，使用了<code>Java8</code>的<code>Function</code>来做转发逻辑定义，代码比较简单就不做过多描述了</p>
+<pre><code class="language-java">/**
  * @author JianhuiChen
  * @description 基于转发逻辑的过滤器
  * @date 2019-08-15
  */
 public class RewriteFilter implements Filter {
-
+    
     private Logger log = LoggerFactory.getLogger(RewriteFilter.class);
 
     /**
@@ -139,50 +141,58 @@ public class RewriteFilter implements Filter {
             chain.doFilter(req, resp);
         }
     }
-}</code></pre>
-<p>&emsp;&emsp;现在我们将静态资源与拦截器配置使用</p>
+}
+</code></pre>
+<p>  现在我们将静态资源与拦截器配置使用</p>
 <ul>
 <li>首先运行前端项目的打包指令将打包的静态资源拷贝到<code>SpringBoot</code>的<code>public/static/resources</code>目录下</li>
-<li>配置前端路由的转发拦截器<pre><code class="java">  /**
-   * 匹配路由转发
-   * 所有 /front/** 请求映射至 /index.html
-   * exp /front/home -&gt; /index.html
-   */
-  @Bean
-  public FilterRegistrationBean frontFilter() {
-      FilterRegistrationBean&lt;RewriteFilter&gt; registration = new FilterRegistrationBean&lt;&gt;();
-      registration.setFilter(new RewriteFilter(&quot;/front/**&quot;, http -&gt; &quot;index.html&quot;));
-      registration.addUrlPatterns(&quot;/front/*&quot;);
-      registration.setName(&quot;frontFilter&quot;);
-      registration.setOrder(1);
-      return registration;
-  }</code></pre>
-</li>
-<li>配置后端路由的转发拦截器<pre><code class="java">  /**
-   * 匹配动态请求
-   * 所有 /api/** 请求映射至 /**
-   * exp /api/resources/users/me -&gt; /resources/users/me
-   */
-  @Bean
-  public FilterRegistrationBean apiFilter() {
-      FilterRegistrationBean&lt;RewriteFilter&gt; registration = new FilterRegistrationBean&lt;&gt;();
-      registration.setFilter(new RewriteFilter(&quot;/api/**&quot;,
-              http -&gt; http.getServletPath().replaceFirst(&quot;/api&quot;, &quot;&quot;)));
-      registration.addUrlPatterns(&quot;/api/*&quot;);
-      registration.setName(&quot;apiFilter&quot;);
-      registration.setOrder(1);
-      return registration;
-  }</code></pre>
-</li>
+<li>配置前端路由的转发拦截器</li>
 </ul>
-<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p>&emsp;&emsp;打开浏览器输入链接<a href="http://localhost:8080/front" target="_blank" rel="noopener">http://localhost:8080/front</a>完成测试</p>
-<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><h2 id="AntPathMatcher相关记录"><a href="#AntPathMatcher相关记录" class="headerlink" title="AntPathMatcher相关记录"></a>AntPathMatcher相关记录</h2><p>&emsp;&emsp;<code>AntPathMatcher</code>是<code>Spring</code>用于路径匹配的工具类，我们经常写的<code>@RequestMapping</code>的匹配逻辑就与它有关，它主要的匹配模式有以下三种</p>
+<pre><code class="language-java">    /**
+     * 匹配路由转发
+     * 所有 /front/** 请求映射至 /index.html
+     * exp /front/home -&gt; /index.html
+     */
+    @Bean
+    public FilterRegistrationBean frontFilter() {
+        FilterRegistrationBean&lt;RewriteFilter&gt; registration = new FilterRegistrationBean&lt;&gt;();
+        registration.setFilter(new RewriteFilter(&quot;/front/**&quot;, http -&gt; &quot;index.html&quot;));
+        registration.addUrlPatterns(&quot;/front/*&quot;);
+        registration.setName(&quot;frontFilter&quot;);
+        registration.setOrder(1);
+        return registration;
+    }
+</code></pre>
+<ul>
+<li>配置后端路由的转发拦截器</li>
+</ul>
+<pre><code class="language-java">    /**
+     * 匹配动态请求
+     * 所有 /api/** 请求映射至 /**
+     * exp /api/resources/users/me -&gt; /resources/users/me
+     */
+    @Bean
+    public FilterRegistrationBean apiFilter() {
+        FilterRegistrationBean&lt;RewriteFilter&gt; registration = new FilterRegistrationBean&lt;&gt;();
+        registration.setFilter(new RewriteFilter(&quot;/api/**&quot;,
+                http -&gt; http.getServletPath().replaceFirst(&quot;/api&quot;, &quot;&quot;)));
+        registration.addUrlPatterns(&quot;/api/*&quot;);
+        registration.setName(&quot;apiFilter&quot;);
+        registration.setOrder(1);
+        return registration;
+    }
+</code></pre>
+<h1>测试</h1>
+<p>  打开浏览器输入链接<a href="http://localhost:8080/front" target="_blank" rel="noopener">http://localhost:8080/front</a>完成测试</p>
+<h1>其他</h1>
+<h2 id="AntPathMatcher相关记录">AntPathMatcher相关记录</h2>
+<p>  <code>AntPathMatcher</code>是<code>Spring</code>用于路径匹配的工具类，我们经常写的<code>@RequestMapping</code>的匹配逻辑就与它有关，它主要的匹配模式有以下三种</p>
 <ul>
 <li><code>?</code> 匹配任何单字符</li>
 <li><code>*</code> 匹配0或者任意数量的字符</li>
 <li><code>**</code> 匹配0或者更多的目录</li>
 </ul>
-<p>&emsp;&emsp;<code>AntPathMatcher</code>采用最长匹配原则，如<code>/api/**</code>与<code>/api/resources/**</code>来匹配<code>/api/resources/users/me</code>，后者会被成功匹配</p>
+<p>  <code>AntPathMatcher</code>采用最长匹配原则，如<code>/api/**</code>与<code>/api/resources/**</code>来匹配<code>/api/resources/users/me</code>，后者会被成功匹配</p>
 
   </div>
 </article>

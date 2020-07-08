@@ -56,29 +56,31 @@
   
 
   <div class="article-content">
-    <p>&emsp;&emsp;给定一张地图，其中包含<code>猫</code>、<code>老鼠</code>、<code>障碍物</code>三类元素，游戏初始化时猫在地图的左上角，老鼠在地图的右下角，猫每个回合可以选择自己临近格子移动一步，不可超过地图边界，不可移动至有障碍物处，请设计一个算法让<code>猫</code>使用最少的回合抓住<code>老鼠</code>。</p>
+    <p>  给定一张地图，其中包含<code>猫</code>、<code>老鼠</code>、<code>障碍物</code>三类元素，游戏初始化时猫在地图的左上角，老鼠在地图的右下角，猫每个回合可以选择自己临近格子移动一步，不可超过地图边界，不可移动至有障碍物处，请设计一个算法让<code>猫</code>使用最少的回合抓住<code>老鼠</code>。</p>
 <a id="more"></a>
-
-<h1 id="游戏设计"><a href="#游戏设计" class="headerlink" title="游戏设计"></a>游戏设计</h1><p>&emsp;&emsp;首先我们需要设计出整个游戏，并预留出猫的移动逻辑交给用户去实现，这里我基于canvas设计了<a href="https://resources.chenjianhui.site/cat-mouse-game-gen-0.1.9.js" target="_blank" rel="noopener">cat-mouse-game-gen.js</a>来作为游戏构建程序，借助这个脚本使用如下代码即可构建一个猫鼠游戏棋盘：</p>
-<pre><code class="html">&lt;!DOCTYPE html&gt;
+<h1>游戏设计</h1>
+<p>  首先我们需要设计出整个游戏，并预留出猫的移动逻辑交给用户去实现，这里我基于canvas设计了<a href="https://resources.chenjianhui.site/cat-mouse-game-gen-0.1.9.js" target="_blank" rel="noopener">cat-mouse-game-gen.js</a>来作为游戏构建程序，借助这个脚本使用如下代码即可构建一个猫鼠游戏棋盘：</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;en&quot;&gt;
 &lt;body&gt;
 &lt;canvas id=&quot;gamePlace&quot;&gt;not support canvas&lt;/canvas&gt;
 &lt;/body&gt;
 &lt;script type=&quot;text/javascript&quot; src=&quot;https://resources.chenjianhui.site/cat-mouse-game-gen-0.1.9.js&quot;&gt;&lt;/script&gt;
 &lt;script&gt;
-    gameGen.initGame(&#39;gamePlace&#39;)
+    gameGen.initGame('gamePlace')
 &lt;/script&gt;
-&lt;/html&gt;</code></pre>
+&lt;/html&gt;
+</code></pre>
 
 <canvas id="staticPlace">not support canvas</canvas>
 
-
-<p>&emsp;&emsp;其中<strong>gameGen.initGame(<code>canvasId</code>, <code>catHandler</code>, <code>mouseHandler</code>, <code>options</code>)</strong>是游戏的初始化函数，它负责渲染统计数据及运行游戏，函数共接收四个参数</p>
+<p>  其中**gameGen.initGame(<code>canvasId</code>, <code>catHandler</code>, <code>mouseHandler</code>, <code>options</code>)**是游戏的初始化函数，它负责渲染统计数据及运行游戏，函数共接收四个参数</p>
 <ul>
 <li><code>canvasId</code>：canvas画布ID</li>
-<li><code>catHandler</code>： 猫的行动决策函数function(<code>chessboard</code>, <code>curIndex</code>, <code>canMovePoints</code>) ，不传此参数代表不行动，函数的返回值即是猫的下一步位置，行动目标是抓住老鼠<ul>
-<li><code>chessboard</code>：棋盘局势，是一个一维数组，数组长度为棋盘的总格子数，每个点位的值都是一个对象（exp <code>{ flag: 1, depletePower: null }</code>），包括<code>flag</code>（棋子类型）与<code>depletePower</code>（当flag为0时此值不为空，代表行走需要消耗的体力值）两个属性，其中<code>flag</code>的类型码定义如下<ul>
+<li><code>catHandler</code>： 猫的行动决策函数function(<code>chessboard</code>, <code>curIndex</code>, <code>canMovePoints</code>) ，不传此参数代表不行动，函数的返回值即是猫的下一步位置，行动目标是抓住老鼠
+<ul>
+<li><code>chessboard</code>：棋盘局势，是一个一维数组，数组长度为棋盘的总格子数，每个点位的值都是一个对象（exp <code>{ flag: 1, depletePower: null }</code>），包括<code>flag</code>（棋子类型）与<code>depletePower</code>（当flag为0时此值不为空，代表行走需要消耗的体力值）两个属性，其中<code>flag</code>的类型码定义如下
+<ul>
 <li>0：可移动格子</li>
 <li>1：猫</li>
 <li>2：老鼠</li>
@@ -90,7 +92,8 @@
 </ul>
 </li>
 <li><code>mouseHandler</code>: 老鼠的行动决策函数，介绍同catHandler，行动目标是躲避猫的追击</li>
-<li><code>options</code>: 配置信息<ul>
+<li><code>options</code>: 配置信息
+<ul>
 <li><code>columns</code>：棋盘列的数量，默认为8</li>
 <li><code>rows</code>：棋盘行的数量，默认为16</li>
 <li><code>delay</code>：回合时间延迟毫秒数，默认为800</li>
@@ -98,21 +101,23 @@
 </ul>
 </li>
 </ul>
-<p>&emsp;&emsp;举个例子，以下代码实现了一个随机行动的猫，虽然随机移动的猫抓到老鼠全凭运气，不过这也算一种移动策略了</p>
-<pre><code class="html">&lt;canvas id=&quot;randomPlace&quot;&gt;not support canvas&lt;/canvas&gt;
+<p>  举个例子，以下代码实现了一个随机行动的猫，虽然随机移动的猫抓到老鼠全凭运气，不过这也算一种移动策略了</p>
+<pre><code class="language-html">&lt;canvas id=&quot;randomPlace&quot;&gt;not support canvas&lt;/canvas&gt;
 &lt;script&gt;
     const randomHandler = (chessboard, curIndex, canMovePoints) =&gt; {
         const randomIndex = Math.round(Math.random() * (canMovePoints.length - 1))
         return canMovePoints[randomIndex]
     }
-    gameGen.initGame(&#39;randomPlace&#39;, randomHandler)
-&lt;/script&gt;</code></pre>
+    gameGen.initGame('randomPlace', randomHandler)
+&lt;/script&gt;
+</code></pre>
 
 <canvas id="randomPlace">not support canvas</canvas>
 
-
-<h1 id="算法设计"><a href="#算法设计" class="headerlink" title="算法设计"></a>算法设计</h1><p>&emsp;&emsp;至此我们已经有了一个可以根据算法移动的猫了，接下来就是设计猫抓老鼠的算法，我们稍微转化一下这个问题，其实就是根据行动决策函数中的棋盘局势数组去找猫到老鼠之间的<strong>最短路径</strong>，既然要找最短路径我们免不了要对棋盘进行遍历搜索，在上一篇博客<a href="/2019-06-17-algorithm-topic">24点游戏</a>中我们讲到搜索算法有<code>DFS</code>与<code>BFS</code>两种策略，我们对比一下这两种策略，<code>DFS</code>算法属于一种<strong>盲目搜索</strong>，要找到最短路径必然要遍历全局，而<code>BFS</code>扩散式搜索，只要第一次搜索到终点就可以退出，不需要遍历全局，因此在这里我们将使用<code>BFS</code>实现猫的行动策略。</p>
-<h2 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h2><p>&emsp;&emsp;我们先假设有一个4*8的棋盘，猫在棋盘的左上角（数组的下标0处），老鼠在棋盘的右下角（数组下标31处），并在3、 10、 13、 18、 28处位置设置了5个障碍物，现在我将基于这个局势去模拟<code>BFS</code>算法的搜索流程。</p>
+<h1>算法设计</h1>
+<p>  至此我们已经有了一个可以根据算法移动的猫了，接下来就是设计猫抓老鼠的算法，我们稍微转化一下这个问题，其实就是根据行动决策函数中的棋盘局势数组去找猫到老鼠之间的<strong>最短路径</strong>，既然要找最短路径我们免不了要对棋盘进行遍历搜索，在上一篇博客<a href="/2019-06-17-algorithm-topic">24点游戏</a>中我们讲到搜索算法有<code>DFS</code>与<code>BFS</code>两种策略，我们对比一下这两种策略，<code>DFS</code>算法属于一种<strong>盲目搜索</strong>，要找到最短路径必然要遍历全局，而<code>BFS</code>扩散式搜索，只要第一次搜索到终点就可以退出，不需要遍历全局，因此在这里我们将使用<code>BFS</code>实现猫的行动策略。</p>
+<h2 id="设计思路">设计思路</h2>
+<p>  我们先假设有一个4*8的棋盘，猫在棋盘的左上角（数组的下标0处），老鼠在棋盘的右下角（数组下标31处），并在3、 10、 13、 18、 28处位置设置了5个障碍物，现在我将基于这个局势去模拟<code>BFS</code>算法的搜索流程。</p>
 <table>
 <thead>
 <tr>
@@ -126,11 +131,12 @@
 <th></th>
 </tr>
 </thead>
-<tbody><tr>
-<td>0:cat:</td>
+<tbody>
+<tr>
+<td>0🐱</td>
 <td>1</td>
 <td>2</td>
-<td><strong>3</strong>:mountain_bicyclist:</td>
+<td><strong>3</strong>🚵</td>
 <td>4</td>
 <td>5</td>
 <td>6</td>
@@ -139,17 +145,17 @@
 <tr>
 <td>8</td>
 <td>9</td>
-<td><strong>10</strong>:mountain_bicyclist:</td>
+<td><strong>10</strong>🚵</td>
 <td>11</td>
 <td>12</td>
-<td><strong>13</strong>:mountain_bicyclist:</td>
+<td><strong>13</strong>🚵</td>
 <td>14</td>
 <td>15</td>
 </tr>
 <tr>
 <td>16</td>
 <td>17</td>
-<td><strong>18</strong>:mountain_bicyclist:</td>
+<td><strong>18</strong>🚵</td>
 <td>19</td>
 <td>20</td>
 <td>21</td>
@@ -161,10 +167,10 @@
 <td>25</td>
 <td>26</td>
 <td>27</td>
-<td><strong>28</strong>:mountain_bicyclist:</td>
+<td><strong>28</strong>🚵</td>
 <td>29</td>
 <td>30</td>
-<td>31:mouse:</td>
+<td>31🐭</td>
 </tr>
 <tr>
 <td></td>
@@ -176,7 +182,8 @@
 <td></td>
 <td></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <ol>
 <li><strong>[回合1]</strong> 基于位置0搜索可能的走法得到[1, 8]，判断所在点位并非老鼠所在点位，否则基于这两个点位继续搜索</li>
 <li><strong>[回合2]</strong> 基于位置1搜索 =&gt; [0, 2, 9]，由于0是历史走过点位，因此过滤此项 =&gt; [2, 9]，非目标点，回到点位8进行搜索</li>
@@ -190,9 +197,10 @@
 <li><strong>[回合11]</strong> 4 =&gt; [5]，22 =&gt; [23, 30]，29 =&gt; []</li>
 <li><strong>[回合12]</strong>  5 =&gt; [6]，23 =&gt; [31]，到达目标点，索引走过的路径为<strong>31,23,22,21,20,19,27,26,25,24,16,8,0</strong></li>
 </ol>
-<p>&emsp;&emsp;整个流程简单来说就是自左到右自上到下遍历了全部的节点，只不过它是根据层次优先进行遍历的，在层次遍历的过程中如果遇到了目标点位即可返回，因为同一个层次所消耗的回合数是相同的，所以第一次遇到目标点位的路径即是最优解之一。</p>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>&emsp;&emsp;清楚算法流程后，代码的实现相对简单，可以使用递归也可以使用队列，我这边是递归完成最短路径搜索的，具体实现如下：</p>
-<pre><code class="javascript">class BFSCat {
+<p>  整个流程简单来说就是自左到右自上到下遍历了全部的节点，只不过它是根据层次优先进行遍历的，在层次遍历的过程中如果遇到了目标点位即可返回，因为同一个层次所消耗的回合数是相同的，所以第一次遇到目标点位的路径即是最优解之一。</p>
+<h2 id="代码实现">代码实现</h2>
+<p>  清楚算法流程后，代码的实现相对简单，可以使用递归也可以使用队列，我这边是递归完成最短路径搜索的，具体实现如下：</p>
+<pre><code class="language-javascript">class BFSCat {
     constructor(options) {
         // 定义基础行列信息
         this.columns = (options &amp;&amp; options.columns) || 16
@@ -281,9 +289,11 @@
     checkNextPoint(point) {
         return point.flag !== 3
     }
-}</code></pre>
-<h2 id="效果演示"><a href="#效果演示" class="headerlink" title="效果演示"></a>效果演示</h2><p>&emsp;&emsp;将使用基于<code>BFS</code>算法策略设计的猫加入到猫鼠游戏，效果如下：</p>
-<pre><code class="html">&lt;canvas id=&quot;BFSPlace&quot;&gt;not support canvas&lt;/canvas&gt;
+}
+</code></pre>
+<h2 id="效果演示">效果演示</h2>
+<p>  将使用基于<code>BFS</code>算法策略设计的猫加入到猫鼠游戏，效果如下：</p>
+<pre><code class="language-html">&lt;canvas id=&quot;BFSPlace&quot;&gt;not support canvas&lt;/canvas&gt;
 &lt;script&gt;
     let cacheWays = null
     let index = 0
@@ -291,50 +301,55 @@
             if (cacheWays === null) {
                 cacheWays = new BFSCat().getShortestWays(chessboard, curIndex)
                 if (cacheWays.length === 0) {
-                    throw new Error(&#39;此题无解&#39;)
+                    throw new Error('此题无解')
                 }
             }
             return cacheWays[index++]
         }
-    gameGen.initGame(&#39;BFSPlace&#39;, catHandler , null)
-&lt;/script&gt;</code></pre>
+    gameGen.initGame('BFSPlace', catHandler , null)
+&lt;/script&gt;
+</code></pre>
 
 <canvas id="BFSPlace">not support canvas</canvas>
 
-
-<h1 id="加强版猫鼠游戏"><a href="#加强版猫鼠游戏" class="headerlink" title="加强版猫鼠游戏"></a>加强版猫鼠游戏</h1><p>&emsp;&emsp;普通版的猫鼠游戏我们使用基于<code>BFS</code>的最短路径搜索算法即可找到最优解了，现在我们将游戏升级，引入不同类型的道路，请设计一个算法让<code>猫</code>使用最少的体力抓住<code>老鼠</code>，其中加强版猫鼠游戏引入的三种道路类型如下：</p>
+<h1>加强版猫鼠游戏</h1>
+<p>  普通版的猫鼠游戏我们使用基于<code>BFS</code>的最短路径搜索算法即可找到最优解了，现在我们将游戏升级，引入不同类型的道路，请设计一个算法让<code>猫</code>使用最少的体力抓住<code>老鼠</code>，其中加强版猫鼠游戏引入的三种道路类型如下：</p>
 <ul>
 <li>普通道路 <img src="https://resources.chenjianhui.site/2019-06-20-game-background.png?imageView2/2/w/36/h/36/q/75%7Cimageslim" alt>：消耗<strong>一点</strong>体力值</li>
 <li>草地 <img src="https://resources.chenjianhui.site/grassland-1.png?imageView2/2/w/45/h/45/q/75%7Cimageslim" alt>：消耗<strong>两点</strong>体力值</li>
 <li>溪流 <img src="https://resources.chenjianhui.site/waterway-2.svg" style="width:45px;height:45px;">：消耗<strong>三点</strong>体力值</li>
 </ul>
-<p>&emsp;&emsp;同样我们先构建出这个棋盘，只需要将<code>options.complexRoad</code>配置为<code>true</code>即可，未加入行动决策算法的棋盘效果如下：</p>
-<pre><code class="html">&lt;canvas id=&quot;complexRoadPlace&quot;&gt;not support canvas&lt;/canvas&gt;
+<p>  同样我们先构建出这个棋盘，只需要将<code>options.complexRoad</code>配置为<code>true</code>即可，未加入行动决策算法的棋盘效果如下：</p>
+<pre><code class="language-html">&lt;canvas id=&quot;complexRoadPlace&quot;&gt;not support canvas&lt;/canvas&gt;
 &lt;script&gt;
-    gameGen.initGame(&#39;complexRoadPlace&#39;, null, null, {
+    gameGen.initGame('complexRoadPlace', null, null, {
         complexRoad: true
     })
-&lt;/script&gt;</code></pre>
+&lt;/script&gt;
+</code></pre>
 
 <canvas id="complexRoadPlace">not support canvas</canvas>
 
-
-<h2 id="解题思考"><a href="#解题思考" class="headerlink" title="解题思考"></a>解题思考</h2><p>&emsp;&emsp;加强版本的游戏要考虑体力消耗最小，因此最短的路径未必消耗的体力就是最少的，这个很容易理解，所以我们不能单考虑最短路径这个方面去解题了，还应该考虑到不同道路的体力消耗。</p>
-<h2 id="A星寻路算法"><a href="#A星寻路算法" class="headerlink" title="A星寻路算法"></a>A星寻路算法</h2><p>&emsp;&emsp;可以直接点击<a href="https://zh.wikipedia.org/wiki/A*搜尋演算法" target="_blank" rel="noopener">A*算法wiki</a>查看一下算法的背景，我在这里只介绍算法的一些核心概念，在A*算法中有两个核心概念</p>
+<h2 id="解题思考">解题思考</h2>
+<p>  加强版本的游戏要考虑体力消耗最小，因此最短的路径未必消耗的体力就是最少的，这个很容易理解，所以我们不能单考虑最短路径这个方面去解题了，还应该考虑到不同道路的体力消耗。</p>
+<h2 id="A星寻路算法">A星寻路算法</h2>
+<p>  可以直接点击<a href="https://zh.wikipedia.org/wiki/A*%E6%90%9C%E5%B0%8B%E6%BC%94%E7%AE%97%E6%B3%95" target="_blank" rel="noopener">A*算法wiki</a>查看一下算法的背景，我在这里只介绍算法的一些核心概念，在A*算法中有两个核心概念</p>
 <ul>
-<li><strong>G值</strong>：<strong>起始点</strong>到<strong>行动点</strong>的<strong>移动量</strong><ul>
+<li><strong>G值</strong>：<strong>起始点</strong>到<strong>行动点</strong>的<strong>移动量</strong>
+<ul>
 <li>起始点：猫的初始位置</li>
 <li>行动点：猫的下一步决策位置</li>
 <li>移动量：在这里我们考虑地形的情况下是可移动格子的<strong>体力消耗量</strong></li>
 </ul>
 </li>
-<li><strong>H值</strong>：行动点到<strong>终点</strong>的<strong>估算量</strong>，这个值仅仅是一个估算值，比如位置1到位置31的估算值我们忽略地形可以取最小格子数，即9<ul>
+<li><strong>H值</strong>：行动点到<strong>终点</strong>的<strong>估算量</strong>，这个值仅仅是一个估算值，比如位置1到位置31的估算值我们忽略地形可以取最小格子数，即9
+<ul>
 <li>终点：老鼠的位置</li>
 <li>估算量：这里是不考虑障碍物的一个估算移动量</li>
 </ul>
 </li>
 </ul>
-<p>&emsp;&emsp;好的核心概念介绍完，我们基于一个棋盘来完成A星算法的决策流程，下面的棋盘和上面的基本一致，区别在于加入了地形因素，每个可行走的格子中用括号括起来的就是特殊地形的体力消耗值，这将会影响到各个点位的G、H值。</p>
+<p>  好的核心概念介绍完，我们基于一个棋盘来完成A星算法的决策流程，下面的棋盘和上面的基本一致，区别在于加入了地形因素，每个可行走的格子中用括号括起来的就是特殊地形的体力消耗值，这将会影响到各个点位的G、H值。</p>
 <table>
 <thead>
 <tr>
@@ -348,11 +363,12 @@
 <th></th>
 </tr>
 </thead>
-<tbody><tr>
-<td>0:cat:</td>
-<td>1<strong>(2)</strong></td>
+<tbody>
+<tr>
+<td>0🐱</td>
+<td>1**(2)**</td>
 <td>2</td>
-<td><strong>3</strong>:mountain_bicyclist:</td>
+<td><strong>3</strong>🚵</td>
 <td>4</td>
 <td>5</td>
 <td>6</td>
@@ -360,33 +376,33 @@
 </tr>
 <tr>
 <td>8</td>
-<td>9<strong>(2)</strong></td>
-<td><strong>10</strong>:mountain_bicyclist:</td>
+<td>9**(2)**</td>
+<td><strong>10</strong>🚵</td>
 <td>11</td>
 <td>12</td>
-<td><strong>13</strong>:mountain_bicyclist:</td>
+<td><strong>13</strong>🚵</td>
 <td>14</td>
-<td>15<strong>(2)</strong></td>
+<td>15**(2)**</td>
 </tr>
 <tr>
 <td>16</td>
 <td>17</td>
-<td><strong>18</strong>:mountain_bicyclist:</td>
+<td><strong>18</strong>🚵</td>
 <td>19</td>
-<td>20<strong>(3)</strong></td>
-<td>21<strong>(3)</strong></td>
+<td>20**(3)**</td>
+<td>21**(3)**</td>
 <td>22</td>
-<td>23<strong>(3)</strong></td>
+<td>23**(3)**</td>
 </tr>
 <tr>
-<td>24<strong>(2)</strong></td>
+<td>24**(2)**</td>
 <td>25</td>
 <td>26</td>
 <td>27</td>
-<td><strong>28</strong>:mountain_bicyclist:</td>
+<td><strong>28</strong>🚵</td>
 <td>29</td>
 <td>30</td>
-<td>31:mouse:</td>
+<td>31🐭</td>
 </tr>
 <tr>
 <td></td>
@@ -398,13 +414,14 @@
 <td></td>
 <td></td>
 </tr>
-</tbody></table>
-<p>&emsp;&emsp;现在我们基于上述棋盘来简述一下A星算法的决策流程，首先我们要基于<strong>当前行动点</strong>求出<strong>邻近可移动点</strong>的G、H值，根据<code>F = G + H</code>公式得出点位的<strong>和值F</strong>，然后找一个F值最小的点作为当前行动点继续进行判断，直到找到老鼠位置或者无点可选。在这个过程中，我们需要定义两个列表</p>
+</tbody>
+</table>
+<p>  现在我们基于上述棋盘来简述一下A星算法的决策流程，首先我们要基于<strong>当前行动点</strong>求出<strong>邻近可移动点</strong>的G、H值，根据<code>F = G + H</code>公式得出点位的<strong>和值F</strong>，然后找一个F值最小的点作为当前行动点继续进行判断，直到找到老鼠位置或者无点可选。在这个过程中，我们需要定义两个列表</p>
 <ul>
 <li><strong>open列表</strong>：记录下所有<strong>被考虑</strong>的点位列表</li>
 <li><strong>close列表</strong>：记录下所有<strong>不被考虑</strong>的点位列表</li>
 </ul>
-<p>&emsp;&emsp;现在我将基于这个局势去模拟<strong>A星算法</strong>的搜索流程，其中🔕代表不被考虑的点位close、:walking_man:代表当前行动点、:cat:代表被考虑的点位open、<strong>F()</strong>括号内部的值代表被考虑点位的和值<code>G + H</code>，现在我们一步一步的模拟如下：</p>
+<p>  现在我将基于这个局势去模拟<strong>A星算法</strong>的搜索流程，其中🔕代表不被考虑的点位close、🚶代表当前行动点、🐱代表被考虑的点位open、**F()**括号内部的值代表被考虑点位的和值<code>G + H</code>，现在我们一步一步的模拟如下：</p>
 <ol>
 <li><strong>[回合1]</strong> 基于位置0搜索到可能走法[1, 8]，计算和值为[1(2 + 9), 8(1 + 9)]，<code>open = [1(11), 8(10)]</code>、<code>close = [0(10)]</code>，括号内为和值F</li>
 </ol>
@@ -421,11 +438,12 @@
 <th></th>
 </tr>
 </thead>
-<tbody><tr>
-<td>0:no_bell::walking_man:</td>
-<td>1<strong>(2)</strong>:cat:F(11)</td>
+<tbody>
+<tr>
+<td>0🔕🚶</td>
+<td>1**(2)**🐱F(11)</td>
 <td>2</td>
-<td><strong>3</strong>:mountain_bicyclist:</td>
+<td><strong>3</strong>🚵</td>
 <td>4</td>
 <td>5</td>
 <td>6</td>
@@ -433,33 +451,33 @@
 </tr>
 <tr>
 <td>8🐱F(10)</td>
-<td>9<strong>(2)</strong></td>
-<td><strong>10</strong>:mountain_bicyclist:</td>
+<td>9**(2)**</td>
+<td><strong>10</strong>🚵</td>
 <td>11</td>
 <td>12</td>
-<td><strong>13</strong>:mountain_bicyclist:</td>
+<td><strong>13</strong>🚵</td>
 <td>14</td>
-<td>15<strong>(2)</strong></td>
+<td>15**(2)**</td>
 </tr>
 <tr>
 <td>16</td>
 <td>17</td>
-<td><strong>18</strong>:mountain_bicyclist:</td>
+<td><strong>18</strong>🚵</td>
 <td>19</td>
-<td>20<strong>(3)</strong></td>
-<td>21<strong>(3)</strong></td>
+<td>20**(3)**</td>
+<td>21**(3)**</td>
 <td>22</td>
-<td>23<strong>(3)</strong></td>
+<td>23**(3)**</td>
 </tr>
 <tr>
-<td>24<strong>(2)</strong></td>
+<td>24**(2)**</td>
 <td>25</td>
 <td>26</td>
 <td>27</td>
-<td><strong>28</strong>:mountain_bicyclist:</td>
+<td><strong>28</strong>🚵</td>
 <td>29</td>
 <td>30</td>
-<td>31:mouse:</td>
+<td>31🐭</td>
 </tr>
 <tr>
 <td></td>
@@ -471,7 +489,8 @@
 <td></td>
 <td></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <ol start="2">
 <li><strong>[回合2]</strong> 在open列表找到和值最小的点作为当前行动点，找到可能走法计算和值并加入到open列表，同时当前行动点放入close列表，在这里我们将选择点8作为当前行动点，此时 <code>open = [1(11), 9(11), 16(10)</code>、<code>close = [0(10), 8(10)]</code></li>
 </ol>
@@ -488,45 +507,46 @@
 <th></th>
 </tr>
 </thead>
-<tbody><tr>
-<td>0:no_bell:</td>
-<td>1<strong>(2)</strong>🐱F(11)</td>
+<tbody>
+<tr>
+<td>0🔕</td>
+<td>1**(2)**🐱F(11)</td>
 <td>2</td>
-<td><strong>3</strong>:mountain_bicyclist:</td>
+<td><strong>3</strong>🚵</td>
 <td>4</td>
 <td>5</td>
 <td>6</td>
 <td>7</td>
 </tr>
 <tr>
-<td>8:no_bell::walking_man:</td>
-<td>9<strong>(2)</strong>🐱F(11)</td>
-<td><strong>10</strong>:mountain_bicyclist:</td>
+<td>8🔕🚶</td>
+<td>9**(2)**🐱F(11)</td>
+<td><strong>10</strong>🚵</td>
 <td>11</td>
 <td>12</td>
-<td><strong>13</strong>:mountain_bicyclist:</td>
+<td><strong>13</strong>🚵</td>
 <td>14</td>
-<td>15<strong>(2)</strong></td>
+<td>15**(2)**</td>
 </tr>
 <tr>
 <td>16🐱F(10)</td>
 <td>17</td>
-<td><strong>18</strong>:mountain_bicyclist:</td>
+<td><strong>18</strong>🚵</td>
 <td>19</td>
-<td>20<strong>(3)</strong></td>
-<td>21<strong>(3)</strong></td>
+<td>20**(3)**</td>
+<td>21**(3)**</td>
 <td>22</td>
-<td>23<strong>(3)</strong></td>
+<td>23**(3)**</td>
 </tr>
 <tr>
-<td>24<strong>(2)</strong></td>
+<td>24**(2)**</td>
 <td>25</td>
 <td>26</td>
 <td>27</td>
-<td><strong>28</strong>:mountain_bicyclist:</td>
+<td><strong>28</strong>🚵</td>
 <td>29</td>
 <td>30</td>
-<td>31:mouse:</td>
+<td>31🐭</td>
 </tr>
 <tr>
 <td></td>
@@ -538,7 +558,8 @@
 <td></td>
 <td></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <ol start="3">
 <li><strong>[回合3]</strong> 选择16，此时<code>open = [1(11), 9(11), 17(10), 24(11)</code>、<code>close = [0(10), 8(10), 16(10)]</code></li>
 </ol>
@@ -555,45 +576,46 @@
 <th></th>
 </tr>
 </thead>
-<tbody><tr>
-<td>0:no_bell:</td>
-<td>1<strong>(2)</strong>🐱F(11)</td>
+<tbody>
+<tr>
+<td>0🔕</td>
+<td>1**(2)**🐱F(11)</td>
 <td>2</td>
-<td><strong>3</strong>:mountain_bicyclist:</td>
+<td><strong>3</strong>🚵</td>
 <td>4</td>
 <td>5</td>
 <td>6</td>
 <td>7</td>
 </tr>
 <tr>
-<td>8:no_bell:</td>
-<td>9<strong>(2)</strong>🐱F(11)</td>
-<td><strong>10</strong>:mountain_bicyclist:</td>
+<td>8🔕</td>
+<td>9**(2)**🐱F(11)</td>
+<td><strong>10</strong>🚵</td>
 <td>11</td>
 <td>12</td>
-<td><strong>13</strong>:mountain_bicyclist:</td>
+<td><strong>13</strong>🚵</td>
 <td>14</td>
-<td>15<strong>(2)</strong></td>
+<td>15**(2)**</td>
 </tr>
 <tr>
-<td>16:no_bell::walking_man:</td>
+<td>16🔕🚶</td>
 <td>17🐱F(10)</td>
-<td><strong>18</strong>:mountain_bicyclist:</td>
+<td><strong>18</strong>🚵</td>
 <td>19</td>
-<td>20<strong>(3)</strong></td>
-<td>21<strong>(3)</strong></td>
+<td>20**(3)**</td>
+<td>21**(3)**</td>
 <td>22</td>
-<td>23<strong>(3)</strong></td>
+<td>23**(3)**</td>
 </tr>
 <tr>
-<td>24<strong>(2)</strong>🐱F(11)</td>
+<td>24**(2)**🐱F(11)</td>
 <td>25</td>
 <td>26</td>
 <td>27</td>
-<td><strong>28</strong>:mountain_bicyclist:</td>
+<td><strong>28</strong>🚵</td>
 <td>29</td>
 <td>30</td>
-<td>31:mouse:</td>
+<td>31🐭</td>
 </tr>
 <tr>
 <td></td>
@@ -605,7 +627,8 @@
 <td></td>
 <td></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <ol start="4">
 <li><strong>[回合4]</strong> 选择17</li>
 </ol>
@@ -622,45 +645,46 @@
 <th></th>
 </tr>
 </thead>
-<tbody><tr>
-<td>0:no_bell:</td>
-<td>1<strong>(2)</strong>🐱F(11)</td>
+<tbody>
+<tr>
+<td>0🔕</td>
+<td>1**(2)**🐱F(11)</td>
 <td>2</td>
-<td><strong>3</strong>:mountain_bicyclist:</td>
+<td><strong>3</strong>🚵</td>
 <td>4</td>
 <td>5</td>
 <td>6</td>
 <td>7</td>
 </tr>
 <tr>
-<td>8:no_bell:</td>
-<td>9<strong>(2)</strong>🐱F(11)</td>
-<td><strong>10</strong>:mountain_bicyclist:</td>
+<td>8🔕</td>
+<td>9**(2)**🐱F(11)</td>
+<td><strong>10</strong>🚵</td>
 <td>11</td>
 <td>12</td>
-<td><strong>13</strong>:mountain_bicyclist:</td>
+<td><strong>13</strong>🚵</td>
 <td>14</td>
-<td>15<strong>(2)</strong></td>
+<td>15**(2)**</td>
 </tr>
 <tr>
-<td>16:no_bell:</td>
-<td>17:no_bell::walking_man:</td>
-<td><strong>18</strong>:mountain_bicyclist:</td>
+<td>16🔕</td>
+<td>17🔕🚶</td>
+<td><strong>18</strong>🚵</td>
 <td>19</td>
-<td>20<strong>(3)</strong></td>
-<td>21<strong>(3)</strong></td>
+<td>20**(3)**</td>
+<td>21**(3)**</td>
 <td>22</td>
-<td>23<strong>(3)</strong></td>
+<td>23**(3)**</td>
 </tr>
 <tr>
-<td>24<strong>(2)</strong>🐱F(11)</td>
+<td>24**(2)**🐱F(11)</td>
 <td>25🐱F(10)</td>
 <td>26</td>
 <td>27</td>
-<td><strong>28</strong>:mountain_bicyclist:</td>
+<td><strong>28</strong>🚵</td>
 <td>29</td>
 <td>30</td>
-<td>31:mouse:</td>
+<td>31🐭</td>
 </tr>
 <tr>
 <td></td>
@@ -672,7 +696,8 @@
 <td></td>
 <td></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <ol start="5">
 <li><strong>[回合5]</strong> 选择25</li>
 </ol>
@@ -689,45 +714,46 @@
 <th></th>
 </tr>
 </thead>
-<tbody><tr>
-<td>0:no_bell:</td>
-<td>1<strong>(2)</strong>🐱F(11)</td>
+<tbody>
+<tr>
+<td>0🔕</td>
+<td>1**(2)**🐱F(11)</td>
 <td>2</td>
-<td><strong>3</strong>:mountain_bicyclist:</td>
+<td><strong>3</strong>🚵</td>
 <td>4</td>
 <td>5</td>
 <td>6</td>
 <td>7</td>
 </tr>
 <tr>
-<td>8:no_bell:</td>
-<td>9<strong>(2)</strong>🐱F(11)</td>
-<td><strong>10</strong>:mountain_bicyclist:</td>
+<td>8🔕</td>
+<td>9**(2)**🐱F(11)</td>
+<td><strong>10</strong>🚵</td>
 <td>11</td>
 <td>12</td>
-<td><strong>13</strong>:mountain_bicyclist:</td>
+<td><strong>13</strong>🚵</td>
 <td>14</td>
-<td>15<strong>(2)</strong></td>
+<td>15**(2)**</td>
 </tr>
 <tr>
-<td>16:no_bell:</td>
-<td>17:no_bell:</td>
-<td><strong>18</strong>:mountain_bicyclist:</td>
+<td>16🔕</td>
+<td>17🔕</td>
+<td><strong>18</strong>🚵</td>
 <td>19</td>
-<td>20<strong>(3)</strong></td>
-<td>21<strong>(3)</strong></td>
+<td>20**(3)**</td>
+<td>21**(3)**</td>
 <td>22</td>
-<td>23<strong>(3)</strong></td>
+<td>23**(3)**</td>
 </tr>
 <tr>
-<td>24<strong>(2)</strong>🐱F(11)</td>
-<td>25:no_bell::walking_man:</td>
+<td>24**(2)**🐱F(11)</td>
+<td>25🔕🚶</td>
 <td>26🐱F(10)</td>
 <td>27</td>
-<td><strong>28</strong>:mountain_bicyclist:</td>
+<td><strong>28</strong>🚵</td>
 <td>29</td>
 <td>30</td>
-<td>31:mouse:</td>
+<td>31🐭</td>
 </tr>
 <tr>
 <td></td>
@@ -739,7 +765,8 @@
 <td></td>
 <td></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <ol start="6">
 <li><strong>[回合6]</strong> 选择26</li>
 </ol>
@@ -756,45 +783,46 @@
 <th></th>
 </tr>
 </thead>
-<tbody><tr>
-<td>0:no_bell:</td>
-<td>1<strong>(2)</strong>🐱F(11)</td>
+<tbody>
+<tr>
+<td>0🔕</td>
+<td>1**(2)**🐱F(11)</td>
 <td>2</td>
-<td><strong>3</strong>:mountain_bicyclist:</td>
+<td><strong>3</strong>🚵</td>
 <td>4</td>
 <td>5</td>
 <td>6</td>
 <td>7</td>
 </tr>
 <tr>
-<td>8:no_bell:</td>
-<td>9<strong>(2)</strong>🐱F(11)</td>
-<td><strong>10</strong>:mountain_bicyclist:</td>
+<td>8🔕</td>
+<td>9**(2)**🐱F(11)</td>
+<td><strong>10</strong>🚵</td>
 <td>11</td>
 <td>12</td>
-<td><strong>13</strong>:mountain_bicyclist:</td>
+<td><strong>13</strong>🚵</td>
 <td>14</td>
-<td>15<strong>(2)</strong></td>
+<td>15**(2)**</td>
 </tr>
 <tr>
-<td>16:no_bell:</td>
-<td>17:no_bell:</td>
-<td><strong>18</strong>:mountain_bicyclist:</td>
+<td>16🔕</td>
+<td>17🔕</td>
+<td><strong>18</strong>🚵</td>
 <td>19</td>
-<td>20<strong>(3)</strong></td>
-<td>21<strong>(3)</strong></td>
+<td>20**(3)**</td>
+<td>21**(3)**</td>
 <td>22</td>
-<td>23<strong>(3)</strong></td>
+<td>23**(3)**</td>
 </tr>
 <tr>
-<td>24<strong>(2)</strong>🐱F(11)</td>
-<td>25:no_bell:</td>
+<td>24**(2)**🐱F(11)</td>
+<td>25🔕</td>
 <td>26🔕🚶</td>
 <td>27🐱F(10)</td>
-<td><strong>28</strong>:mountain_bicyclist:</td>
+<td><strong>28</strong>🚵</td>
 <td>29</td>
 <td>30</td>
-<td>31:mouse:</td>
+<td>31🐭</td>
 </tr>
 <tr>
 <td></td>
@@ -806,7 +834,8 @@
 <td></td>
 <td></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <ol start="7">
 <li><strong>[回合7]</strong> 选择27，注意，这里由于路障问题绕路了，所以F值变为了12(7 + 5)</li>
 </ol>
@@ -823,45 +852,46 @@
 <th></th>
 </tr>
 </thead>
-<tbody><tr>
-<td>0:no_bell:</td>
-<td>1<strong>(2)</strong>🐱F(11)</td>
+<tbody>
+<tr>
+<td>0🔕</td>
+<td>1**(2)**🐱F(11)</td>
 <td>2</td>
-<td><strong>3</strong>:mountain_bicyclist:</td>
+<td><strong>3</strong>🚵</td>
 <td>4</td>
 <td>5</td>
 <td>6</td>
 <td>7</td>
 </tr>
 <tr>
-<td>8:no_bell:</td>
-<td>9<strong>(2)</strong>🐱F(11)</td>
-<td><strong>10</strong>:mountain_bicyclist:</td>
+<td>8🔕</td>
+<td>9**(2)**🐱F(11)</td>
+<td><strong>10</strong>🚵</td>
 <td>11</td>
 <td>12</td>
-<td><strong>13</strong>:mountain_bicyclist:</td>
+<td><strong>13</strong>🚵</td>
 <td>14</td>
-<td>15<strong>(2)</strong></td>
+<td>15**(2)**</td>
 </tr>
 <tr>
-<td>16:no_bell:</td>
-<td>17:no_bell:</td>
-<td><strong>18</strong>:mountain_bicyclist:</td>
+<td>16🔕</td>
+<td>17🔕</td>
+<td><strong>18</strong>🚵</td>
 <td>19🐱F(12)</td>
-<td>20<strong>(3)</strong></td>
-<td>21<strong>(3)</strong></td>
+<td>20**(3)**</td>
+<td>21**(3)**</td>
 <td>22</td>
-<td>23<strong>(3)</strong></td>
+<td>23**(3)**</td>
 </tr>
 <tr>
-<td>24<strong>(2)</strong>🐱F(11)</td>
-<td>25:no_bell:</td>
+<td>24**(2)**🐱F(11)</td>
+<td>25🔕</td>
 <td>26🔕</td>
 <td>27🔕🚶</td>
-<td><strong>28</strong>:mountain_bicyclist:</td>
+<td><strong>28</strong>🚵</td>
 <td>29</td>
 <td>30</td>
-<td>31:mouse:</td>
+<td>31🐭</td>
 </tr>
 <tr>
 <td></td>
@@ -873,7 +903,8 @@
 <td></td>
 <td></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <ol start="8">
 <li><strong>[回合8]</strong> 选择1</li>
 </ol>
@@ -890,45 +921,46 @@
 <th></th>
 </tr>
 </thead>
-<tbody><tr>
-<td>0:no_bell:</td>
-<td>1<strong>(2)</strong>🔕🚶</td>
+<tbody>
+<tr>
+<td>0🔕</td>
+<td>1**(2)**🔕🚶</td>
 <td>2🐱F(11)</td>
-<td><strong>3</strong>:mountain_bicyclist:</td>
+<td><strong>3</strong>🚵</td>
 <td>4</td>
 <td>5</td>
 <td>6</td>
 <td>7</td>
 </tr>
 <tr>
-<td>8:no_bell:</td>
-<td>9<strong>(2)</strong>🐱F(11)</td>
-<td><strong>10</strong>:mountain_bicyclist:</td>
+<td>8🔕</td>
+<td>9**(2)**🐱F(11)</td>
+<td><strong>10</strong>🚵</td>
 <td>11</td>
 <td>12</td>
-<td><strong>13</strong>:mountain_bicyclist:</td>
+<td><strong>13</strong>🚵</td>
 <td>14</td>
-<td>15<strong>(2)</strong></td>
+<td>15**(2)**</td>
 </tr>
 <tr>
-<td>16:no_bell:</td>
-<td>17:no_bell:</td>
-<td><strong>18</strong>:mountain_bicyclist:</td>
+<td>16🔕</td>
+<td>17🔕</td>
+<td><strong>18</strong>🚵</td>
 <td>19🐱F(12)</td>
-<td>20<strong>(3)</strong></td>
-<td>21<strong>(3)</strong></td>
+<td>20**(3)**</td>
+<td>21**(3)**</td>
 <td>22</td>
-<td>23<strong>(3)</strong></td>
+<td>23**(3)**</td>
 </tr>
 <tr>
-<td>24<strong>(2)</strong>🐱F(11)</td>
-<td>25:no_bell:</td>
+<td>24**(2)**🐱F(11)</td>
+<td>25🔕</td>
 <td>26🔕</td>
 <td>27🔕</td>
-<td><strong>28</strong>:mountain_bicyclist:</td>
+<td><strong>28</strong>🚵</td>
 <td>29</td>
 <td>30</td>
-<td>31:mouse:</td>
+<td>31🐭</td>
 </tr>
 <tr>
 <td></td>
@@ -940,7 +972,8 @@
 <td></td>
 <td></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <ol start="9">
 <li><strong>[回合9 - 12]</strong> 选择2、9、24，发现都为死路，加入close列表，最终只能选择19</li>
 </ol>
@@ -957,45 +990,46 @@
 <th></th>
 </tr>
 </thead>
-<tbody><tr>
-<td>0:no_bell:</td>
-<td>1<strong>(2)</strong>🔕</td>
+<tbody>
+<tr>
+<td>0🔕</td>
+<td>1**(2)**🔕</td>
 <td>2🔕</td>
-<td><strong>3</strong>:mountain_bicyclist:</td>
+<td><strong>3</strong>🚵</td>
 <td>4</td>
 <td>5</td>
 <td>6</td>
 <td>7</td>
 </tr>
 <tr>
-<td>8:no_bell:</td>
-<td>9<strong>(2)</strong>🔕</td>
-<td><strong>10</strong>:mountain_bicyclist:</td>
+<td>8🔕</td>
+<td>9**(2)**🔕</td>
+<td><strong>10</strong>🚵</td>
 <td>11🐱F(14)</td>
 <td>12</td>
-<td><strong>13</strong>:mountain_bicyclist:</td>
+<td><strong>13</strong>🚵</td>
 <td>14</td>
-<td>15<strong>(2)</strong></td>
+<td>15**(2)**</td>
 </tr>
 <tr>
-<td>16:no_bell:</td>
-<td>17:no_bell:</td>
-<td><strong>18</strong>:mountain_bicyclist:</td>
+<td>16🔕</td>
+<td>17🔕</td>
+<td><strong>18</strong>🚵</td>
 <td>19🔕🚶</td>
-<td>20<strong>(3)</strong>🐱F(14)</td>
-<td>21<strong>(3)</strong></td>
+<td>20**(3)**🐱F(14)</td>
+<td>21**(3)**</td>
 <td>22</td>
-<td>23<strong>(3)</strong></td>
+<td>23**(3)**</td>
 </tr>
 <tr>
-<td>24<strong>(2)</strong>🔕</td>
-<td>25:no_bell:</td>
+<td>24**(2)**🔕</td>
+<td>25🔕</td>
 <td>26🔕</td>
 <td>27🔕</td>
-<td><strong>28</strong>:mountain_bicyclist:</td>
+<td><strong>28</strong>🚵</td>
 <td>29</td>
 <td>30</td>
-<td>31:mouse:</td>
+<td>31🐭</td>
 </tr>
 <tr>
 <td></td>
@@ -1007,7 +1041,8 @@
 <td></td>
 <td></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <ol start="10">
 <li><strong>[回合13]</strong> 选择20，当出现F值相同的情况我们就取第一个判断生成的，我的判断是自左向右、自上到下，所以点位20先被判断</li>
 </ol>
@@ -1024,45 +1059,46 @@
 <th></th>
 </tr>
 </thead>
-<tbody><tr>
-<td>0:no_bell:</td>
-<td>1<strong>(2)</strong>🔕</td>
+<tbody>
+<tr>
+<td>0🔕</td>
+<td>1**(2)**🔕</td>
 <td>2🔕</td>
-<td><strong>3</strong>:mountain_bicyclist:</td>
+<td><strong>3</strong>🚵</td>
 <td>4</td>
 <td>5</td>
 <td>6</td>
 <td>7</td>
 </tr>
 <tr>
-<td>8:no_bell:</td>
-<td>9<strong>(2)</strong>🔕</td>
-<td><strong>10</strong>:mountain_bicyclist:</td>
+<td>8🔕</td>
+<td>9**(2)**🔕</td>
+<td><strong>10</strong>🚵</td>
 <td>11🐱F(14)</td>
 <td>12🐱F(16)</td>
-<td><strong>13</strong>:mountain_bicyclist:</td>
+<td><strong>13</strong>🚵</td>
 <td>14</td>
-<td>15<strong>(2)</strong></td>
+<td>15**(2)**</td>
 </tr>
 <tr>
-<td>16:no_bell:</td>
-<td>17:no_bell:</td>
-<td><strong>18</strong>:mountain_bicyclist:</td>
+<td>16🔕</td>
+<td>17🔕</td>
+<td><strong>18</strong>🚵</td>
 <td>19🔕</td>
-<td>20<strong>(3)</strong>🔕🚶</td>
-<td>21<strong>(3)</strong>🐱F(16)</td>
+<td>20**(3)**🔕🚶</td>
+<td>21**(3)**🐱F(16)</td>
 <td>22</td>
-<td>23<strong>(3)</strong></td>
+<td>23**(3)**</td>
 </tr>
 <tr>
-<td>24<strong>(2)</strong>🔕</td>
-<td>25:no_bell:</td>
+<td>24**(2)**🔕</td>
+<td>25🔕</td>
 <td>26🔕</td>
 <td>27🔕</td>
-<td><strong>28</strong>:mountain_bicyclist:</td>
+<td><strong>28</strong>🚵</td>
 <td>29</td>
 <td>30</td>
-<td>31:mouse:</td>
+<td>31🐭</td>
 </tr>
 <tr>
 <td></td>
@@ -1074,7 +1110,8 @@
 <td></td>
 <td></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <ol start="11">
 <li><strong>[回合14]</strong> 选择11，我们发现以点11为行动点的相邻点12计算出的F值为14比16小，故更新节点</li>
 </ol>
@@ -1091,45 +1128,46 @@
 <th></th>
 </tr>
 </thead>
-<tbody><tr>
-<td>0:no_bell:</td>
-<td>1<strong>(2)</strong>🔕</td>
+<tbody>
+<tr>
+<td>0🔕</td>
+<td>1**(2)**🔕</td>
 <td>2🔕</td>
-<td><strong>3</strong>:mountain_bicyclist:</td>
+<td><strong>3</strong>🚵</td>
 <td>4</td>
 <td>5</td>
 <td>6</td>
 <td>7</td>
 </tr>
 <tr>
-<td>8:no_bell:</td>
-<td>9<strong>(2)</strong>🔕</td>
-<td><strong>10</strong>:mountain_bicyclist:</td>
+<td>8🔕</td>
+<td>9**(2)**🔕</td>
+<td><strong>10</strong>🚵</td>
 <td>11🔕🚶</td>
 <td>12🐱F(14)</td>
-<td><strong>13</strong>:mountain_bicyclist:</td>
+<td><strong>13</strong>🚵</td>
 <td>14</td>
-<td>15<strong>(2)</strong></td>
+<td>15**(2)**</td>
 </tr>
 <tr>
-<td>16:no_bell:</td>
-<td>17:no_bell:</td>
-<td><strong>18</strong>:mountain_bicyclist:</td>
+<td>16🔕</td>
+<td>17🔕</td>
+<td><strong>18</strong>🚵</td>
 <td>19🔕</td>
-<td>20<strong>(3)</strong>🔕</td>
-<td>21<strong>(3)</strong>🐱F(16)</td>
+<td>20**(3)**🔕</td>
+<td>21**(3)**🐱F(16)</td>
 <td>22</td>
-<td>23<strong>(3)</strong></td>
+<td>23**(3)**</td>
 </tr>
 <tr>
-<td>24<strong>(2)</strong>🔕</td>
-<td>25:no_bell:</td>
+<td>24**(2)**🔕</td>
+<td>25🔕</td>
 <td>26🔕</td>
 <td>27🔕</td>
-<td><strong>28</strong>:mountain_bicyclist:</td>
+<td><strong>28</strong>🚵</td>
 <td>29</td>
 <td>30</td>
-<td>31:mouse:</td>
+<td>31🐭</td>
 </tr>
 <tr>
 <td></td>
@@ -1141,7 +1179,8 @@
 <td></td>
 <td></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <ol start="12">
 <li><strong>[回合15 - 18]</strong> 选择12、4、5、6</li>
 </ol>
@@ -1158,45 +1197,46 @@
 <th></th>
 </tr>
 </thead>
-<tbody><tr>
-<td>0:no_bell:</td>
-<td>1<strong>(2)</strong>🔕</td>
+<tbody>
+<tr>
+<td>0🔕</td>
+<td>1**(2)**🔕</td>
 <td>2🔕</td>
-<td><strong>3</strong>:mountain_bicyclist:</td>
+<td><strong>3</strong>🚵</td>
 <td>4🔕</td>
 <td>5🔕</td>
 <td>6🔕🚶</td>
 <td>7🐱F(16)</td>
 </tr>
 <tr>
-<td>8:no_bell:</td>
-<td>9<strong>(2)</strong>🔕</td>
-<td><strong>10</strong>:mountain_bicyclist:</td>
+<td>8🔕</td>
+<td>9**(2)**🔕</td>
+<td><strong>10</strong>🚵</td>
 <td>11🔕</td>
 <td>12🔕</td>
-<td><strong>13</strong>:mountain_bicyclist:</td>
+<td><strong>13</strong>🚵</td>
 <td>14🐱F(16)</td>
-<td>15<strong>(2)</strong></td>
+<td>15**(2)**</td>
 </tr>
 <tr>
-<td>16:no_bell:</td>
-<td>17:no_bell:</td>
-<td><strong>18</strong>:mountain_bicyclist:</td>
+<td>16🔕</td>
+<td>17🔕</td>
+<td><strong>18</strong>🚵</td>
 <td>19🔕</td>
-<td>20<strong>(3)</strong>🔕</td>
-<td>21<strong>(3)</strong>🐱F(16)</td>
+<td>20**(3)**🔕</td>
+<td>21**(3)**🐱F(16)</td>
 <td>22</td>
-<td>23<strong>(3)</strong></td>
+<td>23**(3)**</td>
 </tr>
 <tr>
-<td>24<strong>(2)</strong>🔕</td>
-<td>25:no_bell:</td>
+<td>24**(2)**🔕</td>
+<td>25🔕</td>
 <td>26🔕</td>
 <td>27🔕</td>
-<td><strong>28</strong>:mountain_bicyclist:</td>
+<td><strong>28</strong>🚵</td>
 <td>29</td>
 <td>30</td>
-<td>31:mouse:</td>
+<td>31🐭</td>
 </tr>
 <tr>
 <td></td>
@@ -1208,7 +1248,8 @@
 <td></td>
 <td></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <ol start="12">
 <li><strong>[回合19]</strong> 选择7</li>
 </ol>
@@ -1225,45 +1266,46 @@
 <th></th>
 </tr>
 </thead>
-<tbody><tr>
-<td>0:no_bell:</td>
-<td>1<strong>(2)</strong>🔕</td>
+<tbody>
+<tr>
+<td>0🔕</td>
+<td>1**(2)**🔕</td>
 <td>2🔕</td>
-<td><strong>3</strong>:mountain_bicyclist:</td>
+<td><strong>3</strong>🚵</td>
 <td>4🔕</td>
 <td>5🔕</td>
 <td>6🔕</td>
 <td>7🔕🚶</td>
 </tr>
 <tr>
-<td>8:no_bell:</td>
-<td>9<strong>(2)</strong>🔕</td>
-<td><strong>10</strong>:mountain_bicyclist:</td>
+<td>8🔕</td>
+<td>9**(2)**🔕</td>
+<td><strong>10</strong>🚵</td>
 <td>11🔕</td>
 <td>12🔕</td>
-<td><strong>13</strong>:mountain_bicyclist:</td>
+<td><strong>13</strong>🚵</td>
 <td>14🐱F(16)</td>
-<td>15<strong>(2)</strong>🐱F(17)</td>
+<td>15**(2)**🐱F(17)</td>
 </tr>
 <tr>
-<td>16:no_bell:</td>
-<td>17:no_bell:</td>
-<td><strong>18</strong>:mountain_bicyclist:</td>
+<td>16🔕</td>
+<td>17🔕</td>
+<td><strong>18</strong>🚵</td>
 <td>19🔕</td>
-<td>20<strong>(3)</strong>🔕</td>
-<td>21<strong>(3)</strong>🐱F(16)</td>
+<td>20**(3)**🔕</td>
+<td>21**(3)**🐱F(16)</td>
 <td>22</td>
-<td>23<strong>(3)</strong></td>
+<td>23**(3)**</td>
 </tr>
 <tr>
-<td>24<strong>(2)</strong>🔕</td>
-<td>25:no_bell:</td>
+<td>24**(2)**🔕</td>
+<td>25🔕</td>
 <td>26🔕</td>
 <td>27🔕</td>
-<td><strong>28</strong>:mountain_bicyclist:</td>
+<td><strong>28</strong>🚵</td>
 <td>29</td>
 <td>30</td>
-<td>31:mouse:</td>
+<td>31🐭</td>
 </tr>
 <tr>
 <td></td>
@@ -1275,7 +1317,8 @@
 <td></td>
 <td></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <ol start="13">
 <li><strong>[回合20]</strong> 选择14</li>
 </ol>
@@ -1292,45 +1335,46 @@
 <th></th>
 </tr>
 </thead>
-<tbody><tr>
-<td>0:no_bell:</td>
-<td>1<strong>(2)</strong>🔕</td>
+<tbody>
+<tr>
+<td>0🔕</td>
+<td>1**(2)**🔕</td>
 <td>2🔕</td>
-<td><strong>3</strong>:mountain_bicyclist:</td>
+<td><strong>3</strong>🚵</td>
 <td>4🔕</td>
 <td>5🔕</td>
 <td>6🔕</td>
 <td>7🔕</td>
 </tr>
 <tr>
-<td>8:no_bell:</td>
-<td>9<strong>(2)</strong>🔕</td>
-<td><strong>10</strong>:mountain_bicyclist:</td>
+<td>8🔕</td>
+<td>9**(2)**🔕</td>
+<td><strong>10</strong>🚵</td>
 <td>11🔕</td>
 <td>12🔕</td>
-<td><strong>13</strong>:mountain_bicyclist:</td>
+<td><strong>13</strong>🚵</td>
 <td>14🔕🚶</td>
-<td>15<strong>(2)</strong>🐱F(17)</td>
+<td>15**(2)**🐱F(17)</td>
 </tr>
 <tr>
-<td>16:no_bell:</td>
-<td>17:no_bell:</td>
-<td><strong>18</strong>:mountain_bicyclist:</td>
+<td>16🔕</td>
+<td>17🔕</td>
+<td><strong>18</strong>🚵</td>
 <td>19🔕</td>
-<td>20<strong>(3)</strong>🔕</td>
-<td>21<strong>(3)</strong>🐱F(16)</td>
+<td>20**(3)**🔕</td>
+<td>21**(3)**🐱F(16)</td>
 <td>22🐱F(16)</td>
-<td>23<strong>(3)</strong></td>
+<td>23**(3)**</td>
 </tr>
 <tr>
-<td>24<strong>(2)</strong>🔕</td>
-<td>25:no_bell:</td>
+<td>24**(2)**🔕</td>
+<td>25🔕</td>
 <td>26🔕</td>
 <td>27🔕</td>
-<td><strong>28</strong>:mountain_bicyclist:</td>
+<td><strong>28</strong>🚵</td>
 <td>29</td>
 <td>30</td>
-<td>31:mouse:</td>
+<td>31🐭</td>
 </tr>
 <tr>
 <td></td>
@@ -1342,7 +1386,8 @@
 <td></td>
 <td></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <ol start="14">
 <li><strong>[回合21]</strong> 选择22</li>
 </ol>
@@ -1359,45 +1404,46 @@
 <th></th>
 </tr>
 </thead>
-<tbody><tr>
-<td>0:no_bell:</td>
-<td>1<strong>(2)</strong>🔕</td>
+<tbody>
+<tr>
+<td>0🔕</td>
+<td>1**(2)**🔕</td>
 <td>2🔕</td>
-<td><strong>3</strong>:mountain_bicyclist:</td>
+<td><strong>3</strong>🚵</td>
 <td>4🔕</td>
 <td>5🔕</td>
 <td>6🔕</td>
 <td>7🔕</td>
 </tr>
 <tr>
-<td>8:no_bell:</td>
-<td>9<strong>(2)</strong>🔕</td>
-<td><strong>10</strong>:mountain_bicyclist:</td>
+<td>8🔕</td>
+<td>9**(2)**🔕</td>
+<td><strong>10</strong>🚵</td>
 <td>11🔕</td>
 <td>12🔕</td>
-<td><strong>13</strong>:mountain_bicyclist:</td>
+<td><strong>13</strong>🚵</td>
 <td>14🔕</td>
-<td>15<strong>(2)</strong>🐱F(17)</td>
+<td>15**(2)**🐱F(17)</td>
 </tr>
 <tr>
-<td>16:no_bell:</td>
-<td>17:no_bell:</td>
-<td><strong>18</strong>:mountain_bicyclist:</td>
+<td>16🔕</td>
+<td>17🔕</td>
+<td><strong>18</strong>🚵</td>
 <td>19🔕</td>
-<td>20<strong>(3)</strong>🔕</td>
-<td>21<strong>(3)</strong>🐱F(16)</td>
+<td>20**(3)**🔕</td>
+<td>21**(3)**🐱F(16)</td>
 <td>22🔕🚶</td>
-<td>23<strong>(3)</strong>🐱F(18)</td>
+<td>23**(3)**🐱F(18)</td>
 </tr>
 <tr>
-<td>24<strong>(2)</strong>🔕</td>
-<td>25:no_bell:</td>
+<td>24**(2)**🔕</td>
+<td>25🔕</td>
 <td>26🔕</td>
 <td>27🔕</td>
-<td><strong>28</strong>:mountain_bicyclist:</td>
+<td><strong>28</strong>🚵</td>
 <td>29</td>
 <td>30🐱F(16)</td>
-<td>31:mouse:</td>
+<td>31🐭</td>
 </tr>
 <tr>
 <td></td>
@@ -1409,7 +1455,8 @@
 <td></td>
 <td></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <ol start="15">
 <li><strong>[回合22]</strong> 选择30，发现邻近点中有目标点，且值为16是最短路径之一，遍历完成，具体路径为 <strong>0,8,16,17,25,26,27,19,11,12,4,5,6,14,22,30,31</strong>，共消耗体力值16点</li>
 </ol>
@@ -1426,45 +1473,46 @@
 <th></th>
 </tr>
 </thead>
-<tbody><tr>
-<td>0:no_bell:</td>
-<td>1<strong>(2)</strong>🔕</td>
+<tbody>
+<tr>
+<td>0🔕</td>
+<td>1**(2)**🔕</td>
 <td>2🔕</td>
-<td><strong>3</strong>:mountain_bicyclist:</td>
+<td><strong>3</strong>🚵</td>
 <td>4🔕</td>
 <td>5🔕</td>
 <td>6🔕</td>
 <td>7🔕</td>
 </tr>
 <tr>
-<td>8:no_bell:</td>
-<td>9<strong>(2)</strong>🔕</td>
-<td><strong>10</strong>:mountain_bicyclist:</td>
+<td>8🔕</td>
+<td>9**(2)**🔕</td>
+<td><strong>10</strong>🚵</td>
 <td>11🔕</td>
 <td>12🔕</td>
-<td><strong>13</strong>:mountain_bicyclist:</td>
+<td><strong>13</strong>🚵</td>
 <td>14🔕</td>
-<td>15<strong>(2)</strong>🐱F(17)</td>
+<td>15**(2)**🐱F(17)</td>
 </tr>
 <tr>
-<td>16:no_bell:</td>
-<td>17:no_bell:</td>
-<td><strong>18</strong>:mountain_bicyclist:</td>
+<td>16🔕</td>
+<td>17🔕</td>
+<td><strong>18</strong>🚵</td>
 <td>19🔕</td>
-<td>20<strong>(3)</strong>🔕</td>
-<td>21<strong>(3)</strong>🐱F(16)</td>
+<td>20**(3)**🔕</td>
+<td>21**(3)**🐱F(16)</td>
 <td>22🔕</td>
-<td>23<strong>(3)</strong>🐱F(18)</td>
+<td>23**(3)**🐱F(18)</td>
 </tr>
 <tr>
-<td>24<strong>(2)</strong>🔕</td>
-<td>25:no_bell:</td>
+<td>24**(2)**🔕</td>
+<td>25🔕</td>
 <td>26🔕</td>
 <td>27🔕</td>
-<td><strong>28</strong>:mountain_bicyclist:</td>
+<td><strong>28</strong>🚵</td>
 <td>29🐱F(18)</td>
 <td>30🔕🚶</td>
-<td>31:mouse:🐱F(16)</td>
+<td>31🐭🐱F(16)</td>
 </tr>
 <tr>
 <td></td>
@@ -1476,8 +1524,10 @@
 <td></td>
 <td></td>
 </tr>
-</tbody></table>
-<h2 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h2><pre><code class="javascript">class AStarCat {
+</tbody>
+</table>
+<h2 id="代码实现-v2">代码实现</h2>
+<pre><code class="language-javascript">class AStarCat {
     constructor(options) {
         // 定义基础行列信息
         this.columns = (options &amp;&amp; options.columns) || 16
@@ -1594,8 +1644,10 @@
     checkNextPoint(point) {
         return point.flag !== 3
     }
-}</code></pre>
-<h2 id="效果演示-1"><a href="#效果演示-1" class="headerlink" title="效果演示"></a>效果演示</h2><pre><code class="html">&lt;canvas id=&quot;AStarPlace&quot;&gt;not support canvas&lt;/canvas&gt;
+}
+</code></pre>
+<h2 id="效果演示-v2">效果演示</h2>
+<pre><code class="language-html">&lt;canvas id=&quot;AStarPlace&quot;&gt;not support canvas&lt;/canvas&gt;
 &lt;script&gt;
     let cacheWays = null
     let index = 0
@@ -1603,21 +1655,23 @@
             if (cacheWays === null) {
                 cacheWays = new AStarCat().getShortestWays(chessboard)
                 if (cacheWays.length === 0) {
-                    throw new Error(&#39;此题无解&#39;)
+                    throw new Error('此题无解')
                 }
             }
             return cacheWays[index++]
         }
-    gameGen.initGame(&#39;AStarPlace&#39;, catHandler , null, {
+    gameGen.initGame('AStarPlace', catHandler , null, {
         complexRoad: true
     })
-&lt;/script&gt;</code></pre>
+&lt;/script&gt;
+</code></pre>
 
 <canvas id="AStarPlace">not support canvas</canvas>
 
-
-<h1 id="升级玩法"><a href="#升级玩法" class="headerlink" title="升级玩法"></a>升级玩法</h1><p>&emsp;&emsp;在这个游戏中，我们不仅可以设计猫的行动策略函数，还可以设计老鼠的行动策略函数来躲避猫的追击，有兴趣的同学可以想想如果躲避算法又应该如何实现。</p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
+<h1>升级玩法</h1>
+<p>  在这个游戏中，我们不仅可以设计猫的行动策略函数，还可以设计老鼠的行动策略函数来躲避猫的追击，有兴趣的同学可以想想如果躲避算法又应该如何实现。</p>
+<h1>参考资料</h1>
+<ul>
 <li><a href="https://blog.csdn.net/hitwhylz/article/details/41383561" target="_blank" rel="noopener">A星寻路算法-(入门级) - Colin丶- CSDN博客</a></li>
 </ul>
 

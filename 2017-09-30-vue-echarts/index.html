@@ -58,17 +58,21 @@
   <div class="article-content">
     <p>将Echarts做一层小小的封装以满足使用需求</p>
 <a id="more"></a>
-
-<h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><hr>
+<h1>说明</h1>
+<hr>
 <p>做项目的时候为了让数据展示的更加直观，总会用到图表相关的控件，而说到图表控件第一时间当然想到<a href="http://echarts.baidu.com/examples.html" target="_blank" rel="noopener">ECharts</a>这个开源项目，而它不像iview、element-ui这些组件使用起来那么便捷，需要绕一个小弯，为了图方便于是对ECharts进行了一层封装</p>
-<h2 id="控件演示"><a href="#控件演示" class="headerlink" title="控件演示"></a>控件演示</h2><p><img src="https://resources.chenjianhui.site/2017-09-30-effect.gif" alt></p>
-<h2 id="控件使用"><a href="#控件使用" class="headerlink" title="控件使用"></a>控件使用</h2><hr>
-<h4 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h4><ul>
+<h2 id="控件演示">控件演示</h2>
+<p><img src="https://resources.chenjianhui.site/2017-09-30-effect.gif" alt></p>
+<h2 id="控件使用">控件使用</h2>
+<hr>
+<h4 id="概要">概要</h4>
+<ul>
 <li>基于echarts的二次封装</li>
 <li>由数据驱动</li>
 <li>控件源码见src/components/charts</li>
 </ul>
-<h4 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h4><ul>
+<h4 id="文档">文档</h4>
+<ul>
 <li>props</li>
 </ul>
 <table>
@@ -79,7 +83,8 @@
 <th>类型</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>_id</td>
 <td>图表唯一标识，当id重复将会报错</td>
 <td>String</td>
@@ -109,103 +114,113 @@
 <td>图表类型，提供三种(LineAndBar/LineOrBar/Pie)</td>
 <td>String</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <ul>
 <li>调用示例</li>
 </ul>
-<pre><code class="html"> &lt;chart
-  :_id=&quot;&#39;testCharts&#39;&quot;
-  :_titleText=&quot;&#39;访问量统计&#39;&quot;
-  :_xText=&quot;&#39;类别&#39;&quot;
-  :_yText=&quot;&#39;总访问量&#39;&quot;
+<pre><code class="language-html"> &lt;chart
+  :_id=&quot;'testCharts'&quot;
+  :_titleText=&quot;'访问量统计'&quot;
+  :_xText=&quot;'类别'&quot;
+  :_yText=&quot;'总访问量'&quot;
   :_chartData=&quot;chartData&quot;
-  :_type=&quot;&#39;Pie&#39;&quot;&gt;&lt;/chart&gt;</code></pre>
-<h2 id="实现方式"><a href="#实现方式" class="headerlink" title="实现方式"></a>实现方式</h2><hr>
+  :_type=&quot;'Pie'&quot;&gt;&lt;/chart&gt;
+</code></pre>
+<h2 id="实现方式">实现方式</h2>
+<hr>
 <ul>
-<li>创建一个待渲染的dom<pre><code class="html">&lt;template&gt;
-  &lt;div :id=&quot;_id&quot; class=&quot;chart&quot;&gt;&lt;/div&gt;
-&lt;/template&gt;</code></pre>
-</li>
-<li>绘制函数<pre><code class="javascript">function drawPie(chartData,id,titleText,xText,yText) {
-  var chart = echarts.init(document.getElementById(id))
-  var xAxisData = chartData.map(function (item) {return item[0]})
-  var pieData = []
-  chartData.forEach((v,i)=&gt;{
-    pieData.push({
-      name:v[0],
-      value:v[1]
+<li>创建一个待渲染的dom</li>
+</ul>
+<pre><code class="language-html">&lt;template&gt;
+    &lt;div :id=&quot;_id&quot; class=&quot;chart&quot;&gt;&lt;/div&gt;
+&lt;/template&gt;
+</code></pre>
+<ul>
+<li>绘制函数</li>
+</ul>
+<pre><code class="language-javascript">function drawPie(chartData,id,titleText,xText,yText) {
+    var chart = echarts.init(document.getElementById(id))
+    var xAxisData = chartData.map(function (item) {return item[0]})
+    var pieData = []
+    chartData.forEach((v,i)=&gt;{
+      pieData.push({
+        name:v[0],
+        value:v[1]
+      })
     })
-  })
-  chart.setOption({
-    title : {
-      text: titleText,
-      subtext: &#39;&#39;,
-      x:&#39;center&#39;
-    },
-    tooltip : {
-      trigger: &#39;item&#39;,
-      formatter: &quot;{a} &lt;br/&gt;{b} : {c} ({d}%)&quot;
-    },
-    legend: {
-      orient: &#39;vertical&#39;,
-      left: &#39;left&#39;,
-      data: xAxisData
-    },
-    series : [
-      {
-        name: xText,
-        type: &#39;pie&#39;,
-        radius : &#39;55%&#39;,
-        center: [&#39;50%&#39;, &#39;60%&#39;],
-        data:pieData,
-        itemStyle: {
-          emphasis: {
-            shadowBlur: 10,
-            shadowOffsetX: 0,
-            shadowColor: &#39;rgba(0, 0, 0, 0.5)&#39;
+    chart.setOption({
+      title : {
+        text: titleText,
+        subtext: '',
+        x:'center'
+      },
+      tooltip : {
+        trigger: 'item',
+        formatter: &quot;{a} &lt;br/&gt;{b} : {c} ({d}%)&quot;
+      },
+      legend: {
+        orient: 'vertical',
+        left: 'left',
+        data: xAxisData
+      },
+      series : [
+        {
+          name: xText,
+          type: 'pie',
+          radius : '55%',
+          center: ['50%', '60%'],
+          data:pieData,
+          itemStyle: {
+            emphasis: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
           }
         }
+      ]
+    })
+  }
+</code></pre>
+<ul>
+<li>挂载结束、数据源改变时重绘</li>
+</ul>
+<pre><code class="language-javascript">    watch:{
+      _chartData(val){
+        switch (this._type){
+          case &quot;LineAndBar&quot;:
+            drawLineAndBar(val,this._id,this._titleText,this._xText,this._yText);
+            break
+          case &quot;LineOrBar&quot;:
+            drawLineOrBar(val,this._id,this._titleText,this._xText,this._yText);
+            break
+          case &quot;Pie&quot;:
+            drawPie(val,this._id,this._titleText,this._xText,this._yText);
+            break
+          default:
+            drawLineAndBar(val,this._id,this._titleText,this._xText,this._yText);
+            break
+        }
       }
-    ]
-  })
-}</code></pre>
-</li>
-<li>挂载结束、数据源改变时重绘<pre><code class="javascript">  watch:{
-    _chartData(val){
+    },
+    mounted() {
       switch (this._type){
         case &quot;LineAndBar&quot;:
-          drawLineAndBar(val,this._id,this._titleText,this._xText,this._yText);
+          drawLineAndBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
           break
         case &quot;LineOrBar&quot;:
-          drawLineOrBar(val,this._id,this._titleText,this._xText,this._yText);
+          drawLineOrBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
           break
         case &quot;Pie&quot;:
-          drawPie(val,this._id,this._titleText,this._xText,this._yText);
+          drawPie(this._chartData,this._id,this._titleText,this._xText,this._yText);
           break
         default:
-          drawLineAndBar(val,this._id,this._titleText,this._xText,this._yText);
+          drawLineAndBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
           break
       }
     }
-  },
-  mounted() {
-    switch (this._type){
-      case &quot;LineAndBar&quot;:
-        drawLineAndBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
-        break
-      case &quot;LineOrBar&quot;:
-        drawLineOrBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
-        break
-      case &quot;Pie&quot;:
-        drawPie(this._chartData,this._id,this._titleText,this._xText,this._yText);
-        break
-      default:
-        drawLineAndBar(this._chartData,this._id,this._titleText,this._xText,this._yText);
-        break
-    }
-  }</code></pre>
-</li>
-</ul>
+</code></pre>
 <p>如果觉得有用，欢迎star <a href="https://github.com/calebman/vue-DBM" target="_blank" rel="noopener">calebman/vue-DBM</a></p>
 
   </div>

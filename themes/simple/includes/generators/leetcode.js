@@ -44,29 +44,32 @@ module.exports = function (hexo) {
                 });
             });
         };
-        const watcher = chokidar.watch('', {
-            depth: 1,
-            cwd: leetcodePath
-        }).on('add', handleFileChange)
-            .on('change', handleFileChange)
-            .on('unlink', name => delete leetcodeObj[name]);
-        if (!process.argv[2].startsWith('s')) {
-            hexo.on('exit', () => watcher.close())
+
+
+        if (process.argv[2].startsWith('s')) {
+            chokidar.watch('', {
+                depth: 1,
+                cwd: leetcodePath
+            }).on('add', handleFileChange)
+                .on('change', handleFileChange)
+                .on('unlink', name => delete leetcodeObj[name]);
+        } else {
+            fs.readdirSync(leetcodePath).forEach(handleFileChange);
         }
     }
 }
 
 const loadGroups = questions => {
-  const groups = {}
-  questions.forEach(o => {
-      const groupName = o.group || '其他'
-      groups[groupName] = groups[groupName] || []
-      groups[groupName].push(o)
-  })
-  return Object.keys(groups).map(k => {
-      return {
-          name: k,
-          posts: groups[k]
-      }
-  })
+    const groups = {}
+    questions.forEach(o => {
+        const groupName = o.group || '其他'
+        groups[groupName] = groups[groupName] || []
+        groups[groupName].push(o)
+    })
+    return Object.keys(groups).map(k => {
+        return {
+            name: k,
+            posts: groups[k]
+        }
+    })
 }

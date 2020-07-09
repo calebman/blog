@@ -55,8 +55,7 @@
   
   
 
-  <div class="article-content">
-    <p>  在前后端分离的开发模式中，到项目的打包发布阶段我们一般都是会采用一个支持<code>HTTP</code>动静分离的中间件来部署前后端应用，最常见的就是<code>Nginx</code>，它不仅可以帮我们做动静分离，还可以做后端请求的负载均衡，这一部分的实现教程很多在此就不做过多解释，本文想讲的是如何不依赖中间件，将前端打包的内容嵌入后端，以一个<code>jar</code>发布。</p>
+  <div><p>  在前后端分离的开发模式中，到项目的打包发布阶段我们一般都是会采用一个支持<code>HTTP</code>动静分离的中间件来部署前后端应用，最常见的就是<code>Nginx</code>，它不仅可以帮我们做动静分离，还可以做后端请求的负载均衡，这一部分的实现教程很多在此就不做过多解释，本文想讲的是如何不依赖中间件，将前端打包的内容嵌入后端，以一个<code>jar</code>发布。</p>
 <a id="more"></a>
 <h1>思考</h1>
 <p>  本人是基于<code>SpringBoot</code>+<code>Vuejs</code>来做前后端分离开发的，所以本次也基于这两个技术展来思考如何实现，在想如何不依赖中间件实现部署时我们得先思考<strong>中间件为我们的前后端分离部署带来了什么？</strong></p>
@@ -193,8 +192,7 @@ public class RewriteFilter implements Filter {
 <li><code>**</code> 匹配0或者更多的目录</li>
 </ul>
 <p>  <code>AntPathMatcher</code>采用最长匹配原则，如<code>/api/**</code>与<code>/api/resources/**</code>来匹配<code>/api/resources/users/me</code>，后者会被成功匹配</p>
-
-  </div>
+</div>
 </article>
 <ul class="post-copyright">
   <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2019-08-15-server-front-separate-package/">Vue+SpringBoot单jar部署</a></li>

@@ -1,3 +1,8 @@
+<%
+const sortPosts = site.posts.sort('date', -1)
+const postCategorieNames = page.categories.map(p => p.name)
+const recentPosts = sortPosts.filter(p => p !== page && p.categories.some(c => postCategorieNames.includes(c.name)))
+%>
 <article class="article">
   <h1 class="article-title"><%=page.title%></h1>
   <span class="article-date"><%=date(page.date)%></span>
@@ -10,6 +15,18 @@
   <% } %>
 
   <div><%-page.content%></div>
+
+  <% if (recentPosts.length > 0) { %>
+  <div>
+    <h1>推荐阅读</h1>
+    <ul>
+      <% recentPosts.each(post => { %>
+      <li><a href="<%=url_for(post.path)%>"> <%=post.title%></a></li>
+      <% }); %>
+    </ul>
+  </div>
+  <% } %>
+
 </article>
 <ul class="post-copyright">
   <li><strong>本文标题：</strong><a href="<%= page.permalink %>"><%= page.title %></a></li>

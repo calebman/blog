@@ -4,8 +4,9 @@
     <h1 class="archive-title" style="margin-bottom: 60px;">所有文章</h1>
     <% page.posts.sort('date', -1).each((post, index) => { %>
       <div class="archive-item">
-        <span class="archive-item-index"><%=String(page.posts.length - index).padStart(3, 0)%></span>
-        <a class="archive-item-link" href="<%=url_for(post.path)%>"> <%=post.title%></a>
+        <a class="archive-item-link" href="<%=url_for(post.path)%>">
+          <%=String(page.posts.length - index).padStart(3, 0)%> <%=post.title%>
+        </a>
         <time class="archive-item-date" datetime="<%=post.date.toJSON()%>">
           <%=date(post.date)%>
         </time>

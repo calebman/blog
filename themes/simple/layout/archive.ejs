@@ -1,12 +1,13 @@
 <%
+const sortPosts = site.posts.sort('date', -1)
 let categories = new Set()
-site.posts.sort('date', -1).forEach(p => {
+sortPosts.sort('date', -1).forEach(p => {
   p.categories.forEach(c => {
     categories.add(c.name)
   })
 })
 %>
-<div class="article-content">
+<article>
   <div id="archive">
 
     <h2>按归档组织</h2>
@@ -15,7 +16,7 @@ site.posts.sort('date', -1).forEach(p => {
     <% categories.forEach(cName => { %>
     <h3><%= cName %></h3>
     <ul>
-      <% site.posts.filter(p => p.categories.some(c => c.name === cName)).forEach(post => { %>
+      <% sortPosts.filter(p => p.categories.some(c => c.name === cName)).forEach(post => { %>
       <li>
         <a href="<%=url_for(post.path)%>"> <%=post.title%></a>
       </li>
@@ -25,4 +26,4 @@ site.posts.sort('date', -1).forEach(p => {
     <% } %>
 
   </div>
-</div>
+</article>

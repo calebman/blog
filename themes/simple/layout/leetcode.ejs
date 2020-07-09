@@ -1,4 +1,4 @@
-<div class="article-content">
+<article>
   <% let index = 1 %>
   <% page.groups.sort((a, b) => (b.name.length - a.name.length)).forEach(group => { %>
   <h3><%= group.name %></h3>
@@ -11,4 +11,4 @@
     <% }); %>
   </ul>
   <% }) %>
-</div>
+</article>

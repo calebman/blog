@@ -11,7 +11,8 @@
 
 ## 后端
 
-* [Spring 为什么要使用三级缓存？](https://chenjianhui.site/2020-07-14-spring-circular-dependence/)
+* [为什么 Spring AOP 无法拦截类内部调用？](https://chenjianhui.site/2020-07-15-spring-aop-internal-call/)
+* [为什么 Spring 要使用三级缓存？](https://chenjianhui.site/2020-07-14-spring-circular-dependence/)
 * [JVM 系列——垃圾回收](https://chenjianhui.site/2020-06-29-jvm-gc/)
 * [多数据源下SpringTransaction的探究](https://chenjianhui.site/2020-01-09-spring-transaction/)
 * [缓存系列——开篇](https://chenjianhui.site/2020-01-07-cache-opening/)

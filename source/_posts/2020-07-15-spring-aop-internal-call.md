@@ -8,7 +8,7 @@ tags:
 - AOP
 ---
 
-&emsp;&emsp;Spring AOP 想必大家都不陌生，经常写后端的同学 @Transactional 注解肯定用过，我们先来看一段代码：
+&emsp;&emsp;Spring AOP 想必大家都不陌生，经常写后端的同学肯定用过 @Transactional 注解，我们先来看一段代码：
 
 ```java
 import org.springframework.aop.framework.AopContext;
@@ -35,7 +35,7 @@ public class ExpService {
 }
 ```
 
-接下来写一段单元测试代码，调用 ExpService 的 foo 方法，请问函数调用能够触发数据回滚？
+接下来写一段单元测试代码，调用 ExpService 的 foo 方法，请问函数调用能否触发数据回滚？
 
 ```java
 @RunWith(SpringRunner.class)
@@ -56,7 +56,7 @@ public class ServerApplicationTests {
 
 # 写个例子
 
-用 @Transactional 的例子还不足以代表 Spring AOP，下面我们针对 ExpService 写个函数调用日志记录的切面将问题模拟出来。
+用 @Transactional 的例子还不足以代表 Spring AOP，下面我们针对 ExpService 写个函数调用日志记录的切面，将问题模拟出来。
 
 ```java
 import org.aspectj.lang.ProceedingJoinPoint;

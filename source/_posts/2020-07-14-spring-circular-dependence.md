@@ -17,6 +17,8 @@ tags:
 我先说我的观点，三级缓存是为了提升效率，下面我将论证我的观点，同时讲解清楚各级缓存的作用。
 
 > 阅读本篇文章需要对 Spring 设计思路有一定的了解，在开始之前建议先阅读文章最底部[参考资料](#参考资料)中的部分文章。
+> 
+> 文章内的所有源码引用类都链接到 [spring-framework-github-4.0.x](https://github.com/spring-projects/spring-framework/tree/4.0.x) 的 4.0.x 分支仓库中，点击即可查看源码信息。
 
 # 序言
 
@@ -46,7 +48,7 @@ tags:
 
 #### 1. 三级缓存解决了 AOP 增强对象的循环依赖问题
 
-AOP 增强对象的功能是通过 [AbstractAutoProxyCreator](https://github.com/spring-projects/spring-framework/blob/master/spring-aop/src/main/java/org/springframework/aop/framework/autoproxy/AbstractAutoProxyCreator.java) 这个后置处理器完成的，我们完全可以在 Bean 实例化之后触发该处理器，而后将增强后的对象放置到二级缓存，也能够处理掉增强对象的循环依赖问题。
+AOP 增强对象的功能是通过 [AbstractAutoProxyCreator](https://github.com/spring-projects/spring-framework/blob/4.0.x/spring-aop/src/main/java/org/springframework/aop/framework/autoproxy/AbstractAutoProxyCreator.java) 这个后置处理器完成的，我们完全可以在 Bean 实例化之后触发该处理器，而后将增强后的对象放置到二级缓存，也能够处理掉增强对象的循环依赖问题。
 
 **所以并不需要三级缓存来解决 AOP 增强对象的循环依赖问题，二级缓存就能做到。更新后的流程如下所示：**
 
@@ -56,11 +58,11 @@ AOP 增强对象的功能是通过 [AbstractAutoProxyCreator](https://github.com
 
 这句话取自[《面试必杀技，讲一讲Spring中的循环依赖-阿里云开发者社区》](https://developer.aliyun.com/article/766880)这篇文章的结论，简单理解就是：使用二级缓存会让 Bean 实例化之后就触发 AOP 后置处理，是违背 Spring 设计原则的，Spring 希望在 Bean 完成参数注入后再进行后置处理，所以使用三级缓存存储了 Bean 的创建工厂，这样没有循环依赖的 Bean 就不会触发工厂方法，在参数注入后再进行 AOP 代理，使其符合 Spring 的设计原则。
 
-这个观点很有意思，二级缓存为了解决了 AOP 增强对象的循环依赖问题确实会有上面说到的问题，所有 Bean 的 AOP 后置处理都被提前到参数注入之前了。要反驳这个观点我们需要来看一段源代码，下方源代码出自[AbstractAutowireCapableBeanFactory#getEarlyBeanReference](https://github.com/spring-projects/spring-framework/blob/master/spring-beans/src/main/java/org/springframework/beans/factory/support/AbstractAutowireCapableBeanFactory.java#L970)：
+这个观点很有意思，二级缓存为了解决了 AOP 增强对象的循环依赖问题确实会有上面说到的问题，所有 Bean 的 AOP 后置处理都被提前到参数注入之前了。要反驳这个观点我们需要来看一段源代码，下方源代码出自[AbstractAutowireCapableBeanFactory#getEarlyBeanReference](https://github.com/spring-projects/spring-framework/blob/4.0.x/spring-beans/src/main/java/org/springframework/beans/factory/support/AbstractAutowireCapableBeanFactory.java#L970)：
 
 ![](https://resources.chenjianhui.site/20200714160636.png)
 
-这段代码负责触发 AOP 后置处理，如果对象被类似于 @Transactional 注解作用，就会返回一个增强后的早期对象，重点我们来看一下接口 [SmartInstantiationAwareBeanPostProcessor](https://github.com/spring-projects/spring-framework/blob/master/spring-beans/src/main/java/org/springframework/beans/factory/config/SmartInstantiationAwareBeanPostProcessor.java) 的父类 [InstantiationAwareBeanPostProcessor](https://github.com/spring-projects/spring-framework/blob/master/spring-beans/src/main/java/org/springframework/beans/factory/config/InstantiationAwareBeanPostProcessor.java) 注释中描述的很清楚，该接口是在显式属性设置与自动装配前进行回调，所以我使用二级缓存让 Bean 实例化之后就触发 AOP 后置处理是没有问题的，符合 Spring 设计原则。
+这段代码负责触发 AOP 后置处理，如果对象被类似于 @Transactional 注解作用，就会返回一个增强后的早期对象，重点我们来看一下接口 [SmartInstantiationAwareBeanPostProcessor](https://github.com/spring-projects/spring-framework/blob/4.0.x/spring-beans/src/main/java/org/springframework/beans/factory/config/SmartInstantiationAwareBeanPostProcessor.java) 的父类 [InstantiationAwareBeanPostProcessor](https://github.com/spring-projects/spring-framework/blob/4.0.x/spring-beans/src/main/java/org/springframework/beans/factory/config/InstantiationAwareBeanPostProcessor.java) 注释中描述的很清楚，该接口是在显式属性设置与自动装配前进行回调，所以我使用二级缓存让 Bean 实例化之后就触发 AOP 后置处理是没有问题的，符合 Spring 设计原则。
 
 ![](https://resources.chenjianhui.site/20200714160522.png)
 
@@ -70,7 +72,7 @@ AOP 增强对象的功能是通过 [AbstractAutoProxyCreator](https://github.com
 
 ## 三级缓存
 
-与一、二级缓存不同，Spring 使用三级缓存存储了对象的创建工厂 [ObjectFactory](https://github.com/spring-projects/spring-framework/blob/master/spring-beans/src/main/java/org/springframework/beans/factory/ObjectFactory.java)，从代码上来看是这样的：
+与一、二级缓存不同，Spring 使用三级缓存存储了对象的创建工厂 [ObjectFactory](https://github.com/spring-projects/spring-framework/blob/4.0.x/spring-beans/src/main/java/org/springframework/beans/factory/ObjectFactory.java)，从代码上来看是这样的：
 
 ![](https://resources.chenjianhui.site/20200714162428.png)
 
@@ -98,11 +100,11 @@ AOP 增强对象的功能是通过 [AbstractAutoProxyCreator](https://github.com
 
 可以看到使用三级缓存为每一个没有循环依赖的 Bean 减少了一次 AOP 的后置处理操作。
 
-换句话说，没有循环依赖的 Bean 不会执行 [AbstractAutowireCapableBeanFactory#getEarlyBeanReference](https://github.com/spring-projects/spring-framework/blob/master/spring-beans/src/main/java/org/springframework/beans/factory/support/AbstractAutowireCapableBeanFactory.java#L970) 方法，该方法的性能损耗主要在对 Bean 做反射取其注解（如 @Transactional）、类型等信息，用于判断是否需要进行 AOP 增强。且我们知道系统大多数的 Bean 都不会有循环依赖问题，这部分的性能优化是积少成多的。
+换句话说，没有循环依赖的 Bean 不会执行 [AbstractAutowireCapableBeanFactory#getEarlyBeanReference](https://github.com/spring-projects/spring-framework/blob/4.0.x/spring-beans/src/main/java/org/springframework/beans/factory/support/AbstractAutowireCapableBeanFactory.java#L970) 方法，该方法的性能损耗主要在对 Bean 做反射取其注解（如 @Transactional）、类型等信息，用于判断是否需要进行 AOP 增强。且我们知道系统大多数的 Bean 都不会有循环依赖问题，这部分的性能优化是积少成多的。
 
 **提个问题：没有循环依赖且需要增强的 Bean 在哪里做的 AOP 代理呢？**
 
-答案是在 Bean 的初始化阶段，[AbstractAutowireCapableBeanFactory#initializeBean](https://github.com/spring-projects/spring-framework/blob/master/spring-beans/src/main/java/org/springframework/beans/factory/support/AbstractAutowireCapableBeanFactory.java#L606) 方法会通过 [applyBeanPostProcessorsBeforeInitialization](https://github.com/spring-projects/spring-framework/blob/master/spring-beans/src/main/java/org/springframework/beans/factory/support/AbstractAutowireCapableBeanFactory.java#L424) 调用 Spring 中所有实现 [BeanPostProcessor](https://github.com/spring-projects/spring-framework/blob/master/spring-beans/src/main/java/org/springframework/beans/factory/config/BeanPostProcessor.java) 接口的后置处理器，这里就包括 AOP 的后置处理器 [AbstractAutoProxyCreator](https://github.com/spring-projects/spring-framework/blob/master/spring-aop/src/main/java/org/springframework/aop/framework/autoproxy/AbstractAutoProxyCreator.java)。
+答案是在 Bean 的初始化阶段，[AbstractAutowireCapableBeanFactory#initializeBean](https://github.com/spring-projects/spring-framework/blob/4.0.x/spring-beans/src/main/java/org/springframework/beans/factory/support/AbstractAutowireCapableBeanFactory.java#L606) 方法会通过 [applyBeanPostProcessorsBeforeInitialization](https://github.com/spring-projects/spring-framework/blob/4.0.x/spring-beans/src/main/java/org/springframework/beans/factory/support/AbstractAutowireCapableBeanFactory.java#L424) 调用 Spring 中所有实现 [BeanPostProcessor](https://github.com/spring-projects/spring-framework/blob/4.0.x/spring-beans/src/main/java/org/springframework/beans/factory/config/BeanPostProcessor.java) 接口的后置处理器，这里就包括 AOP 的后置处理器 [AbstractAutoProxyCreator](https://github.com/spring-projects/spring-framework/blob/4.0.x/spring-aop/src/main/java/org/springframework/aop/framework/autoproxy/AbstractAutoProxyCreator.java)。
 
 ![](https://resources.chenjianhui.site/20200714173151.png)
 

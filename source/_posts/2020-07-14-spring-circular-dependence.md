@@ -16,7 +16,7 @@ tags:
 
 我先说我的观点，三级缓存是为了提升效率，下面我将论证我的观点，同时讲解清楚各级缓存的作用。
 
-> 阅读本篇文章需要对 Spring 设计思路有一定的了解，在开始之前建议先阅读[参考资料](#参考资料)中的部分文章。
+> 阅读本篇文章需要对 Spring 设计思路有一定的了解，在开始之前建议先阅读文章最底部[参考资料](#参考资料)中的部分文章。
 
 # 序言
 
@@ -60,7 +60,7 @@ AOP 增强对象的功能是通过 [AbstractAutoProxyCreator](https://github.com
 
 ![](https://resources.chenjianhui.site/20200714160636.png)
 
-这段代码负责触发 AOP 后置处理，如果对象被类似于 @Transactional 注解作用，就会返回一个增强后的早期对象，重点我们来看一下接口 [SmartInstantiationAwareBeanPostProcessor](https://github.com/spring-projects/spring-framework/blob/master/spring-beans/src/main/java/org/springframework/beans/factory/config/SmartInstantiationAwareBeanPostProcessor.java) 的父类 [InstantiationAwareBeanPostProcessor](https://github.com/spring-projects/spring-framework/blob/master/spring-beans/src/main/java/org/springframework/beans/factory/config/InstantiationAwareBeanPostProcessor.java) 注释中描述的很清楚，该接口是在显示属性设置与自动装配前进行回调，所以我使用二级缓存让 Bean 实例化之后就触发 AOP 后置处理是没有问题的，符合 Spring 设计原则。
+这段代码负责触发 AOP 后置处理，如果对象被类似于 @Transactional 注解作用，就会返回一个增强后的早期对象，重点我们来看一下接口 [SmartInstantiationAwareBeanPostProcessor](https://github.com/spring-projects/spring-framework/blob/master/spring-beans/src/main/java/org/springframework/beans/factory/config/SmartInstantiationAwareBeanPostProcessor.java) 的父类 [InstantiationAwareBeanPostProcessor](https://github.com/spring-projects/spring-framework/blob/master/spring-beans/src/main/java/org/springframework/beans/factory/config/InstantiationAwareBeanPostProcessor.java) 注释中描述的很清楚，该接口是在显式属性设置与自动装配前进行回调，所以我使用二级缓存让 Bean 实例化之后就触发 AOP 后置处理是没有问题的，符合 Spring 设计原则。
 
 ![](https://resources.chenjianhui.site/20200714160522.png)
 
@@ -96,7 +96,7 @@ AOP 增强对象的功能是通过 [AbstractAutoProxyCreator](https://github.com
 
 ![](https://resources.chenjianhui.site/20200714175132.png)
 
-可以看到使用三级缓存为每一个 Bean 减少了一次 AOP 的后置处理操作。
+可以看到使用三级缓存为每一个没有循环依赖的 Bean 减少了一次 AOP 的后置处理操作。
 
 换句话说，没有循环依赖的 Bean 不会执行 [AbstractAutowireCapableBeanFactory#getEarlyBeanReference](https://github.com/spring-projects/spring-framework/blob/master/spring-beans/src/main/java/org/springframework/beans/factory/support/AbstractAutowireCapableBeanFactory.java#L970) 方法，该方法的性能损耗主要在对 Bean 做反射取其注解（如 @Transactional）、类型等信息，用于判断是否需要进行 AOP 增强。且我们知道系统大多数的 Bean 都不会有循环依赖问题，这部分的性能优化是积少成多的。
 

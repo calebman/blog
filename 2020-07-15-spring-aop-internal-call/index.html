@@ -1,0 +1,328 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <title>为什么 Spring AOP 无法拦截类内部调用？ [ Sincerity ]</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="icon" href="/images/favicon-32x32.png">
+  
+  <!-- stylesheets list from _config.yml -->
+  
+  <link rel="stylesheet" href="/css/simple.css">
+  
+  <link rel="stylesheet" href="/css/font.css">
+  
+  
+</head>
+
+<body>
+
+  <header class="header">
+    <nav class="nav">
+      <a href="/" class="nav-logo"><img src="/images/avatar.png" width="50" height="50" alt="Logo"></a>
+      <ul class="nav-links">
+        
+        <li><a href="/">文章</a></li>
+        
+        <li><a href="/archives">归档</a></li>
+        
+        <li><a href="/leetcode">力扣</a></li>
+        
+        <li><a href="/about">关于我</a></li>
+        
+        <li><a href="https://github.com/calebman">Github</a></li>
+        
+      </ul>
+    </nav>
+  </header>
+
+  <main class="content">
+    
+<article class="article">
+  <h1 class="article-title">为什么 Spring AOP 无法拦截类内部调用？</h1>
+  <span class="article-date">2020-07-15</span>
+  
+  
+  <a class="article-tag" href="/tags/Spring">
+    Spring
+  </a>
+  
+  <a class="article-tag" href="/tags/AOP">
+    AOP
+  </a>
+  
+  
+
+  <div><p>  Spring AOP 想必大家都不陌生，经常写后端的同学 @Transactional 注解肯定用过，我们先来看一段代码：</p>
+<pre><code class="language-java">import org.springframework.aop.framework.AopContext;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * @author JianhuiChen
+ * @description 内部调用 AOP 的示例
+ * @date 2020-07-15
+ */
+@Service
+public class ExpService {
+
+    public void foo() {
+        this.bar();
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void bar() {
+        // 一些数据库的写入、更新操作...
+        throw new RuntimeException(&quot;抛出异常尝试触发数据库回滚&quot;);
+    }
+}
+</code></pre>
+<p>接下来写一段单元测试代码，调用 ExpService 的 foo 方法，请问函数调用能够触发数据回滚？</p>
+<pre><code class="language-java">@RunWith(SpringRunner.class)
+@SpringBootTest
+public class ServerApplicationTests {
+
+    @Resource
+    private ExpService expService;
+
+    @Test
+    public void fooTest() {
+        expService.foo();
+    }
+}
+</code></pre>
+<p>既然我都提这个问题了，答案肯定是不能触发，从表现上来看 foo 的 @Transactional 注解似乎 “失效了”，我们知道 @Transactional 注解依赖于 Spring AOP 机制实现，这个表现结果就是我们今天要讨论的问题：<strong>为什么 Spring AOP 无法拦截类内部调用？</strong></p>
+<h1>写个例子</h1>
+<p>用 @Transactional 的例子还不足以代表 Spring AOP，下面我们针对 ExpService 写个函数调用日志记录的切面将问题模拟出来。</p>
+<pre><code class="language-java">import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Configuration;
+
+/**
+ * @author JianhuiChen
+ * @description 服务层函数调用日志记录
+ * @date 2020-07-15
+ */
+@Aspect
+@Configuration
+public class ServiceLogAspect {
+
+    /**
+     * 定义定点
+     */
+    @Pointcut(&quot;bean(expService)&quot;)
+    public void excudePointcut() {
+
+    }
+
+    @Around(&quot;excudePointcut()&quot;)
+    public Object aroundController(ProceedingJoinPoint pdj) throws Throwable {
+        System.out.println(String.format(&quot;调用方法 %s，共 %d 个参数&quot;,
+                pdj.getSignature().getName(), pdj.getArgs().length));
+        return pdj.proceed();
+    }
+}
+</code></pre>
+<p>运行结果如下，可以看到函数 bar 并没有被 ServiceLogAspect 切面作用。</p>
+<pre><code>调用方法 foo，共 0 个参数
+
+java.lang.RuntimeException: 抛出异常尝试触发数据库回滚
+
+	at exp.aop.ExpService.bar(ExpService.java:28)
+	at exp.aop.ExpService.foo(ExpService.java:15)
+</code></pre>
+<p>那么我们现在将 “@Transactional 注解在为何函数内部调用失效？” 这个问题，简化成了 “自定义的切面在为何函数内部调用失效？”，别小看这个简化的过程，现在我们至少不用分析 @Transactional 的内部处理逻辑了，这可是一个略微庞大的体系。</p>
+<h1>寻找原因</h1>
+<p>要分析上面的问题我们得有一些必要的知识储备，Spring AOP 是怎么运作的？有关这个问题相信你很容易通过搜索引擎得到想要的答案，本篇文章不做过多的说明，我们直接来分析问题的产生原因。</p>
+<p>Spring AOP 是通过代理来实现的，使用 Java 来实现代理有两种方式，静态与动态代理，我们先用静态代理的方式将 ExpService 的代理类写出来，它应该是下面这个样子：</p>
+<pre><code class="language-java">/**
+ * @author JianhuiChen
+ * @description ExpService 的静态代理实现
+ * @date 2020-07-15
+ */
+public class ExpServiceProxy extends ExpService {
+
+    public void foo() {
+        // 开启事务
+        try {
+            System.out.println(&quot;调用方法 foo，共 0 个参数&quot;);
+            super.foo();
+            // 提交事务
+        } catch (Exception ex) {
+            // 回滚事务
+            throw ex;
+        }
+    }
+
+    public void bar() {
+        // 开启事务
+        try {
+            System.out.println(&quot;调用方法 bar，共 0 个参数&quot;);
+            super.bar();
+            // 提交事务
+        } catch (Exception ex) {
+            // 回滚事务
+            throw ex;
+        }
+    }
+}
+</code></pre>
+<p>可以理解为 ExpServiceProxy 就是我们使用 @Resource 注入的 ExpService，在单元测试调用 expService.foo() 时其实调用的是 ExpServiceProxy 的 foo 方法，我们稍微观察一下这个方法，主要是 super.foo() 这句代码，调用的是父类未被增强的函数，自然就不会触发切面的功能。</p>
+<p><strong>那动态代理的类长什么样子呢？</strong></p>
+<p>我们启动 SpringBoot 服务，通过 <a href="https://alibaba.github.io/arthas/" target="_blank" rel="noopener">arthas</a> 连接正在运行的服务，使用 <a href="https://alibaba.github.io/arthas/jad.html" target="_blank" rel="noopener">jad 指令</a> 将代理类反编译并输出到文件，执行的指令如下所示：</p>
+<pre><code class="language-sh">[arthas@8633]$ jad --source-only \
+exp.aop.ExpService$$EnhancerBySpringCGLIB$$67b53145 \
+&gt; /data/ExpServiceProxy.java
+</code></pre>
+<p>截取动态代理类的部分内容如下所示：</p>
+<pre><code class="language-java">public class ExpService$$EnhancerBySpringCGLIB$$67b53145
+extends ExpService
+implements SpringProxy,
+Advised,
+Factory {
+  // ....
+    public final void foo() {
+        MethodInterceptor methodInterceptor = this.CGLIB$CALLBACK_0;
+        if (methodInterceptor == null) {
+            ExpService$$EnhancerBySpringCGLIB$$67b53145.CGLIB$BIND_CALLBACKS(this);
+            methodInterceptor = this.CGLIB$CALLBACK_0;
+        }
+        if (methodInterceptor != null) {
+            Object object = methodInterceptor.intercept(this, CGLIB$foo$1$Method, CGLIB$emptyArgs, CGLIB$foo$1$Proxy);
+            return;
+        }
+        super.foo();
+    }
+
+    public final void bar() {
+        MethodInterceptor methodInterceptor = this.CGLIB$CALLBACK_0;
+        if (methodInterceptor == null) {
+            ExpService$$EnhancerBySpringCGLIB$$67b53145.CGLIB$BIND_CALLBACKS(this);
+            methodInterceptor = this.CGLIB$CALLBACK_0;
+        }
+        if (methodInterceptor != null) {
+            Object object = methodInterceptor.intercept(this, CGLIB$bar$0$Method, CGLIB$emptyArgs, CGLIB$bar$0$Proxy);
+            return;
+        }
+        super.bar();
+    }
+  // ....
+}
+</code></pre>
+<p>可以看到由于我们的类没有实现接口，Spring 使用 CGLIB 以继承的方式生成了代理类，可以看到代理类最后是通过父类的函数来执行具体业务逻辑，这一部分本质上和我们实现的静态代理没有区别。</p>
+<h1>如何解决</h1>
+<p>那我们非要调用内部方法也得到增强的效果该怎么办呢？了解原理后其实很简单，只需要得到增强后的对象即可，所以至少有以下两种办法可以做到：</p>
+<ol>
+<li>通过 @Resource 注入一个自身的代理对象。</li>
+</ol>
+<pre><code class="language-java">@Service
+public class ExpService {
+
+    @Resource
+    private ExpService expService;
+
+    public void foo() {
+        expService.bar();
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void bar() {
+        // 一些数据库的写入、更新操作...
+        throw new RuntimeException(&quot;抛出异常尝试触发数据库回滚&quot;);
+    }
+}
+</code></pre>
+<ol start="2">
+<li>通过 AopContext 获取当前上下文的代理对象。</li>
+</ol>
+<pre><code class="language-java">@Service
+public class ExpService {
+
+    public void foo() {
+        if (null != AopContext.currentProxy()) {
+            ((ExpService) AopContext.currentProxy()).bar();
+        } else {
+            this.bar();
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void bar() {
+        // 一些数据库的写入、更新操作...
+        throw new RuntimeException(&quot;抛出异常尝试触发数据库回滚&quot;);
+    }
+}
+</code></pre>
+</div>
+
+  
+  <div>
+    <h1>推荐阅读</h1>
+    <ul>
+      
+      <li><a href="/2020-07-09-spring-circular-dependence/"> Spring 为什么要使用三级缓存？</a></li>
+      
+      <li><a href="/2018-05-23-build-http-server-with-netty/"> 使用Netty构建Http容器</a></li>
+      
+      <li><a href="/2018-02-21-build-springboot-env/"> SpringBoot集成环境搭建</a></li>
+      
+    </ul>
+  </div>
+  
+
+</article>
+<ul class="post-copyright">
+  <li><strong>本文标题：</strong><a href="https://chenjianhui.site/2020-07-15-spring-aop-internal-call/">为什么 Spring AOP 无法拦截类内部调用？</a></li>
+  <li><strong>本文作者：</strong><a href="https://chenjianhui.site">JianhuiChen</a></li>
+  <li><strong>本文链接：</strong><a href="https://chenjianhui.site/2020-07-15-spring-aop-internal-call/">https://chenjianhui.site/2020-07-15-spring-aop-internal-call/</a></li>
+  <li><strong>发布时间：</strong>2020-07-15</li>
+  <li><strong>版权声明：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+<div id="gitalk-container"></div>
+
+<!-- Gittalk.js -->
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<!-- Highlight.js -->
+<link rel="stylesheet" href="/css/hljs.css">
+<script src="/js/highlight.min.js"></script>
+<script>
+  hljs.initHighlightingOnLoad();
+  const gitalk = new Gitalk({
+    clientID: 'bd0cbb30da9c24da8c7c',
+    clientSecret: 'bd64a8e8c8117d5f3e22291cd3f29f2c70e671ff',
+    repo: 'blog',
+    owner: 'calebman',
+    admin: ['calebman']
+  })
+  gitalk.render('gitalk-container')
+</script>
+  </main>
+
+  <footer class="footer">
+    <ul class="footer-links">
+      <section class="copyright">
+        <a href="https://chenjianhui.site">JianhuiChen</a> © 2017 - 2020 | 
+        <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
+      </section>
+    </ul>
+  </footer>
+
+  
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/simple.js"></script>
+  
+  
+
+</body>
+
+</html>

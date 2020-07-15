@@ -1,7 +1,6 @@
 ---
 title: Spring 为什么要使用三级缓存？
 date: 2020-07-14 21:08:14
-thumbnail: https://resources.chenjianhui.site/2020-01-07-home-pic.jpeg
 categories: 
 - 后端
 tags: 

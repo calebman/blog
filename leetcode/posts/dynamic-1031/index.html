@@ -1,0 +1,109 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <title>俄罗斯套娃信封问题 [ Sincerity ]</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="icon" href="/images/favicon-32x32.png">
+  
+  <!-- stylesheets list from _config.yml -->
+  
+  <link rel="stylesheet" href="/css/simple.css">
+  
+  <link rel="stylesheet" href="/css/font.css">
+  
+  
+</head>
+
+<body>
+
+  <header class="header">
+    <nav class="nav">
+      <a href="/" class="nav-logo"><img src="/images/avatar.png" width="50" height="50" alt="Logo"></a>
+      <ul class="nav-links">
+        
+        <li><a href="/">文章</a></li>
+        
+        <li><a href="/archives">归档</a></li>
+        
+        <li><a href="/leetcode">力扣</a></li>
+        
+        <li><a href="/about">关于我</a></li>
+        
+        <li><a href="https://github.com/calebman">Github</a></li>
+        
+      </ul>
+    </nav>
+  </header>
+
+  <main class="content">
+    <article class="article">
+    <h1 class="article-title">俄罗斯套娃信封问题</h1>
+    <div class="article-content">
+        <h1>题干</h1>
+<blockquote>
+<p>给定一些标记了宽度和高度的信封，宽度和高度以整数对形式 (w, h) 出现。当另一个信封的宽度和高度都比这个信封大的时候，这个信封就可以放进另一个信封里，如同俄罗斯套娃一样。<br>
+请计算最多能有多少个信封能组成一组“俄罗斯套娃”信封（即可以把一个信封放到另一个信封里面）。<br>
+说明: 不允许旋转信封</p>
+</blockquote>
+<pre><code class="language-sh">示例：
+输入: envelopes = [[5,4],[6,4],[6,7],[2,3]]
+输出: 3 
+解释: 最多信封的个数为 3, 组合为: [2,3] =&gt; [5,4] =&gt; [6,7]。
+</code></pre>
+<h1>题解</h1>
+<h2 id="解题思路">解题思路</h2>
+<p>首先考虑贪婪算法，对每个数组取其 w + h 然后升序排列，循环依次判断能否套入信封：</p>
+<p>[[5,4],[6,4],[6,7],[2,3]] =&gt; [[2,3],[5,4],[6,4],[6,7]] =&gt; [[2,3],[5,4],[6,7]] =&gt; 3</p>
+<p>从这个例子来看，能够取得正确值，但是下面这个例子就不行了：</p>
+<p>[[13,11],[18,13],[14,18],[18,19]] =&gt; [[13,11],[18,13]] =&gt; 2</p>
+<p>正确答案是 [[13,11],[14,18],[18,19]]</p>
+<p>局部最优并没有取得全局最优，所以贪婪算法不适用与此场景，在此场景需要考虑回溯，尝试动态规划</p>
+<p>首先尝试拆分子问题，举例说明：</p>
+<p>[[5,4],[6,4],[6,7],[2,3]] 中选取一项作为头部，剩下可以做尾部</p>
+<p>$$$$</p>
+<pre><code class="language-js">function maxEnvelopes(envelopes) {
+  if (envelopes.length === 0 || envelopes.length === 1) {
+    return envelopes.length
+  }
+  let result = 0
+  for (let i = 0; i &lt; envelopes.length; i++) {
+    const cur = envelopes[i]
+    result = Math.max(1 + maxEnvelopes(envelopes.filter(o =&gt; o[0] &gt; cur[0] &amp;&amp; o[1] &gt; cur[1])), result)
+  }
+  return result
+}
+</code></pre>
+
+    </div>
+</article>
+<!-- Highlight.js -->
+<link rel="stylesheet" href="/css/hljs.css">
+<script src="/js/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+  </main>
+
+  <footer class="footer">
+    <ul class="footer-links">
+      <section class="copyright">
+        <a href="https://chenjianhui.site">JianhuiChen</a> © 2017 - 2020 | 
+        <a href="http://www.beian.miit.gov.cn" style="line-height: 37px;font-size: 16px;">津ICP备19001724号</a>
+      </section>
+    </ul>
+  </footer>
+
+  
+  <!-- scripts list from theme config.yml -->
+  
+  <script src="/js/simple.js"></script>
+  
+  
+
+</body>
+
+</html>

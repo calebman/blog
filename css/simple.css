@@ -136,10 +136,14 @@ article p {
 
 article a {
   text-decoration: none;
-  color: #345780;
-  /* border-bottom: 3px solid #ff5722; */
+  color: #24292e;
+  border-bottom: 3px solid #ff5722;
   background: transparent;
   transition: background 150ms ease;
+}
+
+article a:hover {
+  color: #ff5722;
 }
 
 article hr {
@@ -317,7 +321,7 @@ article td {
   }
 
   .content {
-    font-size: 19px;
+    font-size: 18px;
     line-height: 1.8;
   }
 
